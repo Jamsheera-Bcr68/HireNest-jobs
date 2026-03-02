@@ -1,0 +1,17 @@
+.header {
+  background: #e2d8fc;
+}
+.sidebar {
+  background: #f3f0fb;
+  margin-top: 0;
+}
+.sidebox-active {
+  background: #7b19b9;
+  border-radius: 10px;
+  color: white;
+}
+.sidebox {
+  border-radius: 10px;
+
+  font-weight: bold;
+}
