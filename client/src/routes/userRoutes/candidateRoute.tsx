@@ -5,7 +5,7 @@ import CandidateProfile from '../../presentation/pages/user/candidate/CandidateP
 export const CandidateRoutes = () => {
   return (
     <Routes>
-      <Route path='/' element={<CandidateProfile />} />
+      <Route path="/" element={<CandidateProfile />} />
     </Routes>
   );
 };

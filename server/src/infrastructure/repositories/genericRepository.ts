@@ -11,6 +11,8 @@ export abstract class GenericRepository<
     this._model = model;
   }
   async create(data: Partial<T>): Promise<T> {
+    console.log('after maptperistance ', this.mapToPersistance(data));
+
     const doc = await this._model.create(this.mapToPersistance(data));
     return this.mapToEntity(doc);
   }

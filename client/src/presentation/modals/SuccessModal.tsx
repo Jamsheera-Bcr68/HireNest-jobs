@@ -59,7 +59,7 @@ function SuccessModal({ open, onClose }: ModalProps) {
               <Dialog.Close asChild>
                 <button
                   onClick={() => {
-                    navigate('/');
+                    navigate('/employer/home');
                     onClose();
                   }}
                   className="

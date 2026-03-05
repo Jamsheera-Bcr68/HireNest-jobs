@@ -9,8 +9,6 @@ import { IResume } from '../../../domain/values/profileTypes';
 import { IExperienceDocument } from '../../database/models/user/experienceModel';
 import { Experience } from '../../../domain/entities/Experience';
 import { IEducationDocument } from '../../database/models/user/educationModel';
-import { UploadFileDto } from '../../../applications/Dtos/uploadFileDto';
-import { email } from 'zod';
 
 export class UserRepository
   extends GenericRepository<User, IUserDocument>

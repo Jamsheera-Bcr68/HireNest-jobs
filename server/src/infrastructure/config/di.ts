@@ -33,6 +33,10 @@ import { GetAllSkillsUseCase } from '../../applications/useCases/skills/GetAllSk
 import { CompanyRegisterUseCase } from '../../applications/useCases/company/companyRegisterUseCase';
 import { AddLogoUseCase } from '../../applications/useCases/company/AddLogoUseCase';
 import { AddDocumentUseCase } from '../../applications/useCases/company/AddDocumentUseCase';
+
+import { AddSkillUseCase } from '../../applications/useCases/skills/AddSkillUseCase';
+//job
+import { CrateJobUseCase } from '../../applications/useCases/job/createJobUseCase';
 //==Controllers
 //auth
 import { AuthController } from '../../presentation/http/controllers/auth/authController';
@@ -48,6 +52,9 @@ import { ChangePasswordController } from '../../presentation/http/controllers/au
 import { CandidateProfileController } from '../../presentation/http/controllers/candidate/CandidateProfileController';
 import { SkillsController } from '../../presentation/http/controllers/SkillsController';
 import { CompanyProfileController } from '../../presentation/http/controllers/company/companyProfileController';
+//job
+import { JobController } from '../../presentation/http/controllers/jobController';
+
 //==repsitories
 
 import { UserRepository } from '../repositories/user/userRepository';
@@ -57,6 +64,7 @@ import { SkillRepository } from '../repositories/user/SkillsRepository';
 import { ExperieceRepository } from '../repositories/user/ExperienceRepository';
 import { EducationRepository } from '../repositories/user/educationRepository';
 import { CompanyRepository } from '../repositories/user/companyRepository';
+import { JobRepository } from '../repositories/user/JobRepository';
 //services
 
 import { OtpGenerator } from '../services/otpgenerator';
@@ -77,6 +85,7 @@ const skillRepository = new SkillRepository();
 const experienceRepository = new ExperieceRepository();
 const educationRepository = new EducationRepository();
 const companyRepository = new CompanyRepository();
+const jobRepository = new JobRepository();
 
 const emailService = new EmailService();
 const verifyOtpService = new VerifyOtpService(otpRepository, userRepository);
@@ -176,6 +185,9 @@ const companyRegisterUseCase = new CompanyRegisterUseCase(
 );
 const addLogoUseCase = new AddLogoUseCase(imageStorageService);
 const addDocumentUseCase = new AddDocumentUseCase(fileStorageServices);
+const addSkillUsecase = new AddSkillUseCase(skillRepository);
+//job
+const createJobUseCase = new CrateJobUseCase(userRepository, jobRepository);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -221,9 +233,13 @@ export const candidateProfileController = new CandidateProfileController(
   removeResumeUseCase
 );
 
-export const skillController = new SkillsController(getAllSkillsUseCase);
+export const skillController = new SkillsController(
+  getAllSkillsUseCase,
+  addSkillUsecase
+);
 export const companyProfileController = new CompanyProfileController(
   companyRegisterUseCase,
   addLogoUseCase,
   addDocumentUseCase
 );
+export const jobController = new JobController(createJobUseCase);

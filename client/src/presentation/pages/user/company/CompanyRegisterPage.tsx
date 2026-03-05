@@ -1,5 +1,5 @@
 import CompanyRegistration from '../../../components/user/profile/company/CompanyRegistrationForm';
-import Header from '../../../components/common/Header';
+import { Header } from '../../../components/user/employer/home/Header';
 
 export default function CompanyRegistrationPage() {
   return (

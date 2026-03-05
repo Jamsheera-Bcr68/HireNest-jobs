@@ -632,28 +632,6 @@ export default function CompanyRegistration() {
                     </div>
                   </details>
                 </div>
-                {/* LinkedIn
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 flex-shrink-0 rounded-xl bg-blue-50 flex items-center justify-center">
-                    <IconLinkedIn />
-                  </div>
-                  <input
-                    type="url"
-                    className={inputCls}
-                    placeholder="https://linkedin.com/company/yourcompany"
-                  />
-                </div>
-                {/* Twitter */}
-                {/* <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 flex-shrink-0 rounded-xl bg-sky-50 flex items-center justify-center">
-                    <IconTwitter />
-                  </div>
-                  <input
-                    type="url"
-                    className={inputCls}
-                    placeholder="https://twitter.com/yourcompany"
-                  />
-                </div> */}
               </div>
             </Field>
           </Card>
@@ -739,7 +717,7 @@ export default function CompanyRegistration() {
           {/* ─── Action bar ─── */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/employer')}
               className="w-full sm:w-auto rounded-xl border-2 border-slate-200 bg-white px-6 py-2.5 text-sm font-semibold text-slate-500 hover:border-slate-400 hover:text-slate-700 transition-all"
               style={{ fontFamily: "'DM Sans',sans-serif" }}
             >

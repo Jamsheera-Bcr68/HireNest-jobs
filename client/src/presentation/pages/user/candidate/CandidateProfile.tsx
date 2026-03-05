@@ -1,5 +1,4 @@
 import Header from '../../../components/common/Header';
-import SideBar from '../../../components/common/SideBar';
 
 import ProfilePart from '../../../components/user/profile/profilePart';
 

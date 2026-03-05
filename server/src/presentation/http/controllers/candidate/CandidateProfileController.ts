@@ -27,7 +27,6 @@ import { IRemoveEducationUseCase } from '../../../../applications/interfaces/can
 import { generalMessages } from '../../../../shared/constants/messages/generalMessages';
 import { IAddResumeUseCase } from '../../../../applications/interfaces/candidate/IAddResumeUseCase';
 import { IRemoveResumeUseCase } from '../../../../applications/interfaces/candidate/IRemoveResumeUseCase';
-import { success } from 'zod';
 
 export class CandidateProfileController {
   private _candidateEditProfileUsecase: IProfileEditUsecase;
@@ -78,7 +77,6 @@ export class CandidateProfileController {
   }
   editProfile = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
-    // console.log('from edit profile req.user ', user);
 
     const payload: UpdataUserProfileInput = req.body;
     // console.log('payload from controller ', payload);

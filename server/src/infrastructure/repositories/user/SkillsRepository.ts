@@ -6,6 +6,7 @@ import {
   skillModel,
 } from '../../database/models/user/skillModel';
 import { SkillStatus } from '../../../domain/enums/skillEnum';
+import { Types } from 'mongoose';
 
 export class SkillRepository
   extends GenericRepository<Skill, ISkillDocument>
@@ -28,15 +29,19 @@ export class SkillRepository
       id: doc._id.toString(),
       skillName: doc.skillName,
       createdBy: doc.createdBy,
+      userId: doc.userId ? doc.userId.toString() : undefined,
     };
   }
   mapToEntities(docs: ISkillDocument[]): Skill[] {
     return docs.map((doc) => this.mapToEntity(doc));
   }
   protected mapToPersistance(entity: Partial<Skill>): Partial<ISkillDocument> {
+    console.log('from map to entity skill');
+
     return {
       skillName: entity.skillName,
       createdBy: entity.createdBy,
+      userId: entity.userId ? new Types.ObjectId(entity.userId) : undefined,
       createdAt: entity.createdAt,
       status: entity.status,
     };

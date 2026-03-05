@@ -4,7 +4,7 @@ import { useToast } from '../../../shared/toast/useToast';
 import { Eye, EyeClosedIcon } from 'lucide-react';
 
 const LoginForm = ({ role }: ILoginFormProps) => {
-  const { ToastElement, showToast } = useToast();
+  const { showToast } = useToast();
   const {
     handleChange,
     handleForgotPassword,
@@ -17,8 +17,8 @@ const LoginForm = ({ role }: ILoginFormProps) => {
   } = useLogin(role, showToast);
 
   return (
-    <>
-      <div className="text-center mb-5">
+    <div className="rounded-md">
+      <div className="text-center  mb-5">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Login</h1>
 
         {errors.server && (
@@ -107,8 +107,7 @@ const LoginForm = ({ role }: ILoginFormProps) => {
       ) : (
         ''
       )}
-      {ToastElement}
-    </>
+    </div>
   );
 };
 

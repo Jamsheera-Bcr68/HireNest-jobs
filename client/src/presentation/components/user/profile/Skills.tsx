@@ -69,7 +69,7 @@ const Skills = ({
             <span
               key={skill.id}
               className="
-            flex items-center
+                flex items-center
                 bg-blue-100 text-blue-800
                 px-3 py-1.5
                 rounded-full

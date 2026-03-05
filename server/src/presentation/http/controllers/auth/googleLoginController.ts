@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { IGoogleLoginUsecase } from '../../../../applications/interfaces/auth/IgoogleLoginUsecase';
 import { statusCodes } from '../../../../shared/enums/statusCodes';
 import { authMessages } from '../../../../shared/constants/messages/authMesages';
+import { UserMapper } from '../../../../applications/mappers/userMapper';
 
 export class GoogleLoginController {
   private _googleLoginUsecase: IGoogleLoginUsecase;
@@ -14,6 +15,7 @@ export class GoogleLoginController {
     try {
       const { user, accessToken, refreshToken } =
         await this._googleLoginUsecase.execute(token, role);
+      const userDto = UserMapper.toDto(user);
 
       res.cookie('refreshToken', refreshToken, {
         secure: process.env.NODE_ENV === 'production',
@@ -24,7 +26,7 @@ export class GoogleLoginController {
       return res.status(statusCodes.OK).json({
         success: true,
         message: authMessages.success.LOGIN_SUCCESS,
-        data: { user, accessToken },
+        data: { user: userDto, accessToken },
       });
     } catch (error) {
       next(error);

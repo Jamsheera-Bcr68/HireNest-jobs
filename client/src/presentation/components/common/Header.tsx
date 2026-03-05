@@ -4,6 +4,8 @@ import { useHeader } from '../../hooks/user/useHeader';
 
 const Header = () => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
+  console.log(user?.role, 'from header');
+
   const navigate = useNavigate();
   return (
     <header className="  shadow-md">
@@ -19,7 +21,7 @@ const Header = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
             <a
-              href="#"
+              href="/"
               className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
             >
               Home
@@ -76,12 +78,13 @@ const Header = () => {
                 Logout
               </button>
             )}
-            {user && (
+
+            {user && user.role === 'candidate' && (
               <button
-                onClick={() => navigate('/company-register')}
+                onClick={() => navigate('/employer')}
                 className="bg-green-600 text-white hover:bg-green-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
               >
-                Post a Job
+                Post a job
               </button>
             )}
           </div>

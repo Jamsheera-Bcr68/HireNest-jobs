@@ -13,6 +13,7 @@ import AdminLogin from '../presentation/pages/auth/AdminLogin';
 import Dashboard from '../presentation/pages/admin/Dashboard';
 import ForgotPassword from '../presentation/pages/auth/ForgotPassword';
 import ResetPassword from '../presentation/pages/auth/ResetPasswordForm';
+import { EmployerRoute } from './userRoutes/employerRoutes';
 
 export const AppRoutes = () => {
   return (
@@ -32,6 +33,8 @@ export const AppRoutes = () => {
       <Route element={<ProtectedRoutes />}>
         <Route path="/profile/*" element={<CandidateRoutes />} />
         <Route path="/company-register" element={<CompanyRegistration />} />
+        <Route path="/employer/*" element={<EmployerRoute />} />
+        {/* <Route path="/employer/*" element={<CompanyRoutes />} /> */}
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
