@@ -8,7 +8,7 @@ export type ISocialLinks = {
 };
 
 export type AddressType = {
-  place: string;
+  place?: string;
   state: string;
   country: string;
 };

@@ -12,9 +12,15 @@ export interface Company {
   website?: string;
   tagLine?: string;
   email?: string;
+
   phone?: string;
   about: string;
+  mission: string;
+  vision: string;
+  culture: string;
+  benefits: string[] | [];
   startedIn: number;
+  isVerified: boolean;
   isAgreed: boolean;
   isConsent: boolean;
   logoUrl: string;

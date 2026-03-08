@@ -67,7 +67,7 @@ export const companyRegisterSchema = z.object({
     message: 'Please agree to verify this',
   }),
 
-  logo: z.string().nullable().optional(),
+  logoUrl: z.string().nullable().optional(),
 
   links: z.object({
     gitHub: stringValOpt('Github link ', 0, 100).nullable(),

@@ -1,14 +1,14 @@
 import { useState, useRef } from 'react';
 import { getCroppedImage } from '../../../../../utils/cropImage';
-import { type typeOfToast } from '../../../../../types/toastTypes';
+import { useToast } from '../../../../../shared/toast/useToast';
 import axiosInstance from '../../../../../libraries/axios';
 import type { UserProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
 
 export const useImageChange = (
-  showToast: (toast: typeOfToast) => void,
   onClose: () => void,
   onUserUpdate: (user: UserProfileType) => void
 ) => {
+  const { showToast } = useToast();
   const [preview, setPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });

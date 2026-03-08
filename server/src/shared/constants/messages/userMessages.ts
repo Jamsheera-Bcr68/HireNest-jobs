@@ -19,6 +19,10 @@ export const userMessages = {
     RESUME_DELETED: 'Resume Deleted Succesfully',
     COMPANY_UNDER_REVIEW: 'Your company registration is processing',
     DOC_UPLOADED: 'Document uploaded',
+    COMPANY_FOUND: 'Company data fetched successfully',
+
+    COMPANY_UPDATED: 'Company Updated successfully',
+    LOGO_REMOVED: 'Company removed successfully',
   },
   error: {
     NOT_FOUND: 'User Not found',
@@ -26,7 +30,7 @@ export const userMessages = {
     IMAGE_ALREADY_REMOVED: 'Image is already Removed',
     IMAGE_REMOVAL_FAILED: 'Failed to delete file from storage',
     NO_ABOUT_VALUE: 'No value to update',
-
+    COMPANY_ALREADY_EXIST: 'Company name already exist',
     SKILLS_NOT_FOUND: 'No Skills available',
     INVALID_SKILL: 'Skill not exist ',
     SKILL_ALREADY_EXIST: 'This skill is already exist',
@@ -46,5 +50,6 @@ export const userMessages = {
     EDUCATION_ID_NOTFOUND: 'Education id is not found',
     RESUMEID_NOT_FOUND: 'Resume id is not found',
     RESUME_ALREADY_DELETED: 'This resume is already Deleted',
+    COMPANY_NOT_FOUND: 'Company not found',
   },
 };

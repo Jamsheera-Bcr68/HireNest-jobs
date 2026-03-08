@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { changePasswordSchema } from '../../../libraries/validations/auth/changePasswordValidator';
 import axiosInstance from '../../../libraries/axios';
-import type { typeOfToast } from '../../../types/toastTypes';
+import { useToast } from '../../../shared/toast/useToast';
 
 type FormDataType = {
   current_password: string;
@@ -14,10 +14,8 @@ type Errors = {
   password: string | undefined;
   confirm_password: string | undefined;
 };
-export const useChangePassword = (
-  showToast: (toast: typeOfToast) => void,
-  onClose: () => void
-) => {
+export const useChangePassword = (onClose: () => void) => {
+  const { showToast } = useToast();
   const [show, setShow] = useState(false);
   const [error, setErrors] = useState<Errors>({
     password: '',
@@ -51,8 +49,8 @@ export const useChangePassword = (
           formData
         );
         console.log('response', response);
-        showToast({ msg: response.data.message, type: 'success' });
         onClose();
+        showToast({ msg: response.data.message, type: 'success' });
       } catch (error: any) {
         console.log(error);
 

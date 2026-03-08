@@ -203,18 +203,18 @@ const Checkbox = ({ children, checked, handleChange, name }: CheckboxProps) => (
 
 export default function CompanyRegistration() {
   // const [blob, setblob] = useState<Blob | null>(null);
-  const [url, setUrl] = useState('');
 
   const {
     formData,
     handleChange,
+    setFormData,
     handleAreaChange,
     handleSubmit,
     error,
     setVerify_file,
     isSuccessOpen,
     setIsSuccessOpen,
-  } = useRegisterCompany(url);
+  } = useRegisterCompany();
 
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [isCropping, setIsCropping] = useState(false);
@@ -329,8 +329,8 @@ export default function CompanyRegistration() {
                 <span className="text-[10px] text-slate-400">
                   PNG, JPG · Max 5 MB
                 </span>
-                {error && error.logo && (
-                  <p className="text-red-600 text-sm">* {error.logo}</p>
+                {error && error.logoUrl && (
+                  <p className="text-red-600 text-sm">* {error.logoUrl}</p>
                 )}
               </div>
               {/* Name + tagline */}
@@ -750,8 +750,20 @@ export default function CompanyRegistration() {
           setPreview={setPreview}
           isCropping={isCropping}
           setIsCropping={setIsCropping}
-          handleSelectedImage={setUrl}
+          handleSelectedImage={(url: string) =>
+            setFormData((prev) => ({ ...prev, logoUrl: url }))
+          }
         />
+        {/* <ImageCropModal
+          preview={preview}
+          open={isOpen}
+          onClose={() => setIsOpen(false)}
+          image={imageSrc}
+          setPreview={setPreview}
+          isCropping={isCropping}
+          setIsCropping={setIsCropping}
+          handleSelectedImage={setUrl}
+        /> */}
         <SuccessModal
           open={isSuccessOpen}
           onClose={() => setIsSuccessOpen(false)}

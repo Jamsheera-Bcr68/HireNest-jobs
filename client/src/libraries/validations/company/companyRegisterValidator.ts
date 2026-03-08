@@ -49,7 +49,7 @@ export const companyRegisterSchema = z.object({
     state: stringValMand('State', 3, 30),
   }),
 
-  email: stringValOpt('Email', 4, 20),
+  email: stringValOpt('Email', 4, 30),
 
   phone: z.string().max(15, 'Enter a valid phone number').optional(),
   about: stringValMand('About ', 5, 50),
@@ -67,7 +67,7 @@ export const companyRegisterSchema = z.object({
     message: 'Please agree to verify this',
   }),
 
-  logo: z.string().nullable().optional(),
+  logoUrl: z.string().nullable().optional(),
 
   links: z.object({
     gitHub: stringValOpt('Github link ', 0, 100).nullable(),

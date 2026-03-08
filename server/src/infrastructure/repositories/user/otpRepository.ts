@@ -31,7 +31,7 @@ export class OtpRepository implements IOtpRepository {
       throw new Error('OTP_EXPIRED');
 
     const isValid = user?.otp === otp;
-    console.log('is valid ', isValid);
+    // console.log('is valid ', isValid);
     if (!isValid) {
       throw new Error('Invalid OTP');
     }

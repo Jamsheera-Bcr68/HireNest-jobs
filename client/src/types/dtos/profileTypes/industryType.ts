@@ -45,7 +45,7 @@ export type IndustryType = (typeof Industry_Type)[number];
 export type CompanySize = (typeof Company_Size)[number];
 export type CountryName = (typeof Country_Name)[number];
 export type AddressType = {
-  place: string;
+  place?: string;
   state: string;
   country: CountryName | '';
 };

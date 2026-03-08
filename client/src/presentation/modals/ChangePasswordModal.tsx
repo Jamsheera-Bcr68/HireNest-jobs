@@ -11,9 +11,8 @@ export default function ChangePasswordModal({
   open: boolean;
   onClose: () => void;
 }) {
-  const { showToast } = useToast();
   const { handleChange, formData, show, error, setShow, handleSubmit } =
-    useChangePassword(showToast, onClose);
+    useChangePassword(onClose);
 
   return (
     <Dialog.Root

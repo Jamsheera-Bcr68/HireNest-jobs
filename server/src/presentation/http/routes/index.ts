@@ -10,6 +10,7 @@ console.log('from auth routes');
 
 router.use('/auth', authRoutes);
 router.use('/candidate', candidateRoutes);
+router.use('/company', companyRoutes);
 router.use('/skills', skillRoutes);
 router.use('/jobs', jobRoutes);
 

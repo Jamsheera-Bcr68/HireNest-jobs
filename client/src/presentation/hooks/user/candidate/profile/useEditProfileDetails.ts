@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { type typeOfToast } from '../../../../../types/toastTypes';
 import axiosInstance from '../../../../../libraries/axios';
 import type { UserProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
@@ -14,6 +14,7 @@ export const useEditProfileDetails = (
 ) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
+  const textref = useRef<HTMLTextAreaElement | null>(null);
 
   //skills component
   const [isAddSkill, setIsAddSkill] = useState<boolean>(false);
@@ -118,6 +119,7 @@ export const useEditProfileDetails = (
     cancelEdit,
     setIsEditing,
     onBlur,
+    textref,
 
     //skills
     //error,

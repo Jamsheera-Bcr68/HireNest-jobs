@@ -1,8 +1,14 @@
 import { CompanyRegisterType } from '../validators/company/registerValidation';
 import { companyDto } from '../../../applications/Dtos/companyDto';
+import { CompanyProfileEditType } from '../validators/company/companyProfileEditValidation';
+import { CompanyUpdateDto } from '../../../applications/Dtos/companyDto';
+import { CompanyUpdateFiedType } from '../validators/company/companyUpdateFieldsValidation';
 
 export class CompanyMapper {
-  static toCompanyDto(data: CompanyRegisterType, userId: string): companyDto {
+  static toCompanyDto(
+    data: CompanyRegisterType,
+    userId: string
+  ): Partial<companyDto> {
     return {
       companyName: data.companyName,
       website: data.website,
@@ -14,7 +20,7 @@ export class CompanyMapper {
       startedIn: Number(data.startedIn),
       isAgreed: data.isAgreed,
       isConsent: data.isConsent,
-      logo: data.logo ?? '',
+      logoUrl: data.logoUrl ?? '',
       industry: data.industry,
       socialMediaLinks: {
         gitHub: data.links.gitHub ?? '',
@@ -26,7 +32,51 @@ export class CompanyMapper {
       },
       size: data.size,
       address: data.adress,
-      documents: data.documents,
+      document: data.documents,
     };
+  }
+  static CompanyProfileEditTypeToCompanyDto(
+    data: CompanyProfileEditType
+  ): CompanyUpdateDto {
+    return {
+      companyName: data.companyName,
+      website: data.website,
+      tagLine: data.tagLine ?? '',
+
+      startedIn: Number(data.startedIn),
+
+      industry: data.industry,
+      socialMediaLinks: {
+        gitHub: data.socialMediaLinks?.github ?? '',
+        linkedIn: data.socialMediaLinks?.linkedin ?? '',
+        whatsapp: data.socialMediaLinks?.whatsapp ?? '',
+        youtube: data.socialMediaLinks?.youtube ?? '',
+        twitter: data.socialMediaLinks?.twitter ?? '',
+        portfolio: data.socialMediaLinks?.portfolio ?? '',
+      },
+      size: data.size,
+      address: {
+        place: data.address?.place ?? '',
+        state: data.address?.state ?? '',
+        country: data.address?.country ?? '',
+      },
+    };
+  }
+  static CompanyUpdateFiedTypeToCompanyDto(
+    data: CompanyUpdateFiedType
+  ): Partial<companyDto> {
+    console.log('data from mapper', data);
+
+    const dto: Partial<companyDto> = {};
+
+    if (data.mission !== undefined) dto.mission = data.mission;
+    if (data.vision !== undefined) dto.vision = data.vision;
+    if (data.about !== undefined) dto.about = data.about;
+    if (data.benefits !== undefined) dto.benefits = data.benefits;
+    if (data.culture !== undefined) dto.culture = data.culture;
+    if (data.socialMediaLinks !== undefined)
+      dto.socialMediaLinks = data.socialMediaLinks;
+
+    return dto;
   }
 }

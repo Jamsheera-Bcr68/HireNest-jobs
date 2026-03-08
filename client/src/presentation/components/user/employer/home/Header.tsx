@@ -39,7 +39,13 @@ export const Header = () => {
             </a>
 
             <a
-              href="/profile"
+              href={
+                user.role == 'candidate'
+                  ? '/profile'
+                  : user.role == 'employer'
+                    ? '/employer/profile'
+                    : '/'
+              }
               className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
             >
               Profile

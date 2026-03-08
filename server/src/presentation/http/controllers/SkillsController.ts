@@ -60,13 +60,11 @@ export class SkillsController {
       );
       console.log('created skill', newSkill);
 
-      return res
-        .status(statusCodes.CREATED)
-        .json({
-          success: true,
-          message: jobMessages.success.SKILL_CREATED,
-          skill: newSkill,
-        });
+      return res.status(statusCodes.CREATED).json({
+        success: true,
+        message: jobMessages.success.SKILL_CREATED,
+        skill: newSkill,
+      });
     } catch (error: any) {
       next(error);
     }

@@ -3,26 +3,59 @@ import { CompanyRegisterType } from '../../validators/company/registerValidation
 import { AppError } from '../../../../domain/errors/AppError';
 import { userMessages } from '../../../../shared/constants/messages/userMessages';
 import { statusCodes } from '../../../../shared/enums/statusCodes';
-import { companyDto } from '../../../../applications/Dtos/companyDto';
+import { CompanyUpdateFiedType } from '../../validators/company/companyUpdateFieldsValidation';
+import {
+  companyDto,
+  CompanyUpdateDto,
+} from '../../../../applications/Dtos/companyDto';
 import { CompanyMapper } from '../../mappers/companyMapper';
 import { ICompanyRegisterUseCase } from '../../../../applications/interfaces/services/company/ICompanyRegisterUseCase';
 import { UploadFileDto } from '../../../../applications/Dtos/uploadFileDto';
 import { IAddLogoUseCase } from '../../../../applications/useCases/company/AddLogoUseCase';
+import { IGetCompanyUseCase } from '../../../../applications/useCases/company/GetCompanyUseCase';
+import { ILogoRemoveUseCase } from '../../../../applications/useCases/company/LogoRemoveUsecase';
+
+import { IChangeLogogUseCase } from '../../../../applications/useCases/company/ChangeLogoUseCase';
+import { ICompanyUpdateProfileUseCase } from '../../../../applications/useCases/company/CompanyUpdateProfileUseCase';
+import { ICompanyAboutUpdateUseCase } from '../../../../applications/useCases/company/CompanyAboutUpdateUseCase';
 
 export class CompanyProfileController {
   constructor(
     private companyRegisterUseCase: ICompanyRegisterUseCase,
     private addFileUseCase: IAddLogoUseCase,
-    private addDocumentUseCasez: IAddLogoUseCase
+    private addDocumentUseCasez: IAddLogoUseCase,
+    private getCompanyUseCase: IGetCompanyUseCase,
+    private changeLogoUseCase: IChangeLogogUseCase,
+    private removeLogoUseCase: ILogoRemoveUseCase,
+    private compantProfieUpdateUseCase: ICompanyUpdateProfileUseCase,
+    private companyAboutUpdateUseCase: ICompanyAboutUpdateUseCase
   ) {}
-  companyRegister = async (req: Request, res: Response, next: NextFunction) => {
-    const payload: CompanyRegisterType = req.body;
+  getCompany = async (req: Request, res: Response, next: NextFunction) => {
+    console.log('from company controller');
     const user = req.user;
     try {
       if (!user || !user.userId) {
         throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
       }
-      const companyData: companyDto = CompanyMapper.toCompanyDto(
+      const company = await this.getCompanyUseCase.execute(user.userId);
+      return res.status(statusCodes.OK).json({
+        success: true,
+        message: userMessages.success.COMPANY_FOUND,
+        company,
+      });
+    } catch (error: any) {
+      next(error);
+    }
+  };
+  companyRegister = async (req: Request, res: Response, next: NextFunction) => {
+    const payload: CompanyRegisterType = req.body;
+
+    const user = req.user;
+    try {
+      if (!user || !user.userId) {
+        throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
+      }
+      const companyData: Partial<companyDto> = CompanyMapper.toCompanyDto(
         payload,
         user.userId
       );
@@ -31,6 +64,7 @@ export class CompanyProfileController {
         user.userId,
         user.role
       );
+
       return res.status(statusCodes.CREATED).json({
         success: true,
         message: userMessages.success.COMPANY_UNDER_REVIEW,
@@ -73,6 +107,40 @@ export class CompanyProfileController {
       next(error);
     }
   };
+  changeLogo = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+    const file = req.file;
+    try {
+      if (!user || !user.userId) {
+        throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
+      }
+      if (!file) {
+        throw new AppError(
+          userMessages.error.IMAGE_NOT_FOUND,
+          statusCodes.BADREQUEST
+        );
+      }
+      const payload: UploadFileDto = {
+        buffer: file.buffer,
+        size: file.size,
+        mimetype: file.mimetype,
+        originalName: file.originalname,
+      };
+
+      const updated = await this.changeLogoUseCase.execute(
+        user.userId,
+        user.role,
+        payload
+      );
+      return res.status(statusCodes.OK).json({
+        success: true,
+        message: userMessages.success.LOGO_UPLOADED,
+        company: updated,
+      });
+    } catch (error: any) {
+      next(error);
+    }
+  };
   addDocument = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
     const file = req.file;
@@ -101,6 +169,73 @@ export class CompanyProfileController {
         success: true,
         message: userMessages.success.DOC_UPLOADED,
         docUrl,
+      });
+    } catch (error: any) {
+      next(error);
+    }
+  };
+  removeLogo = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+    try {
+      if (!user || !user.userId) {
+        throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
+      }
+      const updated = await this.removeLogoUseCase.execute(user.userId);
+      return res.status(statusCodes.OK).json({
+        success: true,
+        message: userMessages.success.LOGO_REMOVED,
+        company: updated,
+      });
+    } catch (error: any) {
+      next(error);
+    }
+  };
+  updateProfile = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+    try {
+      if (!user || !user.userId) {
+        throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
+      }
+      const payload: CompanyUpdateDto =
+        CompanyMapper.CompanyProfileEditTypeToCompanyDto(req.body);
+      const updated = await this.compantProfieUpdateUseCase.execute(
+        payload,
+        user.userId
+      );
+      console.log('new updated company', updated);
+      return res.status(statusCodes.OK).json({
+        success: true,
+        message: userMessages.success.COMPANY_UPDATED,
+        company: updated,
+      });
+    } catch (error: any) {
+      next(error);
+    }
+  };
+  updateFields = async (req: Request, res: Response, next: NextFunction) => {
+    console.log('from update field controller', req.body);
+
+    const user = req.user;
+    try {
+      if (!user || !user.userId) {
+        throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
+      }
+
+      const payload = CompanyMapper.CompanyUpdateFiedTypeToCompanyDto(req.body);
+      console.log(
+        'after converting to CompanyUpdateFiedTypeToCompanyDto',
+        payload
+      );
+
+      const data = await this.companyAboutUpdateUseCase.execute(
+        payload,
+        user.userId
+      );
+      console.log('new updated company', data);
+      return res.status(statusCodes.OK).json({
+        success: true,
+        message: userMessages.success.COMPANY_UPDATED,
+        company: data,
       });
     } catch (error: any) {
       next(error);

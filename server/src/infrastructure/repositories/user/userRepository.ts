@@ -44,13 +44,13 @@ export class UserRepository
       .populate('skills')
       .populate('experience')
       .populate('education');
-    console.log('user populated', user);
+    // console.log('user populated', user);
 
     if (!user) return null;
     return this.mapToEntity(user);
   }
   mapToEntity = (doc: IUserDocument): User => {
-    console.log('doc from maptoentity ', doc);
+    // console.log('doc from maptoentity ', doc);
     const skills = (doc.skills as ISkillDocument[]).map(
       (skill: ISkillDocument): UserSkillDto => {
         return {
@@ -61,7 +61,7 @@ export class UserRepository
     );
     const experience = (doc.experience as IExperienceDocument[]).map(
       (exp: IExperienceDocument): Experience => {
-        console.log('form mapto entity exp', exp);
+        //  console.log('form mapto entity exp', exp);
 
         return {
           id: exp._id.toString(),

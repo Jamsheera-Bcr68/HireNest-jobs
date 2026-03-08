@@ -91,6 +91,7 @@ export const useJobs = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('fromdata ', formData);
+
     const result = jobPostSchema.safeParse(formData);
     if (!result.success) {
       const error = result.error.flatten().fieldErrors;

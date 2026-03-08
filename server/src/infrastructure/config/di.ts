@@ -37,6 +37,11 @@ import { AddDocumentUseCase } from '../../applications/useCases/company/AddDocum
 import { AddSkillUseCase } from '../../applications/useCases/skills/AddSkillUseCase';
 //job
 import { CrateJobUseCase } from '../../applications/useCases/job/createJobUseCase';
+import { GetCompanyUseCase } from '../../applications/useCases/company/GetCompanyUseCase';
+import { ChangeLogoUseCase } from '../../applications/useCases/company/ChangeLogoUseCase';
+import { LogoRemoveUseCase } from '../../applications/useCases/company/LogoRemoveUsecase';
+import { CompanyProfileUpdate } from '../../applications/useCases/company/CompanyUpdateProfileUseCase';
+import { CompanyAboutUpdateUseCase } from '../../applications/useCases/company/CompanyAboutUpdateUseCase';
 //==Controllers
 //auth
 import { AuthController } from '../../presentation/http/controllers/auth/authController';
@@ -188,6 +193,19 @@ const addDocumentUseCase = new AddDocumentUseCase(fileStorageServices);
 const addSkillUsecase = new AddSkillUseCase(skillRepository);
 //job
 const createJobUseCase = new CrateJobUseCase(userRepository, jobRepository);
+const getCompanyUseCase = new GetCompanyUseCase(companyRepository);
+const changeLogoUseCase = new ChangeLogoUseCase(
+  companyRepository,
+  imageStorageService
+);
+const logoRemoveUseCase = new LogoRemoveUseCase(
+  companyRepository,
+  imageStorageService
+);
+const companyProfileUpdateUseCase = new CompanyProfileUpdate(companyRepository);
+const companyAboutUpdateUseCase = new CompanyAboutUpdateUseCase(
+  companyRepository
+);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -240,6 +258,11 @@ export const skillController = new SkillsController(
 export const companyProfileController = new CompanyProfileController(
   companyRegisterUseCase,
   addLogoUseCase,
-  addDocumentUseCase
+  addDocumentUseCase,
+  getCompanyUseCase,
+  changeLogoUseCase,
+  logoRemoveUseCase,
+  companyProfileUpdateUseCase,
+  companyAboutUpdateUseCase
 );
 export const jobController = new JobController(createJobUseCase);

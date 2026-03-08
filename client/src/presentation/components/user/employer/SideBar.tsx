@@ -6,17 +6,24 @@ import {
   BriefcaseBusiness,
   ChevronLeftIcon,
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 const navItems = [
   'Dashboard',
   'Create Job',
   'Applications',
   'Interviews',
-  'Saved Jobs',
+  'My Jobs',
   'Profile',
   'Settings',
-  'Companies',
 ];
-//const navIcons = ['⊞', '🔍', '📋', '📅', '🔖', '👤', '⚙️', <Home />];
+const navRoutes: Record<string, string> = {
+  Dashboard: '/employer/dashboard',
+  'Create Job': '/employer/jobs/create',
+  Applications: '/employer/applications',
+  Interviews: '/employer/interviews',
+  'My Jobs': '/employer/jobs',
+  Profile: '/employer/profile',
+};
 const navIcons = ['⊞', <PlusIcon />, '📋', '📅', '🔖', '👤', '⚙️', <Home />];
 type SidebarProps = {
   isOpen: boolean;
@@ -25,7 +32,7 @@ type SidebarProps = {
 };
 export const SideBar = ({ isOpen, setOpen, setTitle }: SidebarProps) => {
   const [activeNav, setActiveNav] = useState('Dashboard');
-
+  const navigate = useNavigate();
   return (
     <div
       style={{ fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}
@@ -40,24 +47,6 @@ export const SideBar = ({ isOpen, setOpen, setTitle }: SidebarProps) => {
         {/* Nav */}
 
         <nav className="flex-1 py-6 px-3 space-y-1">
-          {/* <button
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${'text-slate-400  hover:bg-slate-800'}`}
-          >
-            <span className="text-base">
-              <BriefcaseBusiness />
-            </span>
-            {isOpen && <span className="text-base">HireNest</span>}
-
-            <span>
-              {isOpen ? (
-                <ChevronLeftIcon onClick={() => setOpen(false)} size={22} />
-              ) : (
-                <ChevronRight onClick={() => setOpen(true)} size={22} />
-              )}
-            </span>
-
-            
-          </button> */}
           <button
             onClick={() => setOpen(!isOpen)}
             className="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800 transition-colors"
@@ -84,6 +73,7 @@ export const SideBar = ({ isOpen, setOpen, setTitle }: SidebarProps) => {
               onClick={() => {
                 setTitle(item);
                 setActiveNav(item);
+                navigate(navRoutes[item]);
               }}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                 activeNav === item

@@ -31,20 +31,26 @@ export abstract class GenericRepository<
   async save(id: string, data: Partial<T>): Promise<T | null> {
     console.log('entity from generic  repo ', data);
     const persisted = this.mapToPersistance(data);
-    console.log('persisted ', persisted);
+    // console.log('persisted ', persisted);
 
     const updated = await this._model.findByIdAndUpdate(
       id,
-      persisted as UpdateQuery<D>,
+      { $set: persisted },
       { new: true }
     );
-    console.log('updated from user after savig repo', updated);
+
+    // const updated = await this._model.findByIdAndUpdate(
+    //   id,
+    //   persisted as UpdateQuery<D>,
+    //   { new: true }
+    // );
+    //console.log('updated from user after savig repo', updated);
 
     if (!updated) return null;
     return this.mapToEntity(updated);
   }
   async findById(id: string): Promise<T | null> {
-    console.log('from general reppo findby id');
+    //console.log('from general reppo findby id');
 
     const doc = await this._model.findById(id);
     if (!doc) return null;

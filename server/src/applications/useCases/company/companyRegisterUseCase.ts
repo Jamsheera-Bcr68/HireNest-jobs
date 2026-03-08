@@ -17,10 +17,12 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
     private userRepository: IUserRepository
   ) {}
   async execute(
-    payload: companyDto,
+    payload: Partial<companyDto>,
     userId: string,
     role: UserRole
   ): Promise<Company> {
+    console.log('pay load form usecase', payload);
+
     const user = await this.userRepository.findById(userId);
     if (!user || !user.id) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);

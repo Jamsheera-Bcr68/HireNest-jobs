@@ -46,7 +46,7 @@ export class EducationRepository
     };
   }
   async addEducation(data: Partial<Education>): Promise<Education | null> {
-    console.log('data from the front end', data);
+    // console.log('data from the front end', data);
 
     const education = await this._model.create(this.mapToPersistance(data));
     if (!education) return null;
@@ -56,7 +56,7 @@ export class EducationRepository
     eduId: string,
     data: Partial<Education>
   ): Promise<Education | null> {
-    console.log('data from edu repo ', data);
+    // console.log('data from edu repo ', data);
 
     const education = await this._model.findByIdAndUpdate(
       eduId,
@@ -67,7 +67,7 @@ export class EducationRepository
     return this.mapToEntity(education);
   }
   async getAllEducations(userId: string): Promise<Education[] | []> {
-    console.log('userId ', userId);
+    //  console.log('userId ', userId);
 
     const docs = await this._model.find({ userId: new Types.ObjectId(userId) });
     if (!docs.length) return [];

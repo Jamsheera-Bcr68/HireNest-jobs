@@ -1,11 +1,5 @@
-import Header from '../../../components/common/Header';
-
-import React from 'react';
+import ProfileLayout from '../../../components/user/employer/profile/ProfileLayout';
 
 export default function Profile() {
-  return (
-    <div>
-      <Header />
-    </div>
-  );
+  return <ProfileLayout />;
 }

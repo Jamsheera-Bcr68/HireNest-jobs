@@ -5,7 +5,7 @@ import { companyDto } from '../../../Dtos/companyDto';
 
 export interface ICompanyRegisterUseCase {
   execute(
-    payload: companyDto,
+    payload: Partial<companyDto>,
     userId: string,
     role: UserRole
   ): Promise<Company>;

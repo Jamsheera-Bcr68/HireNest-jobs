@@ -135,7 +135,7 @@ export const useEditProfileDetails = (
     cancelEdit,
     setIsEditing,
     onBlur,
-
+    filteredSkill,
     //skills
     error,
     addSkill,

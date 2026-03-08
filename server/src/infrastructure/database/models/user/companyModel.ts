@@ -12,7 +12,6 @@ import {
   ISocialMediaLinks,
   IAddress,
 } from '../../../../domain/values/profileTypes';
-import { IUserDocument } from './userModel';
 
 export interface ICompanyDocument {
   _id: mongoose.Types.ObjectId;
@@ -23,6 +22,10 @@ export interface ICompanyDocument {
   email: string;
   phone: string;
   about: string;
+  mission: string;
+  vision: string;
+  culture: string;
+  benefits: string[] | [];
   startedIn: number;
   isAgreed: boolean;
   isConsent: boolean;
@@ -42,6 +45,10 @@ const companySchema = new Schema<ICompanyDocument>({
   email: String,
   phone: String,
   about: String,
+  mission: String,
+  vision: String,
+  culture: String,
+  benefits: { type: [String], default: [] },
   userId: Types.ObjectId,
   startedIn: Number,
   isAgreed: Boolean,
@@ -64,8 +71,10 @@ const companySchema = new Schema<ICompanyDocument>({
     type: { place: String, state: String, country: String },
   },
   document: {
-    type: String,
-    enum: Document_Types,
+    type: {
+      type: String,
+      enum: Object.values(Document_Types),
+    },
     file: String,
   },
 });

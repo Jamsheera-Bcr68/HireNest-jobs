@@ -15,7 +15,7 @@ import { useState } from 'react';
 export type RegisterFormType = {
   companyName: string;
   website: string;
-  logo: string | '';
+  logoUrl: string | '';
   industry: IndustryType | '';
   tagLine: string;
   links: ISocialLinks;
@@ -34,7 +34,7 @@ export type RegisterFormType = {
 };
 const initialStata: RegisterFormType = {
   companyName: '',
-  logo: '',
+  logoUrl: '',
   website: '',
   industry: '',
   tagLine: '',
@@ -62,7 +62,7 @@ const initialStata: RegisterFormType = {
 const initialError: FormError = {
   companyName: '',
   website: '',
-  logo: '',
+  logoUrl: '',
   industry: '',
 
   tagLine: '',
@@ -89,7 +89,7 @@ const initialError: FormError = {
 };
 type FormError = {
   companyName: string;
-  logo: string;
+  logoUrl: string;
   industry: string;
   tagLine: string;
   phone: string;
@@ -115,7 +115,7 @@ type FormError = {
   isAgreed: string;
   isConsent: string;
 };
-export const useRegisterCompany = (url: string | '') => {
+export const useRegisterCompany = () => {
   const { showToast } = useToast();
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [formData, setFormData] = useState<RegisterFormType>(initialStata);
@@ -163,8 +163,7 @@ export const useRegisterCompany = (url: string | '') => {
   const handleSubmit = async () => {
     console.log('verify file', verify_file);
 
-    let updatedFormData = { ...formData };
-    setFormData((prev) => ({ ...prev, logo: url }));
+    //  let updatedFormData = { ...formData };
 
     if (!verify_file) {
       setError((prev) => ({
@@ -173,15 +172,15 @@ export const useRegisterCompany = (url: string | '') => {
       }));
       return;
     }
-    console.log('from handle submit', updatedFormData);
-    const result = companyRegisterSchema.safeParse(updatedFormData);
+    console.log('from handle submit', formData);
+    const result = companyRegisterSchema.safeParse(formData);
     if (!result.success) {
       const error = result.error.format();
       const Err: FormError = {
         website: error.website?._errors[0] || '',
         companyName: error.companyName?._errors[0] || '',
         tagLine: error.tagLine?._errors[0] || '',
-        logo: error.logo?._errors[0] || '',
+        logoUrl: error.logoUrl?._errors[0] || '',
         phone: error.phone?._errors[0] || '',
         size: error.size?._errors[0] || '',
         email: error.email?._errors[0] || '',
@@ -217,16 +216,33 @@ export const useRegisterCompany = (url: string | '') => {
 
     console.log('validation success');
     try {
-      const formData = new FormData();
+      const docData = new FormData();
 
-      formData.append('verification_document', verify_file);
-      const docResposnse = await companyService.uploadDocument(formData);
-      const docUrl = docResposnse.data;
+      docData.append('verification_document', verify_file);
+      const docResposnse = await companyService.uploadDocument(docData);
+      const docUrl = await docResposnse.data.docUrl;
+      console.log('doc url', docUrl);
+
+      // updatedFormData={...updatedFormData,documents:{...updatedFormData.documents,file:docUrl}}
+      // setFormData((prev) => ({
+      //   ...prev,
+      //   documents: { ...prev.documents, file: docUrl },
+      // }));
       setFormData((prev) => ({
         ...prev,
-        documents: { ...prev.documents, file: docUrl },
+        documents: { ...formData.documents, file: docUrl },
       }));
-      const data = await companyService.registerCompany(result.data);
+      console.log('result.data', result.data);
+      let resData = result.data;
+      resData = {
+        ...resData,
+        documents: { ...resData.documents, file: docUrl },
+      };
+      console.log('resdata after file adding', resData);
+
+      const data = await companyService.registerCompany(resData);
+      console.log('after form sumbit', data);
+
       setIsSuccessOpen(true);
       showToast({ msg: data.message, type: 'success' });
     } catch (error: any) {

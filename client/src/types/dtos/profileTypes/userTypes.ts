@@ -31,3 +31,35 @@ export interface UserProfileType {
   education: EducationType[] | [];
   resumes: ResumeType[] | [];
 }
+
+export interface CompanyProfileType {
+  id: string;
+  email: string;
+  phone: string;
+  isVerified: boolean;
+  companyName: string;
+  logoUrl: string;
+  tagline: string;
+  website?: string;
+  industry: string;
+  size: string;
+  startedIn: string;
+  address: {
+    country: string;
+    state: string;
+  };
+  mission: string;
+  vision: string;
+  culture: string;
+  benefits: string[] | [];
+  about: string;
+  socialMediaLinks: ISocialLinks;
+  docs: { name: string; file: string };
+}
+export type CompanyFieldUpdateType = {
+  about?: string;
+  mission?: string;
+  vision?: string;
+  culture?: string;
+  benefits?: string[] | [];
+};

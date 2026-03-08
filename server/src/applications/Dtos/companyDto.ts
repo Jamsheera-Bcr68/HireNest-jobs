@@ -13,18 +13,33 @@ export interface companyDto {
   email?: string;
   phone?: string;
   about: string;
+  mission: string;
+  vision: string;
+  culture: string;
+  benefits: string[] | [];
   startedIn: number;
   isAgreed: boolean;
   isConsent: boolean;
-  logo?: string;
+  logoUrl?: string;
   industry: IndustryType;
   socialMediaLinks: ISocialMediaLinks;
   size: CompanySize;
   address: IAddress;
-  documents: VerificationDocType;
+  document: VerificationDocType;
+}
+export interface CompanyUpdateDto {
+  companyName: string;
+  website?: string;
+  tagLine?: string;
+
+  startedIn: number;
+  industry: IndustryType;
+  socialMediaLinks: ISocialMediaLinks;
+  size: CompanySize;
+  address: IAddress;
 }
 export type RegisterFormType = {
-  documents: {
+  document: {
     type: DocumentType | '';
     file: File | string;
   };

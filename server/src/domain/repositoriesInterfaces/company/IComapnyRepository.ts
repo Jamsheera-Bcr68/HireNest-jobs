@@ -3,4 +3,6 @@ import { Company } from '../../entities/company';
 import { companyDto } from '../../../applications/Dtos/companyDto';
 import { User } from '../../entities/User';
 
-export interface ICompanyRepository extends IBaseRepository<Company> {}
+export interface ICompanyRepository extends IBaseRepository<Company> {
+  findByUserId(userId: string): Promise<Company | null>;
+}
