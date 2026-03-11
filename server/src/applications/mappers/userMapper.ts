@@ -8,6 +8,7 @@ export class UserMapper {
       email: user.email,
       phone: user.phone,
       role: user.role,
+      isRequested:user.isRequested,
       imageUrl: user.imageUrl,
       isblocked: user.isBlocked,
     };

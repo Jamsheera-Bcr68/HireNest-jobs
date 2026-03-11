@@ -1,4 +1,5 @@
 import mongoose, { Schema, Types, model } from 'mongoose';
+import { StatusEnum } from '../../../../domain/enums/statusEnum';
 
 import {
   type IndustryType,
@@ -18,6 +19,8 @@ export interface ICompanyDocument {
   companyName: string;
   userId: Types.ObjectId;
   website: string;
+  
+  status: StatusEnum;
   tagLine: string;
   email: string;
   phone: string;
@@ -30,53 +33,66 @@ export interface ICompanyDocument {
   isAgreed: boolean;
   isConsent: boolean;
   logoUrl: string;
+  requestedSkills:Types.ObjectId[] | [],
   industry: IndustryType;
   socialMediaLinks: ISocialMediaLinks;
   size: CompanySize;
   address: IAddress;
   isVerified: boolean;
   document: VerificationDocType;
+  createdAt:Date
 }
 
-const companySchema = new Schema<ICompanyDocument>({
-  companyName: { type: String, required: true },
-  website: { type: String },
-  tagLine: String,
-  email: String,
-  phone: String,
-  about: String,
-  mission: String,
-  vision: String,
-  culture: String,
-  benefits: { type: [String], default: [] },
-  userId: Types.ObjectId,
-  startedIn: Number,
-  isAgreed: Boolean,
-  isConsent: Boolean,
-  isVerified: { type: Boolean, default: false },
-  logoUrl: String,
-  industry: { type: String, enum: Industry_Type },
-  socialMediaLinks: {
-    type: {
-      linkedIn: String,
-      whatsapp: String,
-      youtube: String,
-      gitHub: String,
-      twitter: String,
-      portfolio: String,
-    },
-  },
-  size: { type: String, enum: Company_Size },
-  address: {
-    type: { place: String, state: String, country: String },
-  },
-  document: {
-    type: {
+const companySchema = new Schema<ICompanyDocument>(
+  {
+    companyName: { type: String, required: true },
+    website: { type: String },
+    tagLine: String,
+    email: String,
+    phone: String,
+    about: String,
+    mission: String,
+    vision: String,
+    culture: String,
+    benefits: { type: [String], default: [] },
+    userId: Types.ObjectId,
+    startedIn: Number,
+    isAgreed: Boolean,
+    isConsent: Boolean,
+    status: {
       type: String,
-      enum: Object.values(Document_Types),
+      enum: Object.values(StatusEnum),
+      default: StatusEnum.PENDING,
     },
-    file: String,
+    isVerified: { type: Boolean, default: false },
+    logoUrl: String,
+   
+    requestedSkills: { type: [Schema.Types.ObjectId], ref: 'Skill', default: [] },
+
+    industry: { type: String, enum: Industry_Type },
+    socialMediaLinks: {
+      type: {
+        linkedIn: String,
+        whatsapp: String,
+        youtube: String,
+        gitHub: String,
+        twitter: String,
+        portfolio: String,
+      },
+    },
+    size: { type: String, enum: Company_Size },
+    address: {
+      type: { place: String, state: String, country: String },
+    },
+    document: {
+      type: {
+        type: String,
+        enum: Object.values(Document_Types),
+      },
+      file: String,
+    },
   },
-});
+  { timestamps: true }
+);
 
 export const companyModel = model<ICompanyDocument>('Company', companySchema);

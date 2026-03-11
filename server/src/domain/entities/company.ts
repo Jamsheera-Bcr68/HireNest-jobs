@@ -1,3 +1,4 @@
+import { StatusEnum } from '../enums/statusEnum';
 import {
   CompanySize,
   IndustryType,
@@ -12,7 +13,10 @@ export interface Company {
   website?: string;
   tagLine?: string;
   email?: string;
+  status: StatusEnum;
 
+  requestedSkills: string[] | [];
+  joinedAt: Date;
   phone?: string;
   about: string;
   mission: string;

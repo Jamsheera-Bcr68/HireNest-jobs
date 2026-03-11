@@ -1,9 +1,11 @@
 import { Company } from '../../../domain/entities/company';
 import { User } from '../../../domain/entities/User';
+import { StatusEnum } from '../../../domain/enums/statusEnum';
 import { UserRole } from '../../../domain/enums/userEnums';
 import { AppError } from '../../../domain/errors/AppError';
 import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
 import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
+import { CompanyRequestType } from '../../../domain/values/profileTypes';
 import { userMessages } from '../../../shared/constants/messages/userMessages';
 import { statusCodes } from '../../../shared/enums/statusCodes';
 import { companyDto } from '../../Dtos/companyDto';
@@ -28,8 +30,21 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
     payload.userId = userId;
-    const company = this.companyRepository.create(payload);
-    //  if(!company)throw new AppError(user)
+    const company = await this.companyRepository.create(payload);
+    if (!company.id) {
+      throw new Error(userMessages.error.COMPANY_NOT_FOUND);
+    }
+    const request: CompanyRequestType = {
+      companyId: company.id,
+      status: StatusEnum.PENDING,
+      date: new Date(),
+    };
+
+    await this.userRepository.save(userId, {
+      ...user,
+      isRequested: true,
+      companyRequests: [...user.companyRequests, request],
+    });
     return company;
   }
 }

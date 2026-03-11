@@ -44,3 +44,13 @@ export type RegisterFormType = {
     file: File | string;
   };
 };
+export  interface CompanyListDTO {
+  id: string;
+  companyName: string;
+  email: string;
+  logoUrl?: string;
+  status: string;
+  industry?: string;
+  jobCount: number;
+  createdAt: Date;
+}

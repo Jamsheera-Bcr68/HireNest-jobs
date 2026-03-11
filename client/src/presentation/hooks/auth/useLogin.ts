@@ -38,18 +38,29 @@ export const useLogin = (
         const data = response.data.data;
         console.log('data', data);
 
-        dispatch(loginSuccess(data));
+        if (role == 'admin') {
+          localStorage.setItem('user', data.admin);
+          localStorage.setItem('accessToken', data.accessToken);
+          dispatch(
+            loginSuccess({ user: data.admin, accessToken: data.accessToken })
+          );
 
-        showToast({ msg: response.data.message, type: 'success' });
-        const route = role == 'admin' ? '/admin/dashboard' : '/';
-        navigate(route);
+          navigate('admin');
+          showToast({ msg: response.data.message, type: 'success' });
+        } else {
+          localStorage.setItem('user', data.user);
+          localStorage.setItem('accessToken', data.accessToken);
+          dispatch(loginSuccess(data));
+          showToast({ msg: response.data.message, type: 'success' });
+          navigate('/');
+        }
       } catch (error: any) {
         console.log(error);
         showToast({
           msg: error?.response?.data?.message || error.message,
           type: 'error',
         });
-        // setErrors({ server: error.response?.data?.message || error.message });
+
         return;
       }
     },
@@ -81,20 +92,26 @@ export const useLogin = (
     }
     setErrors({});
     console.log('frontend validation success');
-    // fetching user
+    
     try {
       const api = role === 'admin' ? '/auth/admin/login' : '/auth/login';
       const res = await axios.post(api, formData);
       console.log('axios response ', res);
 
       setErrors({});
-      const { accessToken, user } = res.data.data;
+      const { access_Token, user, admin } = res.data.data;
 
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('user', user);
-      dispatch(loginSuccess({ user, accessToken }));
+      localStorage.setItem('accessToken', access_Token);
+      if (user) {
+        localStorage.setItem('user', user);
+        dispatch(loginSuccess({ user, accessToken:access_Token }));
+      } else if (admin) {
+        localStorage.setItem('user', admin);
+        dispatch(loginSuccess({ user: admin, accessToken:access_Token }));
+      }
+
       showToast({ msg: res.data.message, type: 'success' });
-      const url = role == 'admin' ? '/admin/dashboard' : '/';
+      const url = role == 'admin' ? '/admin' : '/';
       navigate(url, { replace: true });
     } catch (err: any) {
       console.log('error from backend ', err);

@@ -5,8 +5,10 @@ import {
 } from '../../database/models/user/companyModel';
 import { GenericRepository } from '../genericRepository';
 import { Company } from '../../../domain/entities/company';
+import { CompanyListDTO } from '../../../applications/Dtos/companyDto';
 
 import { Types } from 'mongoose';
+import { id } from 'zod/v4/locales';
 
 export class CompanyRepository
   extends GenericRepository<Company, ICompanyDocument>
@@ -23,6 +25,40 @@ export class CompanyRepository
 
     if (!company) return null;
     return this.mapToEntity(company);
+  }
+  async getCompanyList(
+    filter: Partial<Company>
+  ): Promise<CompanyListDTO[] | []> {
+    const companies = await this._model.aggregate([
+      { $match: filter },
+      {
+        $lookup: {
+          from: 'jobs',
+          foreignField: 'companyId',
+          localField: '_id',
+          as: 'jobs',
+        },
+      },
+      { $addFields: { jobCount: { $size: '$jobs' } } },
+      {
+        $project: {
+          _id: 1,
+          companyName: 1,
+          email: 1,
+          logoUrl: 1,
+          status: 1,
+          createdAt: 1,
+          industry: 1,
+        },
+      },
+    ]);
+    console.log('companies docs from repo', companies);
+    console.log(
+      'after mapping',
+      companies.map((e) => this.mapToCompanyListDTO(e))
+    );
+
+    return companies.map((e) => this.mapToCompanyListDTO(e));
   }
   protected mapToEntity(doc: ICompanyDocument): Company {
     return {
@@ -50,10 +86,13 @@ export class CompanyRepository
       size: doc.size,
       address: doc.address,
       document: doc.document,
+      status: doc.status,
+
+      joinedAt: doc.createdAt,
+      requestedSkills: doc.requestedSkills.map((id) => id.toString()),
     };
   }
-  // protected mapToPersistance(entity: Company): Partial<ICompanyDocument> {
-  //   console.log('USER ID IN ENTITY:', entity.userId);
+
   protected mapToPersistance(
     entity: Partial<Company>
   ): Partial<ICompanyDocument> {
@@ -93,27 +132,16 @@ export class CompanyRepository
 
     return data;
   }
-  // return {
-  //   companyName: entity.companyName,
-  //   userId: new Types.ObjectId(entity.userId),
-  //   website: entity.website ?? '',
-  //   tagLine: entity.tagLine ?? '',
-  //   email: entity.email,
-  //   phone: entity.phone,
-  //   about: entity.about,
-  //   startedIn: Number(entity.startedIn),
-  //   mission: entity.mission,
-  //   vision: entity.vision,
-  //   culture: entity.culture,
-  //   benefits: entity.benefits,
-  //   isAgreed: entity.isAgreed,
-  //   isConsent: entity.isConsent,
-  //   logoUrl: entity.logoUrl,
-  //   industry: entity.industry,
-  //   socialMediaLinks: entity.socialMediaLinks,
-  //   size: entity.size,
-  //   address: entity.address,
-  //   document: entity.document,
-  // };
-  //}
+  private mapToCompanyListDTO(doc: any): CompanyListDTO {
+    return {
+      id: doc._id.toString(),
+      companyName: doc.companyName,
+      email: doc.email,
+      logoUrl: doc.logoUrl,
+      status: doc.status,
+      industry: doc.industry,
+      jobCount: doc.jobCount,
+      createdAt: doc.createdAt,
+    };
+  }
 }

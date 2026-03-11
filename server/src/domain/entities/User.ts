@@ -9,6 +9,7 @@ import { UserSkillDto } from '../../applications/Dtos/skillDto';
 
 import { Experience } from './Experience';
 import { EducationDto } from '../../applications/Dtos/educationDto';
+import { CompanyRequestType } from '../values/profileTypes';
 
 export class User {
   public readonly id?: string;
@@ -16,6 +17,8 @@ export class User {
   public password: string;
   public phone: string;
   public createdAt: Date;
+  public isRequested: boolean;
+  public companyRequests: CompanyRequestType[] | [];
   public updatedAt: Date;
   public resetToken?: string;
   public resetTokenExpiry?: Date;
@@ -39,6 +42,8 @@ export class User {
     password: string,
     phone: string,
     isVerified: boolean,
+    isRequested: boolean,
+    companyRequests: CompanyRequestType[] | [],
     experience?: Experience[] | [],
     education?: EducationDto[] | [],
     resumes?: IResume[],
@@ -47,6 +52,7 @@ export class User {
     resetTokenExpiry?: Date | undefined,
     googleId?: string,
     role?: UserRole | undefined,
+
     name?: string,
     title?: string,
     address?: IAddress,
@@ -65,9 +71,11 @@ export class User {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.isVerified = isVerified;
-    ((this.experience = experience ?? []),
+    ((this.isRequested = isRequested||false),
+      (this.companyRequests = companyRequests || []),
+      ((this.experience = experience ?? []),
       (this.resumes = resumes || []),
-      (this.resetToken = resetToken));
+      (this.resetToken = resetToken)));
     this.resetTokenExpiry = resetTokenExpiry;
     this.googleId = googleId;
     this.role = role;

@@ -1,3 +1,4 @@
+import { StatusEnum } from '../enums/statusEnum';
 import { WorkMode } from '../enums/WorkMode';
 
 export interface IAddress {
@@ -34,4 +35,10 @@ export interface IResume {
   name: string;
   isDefault: boolean;
   uploadedAt: Date;
+}
+
+export interface CompanyRequestType{
+date:Date
+companyId:string
+status:StatusEnum
 }

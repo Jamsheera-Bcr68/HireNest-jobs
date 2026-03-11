@@ -26,6 +26,8 @@ export class RefreshTokenController {
 
       //  verify token
       const payload = this._tokenService.verifyRefreshToken(refreshToken);
+      console.log('verified payload',payload);
+      
       const newToken = this._tokenService.generateAccessToken(
         payload.userId,
         payload.email,

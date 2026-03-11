@@ -1,5 +1,5 @@
 import LoginForm from '../../components/auth/LoginForm';
-import type { LoginRole } from '../../../constants/types/user';
+
 
 const AdminLogin = () => {
   return (

@@ -24,9 +24,7 @@ const LoginForm = ({ role }: ILoginFormProps) => {
         {errors.server && (
           <p className="text-red-500 text-sm mt-1">{errors.server}</p>
         )}
-        {/* {succesMsg && (
-          <p className="text-green-500 text-sm mt-1">{succesMsg}</p>
-        )} */}
+       
       </div>
 
       <div className="space-y-4">

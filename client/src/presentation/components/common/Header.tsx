@@ -50,7 +50,7 @@ const Header = () => {
                   user?.role == 'candidate'
                     ? '/profile'
                     : user?.role == 'employer'
-                      ? '/employer/profile'
+                      ? '/company/profile'
                       : '/'
                 }
                 className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
@@ -58,12 +58,7 @@ const Header = () => {
                 Profile
               </a>
             )}
-            {/* <a
-              href=/employer/profile"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-            > */}
-            {/* Company profile
-            </a> */}
+           
           </div>
 
           {/* Desktop Auth Buttons */}
@@ -95,7 +90,7 @@ const Header = () => {
 
             {user && (user.role === 'candidate' || 'employer') && (
               <button
-                onClick={() => navigate('/employer')}
+                onClick={() => navigate('/company')}
                 className="bg-green-600 text-white hover:bg-green-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Post a job

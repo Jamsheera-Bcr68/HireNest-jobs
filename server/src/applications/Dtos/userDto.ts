@@ -5,6 +5,7 @@ export interface userDto {
   id: string;
   email: string;
   imageUrl?: string;
+  isRequested:boolean
   role: UserRole;
   phone: string;
   isBlocked: boolean;

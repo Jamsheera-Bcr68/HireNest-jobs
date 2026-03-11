@@ -1,13 +1,41 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../common/Button';
+import { useSelector } from 'react-redux';
+import type { StateType } from '../../../../../constants/types/user';
+
+import CompanyRegistrationPendingModal from '../../../../modals/CompanyRegistrationPendingModal';
+import ModalLayout from '../../../../Layoutes/ModalLayout';
+import { useState } from 'react';
 type HeroProps = {
   heroImage: string;
 };
 
 const HeroSection = ({ heroImage }: HeroProps) => {
+  const user = useSelector((state: StateType) => state.auth.user);
   console.log(heroImage);
+  const [pendingOpen, setPendingOpen] = useState(false);
+  const [infoOpen, setinfoOpen] = useState(false);
   const navigate = useNavigate();
-
+  const handlePostClick = () => {
+    console.log('from handle post click');
+    if (user.role == 'employer') {
+      navigate('/company/jobs/create');
+    } else if (user.role == 'candidate' && user.isRequested) {
+      setPendingOpen(true);
+    } else {
+      setinfoOpen(true);
+    }
+  };
+  const handleDashboardClick = () => {
+    console.log('from handle post click');
+    if (user.role == 'employer') {
+      navigate('/company/dashboard');
+    } else if (user.role == 'candidate' && user.isRequested) {
+      setPendingOpen(true);
+    } else {
+      setinfoOpen(true);
+    }
+  };
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">
@@ -33,11 +61,16 @@ const HeroSection = ({ heroImage }: HeroProps) => {
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             {/* <Button  className="bg-accent text-accent-foreground hover:bg-accent/90 gap-2 px-8 text-base font-semibold"> */}
-            <Button variant="info" color="white" size="lg">
+            <Button
+              onClick={handlePostClick}
+              variant="info"
+              color="white"
+              size="lg"
+            >
               Post a Job
             </Button>
             <Button
-              onClick={() => navigate('/employer/dashboard')}
+              onClick={handleDashboardClick}
               variant="info"
               color="white"
               size="lg"
@@ -52,6 +85,24 @@ const HeroSection = ({ heroImage }: HeroProps) => {
           </div>
         </div>
       </div>
+      <ModalLayout open={pendingOpen} onClose={() => setPendingOpen(false)}>
+        <CompanyRegistrationPendingModal
+          type={'pending'}
+          message={`Your company profile is currently under review.  
+          Our admin team will verify your details and approve your employer
+          account within  `}
+          title="Your profile under review"
+          onClose={() => setPendingOpen(false)}
+        />
+      </ModalLayout>
+      <ModalLayout open={infoOpen} onClose={() => setinfoOpen(false)}>
+        <CompanyRegistrationPendingModal
+          title="Register your company"
+          type={'new'}
+          message={`You does not have a active company for posting a job,Please rregister your company `}
+          onClose={() => setinfoOpen(false)}
+        />
+      </ModalLayout>
     </section>
   );
 };

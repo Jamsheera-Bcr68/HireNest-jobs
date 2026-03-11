@@ -2,9 +2,9 @@ import axiosInstance from '../../libraries/axios';
 import { type CompanyRegisterType } from '../../libraries/validations/company/companyRegisterValidator';
 import { type CompanyProfileEditType } from '../../libraries/validations/company/companyEditFormValidation';
 import type { ISocialLinks } from '../../types/profileTypes';
-import { type CompanyUpdateFiedType } from '../../libraries/validations/company/companyUpdateFieldsValidation';
 
 export const companyService = {
+  //did not passed id
   async getCompany() {
     const res = await axiosInstance.get('/company');
     return res.data;
@@ -70,6 +70,12 @@ export const companyService = {
     const res = await axiosInstance.patch('/company/profile/fields', {
       socialMediaLinks: formData,
     });
+    return res.data;
+  },
+
+  async getAllCompanies(value: string) {
+    const query = value === 'all' ? '' : (status = value);
+    const res = await axiosInstance.get(`/admin/companies?${query}`);
     return res.data;
   },
 };

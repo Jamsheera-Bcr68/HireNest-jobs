@@ -6,11 +6,13 @@ import {
   type DocumentType,
   type AddressType,
 } from '../../../../types/dtos/profileTypes/industryType';
+import { useSelector } from 'react-redux';
 import { useToast } from '../../../../shared/toast/useToast';
 import { companyService } from '../../../../services/apiServices/companyService';
 
 type NestedKeys = 'links' | 'adress';
 import { useState } from 'react';
+import type { StateType } from '../../../../constants/types/user';
 
 export type RegisterFormType = {
   companyName: string;
@@ -116,6 +118,7 @@ type FormError = {
   isConsent: string;
 };
 export const useRegisterCompany = () => {
+  const user=useSelector((state:StateType)=>state.auth.user)
   const { showToast } = useToast();
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [formData, setFormData] = useState<RegisterFormType>(initialStata);
@@ -163,7 +166,7 @@ export const useRegisterCompany = () => {
   const handleSubmit = async () => {
     console.log('verify file', verify_file);
 
-    //  let updatedFormData = { ...formData };
+    
 
     if (!verify_file) {
       setError((prev) => ({
@@ -244,6 +247,7 @@ export const useRegisterCompany = () => {
       console.log('after form sumbit', data);
 
       setIsSuccessOpen(true);
+      
       showToast({ msg: data.message, type: 'success' });
     } catch (error: any) {
       showToast({

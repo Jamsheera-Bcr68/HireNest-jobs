@@ -1,0 +1,5 @@
+import jwt from "jsonwebtoken";
+
+const decoded = jwt.verify('.eyJ1c2VeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9ySWQiOiI2OTczNThhMGQ0ZjdlMDA2MzBlMTM1YzkiLCJlbWFpbCI6IjEyMzRqYW1zaGVlcmFlcEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzMxNjU2MDMsImV4cCI6MTc3Mzc3MDQwM30.3e58yb3W0yC92FRnT1Ojqvz2RoX4OIkyF6C3kS7EYJU');
+
+console.log(decoded);

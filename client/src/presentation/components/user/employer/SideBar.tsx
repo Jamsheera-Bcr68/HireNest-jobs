@@ -18,7 +18,7 @@ const navItems = [
 ];
 const navRoutes: Record<string, string> = {
   Dashboard: '/employer/dashboard',
-  'Create Job': '/employer/jobs/create',
+  'Create Job': '/company/jobs/create',
   Applications: '/employer/applications',
   Interviews: '/employer/interviews',
   'My Jobs': '/employer/jobs',

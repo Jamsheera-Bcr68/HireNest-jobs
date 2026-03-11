@@ -97,6 +97,8 @@ export class UserRepository
       doc.password,
       doc.phone,
       doc.isVerified,
+      doc.isRequested,
+      doc.companyRequests ?? [],
       experience,
       education,
       doc.resumes.map((resume) => {
@@ -129,6 +131,8 @@ export class UserRepository
       title: entity.title,
       address: entity.address,
       imageUrl: entity.imageUrl,
+      isRequested: entity.isRequested,
+      companyRequests: entity.companyRequests,
       resumes: entity.resumes?.map((resume) => {
         return {
           _id: new Types.ObjectId(resume.id),

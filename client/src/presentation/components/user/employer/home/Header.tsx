@@ -12,7 +12,7 @@ export const Header = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-2xl font-bold text-blue-600">
+            <a href="/company" className="text-2xl font-bold text-blue-600">
               HireNest
             </a>
           </div>
@@ -43,7 +43,7 @@ export const Header = () => {
                 user.role == 'candidate'
                   ? '/profile'
                   : user.role == 'employer'
-                    ? '/employer/profile'
+                    ? '/company/profile'
                     : '/'
               }
               className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"

@@ -42,6 +42,11 @@ import { ChangeLogoUseCase } from '../../applications/useCases/company/ChangeLog
 import { LogoRemoveUseCase } from '../../applications/useCases/company/LogoRemoveUsecase';
 import { CompanyProfileUpdate } from '../../applications/useCases/company/CompanyUpdateProfileUseCase';
 import { CompanyAboutUpdateUseCase } from '../../applications/useCases/company/CompanyAboutUpdateUseCase';
+//admin
+
+import { GetCompaniesUseCase } from '../../applications/useCases/company/GetCompaniesUseCase';
+
+
 //==Controllers
 //auth
 import { AuthController } from '../../presentation/http/controllers/auth/authController';
@@ -59,7 +64,8 @@ import { SkillsController } from '../../presentation/http/controllers/SkillsCont
 import { CompanyProfileController } from '../../presentation/http/controllers/company/companyProfileController';
 //job
 import { JobController } from '../../presentation/http/controllers/jobController';
-
+//admin
+import { AdminCompanyController } from '../../presentation/http/controllers/admin/adminCompanyController';
 //==repsitories
 
 import { UserRepository } from '../repositories/user/userRepository';
@@ -207,6 +213,9 @@ const companyAboutUpdateUseCase = new CompanyAboutUpdateUseCase(
   companyRepository
 );
 
+const getCompaniesUseCase=new GetCompaniesUseCase(companyRepository)
+
+
 export const authController = new AuthController(
   registerUseCase,
   loginUseCase,
@@ -265,4 +274,5 @@ export const companyProfileController = new CompanyProfileController(
   companyProfileUpdateUseCase,
   companyAboutUpdateUseCase
 );
-export const jobController = new JobController(createJobUseCase);
+export const jobController = new JobController(createJobUseCase)
+export const adminCompanyController=new AdminCompanyController(getCompaniesUseCase)

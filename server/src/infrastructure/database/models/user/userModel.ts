@@ -1,12 +1,14 @@
 import { Types, Schema, model, Model, Document } from 'mongoose';
 import { UserRole } from '../../../../domain/enums/userEnums';
-import { WorkMode } from '../../../../domain/enums/WorkMode';
+
 import {
   IAddress,
   ISocialMediaLinks,
   IResume,
+  CompanyRequestType,
 } from '../../../../domain/values/profileTypes';
 import { ISkillDocument } from './skillModel';
+import { StatusEnum } from '../../../../domain/enums/statusEnum';
 
 interface ResumeDocument {
   _id: Types.ObjectId;
@@ -22,8 +24,10 @@ export interface IUserDocument extends Document {
   role?: UserRole;
   email: string;
   phone: string;
+  isRequested: boolean;
   googleId?: string;
   isVerified: boolean;
+  companyRequests: CompanyRequestType[] | [];
   resetToken?: string;
   resetTokenExpiry?: Date;
   name?: string;
@@ -73,6 +77,21 @@ const userSchema = new Schema<IUserDocument>({
     },
   },
   about: { type: String },
+  isRequested: { type: Boolean, default: false },
+ companyRequests: {
+  type: [
+    {
+      date: { type: Date },
+      status: {
+        type: String,
+        enum: Object.values(StatusEnum),
+        default: StatusEnum.PENDING
+      },
+      companyId: { type: Schema.Types.ObjectId, ref: "Company" }
+    }
+  ],
+  default: []
+},
   skills: { type: [Schema.Types.ObjectId], ref: 'Skill', default: [] },
   experience: { type: [Schema.Types.ObjectId], ref: 'Experience', default: [] },
   education: { type: [Schema.Types.ObjectId], ref: 'Education', default: [] },
