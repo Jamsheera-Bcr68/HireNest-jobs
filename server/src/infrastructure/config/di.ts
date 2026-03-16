@@ -44,9 +44,10 @@ import { CompanyProfileUpdate } from '../../applications/useCases/company/Compan
 import { CompanyAboutUpdateUseCase } from '../../applications/useCases/company/CompanyAboutUpdateUseCase';
 //admin
 
-import { GetCompaniesUseCase } from '../../applications/useCases/company/GetCompaniesUseCase';
-
-
+import { GetCompaniesUseCase } from '../../applications/useCases/admin/GetCompaniesUseCase';
+import { AdminGetCompanyUseCase } from '../../applications/useCases/admin/GetCompanyUseCase';
+import { AdminUpdateCompanyUseCase } from '../../applications/useCases/admin/AdminUpdateCompanyUseCase';
+import { GetCompanyStatusUseCase } from '../../applications/useCases/admin/GetCompanyStatusUseCase';
 //==Controllers
 //auth
 import { AuthController } from '../../presentation/http/controllers/auth/authController';
@@ -115,9 +116,13 @@ const loginUseCase = new LoginUseCase(userRepository, tokenService);
 const adminLoginUsecase = new AdminLoginUsecase(adminRepository, tokenService);
 const forgotPasswordUsecase = new ForgotPassWordUsecase(
   userRepository,
-  emailService
+  emailService,
+  adminRepository
 );
-const resetPasswordUsecase = new ResetPasswordUsecase(userRepository);
+const resetPasswordUsecase = new ResetPasswordUsecase(
+  userRepository,
+  adminRepository
+);
 const googleLoginUsecase = new GoogleLoginUsecase(
   userRepository,
   googleAuthService,
@@ -213,8 +218,12 @@ const companyAboutUpdateUseCase = new CompanyAboutUpdateUseCase(
   companyRepository
 );
 
-const getCompaniesUseCase=new GetCompaniesUseCase(companyRepository)
-
+const getCompaniesUseCase = new GetCompaniesUseCase(companyRepository);
+const adminGetCompanyUseCase = new AdminGetCompanyUseCase(companyRepository);
+const adminUpdateCompanyUseCase = new AdminUpdateCompanyUseCase(
+  companyRepository
+);
+const getCompnayStatusUseCase = new GetCompanyStatusUseCase(companyRepository);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -274,5 +283,10 @@ export const companyProfileController = new CompanyProfileController(
   companyProfileUpdateUseCase,
   companyAboutUpdateUseCase
 );
-export const jobController = new JobController(createJobUseCase)
-export const adminCompanyController=new AdminCompanyController(getCompaniesUseCase)
+export const jobController = new JobController(createJobUseCase);
+export const adminCompanyController = new AdminCompanyController(
+  getCompaniesUseCase,
+  adminGetCompanyUseCase,
+  adminUpdateCompanyUseCase,
+  getCompnayStatusUseCase
+);

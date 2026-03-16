@@ -95,7 +95,7 @@ export const useLogin = (
     
     try {
       const api = role === 'admin' ? '/auth/admin/login' : '/auth/login';
-      const res = await axios.post(api, formData);
+      const res = await axios.post(api, {...formData,role});
       console.log('axios response ', res);
 
       setErrors({});

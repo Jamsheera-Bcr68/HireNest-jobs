@@ -16,6 +16,7 @@ export abstract class GenericRepository<
     const doc = await this._model.create(this.mapToPersistance(data));
     return this.mapToEntity(doc);
   }
+
   async findOne(filter: Partial<T>): Promise<T | null> {
     const { id, ...rest } = filter;
     const query = { ...rest } as Partial<D>;
@@ -28,10 +29,11 @@ export abstract class GenericRepository<
     if (!document) return null;
     else return this.mapToEntity(document);
   }
+
   async save(id: string, data: Partial<T>): Promise<T | null> {
     console.log('entity from generic  repo ', data);
     const persisted = this.mapToPersistance(data);
-    // console.log('persisted ', persisted);
+    console.log('persisted ', persisted);
 
     const updated = await this._model.findByIdAndUpdate(
       id,
@@ -39,16 +41,10 @@ export abstract class GenericRepository<
       { new: true }
     );
 
-    // const updated = await this._model.findByIdAndUpdate(
-    //   id,
-    //   persisted as UpdateQuery<D>,
-    //   { new: true }
-    // );
-    //console.log('updated from user after savig repo', updated);
-
     if (!updated) return null;
     return this.mapToEntity(updated);
   }
+
   async findById(id: string): Promise<T | null> {
     //console.log('from general reppo findby id');
 
@@ -56,14 +52,29 @@ export abstract class GenericRepository<
     if (!doc) return null;
     return this.mapToEntity(doc);
   }
+
   async getAll(filter: Partial<T>): Promise<T[] | []> {
     const docs = await this._model.find(filter);
     if (!docs.length) return [];
     return docs.map((doc) => this.mapToEntity(doc));
   }
+
   async deleteById(id: string): Promise<void> {
     await this._model.findByIdAndDelete(id);
   }
+
+  async update(id: string, data: Partial<T>): Promise<T | null> {
+    const doc = await this._model.findByIdAndUpdate(
+      id,
+      this.mapToPersistance(data),
+      { new: true, runValidators: true }
+    );
+
+    if (!doc) return null;
+
+    return this.mapToEntity(doc);
+  }
+
   protected abstract mapToEntity(doc: D): T;
   protected abstract mapToPersistance(entity: Partial<T>): Partial<D>;
 }

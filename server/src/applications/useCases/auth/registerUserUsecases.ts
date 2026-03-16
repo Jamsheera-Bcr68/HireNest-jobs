@@ -26,7 +26,7 @@ export class RegisterUseCase implements IRegisterUseCase {
 
     const savedUser = await this._userRepository.createUser(user);
 
-    console.log('pending user from registerusecase', user);
+   // console.log('pending user from registerusecase', user);
 
     return savedUser;
   }

@@ -16,7 +16,7 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
     this._adminRepository = adminRepository;
     this._tokenService = tokenService;
   }
-  async execute(input: AdminloginInput): Promise<AdminLoginOutPutDto> {
+  async execute(input: AdminloginInput,role:UserRole): Promise<AdminLoginOutPutDto> {
     const admin = await this._adminRepository.findByEmail(input.email);
     if (!admin)
       throw new AppError(
@@ -38,6 +38,8 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
       admin.email,
       UserRole.ADMIN
     );
+    console.log('admin accesstoke,refreshtoken',accessToken,refreshToken);
+    
     return { admin, accessToken, refreshToken };
   }
 }

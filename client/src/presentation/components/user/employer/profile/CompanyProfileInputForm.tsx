@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+
 
 type Props = {
   onCancel: () => void;

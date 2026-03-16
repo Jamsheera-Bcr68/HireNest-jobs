@@ -43,12 +43,12 @@ export class LoginUseCase implements IUserLoginUseCase {
       user.email,
       user.role
     );
-    console.log(
-      'user id,user.email,user.role ',
-      user.id,
-      user.email,
-      user.role
-    );
+   // console.log(
+    //   'user id,user.email,user.role ',
+    //   user.id,
+    //   user.email,
+    //   user.role
+    // );
 
     const refreshToken = this._tokenService.generateRefreshToken(
       user.id,

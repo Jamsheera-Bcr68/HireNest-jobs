@@ -1,43 +1,52 @@
 import HeroSection from '../../components/admin/HeroSection';
 import { useState, useEffect } from 'react';
-
+import StatusCards from '../../components/admin/StatusCards';
 import { useToast } from '../../../shared/toast/useToast';
 import { type CompanyProfileType } from '../../../types/dtos/profileTypes/userTypes';
-import Table from './Table';
-import { companyService } from '../../../services/apiServices/companyService';
-const companyStatus = [
-  {
-    label: 'Total Employers',
-    value: '1,284',
-    //change: '+8.2%',
-    up: true,
-    icon: '🏢',
-  },
-  // {
-  //   label: 'Active This Month',
-  //   value: '943',
-  //  // change: '+5.1%',
-  //   up: true,
-  //   icon: '✅',
-  // },
-  {
-    label: 'Pending Approval',
-    value: '37',
-    //change: '+12',
-    up: false,
-    icon: '⏳',
-  },
-  { label: 'Suspended', value: '21', change: '-3', up: true, icon: '🚫' },
-];
+import Table from '../../components/admin/companyDetails/Table';
+import Pagination from '../../components/common/Pagination';
+import { adminService } from '../../../services/apiServices/adminService';
+
+export type StatusCardType = {
+  label: string;
+  count: string;
+  icon: string;
+};
+export type CompanyFilter = {
+  status?: string;
+  industry?: string;
+  search?: string;
+};
 
 function Companies() {
   const { showToast } = useToast();
-  const [companies, setCompanies] = useState<CompanyProfileType[] | []>([]);
+  const [companies, setCompanies] = useState<CompanyProfileType[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalDocs, setTotalDocs] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [companyStatus, setCompanyStatus] = useState({
+    pending: 0,
+    rejected: 0,
+    suspended: 0,
+    totalCompany: 0,
+    active: 0,
+  });
+
+  const [filter, setFilter] = useState<Partial<CompanyFilter>>({});
   useEffect(() => {
     async function getCompanies() {
       try {
-        const data = await companyService.getAllCompanies('all');
+        const data = await adminService.getAllCompanies(
+          {
+            ...filter,
+          },
+          page,
+          10
+        );
         console.log('after getting all companies', data);
+        const { totalDocs, totalPages } = data;
+        setTotalDocs(totalDocs);
+        setTotalPages(totalPages);
         setCompanies(data.companies);
       } catch (error: any) {
         console.log(error);
@@ -48,6 +57,49 @@ function Companies() {
       }
     }
     getCompanies();
+  }, [filter, page]);
+
+  const handleFilterChange = (newFilter: Partial<CompanyFilter>) => {
+    setFilter((prev) => ({ ...prev, ...newFilter }));
+  };
+  const handleCompanyUpdate = (updatedCompany: CompanyProfileType) => {
+    setCompanies((prev) =>
+      prev.map((company) =>
+        company.id === updatedCompany.id ? updatedCompany : company
+      )
+    );
+  };
+
+  const [stats, setStatus] = useState<StatusCardType[]>([]);
+  useEffect(() => {
+    async function getCompanyStatus() {
+      const data = await adminService.getCompanyStatus();
+      const statsData = data.companyStatus;
+
+      const total: StatusCardType = {
+        label: 'Total Employees',
+        count: statsData.totalCompany || 0,
+        icon: '🏢',
+      };
+      const active: StatusCardType = {
+        label: 'Active Employees',
+        count: statsData.active || 0,
+        icon: '✅',
+      };
+      const pending: StatusCardType = {
+        label: 'Pending Approval',
+        count: statsData.pending || 0,
+        icon: '⏳',
+      };
+      const suspended: StatusCardType = {
+        label: 'Suspended',
+        count: statsData.suspended || 0,
+        icon: '🚫',
+      };
+      console.log('statsData', statsData);
+      setStatus([total, active, pending, suspended]);
+    }
+    getCompanyStatus();
   }, []);
   return (
     <div>
@@ -58,10 +110,22 @@ function Companies() {
             tagline=" Manage all registered employers on the platform"
             buttonText="  Add Employer"
           />
-
+          <StatusCards stats={stats} />
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <Table companies={companies} />
+            <Table
+              companies={companies}
+              onUpdate={handleCompanyUpdate}
+              updateFilter={handleFilterChange}
+            />
           </div>
+          <Pagination
+            onPageChange={setPage}
+            currentPage={page}
+            totalPages={totalPages}
+            count={companies.length}
+            item={'Companies'}
+            totalItem={totalDocs}
+          />
         </div>
       </div>
     </div>

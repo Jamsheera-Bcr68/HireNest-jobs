@@ -4,7 +4,7 @@ import { type ExperienceType } from './experienceType';
 import type { EducationType } from './educationTypes';
 import type { ResumeType } from './ResumeType';
 
- type StatusType = "active" | "suspended" | "pending"|"rejected"
+export type StatusType = "active" | "suspended" | "pending"|"rejected"
 
 export type userDto = {
   id: string;
@@ -59,8 +59,9 @@ export interface CompanyProfileType {
   benefits: string[] | [];
   about: string;
   createdAt:string
+  joinedAt?:string,
   socialMediaLinks: ISocialLinks;
-  docs: { name: string; file: string };
+  document: { type: string; file: string };
 }
 export type CompanyFieldUpdateType = {
   about?: string;

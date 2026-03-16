@@ -10,7 +10,8 @@ export interface IUserRepository extends IBaseRepository<User> {
     hashedToken: string,
     resetTokenExpiry: Date
   ): Promise<void>;
-  updatePassword(email: string, password: string): Promise<void>;
+  updatePassword(id: string, password: string): Promise<void>;
+  clearResetToken(id:string):Promise<void>
   addProfileData(userId: string, data: Partial<User>): Promise<User | null>;
   addProfileImage(userId: string, imageUrl: string): Promise<User | null>;
   updateGoogleId(email: string, googleId: string): Promise<User | null>;

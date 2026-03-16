@@ -1,35 +1,13 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import LogoImgViewModal from '../../../../modals/LogoPreviewModal';
 import EditCompanyProfileModal from '../../../../modals/EditCompanyProfile';
 import type { CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
-import { Twitter, Globe, Linkedin } from 'lucide-react';
+import { Twitter,  } from 'lucide-react';
 import ChangePasswordModal from '../../../../modals/ChangePasswordModal';
-// const company = {
-//   _id: 'cmp_001',
-//   name: 'TechNova Solutions Pvt Ltd',
-//   logo: '',
 
-//   industry: 'Software Development',
-//   tagline: 'Building Scalable Digital Products',
 
-//   location: {
-//     city: 'Kochi',
-//     state: 'Kerala',
-//     country: 'India',
-//   },
 
-//   companySize: '51-200 employees',
-//   foundedYear: 2018,
 
-//   website: 'https://technova.com',
-
-//   status: 'approved',
-
-//   totalJobs: 8,
-//   totalHires: 34,
-
-//   completionPercentage: 75,
-// };
 type Props = {
   company: CompanyProfileType | null;
   onUpdate: (updated: CompanyProfileType) => void;

@@ -54,3 +54,16 @@ export  interface CompanyListDTO {
   jobCount: number;
   createdAt: Date;
 }
+
+export type PaginatedCompanies = {
+  companies: CompanyListDTO[];
+  totalDocs: number;
+};
+
+export type CompanyStatus={
+  totalCompany?:number
+  active?:number
+  pending?:number
+  suspended?:number
+  rejected?:number
+}

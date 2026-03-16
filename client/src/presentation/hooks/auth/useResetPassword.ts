@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { resetPasswordSchema } from '../../../libraries/validations/auth/resetPasswordValidation';
 import axiosInstance from '../../../libraries/axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { type typeOfToast } from '../../../types/toastTypes';
+import { useToast } from '../../../shared/toast/useToast';
+import { useSearchParams } from 'react-router-dom';
 
 type Errors = {
   password?: string;
@@ -11,9 +12,12 @@ type Errors = {
   resetToken?: string;
   email?: string;
 };
-export const useResetPassword = (showToast: (toast: typeOfToast) => void) => {
+export const useResetPassword = () => {
+  const { showToast } = useToast();
   const navigate = useNavigate();
+  const [searchParams]=useSearchParams()
   const { resetToken } = useParams();
+  const role=searchParams.get('role')
   const [formData, setFormData] = useState({
     password: '',
     confirm_password: '',
@@ -70,7 +74,7 @@ export const useResetPassword = (showToast: (toast: typeOfToast) => void) => {
     } catch (error: any) {
       console.log(error);
 
-      let msg = error.response.data.message || error.message;
+      let msg = error?.response?.data.message || error.message;
       setError({ server: msg });
       showToast({ msg: msg, type: 'error' });
       return;
@@ -83,5 +87,6 @@ export const useResetPassword = (showToast: (toast: typeOfToast) => void) => {
     submitHandle,
     showPassword,
     setShowPassword,
+    role
   };
 };

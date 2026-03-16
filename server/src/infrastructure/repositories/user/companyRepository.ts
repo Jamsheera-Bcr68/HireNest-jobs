@@ -3,13 +3,24 @@ import {
   ICompanyDocument,
   companyModel,
 } from '../../database/models/user/companyModel';
+
 import { GenericRepository } from '../genericRepository';
 import { Company } from '../../../domain/entities/company';
-import { CompanyListDTO } from '../../../applications/Dtos/companyDto';
+import {
+  PaginatedCompanies,
+  CompanyListDTO,
+  CompanyStatus,
+} from '../../../applications/Dtos/companyDto';
 
-import { Types } from 'mongoose';
-import { id } from 'zod/v4/locales';
+import mongoose, { Types,  } from 'mongoose';
 
+type CompanyQuery = Partial<Company> & {
+  $or?: {
+    companyName?: { $regex: string; $options: string };
+    email?: { $regex: string; $options: string };
+    industry?: { $regex: string; $options: string };
+  }[];
+};
 export class CompanyRepository
   extends GenericRepository<Company, ICompanyDocument>
   implements ICompanyRepository
@@ -21,45 +32,67 @@ export class CompanyRepository
     const company = await this._model.findOne({
       userId: new Types.ObjectId(userId),
     });
-    console.log('company from repo', company);
+   // console.log('company from repo', company);
 
     if (!company) return null;
     return this.mapToEntity(company);
   }
-  async getCompanyList(
-    filter: Partial<Company>
-  ): Promise<CompanyListDTO[] | []> {
-    const companies = await this._model.aggregate([
-      { $match: filter },
-      {
-        $lookup: {
-          from: 'jobs',
-          foreignField: 'companyId',
-          localField: '_id',
-          as: 'jobs',
-        },
-      },
-      { $addFields: { jobCount: { $size: '$jobs' } } },
-      {
-        $project: {
-          _id: 1,
-          companyName: 1,
-          email: 1,
-          logoUrl: 1,
-          status: 1,
-          createdAt: 1,
-          industry: 1,
-        },
-      },
-    ]);
-    console.log('companies docs from repo', companies);
-    console.log(
-      'after mapping',
-      companies.map((e) => this.mapToCompanyListDTO(e))
-    );
 
-    return companies.map((e) => this.mapToCompanyListDTO(e));
+  async getCompanyList(
+    filter: Partial<Company>,
+    page: number,
+    search: string,
+    limit: number
+  ): Promise<PaginatedCompanies> {
+
+ const query: CompanyQuery = { ...filter };
+
+if (search) {
+  query.$or = [
+    { companyName: { $regex: search, $options: "i" } },
+    { email: { $regex: search, $options: "i" } },
+    { industry: { $regex: search, $options: "i" } }
+  ];
+}
+    const skip = (page - 1) * limit;
+    const companies = await this._model
+      .aggregate([
+        { $match: query },
+        {
+          $lookup: {
+            from: 'jobs',
+            foreignField: 'companyId',
+            localField: '_id',
+            as: 'jobs',
+          },
+        },
+        { $addFields: { jobCount: { $size: '$jobs' } } },
+        {
+          $project: {
+            _id: 1,
+            companyName: 1,
+            email: 1,
+            logoUrl: 1,
+            status: 1,
+            createdAt: 1,
+            industry: 1,
+          },
+        },
+      ])
+      .skip(skip)
+      .limit(limit);
+   // console.log('companies docs from repo', companies);
+    // console.log(
+    //   'after mapping',
+    //   companies.map((e) => this.mapToCompanyListDTO(e))
+    // );
+    const totalDocs = await this._model.countDocuments(query);
+    return {
+      companies: companies.map((e) => this.mapToCompanyListDTO(e)),
+      totalDocs,
+    };
   }
+
   protected mapToEntity(doc: ICompanyDocument): Company {
     return {
       id: doc._id.toString(),
@@ -125,13 +158,28 @@ export class CompanyRepository
 
     if (entity.socialMediaLinks !== undefined)
       data.socialMediaLinks = entity.socialMediaLinks;
-
+    if (entity.isVerified !== undefined) data.isVerified = entity.isVerified;
+    if (entity.status !== undefined) data.status = entity.status;
     if (entity.size !== undefined) data.size = entity.size;
     if (entity.address !== undefined) data.address = entity.address;
     if (entity.document !== undefined) data.document = entity.document;
+  //  console.log('data after persisatnce', data);
 
     return data;
   }
+
+
+async getStatus(): Promise<CompanyStatus> {
+  const statusDoc=await this._model.aggregate([{$group:{_id:'$status',count:{$sum:1}}}])
+  const total=statusDoc.reduce((acc,doc)=>acc+doc.count,0)
+ const status=Object.fromEntries(statusDoc.map(doc=>[doc._id,doc.count]))
+ status.totalCompany=total
+ console.log('status',status);
+ 
+  return status
+}
+
+
   private mapToCompanyListDTO(doc: any): CompanyListDTO {
     return {
       id: doc._id.toString(),

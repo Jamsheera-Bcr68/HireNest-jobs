@@ -1,15 +1,10 @@
 import { useForgotPassword } from '../../hooks/auth/useForgotPassword';
 import type { ILoginFormProps } from '../../../constants/interfaces/auth';
-import { useToast } from '../../../shared/toast/useToast';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPasswordForm = ({ role }: ILoginFormProps) => {
-  const { showToast, ToastElement } = useToast();
-
-  const { email, handleChange, submitHandle, error } = useForgotPassword(
-    role,
-    showToast
-  );
+  const navigate = useNavigate();
+  const { email, handleChange, submitHandle, error } = useForgotPassword(role);
   return (
     <div className="min-h-screen flex items-center justify-center bg-indigo-50 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
@@ -50,12 +45,14 @@ const ForgotPasswordForm = ({ role }: ILoginFormProps) => {
         </form>
 
         <div className="text-center mt-6">
-          <a href="/login" className="text-sm text-blue-600 hover:underline">
+          <button
+            onClick={() => navigate(-1)}
+            className="text-sm text-blue-600 hover:underline"
+          >
             Back to Login
-          </a>
+          </button>
         </div>
       </div>
-      {ToastElement}
     </div>
   );
 };

@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { forgotPasswordSchema } from '../../../libraries/validations/auth/forgotPasswordValidation';
 import axiosInstance from '../../../libraries/axios';
 import type { UserRole } from '../../../constants/types/user';
-import { type typeOfToast } from '../../../types/toastTypes';
 
-export const useForgotPassword = (
-  role: UserRole,
-  showToast: (toast: typeOfToast) => void
-) => {
+import { useToast } from '../../../shared/toast/useToast';
+
+export const useForgotPassword = (role: UserRole) => {
+  const { showToast } = useToast();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
@@ -43,9 +42,9 @@ export const useForgotPassword = (
       console.log('response from the backend', response);
       showToast({ msg: response.data.message, type: 'success' });
     } catch (error: any) {
-      setError(error.response.message || error.message);
+      setError(error.response?.data.message || error.message);
       showToast({
-        msg: error.response.message || error.message,
+        msg: error.response?.data?.message || error.message,
         type: 'error',
       });
     }

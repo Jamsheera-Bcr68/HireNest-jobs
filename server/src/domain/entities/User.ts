@@ -71,11 +71,11 @@ export class User {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.isVerified = isVerified;
-    ((this.isRequested = isRequested||false),
-      (this.companyRequests = companyRequests || []),
-      ((this.experience = experience ?? []),
-      (this.resumes = resumes || []),
-      (this.resetToken = resetToken)));
+    this.isRequested = isRequested||false,
+      this.companyRequests = companyRequests || [],
+    this.experience = experience ?? [],
+      this.resumes = resumes || [],
+      this.resetToken = resetToken;
     this.resetTokenExpiry = resetTokenExpiry;
     this.googleId = googleId;
     this.role = role;

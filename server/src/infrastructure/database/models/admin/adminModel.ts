@@ -6,6 +6,7 @@ export interface IAdminDocument extends Document {
   email: string;
   password: string;
   resetToken: string;
+   resetTokenExpiry:  Date ,
   role: UserRole;
   googleId?: string;
   createdAt: Date;
@@ -24,6 +25,7 @@ const adminSchema = new Schema<IAdminDocument>(
       default: UserRole.ADMIN,
     },
     resetToken: { type: String },
+     resetTokenExpiry: { type: Date },
     googleId: { type: String },
   },
 

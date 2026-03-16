@@ -13,10 +13,10 @@ export class AdminAuthController {
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const payload: AdminloginInput = req.body;
-      console.log('from admin controller');
+      console.log('from admin controller,role',req.body.role);
 
       const { admin, refreshToken, accessToken } =
-        await this._loginUsecase.execute(payload);
+        await this._loginUsecase.execute(payload,req.body.role);
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         sameSite: 'lax',

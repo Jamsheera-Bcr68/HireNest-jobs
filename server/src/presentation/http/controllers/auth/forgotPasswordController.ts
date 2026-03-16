@@ -9,10 +9,10 @@ export class ForgotPassWordController {
   }
   handle = async (req: Request, res: Response, next: NextFunction) => {
     console.log('form forgot password controller');
-    const { email } = req.body;
+    const { email,role } = req.body;
     try {
       console.log('email is ', email);
-      await this._forgotPasswordUsecase.execute(email);
+      await this._forgotPasswordUsecase.execute(email,role);
       return res.status(statusCodes.OK).json({
         success: true,
         message: authMessages.success.PASSWORD_RESET_LINK_SEND,

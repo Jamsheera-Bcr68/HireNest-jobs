@@ -163,15 +163,28 @@ export class UserRepository
       { resetToken: hashedToken, resetTokenExpiry }
     );
   }
-  async updatePassword(email: string, password: string): Promise<void> {
+
+  async updatePassword(id: string, password: string): Promise<void> {
     await this._model
-      .findOneAndUpdate(
-        { email },
+      .findByIdAndUpdate(
+        id,
         { $set: { password, resetToken: null, resetTokenExpiry: null } }
       )
       .populate('skills')
-      .populate('experience');
+      .populate('experience')
+      .populate('education')
   }
+
+
+  async clearResetToken(id: string): Promise<void> {
+    await this._model.findByIdAndUpdate(id, {
+      $unset: {
+        resetToken: '',
+        resetTokenExpiry: '',
+      },
+    });
+  }
+
 
   async updateGoogleId(email: string, googleId: string): Promise<User | null> {
     const document = await this._model.findOneAndUpdate(

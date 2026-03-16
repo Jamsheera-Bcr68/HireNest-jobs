@@ -1,9 +1,9 @@
 import { useResetPassword } from '../../hooks/auth/useResetPassword';
-import { useToast } from '../../../shared/toast/useToast';
+import { useNavigate } from 'react-router-dom';
+
 import { Eye, EyeClosedIcon } from 'lucide-react';
 
 const ResetPasswordForm = () => {
-  const { showToast, ToastElement } = useToast();
   const {
     formData,
     handleChange,
@@ -11,7 +11,9 @@ const ResetPasswordForm = () => {
     error,
     setShowPassword,
     showPassword,
-  } = useResetPassword(showToast);
+    role
+  } = useResetPassword();
+  const navigate=useNavigate()
   return (
     <div className="min-h-screen flex items-center justify-center bg-indigo-50 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
@@ -98,12 +100,11 @@ const ResetPasswordForm = () => {
           </button>
         </form>
         <div className="text-center mt-6">
-          <a href="/login" className="text-sm text-blue-600 hover:underline">
+          <button onClick={()=>navigate(role=='admin'?'/admin/login':'/login')} className="text-sm text-blue-600 hover:underline">
             Back to Login
-          </a>
+          </button>
         </div>
       </div>
-      {ToastElement}
     </div>
   );
 };

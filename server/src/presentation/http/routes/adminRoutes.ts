@@ -5,7 +5,9 @@ const router=express.Router()
 
 
 router.get('/companies',authValidator(tokenService),adminCompanyController.getAllCompanies)
-    
+router.get('/companies/:id',authValidator(tokenService),adminCompanyController.getCompany)
+router.patch('/companies/:id',authValidator(tokenService),adminCompanyController.updateCompany)
+  router.get("/company-status" ,authValidator(tokenService),adminCompanyController.getCompanyStatus) 
 
 
 export default router
