@@ -1,4 +1,3 @@
-
 import { useNavigate } from 'react-router-dom';
 type Props = {
   onClose: () => void;
@@ -12,7 +11,7 @@ function CompanyRegistrationPendingModal({
   message,
   type,
 }: Props) {
-    const navigate=useNavigate()
+  const navigate = useNavigate();
   return (
     <div>
       <h2 className="text-xl font-semibold mb-3 text-center text-indigo-600">
@@ -40,18 +39,14 @@ function CompanyRegistrationPendingModal({
           Got it
         </button>
         {type == 'new' && (
-          
-            <button
-            
-              onClick={()=>navigate('/company/register')}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
-            >
-              Register 
-            </button>
-         
+          <button
+            onClick={() => navigate('/company/register')}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+          >
+            Register
+          </button>
         )}
       </div>
-      
     </div>
   );
 }

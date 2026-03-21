@@ -25,24 +25,24 @@ export class ResetPasswordUsecase implements IResetPasswordUsecase {
     resetToken: string
   ): Promise<void> {
     const hashPassword = await hashedPassword(password);
-    const hashedResetToken =  hashedToken(resetToken);
+    const hashedResetToken = hashedToken(resetToken);
 
     const admin = await this._adminRepository.findOne({
       resetToken: hashedResetToken,
     });
-   // console.log('reset token', resetToken);
-   // console.log('hashed reset token', hashedResetToken);
+    // console.log('reset token', resetToken);
+    // console.log('hashed reset token', hashedResetToken);
 
     if (admin) {
-    //  console.log('admin found',admin);
-      
+      //  console.log('admin found',admin);
+
       if (!admin.resetTokenExpiry || admin.resetTokenExpiry < new Date()) {
         throw new AppError(
           authMessages.error.PASSWORD_RESETTOKEN_EXPIRED,
           statusCodes.BADREQUEST
         );
       }
-    //  console.log('admin', admin);
+      //  console.log('admin', admin);
 
       await this._adminRepository.updatePassword(admin.id, hashPassword);
       await this._adminRepository.clearResetToken(admin.id);

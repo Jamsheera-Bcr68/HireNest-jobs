@@ -39,6 +39,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
       return () => clearTimeout(timer);
     }, 500);
   }, [searchInput]);
+
   const approveCompany = async () => {
     console.log('approve company');
     if (!companyId) return;
@@ -132,6 +133,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
     }
   };
 
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
   return (
     <>
       <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center gap-4">
@@ -176,18 +178,6 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
               </option>
             ))}
           </select>
-          {/* <select className="text-sm border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-slate-50 text-slate-600">
-                <option>All Plans</option>
-                <option>Basic</option>
-                <option>Premium</option>
-                <option>Enterprise</option>
-              </select> */}
-          {/* <button className="inline-flex items-center gap-1.5 text-sm text-slate-600 border border-slate-200 rounded-lg px-3 py-2 hover:bg-slate-50 transition">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Export
-              </button> */}
         </div>
       </div>
       <div>
@@ -221,16 +211,6 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-slate-50 text-left">
-              {/* <th className="px-5 py-3">
-                <input
-                      type="checkbox"
-                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-400 cursor-pointer"
-                      onChange={(e) =>
-                       setSelectedRows(e.target.checked ? filtered.map((r) => r.id) : [])
-                    }
-                   checked={selectedRows.length === filtered.length && filtered.length > 0}
-                    />
-              </th> */}
               <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">
                 Company
               </th>
@@ -258,20 +238,16 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
                 key={company.id}
                 className="hover:bg-slate-50 transition group"
               >
-                {/* <td className="px-5 py-4">
-                  <input
-                        type="checkbox"
-                        // checked={selectedRows.includes(employer.id)}
-                        // onChange={() => toggleRow(employer.id)}
-                        className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-400 cursor-pointer"
-                      />
-                </td> */}
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-3">
                     <div
                       className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0`}
                     >
-                      {/* {company.logoUrl} */}PF
+                      <img
+                        className="rounded-full"
+                        src={`${baseUrl}${company.logoUrl}`}
+                        alt="Logo"
+                      />
                     </div>
                     <div>
                       <div className="flex items-center gap-1.5">

@@ -16,7 +16,10 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
     this._adminRepository = adminRepository;
     this._tokenService = tokenService;
   }
-  async execute(input: AdminloginInput,role:UserRole): Promise<AdminLoginOutPutDto> {
+  async execute(
+    input: AdminloginInput,
+    role: UserRole
+  ): Promise<AdminLoginOutPutDto> {
     const admin = await this._adminRepository.findByEmail(input.email);
     if (!admin)
       throw new AppError(
@@ -33,13 +36,21 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
       admin.email,
       UserRole.ADMIN
     );
+    console.log(
+      'just after ccreatign access',
+      this._tokenService.verifyAccessToken(accessToken)
+    );
+
     const refreshToken = this._tokenService.generateRefreshToken(
       admin.id,
       admin.email,
       UserRole.ADMIN
     );
-    console.log('admin accesstoke,refreshtoken',accessToken,refreshToken);
-    
+    console.log(
+      'just after ccreatign refresj',
+      this._tokenService.verifyRefreshToken(refreshToken)
+    );
+
     return { admin, accessToken, refreshToken };
   }
 }

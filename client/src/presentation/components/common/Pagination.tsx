@@ -15,15 +15,23 @@ function Pagination({
   totalItem,
   onPageChange,
 }: PaginationProps) {
-  console.log('totalPages',totalPages);
-  
+  console.log('totalPages', totalPages);
+
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
     <div>
-      <span className="text-sm text-bold">
-        Showing <span className="font-medium text-slate-700">{count}</span> of{' '}
-        <span className="font-medium text-slate-700">{totalItem}</span> {item}
-      </span>
+      <div className="text-sm flex mt-4 text-bold mr-4 justify-end">
+        <span className="text-sm  justify-end">
+          Showing{' '}
+          <span className="font-medium text-bold text-blue-700">{count}</span>{' '}
+          of{' '}
+          <span className="font-medium text-bold text-blue-700">
+            {totalItem}
+          </span>{' '}
+          {item}
+        </span>
+      </div>
+
       {totalPages > 1 && (
         <div className=" py-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-center  text-sm text-slate-500">
           <div className="flex items-center gap-1">

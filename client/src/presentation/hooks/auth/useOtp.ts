@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../../libraries/axios';
 import { type typeOfToast } from '../../../types/toastTypes';
+import { authService } from '../../../services/apiServices/authServices';
 
 export function useOtp(showToast: (toast: typeOfToast) => void) {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
@@ -91,15 +92,15 @@ export function useOtp(showToast: (toast: typeOfToast) => void) {
     console.log('email', email);
 
     try {
-      const response = await axios.post('/auth/resend-otp', { email: email });
-      console.log('response after resend otp', response);
+      //const response = await axios.post('/auth/resend-otp', { email: email });
+      const data = await authService.resentOtp(email!);
       setError('');
-      sessionStorage.setItem('otp_expiredAt', response.data.otp_expiry);
-      console.log('expired at ', response.data.otp_expiry);
+      sessionStorage.setItem('otp_expiredAt', data.otp_expiry);
+      console.log('expired at ', data.otp_expiry);
 
-      showToast({ msg: response.data.message, type: 'success' });
+      showToast({ msg: data.message, type: 'success' });
 
-      const expiredAt = new Date(response.data.otp_expiry).getTime();
+      const expiredAt = new Date(data.otp_expiry).getTime();
       setTimer(expiredAt);
       setError('');
     } catch (err: any) {

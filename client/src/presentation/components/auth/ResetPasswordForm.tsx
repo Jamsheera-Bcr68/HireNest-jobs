@@ -11,9 +11,9 @@ const ResetPasswordForm = () => {
     error,
     setShowPassword,
     showPassword,
-    role
+    role,
   } = useResetPassword();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen flex items-center justify-center bg-indigo-50 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
@@ -100,7 +100,12 @@ const ResetPasswordForm = () => {
           </button>
         </form>
         <div className="text-center mt-6">
-          <button onClick={()=>navigate(role=='admin'?'/admin/login':'/login')} className="text-sm text-blue-600 hover:underline">
+          <button
+            onClick={() =>
+              navigate(role == 'admin' ? '/admin/login' : '/login')
+            }
+            className="text-sm text-blue-600 hover:underline"
+          >
             Back to Login
           </button>
         </div>

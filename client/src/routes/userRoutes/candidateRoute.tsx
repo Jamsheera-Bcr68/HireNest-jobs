@@ -4,11 +4,10 @@ import { CandidateLayout } from '../../presentation/Layoutes/CandidateLayout';
 export const CandidateRoutes = () => {
   return (
     <Routes>
-      <Route path='/' element={<CandidateLayout/>}>
-      <Route path="" element={<CandidateProfile />} />
-      <Route path="/dashboard" element={<CandidateProfile />} />
+      <Route path="/" element={<CandidateLayout />}>
+        <Route path="" element={<CandidateProfile />} />
+        <Route path="/dashboard" element={<CandidateProfile />} />
       </Route>
-      
     </Routes>
   );
 };

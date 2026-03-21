@@ -22,11 +22,20 @@ export class RegisterUseCase implements IRegisterUseCase {
     }
 
     const password = await hashedPassword(request.password);
-    const user = new User(request.email, password, request.phone, false,false,[]);
+    const user = new User(
+      request.email,
+      password,
+      request.phone,
+      new Date(),
+      new Date(),
+      false,
+      false,
+      []
+    );
 
     const savedUser = await this._userRepository.createUser(user);
 
-   // console.log('pending user from registerusecase', user);
+    // console.log('pending user from registerusecase', user);
 
     return savedUser;
   }

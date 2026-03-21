@@ -15,9 +15,9 @@ type Errors = {
 export const useResetPassword = () => {
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const [searchParams]=useSearchParams()
+  const [searchParams] = useSearchParams();
   const { resetToken } = useParams();
-  const role=searchParams.get('role')
+  const role = searchParams.get('role');
   const [formData, setFormData] = useState({
     password: '',
     confirm_password: '',
@@ -87,6 +87,6 @@ export const useResetPassword = () => {
     submitHandle,
     showPassword,
     setShowPassword,
-    role
+    role,
   };
 };

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { registerSchema } from '../../../libraries/validations/auth/registerValidations';
-import axios from '../../../libraries/axios';
+
 import { useNavigate } from 'react-router-dom';
 import { type typeOfToast } from '../../../types/toastTypes';
+import { authService } from '../../../services/apiServices/authServices';
 
 type FormErrors = {
   email?: string;
@@ -58,18 +59,15 @@ export const useRegister = (showToast: (toast: typeOfToast) => void) => {
     console.log('validation successful');
 
     try {
-      const response = await axios.post('/auth/register', formData);
-      console.log('response', response);
-      setMsg(response.data.message);
+      const data = await authService.registerUser(formData);
+
+      setMsg(data.message);
 
       sessionStorage.setItem('otp_email', formData.email);
-      console.log(
-        'expirey from useRegister before setting ',
-        response.data.otp_expiry
-      );
+      console.log('expirey from useRegister before setting ', data.otp_expiry);
 
-      sessionStorage.setItem('otp_expiredAt', response.data.otp_expiry);
-      showToast({ msg: response.data.message, type: 'success' });
+      sessionStorage.setItem('otp_expiredAt', data.otp_expiry);
+      showToast({ msg: data.message, type: 'success' });
       navigate('/otp');
     } catch (error: any) {
       console.log('error response', error.response);

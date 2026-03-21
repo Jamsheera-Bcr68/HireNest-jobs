@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import {
   Home,
-LogOutIcon,
-MessagesSquareIcon,
+  LogOutIcon,
+  MessagesSquareIcon,
   ChevronRight,
   BriefcaseBusiness,
   ChevronLeftIcon,
@@ -10,7 +10,7 @@ MessagesSquareIcon,
 import { useNavigate } from 'react-router-dom';
 const navItems = [
   'Dashboard',
-'Saved Jobs',
+  'Saved Jobs',
   'Applications',
   'Interviews',
   'Messages',
@@ -19,14 +19,22 @@ const navItems = [
 ];
 const navRoutes: Record<string, string> = {
   Dashboard: '/dashboard',
- 'Saved Jobs': '/jobs',
+  'Saved Jobs': '/jobs',
   Applications: '/applications',
   Interviews: '/interviews',
   Messages: '/messages',
   Profile: '/profile',
   Logout: '/logout',
 };
-const navIcons = [<Home />,<BriefcaseBusiness/> , '📋', '📅', <MessagesSquareIcon/>, '👤', <LogOutIcon/>];
+const navIcons = [
+  <Home />,
+  <BriefcaseBusiness />,
+  '📋',
+  '📅',
+  <MessagesSquareIcon />,
+  '👤',
+  <LogOutIcon />,
+];
 type SidebarProps = {
   isOpen: boolean;
   setOpen: (state: boolean) => void;

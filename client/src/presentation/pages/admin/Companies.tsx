@@ -24,13 +24,6 @@ function Companies() {
   const [page, setPage] = useState(1);
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [companyStatus, setCompanyStatus] = useState({
-    pending: 0,
-    rejected: 0,
-    suspended: 0,
-    totalCompany: 0,
-    active: 0,
-  });
 
   const [filter, setFilter] = useState<Partial<CompanyFilter>>({});
   useEffect(() => {
@@ -43,13 +36,13 @@ function Companies() {
           page,
           10
         );
-        console.log('after getting all companies', data);
+        // console.log('after getting all companies', data);
         const { totalDocs, totalPages } = data;
         setTotalDocs(totalDocs);
         setTotalPages(totalPages);
         setCompanies(data.companies);
       } catch (error: any) {
-        console.log(error);
+        // console.log(error);
         showToast({
           msg: error?.response?.data.message || error.message,
           type: 'error',
@@ -96,7 +89,7 @@ function Companies() {
         count: statsData.suspended || 0,
         icon: '🚫',
       };
-      console.log('statsData', statsData);
+      // console.log('statsData', statsData);
       setStatus([total, active, pending, suspended]);
     }
     getCompanyStatus();
@@ -107,8 +100,7 @@ function Companies() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <HeroSection
             title="Company Management"
-            tagline=" Manage all registered employers on the platform"
-            buttonText="  Add Employer"
+            tagline=" Manage all registered Companies on the platform"
           />
           <StatusCards stats={stats} />
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">

@@ -8,12 +8,11 @@ export default function ProtectedRoutes() {
   );
   console.log('isAuthenticated', isAuthenticated);
 
-  
   if (!user || !isAuthenticated) return <Navigate to="/login" replace />;
   return <Outlet />;
 }
 
-export  function AdminProtectedRoute() {
+export function AdminProtectedRoute() {
   const { user, isAuthenticated } = useSelector(
     (state: StateType) => state.auth
   );
@@ -22,7 +21,7 @@ export  function AdminProtectedRoute() {
     return <Navigate to="/admin/login" replace />;
   }
 
-  if (user?.role !== "admin") {
+  if (user?.role !== 'admin') {
     return <Navigate to="/" replace />;
   }
 

@@ -1,11 +1,8 @@
-
-
 type Props = {
   title: string;
   tagline: string;
-  buttonText: string;
 };
-function HeroSection({ title, tagline, }: Props) {
+function HeroSection({ title, tagline }: Props) {
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">

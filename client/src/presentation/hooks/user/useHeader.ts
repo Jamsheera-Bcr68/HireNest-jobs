@@ -25,6 +25,7 @@ export const useHeader = () => {
 
       showToast({ msg: response.data.message, type: 'success' });
       dispatch(logout());
+
       navigate('/login');
     } catch (error: any) {
       console.log(error);

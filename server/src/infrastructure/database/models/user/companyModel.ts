@@ -19,7 +19,7 @@ export interface ICompanyDocument {
   companyName: string;
   userId: Types.ObjectId;
   website: string;
-  
+
   status: StatusEnum;
   tagLine: string;
   email: string;
@@ -33,14 +33,14 @@ export interface ICompanyDocument {
   isAgreed: boolean;
   isConsent: boolean;
   logoUrl: string;
-  requestedSkills:Types.ObjectId[] | [],
+  requestedSkills: Types.ObjectId[] | [];
   industry: IndustryType;
   socialMediaLinks: ISocialMediaLinks;
   size: CompanySize;
   address: IAddress;
   isVerified: boolean;
   document: VerificationDocType;
-  createdAt:Date
+  createdAt: Date;
 }
 
 const companySchema = new Schema<ICompanyDocument>(
@@ -66,8 +66,12 @@ const companySchema = new Schema<ICompanyDocument>(
     },
     isVerified: { type: Boolean, default: false },
     logoUrl: String,
-   
-    requestedSkills: { type: [Schema.Types.ObjectId], ref: 'Skill', default: [] },
+
+    requestedSkills: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Skill',
+      default: [],
+    },
 
     industry: { type: String, enum: Industry_Type },
     socialMediaLinks: {

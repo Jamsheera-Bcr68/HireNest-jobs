@@ -45,7 +45,7 @@ export const educationSchema = z
     completedYear: z
       .string()
       .optional()
-      .transform((val) => Number(val)),
+      .transform((val) => (val ? Number(val) : undefined)),
 
     cgpa: z
       .string()
@@ -65,6 +65,18 @@ export const educationSchema = z
     },
     {
       message: 'Completion year should be greater than or equal to start year',
+      path: ['completedYear'],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.status === 'Ongoing') {
+        return true; // no completedYear needed
+      }
+      return !!data.completedYear; // required for others
+    },
+    {
+      message: 'Please add completed year',
       path: ['completedYear'],
     }
   );

@@ -11,6 +11,7 @@ export abstract class GenericRepository<
     this._model = model;
   }
   async create(data: Partial<T>): Promise<T> {
+    console.log('before maptperistance ', data);
     console.log('after maptperistance ', this.mapToPersistance(data));
 
     const doc = await this._model.create(this.mapToPersistance(data));
@@ -31,7 +32,7 @@ export abstract class GenericRepository<
   }
 
   async save(id: string, data: Partial<T>): Promise<T | null> {
-    console.log('entity from generic  repo ', data);
+    // console.log('entity from generic  repo ', data);
     const persisted = this.mapToPersistance(data);
     console.log('persisted ', persisted);
 
@@ -54,6 +55,8 @@ export abstract class GenericRepository<
   }
 
   async getAll(filter: Partial<T>): Promise<T[] | []> {
+    console.log('filter', filter);
+
     const docs = await this._model.find(filter);
     if (!docs.length) return [];
     return docs.map((doc) => this.mapToEntity(doc));

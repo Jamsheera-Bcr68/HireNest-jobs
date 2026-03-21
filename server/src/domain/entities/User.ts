@@ -41,6 +41,8 @@ export class User {
     email: string,
     password: string,
     phone: string,
+    createdAt: Date,
+    updatedAt: Date,
     isVerified: boolean,
     isRequested: boolean,
     companyRequests: CompanyRequestType[] | [],
@@ -58,11 +60,9 @@ export class User {
     address?: IAddress,
     socialMediaLinks?: ISocialMediaLinks,
     imageUrl?: string | undefined,
+    isBlocked?: boolean,
     about?: string,
-    skills?: UserSkillDto[] | [],
-
-    createdAt = new Date(),
-    updatedAt = new Date()
+    skills?: UserSkillDto[] | []
   ) {
     this.id = id;
     this.email = email;
@@ -71,11 +71,11 @@ export class User {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.isVerified = isVerified;
-    this.isRequested = isRequested||false,
-      this.companyRequests = companyRequests || [],
-    this.experience = experience ?? [],
-      this.resumes = resumes || [],
-      this.resetToken = resetToken;
+    ((this.isRequested = isRequested || false),
+      (this.companyRequests = companyRequests || []),
+      (this.experience = experience ?? []),
+      (this.resumes = resumes || []),
+      (this.resetToken = resetToken));
     this.resetTokenExpiry = resetTokenExpiry;
     this.googleId = googleId;
     this.role = role;
@@ -84,6 +84,7 @@ export class User {
     this.address = address;
     this.socialMediaLinks = socialMediaLinks;
     this.imageUrl = imageUrl;
+    this.isBlocked = isBlocked;
     this.about = about;
     this.skills = skills;
     this.education = education ?? [];

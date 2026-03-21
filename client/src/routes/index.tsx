@@ -17,7 +17,6 @@ import { CompanyRoutes } from './userRoutes/companyRoutes';
 import { AdminRoutes } from './adminRoutes';
 import { AdminProtectedRoute } from './PrivateRoutes';
 
-
 export const AppRoutes = () => {
   return (
     <Routes>
@@ -35,7 +34,7 @@ export const AppRoutes = () => {
 
       <Route element={<ProtectedRoutes />}>
         <Route path="/profile/*" element={<CandidateRoutes />} />
-      
+
         <Route path="/company/*" element={<CompanyRoutes />} />
       </Route>
 

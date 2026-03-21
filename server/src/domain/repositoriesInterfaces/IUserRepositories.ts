@@ -1,3 +1,9 @@
+import { CandidateStatus } from '../../applications/Dtos/candidateDto';
+import {
+  CandidateFilterType,
+  PaginatedCandidates,
+  PaginatedEntities,
+} from '../../applications/types/candidateType';
 import { User } from '../entities/User';
 import { IExperience, IResume } from '../values/profileTypes';
 import { IBaseRepository } from './IBaseRepository';
@@ -11,7 +17,7 @@ export interface IUserRepository extends IBaseRepository<User> {
     resetTokenExpiry: Date
   ): Promise<void>;
   updatePassword(id: string, password: string): Promise<void>;
-  clearResetToken(id:string):Promise<void>
+  clearResetToken(id: string): Promise<void>;
   addProfileData(userId: string, data: Partial<User>): Promise<User | null>;
   addProfileImage(userId: string, imageUrl: string): Promise<User | null>;
   updateGoogleId(email: string, googleId: string): Promise<User | null>;
@@ -24,4 +30,12 @@ export interface IUserRepository extends IBaseRepository<User> {
   addResume(data: IResume, userId: string): Promise<User | null>;
   removeProfileImage(userId: string): Promise<User | null>;
   removeResume(userId: string, resumeId: string): Promise<User | null>;
+  getCandidateStatus(): Promise<CandidateStatus>;
+  getCandidateList(
+    filter: Partial<User>,
+    page: number,
+    limit: number,
+    search: string,
+    education: string
+  ): Promise<PaginatedEntities<User>>;
 }

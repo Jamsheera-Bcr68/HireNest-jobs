@@ -4,8 +4,6 @@ import { generalMessages } from '../../../shared/constants/messages/generalMessa
 import { ZodError } from 'zod';
 import { statusCodes } from '../../../shared/enums/statusCodes';
 
-
-
 export const errorHandler: ErrorRequestHandler = (
   error: unknown,
   req: Request,

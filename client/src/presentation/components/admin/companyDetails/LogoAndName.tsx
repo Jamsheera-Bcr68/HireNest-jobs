@@ -111,11 +111,7 @@ function LogoAndName({
       });
     }
   };
-  const modalConfig = {
-    approve: { action: 'Approve', type: 'info', function: approveCompany },
-    reject: { action: 'Reject', type: 'delete', function: rejectCompany },
-    suspend: { action: 'Suspend', type: 'delete', function: suspendCompany },
-  };
+
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div className="flex items-center gap-4">

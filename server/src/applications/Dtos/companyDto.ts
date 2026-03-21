@@ -44,7 +44,7 @@ export type RegisterFormType = {
     file: File | string;
   };
 };
-export  interface CompanyListDTO {
+export interface CompanyListDTO {
   id: string;
   companyName: string;
   email: string;
@@ -60,10 +60,10 @@ export type PaginatedCompanies = {
   totalDocs: number;
 };
 
-export type CompanyStatus={
-  totalCompany?:number
-  active?:number
-  pending?:number
-  suspended?:number
-  rejected?:number
-}
+export type CompanyStatus = {
+  totalCompany?: number;
+  active?: number;
+  pending?: number;
+  suspended?: number;
+  rejected?: number;
+};

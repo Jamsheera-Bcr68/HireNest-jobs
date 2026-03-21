@@ -10,7 +10,7 @@ function Header({
   sidebarOpen,
   setSidebarOpen,
 }: {
-  title:string,
+  title: string;
   sidebarOpen: boolean;
   setSidebarOpen: (state: boolean) => void;
 }) {

@@ -43,4 +43,15 @@ export class ImageStorageService implements IFileStorageService {
       throw new Error(userMessages.error.IMAGE_REMOVAL_FAILED);
     }
   }
+
+  async checkExist(fileName: string) {
+    const filePath = path.join(process.cwd(), 'uploads', fileName);
+
+    try {
+      await fs.access(filePath);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 }

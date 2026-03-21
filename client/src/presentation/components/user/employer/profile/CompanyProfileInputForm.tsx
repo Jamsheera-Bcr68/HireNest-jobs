@@ -1,5 +1,3 @@
-
-
 type Props = {
   onCancel: () => void;
   value: string;

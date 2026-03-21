@@ -118,7 +118,7 @@ type FormError = {
   isConsent: string;
 };
 export const useRegisterCompany = () => {
-  const user=useSelector((state:StateType)=>state.auth.user)
+  const user = useSelector((state: StateType) => state.auth.user);
   const { showToast } = useToast();
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const [formData, setFormData] = useState<RegisterFormType>(initialStata);
@@ -165,8 +165,6 @@ export const useRegisterCompany = () => {
   };
   const handleSubmit = async () => {
     console.log('verify file', verify_file);
-
-    
 
     if (!verify_file) {
       setError((prev) => ({
@@ -247,7 +245,7 @@ export const useRegisterCompany = () => {
       console.log('after form sumbit', data);
 
       setIsSuccessOpen(true);
-      
+
       showToast({ msg: data.message, type: 'success' });
     } catch (error: any) {
       showToast({

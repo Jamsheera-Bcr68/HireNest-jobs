@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useToast } from '../../../../../shared/toast/useToast';
-import {
-  type CompanyProfileType,
-  
-} from '../../../../../types/dtos/profileTypes/userTypes';
+import { type CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
 import { companyService } from '../../../../../services/apiServices/companyService';
 import { updateCompanyFieldSchema } from '../../../../../libraries/validations/company/companyUpdateFieldsValidation';
 

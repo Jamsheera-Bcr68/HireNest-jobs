@@ -73,6 +73,4 @@ export const companyService = {
     });
     return res.data;
   },
-
-
 };

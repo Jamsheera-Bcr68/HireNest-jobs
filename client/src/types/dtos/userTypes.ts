@@ -19,8 +19,11 @@ export interface UserProfileType {
   avatar?: string;
   title?: string;
   skills: Array<SkillType>;
+
   address?: AddressType;
   socialLinks?: ISocialLinks;
   imageUrl?: string;
   about?: string;
+  createdAt: string;
+  isBlocked: boolean;
 }

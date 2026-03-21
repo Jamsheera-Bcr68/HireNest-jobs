@@ -92,10 +92,10 @@ export const useLogin = (
     }
     setErrors({});
     console.log('frontend validation success');
-    
+
     try {
       const api = role === 'admin' ? '/auth/admin/login' : '/auth/login';
-      const res = await axios.post(api, {...formData,role});
+      const res = await axios.post(api, { ...formData, role });
       console.log('axios response ', res);
 
       setErrors({});
@@ -104,10 +104,10 @@ export const useLogin = (
       localStorage.setItem('accessToken', access_Token);
       if (user) {
         localStorage.setItem('user', user);
-        dispatch(loginSuccess({ user, accessToken:access_Token }));
+        dispatch(loginSuccess({ user, accessToken: access_Token }));
       } else if (admin) {
         localStorage.setItem('user', admin);
-        dispatch(loginSuccess({ user: admin, accessToken:access_Token }));
+        dispatch(loginSuccess({ user: admin, accessToken: access_Token }));
       }
 
       showToast({ msg: res.data.message, type: 'success' });

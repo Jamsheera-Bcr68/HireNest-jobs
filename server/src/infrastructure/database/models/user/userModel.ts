@@ -45,61 +45,70 @@ export interface IUserDocument extends Document {
   resumes: ResumeDocument[] | [];
 }
 
-const userSchema = new Schema<IUserDocument>({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  phone: { type: String, required: true },
-  role: {
-    type: String,
-    enum: Object.values(UserRole),
-    required: true,
-    default: UserRole.CANDIDATE,
-  },
-  imageUrl: { type: String },
-  resetToken: { type: String },
-  resetTokenExpiry: { type: Date },
-  name: { type: String },
-  title: { type: String },
-  address: {
-    type: { place: String, state: String, country: String },
-  },
-  isVerified: { type: Boolean, required: true, default: false },
-  isBlocked: { type: Boolean, default: false },
-  googleId: { type: String },
-  socialMediaLinks: {
-    type: {
-      linkedIn: String,
-      whatsapp: String,
-      youtube: String,
-      gitHub: String,
-      twitter: String,
-      portfolio: String,
+const userSchema = new Schema<IUserDocument>(
+  {
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    phone: { type: String, required: true },
+    role: {
+      type: String,
+      enum: Object.values(UserRole),
+      required: true,
+      default: UserRole.CANDIDATE,
+    },
+    imageUrl: { type: String },
+    resetToken: { type: String },
+    resetTokenExpiry: { type: Date },
+    name: { type: String },
+    title: { type: String },
+    address: {
+      type: { place: String, state: String, country: String },
+    },
+    isVerified: { type: Boolean, required: true, default: false },
+    isBlocked: { type: Boolean, default: false },
+    googleId: { type: String },
+    socialMediaLinks: {
+      type: {
+        linkedIn: String,
+        whatsapp: String,
+        youtube: String,
+        gitHub: String,
+        twitter: String,
+        portfolio: String,
+      },
+    },
+    about: { type: String },
+    isRequested: { type: Boolean, default: false },
+    companyRequests: {
+      type: [
+        {
+          date: { type: Date },
+          status: {
+            type: String,
+            enum: Object.values(StatusEnum),
+            default: StatusEnum.PENDING,
+          },
+          companyId: { type: Schema.Types.ObjectId, ref: 'Company' },
+        },
+      ],
+      default: [],
+    },
+    skills: { type: [Schema.Types.ObjectId], ref: 'Skill', default: [] },
+    experience: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Experience',
+      default: [],
+    },
+    education: { type: [Schema.Types.ObjectId], ref: 'Education', default: [] },
+    resumes: {
+      type: [
+        { url: String, isDefault: Boolean, name: String, uploadedAt: Date },
+      ],
+      default: [],
     },
   },
-  about: { type: String },
-  isRequested: { type: Boolean, default: false },
- companyRequests: {
-  type: [
-    {
-      date: { type: Date },
-      status: {
-        type: String,
-        enum: Object.values(StatusEnum),
-        default: StatusEnum.PENDING
-      },
-      companyId: { type: Schema.Types.ObjectId, ref: "Company" }
-    }
-  ],
-  default: []
-},
-  skills: { type: [Schema.Types.ObjectId], ref: 'Skill', default: [] },
-  experience: { type: [Schema.Types.ObjectId], ref: 'Experience', default: [] },
-  education: { type: [Schema.Types.ObjectId], ref: 'Education', default: [] },
-  resumes: {
-    type: [{ url: String, isDefault: Boolean, name: String, uploadedAt: Date }],
-    default: [],
-  },
-});
+  { timestamps: true }
+);
 export const userModel: Model<IUserDocument> = model<IUserDocument>(
   'User',
   userSchema

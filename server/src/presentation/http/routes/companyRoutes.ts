@@ -58,7 +58,6 @@ router.patch(
   authValidator(tokenService),
   companyProfileUpdateFieldsValidator,
   companyProfileController.updateFields
-)
-
+);
 
 export default router;

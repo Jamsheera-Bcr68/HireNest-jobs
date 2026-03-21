@@ -21,6 +21,7 @@ export class FileStorageService implements IFileStorageService {
     await fs.writeFile(filePath, file.buffer);
     return `/${folder}/${fileName}`;
   }
+
   async removeFile(fileName: string): Promise<void> {
     const filePath = path.join(process.cwd(), 'public', fileName);
     try {
@@ -37,4 +38,25 @@ export class FileStorageService implements IFileStorageService {
       throw new Error(userMessages.error.IMAGE_REMOVAL_FAILED);
     }
   }
+
+  async checkExist(fileUrl: string) {
+  console.log('from service', fileUrl);
+
+  const filePath = path.join(
+    process.cwd(),
+    'public',
+    fileUrl
+  );
+
+  console.log('checking path:', filePath);
+
+  try {
+    await fs.access(filePath);
+    console.log('File exists ');
+    return true;
+  } catch {
+    console.log('File NOT exists ');
+    return false;
+  }
+}
 }

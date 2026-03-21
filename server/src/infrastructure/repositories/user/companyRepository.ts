@@ -12,7 +12,7 @@ import {
   CompanyStatus,
 } from '../../../applications/Dtos/companyDto';
 
-import mongoose, { Types,  } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 type CompanyQuery = Partial<Company> & {
   $or?: {
@@ -32,7 +32,7 @@ export class CompanyRepository
     const company = await this._model.findOne({
       userId: new Types.ObjectId(userId),
     });
-   // console.log('company from repo', company);
+    // console.log('company from repo', company);
 
     if (!company) return null;
     return this.mapToEntity(company);
@@ -44,16 +44,15 @@ export class CompanyRepository
     search: string,
     limit: number
   ): Promise<PaginatedCompanies> {
+    const query: CompanyQuery = { ...filter };
 
- const query: CompanyQuery = { ...filter };
-
-if (search) {
-  query.$or = [
-    { companyName: { $regex: search, $options: "i" } },
-    { email: { $regex: search, $options: "i" } },
-    { industry: { $regex: search, $options: "i" } }
-  ];
-}
+    if (search) {
+      query.$or = [
+        { companyName: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+        { industry: { $regex: search, $options: 'i' } },
+      ];
+    }
     const skip = (page - 1) * limit;
     const companies = await this._model
       .aggregate([
@@ -81,11 +80,7 @@ if (search) {
       ])
       .skip(skip)
       .limit(limit);
-   // console.log('companies docs from repo', companies);
-    // console.log(
-    //   'after mapping',
-    //   companies.map((e) => this.mapToCompanyListDTO(e))
-    // );
+
     const totalDocs = await this._model.countDocuments(query);
     return {
       companies: companies.map((e) => this.mapToCompanyListDTO(e)),
@@ -163,22 +158,24 @@ if (search) {
     if (entity.size !== undefined) data.size = entity.size;
     if (entity.address !== undefined) data.address = entity.address;
     if (entity.document !== undefined) data.document = entity.document;
-  //  console.log('data after persisatnce', data);
+    //  console.log('data after persisatnce', data);
 
     return data;
   }
 
+  async getStatus(): Promise<CompanyStatus> {
+    const statusDoc = await this._model.aggregate([
+      { $group: { _id: '$status', count: { $sum: 1 } } },
+    ]);
+    const total = statusDoc.reduce((acc, doc) => acc + doc.count, 0);
+    const status = Object.fromEntries(
+      statusDoc.map((doc) => [doc._id, doc.count])
+    );
+    status.totalCompany = total;
+    console.log('status', status);
 
-async getStatus(): Promise<CompanyStatus> {
-  const statusDoc=await this._model.aggregate([{$group:{_id:'$status',count:{$sum:1}}}])
-  const total=statusDoc.reduce((acc,doc)=>acc+doc.count,0)
- const status=Object.fromEntries(statusDoc.map(doc=>[doc._id,doc.count]))
- status.totalCompany=total
- console.log('status',status);
- 
-  return status
-}
-
+    return status;
+  }
 
   private mapToCompanyListDTO(doc: any): CompanyListDTO {
     return {

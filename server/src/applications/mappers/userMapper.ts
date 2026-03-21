@@ -8,12 +8,14 @@ export class UserMapper {
       email: user.email,
       phone: user.phone,
       role: user.role,
-      isRequested:user.isRequested,
+      isRequested: user.isRequested,
       imageUrl: user.imageUrl,
       isblocked: user.isBlocked,
     };
   }
   static toUserProfileDto(user: User) {
+    console.log('user befor converting user.isBlocked', user.isBlocked);
+
     return {
       id: user.id,
       email: user.email,
@@ -28,6 +30,8 @@ export class UserMapper {
       socialLinks: user.socialMediaLinks,
       about: user.about,
       resumes: user.resumes,
+      createdAt: user.createdAt,
+      isBlocked: user.isBlocked,
     };
   }
 }

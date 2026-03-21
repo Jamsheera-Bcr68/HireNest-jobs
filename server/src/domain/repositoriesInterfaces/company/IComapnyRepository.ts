@@ -1,6 +1,9 @@
 import { IBaseRepository } from '../IBaseRepository';
 import { Company } from '../../entities/company';
-import { companyDto, CompanyStatus } from '../../../applications/Dtos/companyDto';
+import {
+  companyDto,
+  CompanyStatus,
+} from '../../../applications/Dtos/companyDto';
 import { User } from '../../entities/User';
 import { CompanyListDTO } from '../../../applications/Dtos/companyDto';
 import { type PaginatedCompanies } from '../../../applications/Dtos/companyDto';
@@ -14,5 +17,5 @@ export interface ICompanyRepository extends IBaseRepository<Company> {
     limit: number
   ): Promise<PaginatedCompanies>;
 
-  getStatus():Promise<CompanyStatus>
+  getStatus(): Promise<CompanyStatus>;
 }

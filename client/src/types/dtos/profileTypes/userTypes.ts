@@ -4,7 +4,7 @@ import { type ExperienceType } from './experienceType';
 import type { EducationType } from './educationTypes';
 import type { ResumeType } from './ResumeType';
 
-export type StatusType = "active" | "suspended" | "pending"|"rejected"
+export type StatusType = 'active' | 'suspended' | 'pending' | 'rejected';
 
 export type userDto = {
   id: string;
@@ -29,13 +29,14 @@ export interface UserProfileType {
   socialLinks?: ISocialLinks;
   imageUrl?: string;
   about?: string;
-  experience?: ExperienceType[];
+  experience: ExperienceType[] | [];
   education: EducationType[] | [];
   resumes: ResumeType[] | [];
+  isBlocked: boolean;
+  createdAt: string;
 }
 
 export interface CompanyProfileType {
-  
   id: string;
   email: string;
   phone: string;
@@ -53,13 +54,13 @@ export interface CompanyProfileType {
   };
   mission: string;
   vision: string;
-  jobCount?:string,
+  jobCount?: string;
   culture: string;
-  status:StatusType,
+  status: StatusType;
   benefits: string[] | [];
   about: string;
-  createdAt:string
-  joinedAt?:string,
+  createdAt: string;
+  joinedAt?: string;
   socialMediaLinks: ISocialLinks;
   document: { type: string; file: string };
 }

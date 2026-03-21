@@ -109,8 +109,6 @@ const logoColors = {
   SF: 'bg-indigo-100 text-indigo-700',
 };
 
-
-
 const planStyles = {
   Basic: 'bg-slate-100 text-slate-600',
   Premium: 'bg-blue-50 text-blue-700',
@@ -409,8 +407,7 @@ export default function EmployerManagement() {
                       <div className="flex items-center gap-3">
                         <div
                           className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0  `}
-                              // ${logoColors[employer.logo]}
-                        
+                          // ${logoColors[employer.logo]}
                         >
                           {employer.logo}
                         </div>
@@ -447,7 +444,7 @@ export default function EmployerManagement() {
                     <td className="px-4 py-4 hidden lg:table-cell">
                       <span
                         className={`text-xs font-semibold px-2.5 py-1 rounded-full`}
-                          //  ${planStyles[employer.plan]}
+                        //  ${planStyles[employer.plan]}
                       >
                         {employer.plan}
                       </span>
@@ -455,8 +452,7 @@ export default function EmployerManagement() {
                     <td className="px-4 py-4">
                       <span
                         className={`text-xs font-semibold px-2.5 py-1 rounded-full    `}
-                            // ${statusStyles[employer.status]}
-                       
+                        // ${statusStyles[employer.status]}
                       >
                         {employer.status}
                       </span>
@@ -495,7 +491,7 @@ export default function EmployerManagement() {
                           </svg>
                         </button>
                         <button
-                        //  onClick={() => openModal('edit', employer)}
+                          //  onClick={() => openModal('edit', employer)}
                           className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition"
                           title="Edit"
                         >

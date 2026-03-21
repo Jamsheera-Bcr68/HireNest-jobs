@@ -8,8 +8,6 @@ import ContactDetails from '../../components/admin/companyDetails/ContactDetails
 import { adminService } from '../../../services/apiServices/adminService';
 import Activity from '../../components/admin/companyDetails/Activity';
 
-
-
 export default function CompanyDetails() {
   const { companyId } = useParams();
   if (!companyId) return;
@@ -41,7 +39,7 @@ export default function CompanyDetails() {
             {/* Contact Info */}
             <ContactDetails company={company} />
             {/* Admin Insights */}
-          {company?.isVerified&& <Activity />} 
+            {company?.isVerified && <Activity />}
           </div>
         </div>
       </div>

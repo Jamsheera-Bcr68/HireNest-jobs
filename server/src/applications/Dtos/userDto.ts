@@ -1,3 +1,4 @@
+import { Experience } from '../../domain/entities/Experience';
 import { UserRole } from '../../domain/enums/userEnums';
 import { IAddress, ISocialMediaLinks } from '../../domain/values/profileTypes';
 
@@ -5,7 +6,7 @@ export interface userDto {
   id: string;
   email: string;
   imageUrl?: string;
-  isRequested:boolean
+  isRequested: boolean;
   role: UserRole;
   phone: string;
   isBlocked: boolean;
@@ -20,4 +21,7 @@ export interface userProfileDto {
   skills: Array<string>;
   address?: IAddress;
   socialLinks?: ISocialMediaLinks;
+  createdAt: string;
+  isBlocked: boolean;
+  experience: Array<Experience>;
 }

@@ -48,8 +48,14 @@ import { GetCompaniesUseCase } from '../../applications/useCases/admin/GetCompan
 import { AdminGetCompanyUseCase } from '../../applications/useCases/admin/GetCompanyUseCase';
 import { AdminUpdateCompanyUseCase } from '../../applications/useCases/admin/AdminUpdateCompanyUseCase';
 import { GetCompanyStatusUseCase } from '../../applications/useCases/admin/GetCompanyStatusUseCase';
+import { GetCandidateStatusUseCase } from '../../applications/useCases/admin/GetCandidatesStatus';
+import { AdminGetCandidateUseCase } from '../../applications/useCases/admin/AdminGetCandidatesUseCase';
+import { AdminUpdateCandidateUseCase } from '../../applications/useCases/admin/AdminUpdateCandidateUseCase';
+import { AdminGetEntityUseCase } from '../../applications/useCases/admin/AdminGetCandidateUseCase';
+import { GetFileExistUseCase } from '../../applications/useCases/admin/GetFileExistUseCase';
 //==Controllers
 //auth
+
 import { AuthController } from '../../presentation/http/controllers/auth/authController';
 import { RefreshTokenController } from '../../presentation/http/controllers/auth/refreshTokenController';
 import { AdminAuthController } from '../../presentation/http/controllers/auth/adminAuthController';
@@ -66,7 +72,7 @@ import { CompanyProfileController } from '../../presentation/http/controllers/co
 //job
 import { JobController } from '../../presentation/http/controllers/jobController';
 //admin
-import { AdminCompanyController } from '../../presentation/http/controllers/admin/adminCompanyController';
+import { AdminUserController } from '../../presentation/http/controllers/admin/adminUserController';
 //==repsitories
 
 import { UserRepository } from '../repositories/user/userRepository';
@@ -224,6 +230,16 @@ const adminUpdateCompanyUseCase = new AdminUpdateCompanyUseCase(
   companyRepository
 );
 const getCompnayStatusUseCase = new GetCompanyStatusUseCase(companyRepository);
+const getCandidateStatusUseCase = new GetCandidateStatusUseCase(userRepository);
+const adminGetCandidatesUseCase = new AdminGetCandidateUseCase(
+  userRepository,
+  educationRepository
+);
+const adminUpdateCandidateUseCase = new AdminUpdateCandidateUseCase(
+  userRepository
+);
+const adminGetEntityUseCase = new AdminGetEntityUseCase(userRepository);
+const getFileExistUseCase = new GetFileExistUseCase(fileStorageServices);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -284,9 +300,14 @@ export const companyProfileController = new CompanyProfileController(
   companyAboutUpdateUseCase
 );
 export const jobController = new JobController(createJobUseCase);
-export const adminCompanyController = new AdminCompanyController(
+export const adminUserController = new AdminUserController(
   getCompaniesUseCase,
   adminGetCompanyUseCase,
   adminUpdateCompanyUseCase,
-  getCompnayStatusUseCase
+  getCompnayStatusUseCase,
+  getCandidateStatusUseCase,
+  adminGetCandidatesUseCase,
+  adminUpdateCandidateUseCase,
+  adminGetEntityUseCase,
+  getFileExistUseCase
 );

@@ -1,12 +1,9 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import LogoImgViewModal from '../../../../modals/LogoPreviewModal';
 import EditCompanyProfileModal from '../../../../modals/EditCompanyProfile';
 import type { CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
-import { Twitter,  } from 'lucide-react';
+import { Twitter } from 'lucide-react';
 import ChangePasswordModal from '../../../../modals/ChangePasswordModal';
-
-
-
 
 type Props = {
   company: CompanyProfileType | null;

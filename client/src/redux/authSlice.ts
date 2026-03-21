@@ -5,7 +5,7 @@ import { type userDto } from '../types/dtos/profileTypes/userTypes';
 
 const savedUser = localStorage.getItem('user');
 const token = localStorage.getItem('accessToken');
-let parsedUser=null 
+let parsedUser = null;
 try {
   parsedUser = savedUser ? JSON.parse(savedUser) : null;
 } catch {
@@ -14,7 +14,7 @@ try {
 const initialState: AuthState = {
   user: parsedUser,
   accessToken: token ? token : '',
-  isAuthenticated:!! token ,
+  isAuthenticated: !!token,
 };
 export const authSlice = createSlice({
   initialState,
@@ -28,8 +28,7 @@ export const authSlice = createSlice({
       console.log('action  is ', action);
 
       state.accessToken = action.payload.accessToken;
-      state.user = action.payload.user,
-      state.isAuthenticated = true;
+      ((state.user = action.payload.user), (state.isAuthenticated = true));
       localStorage.setItem('user', JSON.stringify(action.payload.user));
       localStorage.setItem('accessToken', action.payload.accessToken);
     },
@@ -47,14 +46,13 @@ export const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       //console.log('new access tokes set',state.accessToken);
     },
-    updateUser(state,action){
-      console.log('action update user',action);
-      if(state.user){
-        state.user={...state.user,...action.payload}
-        
+    updateUser(state, action) {
+      console.log('action update user', action);
+      if (state.user) {
+        state.user = { ...state.user, ...action.payload };
       }
-       localStorage.setItem('user', JSON.stringify({...state.user}))
-    }
+      localStorage.setItem('user', JSON.stringify({ ...state.user }));
+    },
   },
 });
 export default authSlice.reducer;

@@ -37,8 +37,8 @@ export interface IResume {
   uploadedAt: Date;
 }
 
-export interface CompanyRequestType{
-date:Date
-companyId:string
-status:StatusEnum
+export interface CompanyRequestType {
+  date: Date;
+  companyId: string;
+  status: StatusEnum;
 }

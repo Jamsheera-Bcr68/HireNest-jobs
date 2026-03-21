@@ -11,3 +11,10 @@ export interface CandidateProfileUpdateDto {
   location?: IAddress;
   socialMedidaLinks?: ISocialMediaLinks;
 }
+export type CandidateStatus = {
+  totalCandidate?: number;
+  active?: number;
+
+  suspended?: number;
+  new: number;
+};

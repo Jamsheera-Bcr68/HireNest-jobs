@@ -9,6 +9,23 @@ import { IResume } from '../../../domain/values/profileTypes';
 import { IExperienceDocument } from '../../database/models/user/experienceModel';
 import { Experience } from '../../../domain/entities/Experience';
 import { IEducationDocument } from '../../database/models/user/educationModel';
+import { CandidateStatus } from '../../../applications/Dtos/candidateDto';
+import { UserMapper } from '../../../applications/mappers/userMapper';
+import {
+  CandidateFilterType,
+  PaginatedCandidates,
+  PaginatedEntities,
+} from '../../../applications/types/candidateType';
+import { IEducationRepository } from '../../../domain/repositoriesInterfaces/IEducationRepository';
+import { userProfileDto } from '../../../applications/Dtos/userDto';
+
+type CandidateQuery = Partial<User> & {
+  $or?: {
+    name?: { $regex: string; $options: string };
+    email?: { $regex: string; $options: string };
+    title?: { $regex: string; $options: string };
+  }[];
+};
 
 export class UserRepository
   extends GenericRepository<User, IUserDocument>
@@ -17,6 +34,7 @@ export class UserRepository
   constructor() {
     super(userModel);
   }
+
   async findByEmail(email: string, userId?: string): Promise<User | null> {
     const filter = { email };
 
@@ -26,6 +44,7 @@ export class UserRepository
     if (!user) return null;
     else return this.mapToEntity(user);
   }
+
   async createUser(user: User): Promise<User> {
     const document = await this._model.create({
       email: user.email,
@@ -36,6 +55,7 @@ export class UserRepository
 
     return this.mapToEntity(document);
   }
+
   async findById(id: string): Promise<User | null> {
     //  console.log('from userrepository');
 
@@ -49,8 +69,8 @@ export class UserRepository
     if (!user) return null;
     return this.mapToEntity(user);
   }
+
   mapToEntity = (doc: IUserDocument): User => {
-    // console.log('doc from maptoentity ', doc);
     const skills = (doc.skills as ISkillDocument[]).map(
       (skill: ISkillDocument): UserSkillDto => {
         return {
@@ -77,6 +97,7 @@ export class UserRepository
         };
       }
     );
+
     const education = (doc.education as IEducationDocument[]).map((edu) => {
       return {
         id: edu._id?.toString(),
@@ -96,6 +117,8 @@ export class UserRepository
       doc.email,
       doc.password,
       doc.phone,
+      doc.createdAt,
+      doc.updatedAt,
       doc.isVerified,
       doc.isRequested,
       doc.companyRequests ?? [],
@@ -119,8 +142,10 @@ export class UserRepository
       doc.title ?? undefined,
       doc.address ?? undefined,
       doc.socialMediaLinks ?? {},
-      doc.imageUrl ?? undefined,
-      doc.about ?? 'F',
+
+      doc.imageUrl,
+      doc.isBlocked,
+      doc.about ?? '',
       skills
     );
   };
@@ -133,6 +158,7 @@ export class UserRepository
       imageUrl: entity.imageUrl,
       isRequested: entity.isRequested,
       companyRequests: entity.companyRequests,
+      isBlocked: entity.isBlocked,
       resumes: entity.resumes?.map((resume) => {
         return {
           _id: new Types.ObjectId(resume.id),
@@ -147,12 +173,14 @@ export class UserRepository
       skills: entity.skills?.map((skill) => new Types.ObjectId(skill.id)),
     };
   };
+
   async verifyUser(email: string): Promise<void> {
     const user = await this._model.findOne({ email });
     if (!user) throw new Error('user not found');
     user.isVerified = true;
     await user.save();
   }
+
   async updateResetToken(
     userId: string,
     hashedToken: string,
@@ -166,15 +194,13 @@ export class UserRepository
 
   async updatePassword(id: string, password: string): Promise<void> {
     await this._model
-      .findByIdAndUpdate(
-        id,
-        { $set: { password, resetToken: null, resetTokenExpiry: null } }
-      )
+      .findByIdAndUpdate(id, {
+        $set: { password, resetToken: null, resetTokenExpiry: null },
+      })
       .populate('skills')
       .populate('experience')
-      .populate('education')
+      .populate('education');
   }
-
 
   async clearResetToken(id: string): Promise<void> {
     await this._model.findByIdAndUpdate(id, {
@@ -184,7 +210,6 @@ export class UserRepository
       },
     });
   }
-
 
   async updateGoogleId(email: string, googleId: string): Promise<User | null> {
     const document = await this._model.findOneAndUpdate(
@@ -207,6 +232,7 @@ export class UserRepository
     if (!user) return null;
     return this.mapToEntity(user);
   }
+
   async addSkill(id: string, skillId: string): Promise<User | null> {
     const updated = await this._model
       .findByIdAndUpdate(id, { $addToSet: { skills: skillId } }, { new: true })
@@ -216,6 +242,7 @@ export class UserRepository
     if (!updated) return null;
     return this.mapToEntity(updated);
   }
+
   async removeSkill(userId: string, skillId: string): Promise<User | null> {
     const updated = await this._model
       .findByIdAndUpdate(
@@ -230,6 +257,7 @@ export class UserRepository
     if (!updated) return null;
     return this.mapToEntity(updated);
   }
+
   async addExperience(userId: string, expId: string): Promise<User | null> {
     const updated = await this._model
       .findByIdAndUpdate(
@@ -243,6 +271,7 @@ export class UserRepository
     if (!updated) return null;
     return this.mapToEntity(updated);
   }
+
   async removeExperience(userId: string, expId: string): Promise<User | null> {
     const doc = await this._model
       .findByIdAndUpdate(userId, {
@@ -254,6 +283,7 @@ export class UserRepository
     if (!doc) return null;
     return this.mapToEntity(doc);
   }
+
   async addEducation(userId: string, eduId: string): Promise<User | null> {
     const user = await this._model
       .findByIdAndUpdate(
@@ -267,6 +297,7 @@ export class UserRepository
     if (!user) return null;
     return this.mapToEntity(user);
   }
+
   async removeEducation(userId: string, eduId: string): Promise<User | null> {
     const user = await this._model
       .findByIdAndUpdate(
@@ -280,6 +311,7 @@ export class UserRepository
     if (!user) return null;
     return this.mapToEntity(user);
   }
+
   async addResume(data: IResume, userId: string): Promise<User | null> {
     const doc = await this._model
       .findByIdAndUpdate(
@@ -293,6 +325,7 @@ export class UserRepository
     if (!doc) return null;
     return this.mapToEntity(doc);
   }
+
   async addProfileImage(
     userId: string,
     imageUrl: string
@@ -309,6 +342,7 @@ export class UserRepository
     if (!doc) return null;
     return this.mapToEntity(doc);
   }
+
   async removeProfileImage(userId: string): Promise<User | null> {
     const doc = await this._model
       .findByIdAndUpdate(userId, { $set: { imageUrl: '' } }, { new: true })
@@ -318,6 +352,7 @@ export class UserRepository
     if (!doc) return null;
     return this.mapToEntity(doc);
   }
+
   async removeResume(userId: string, resumeId: string): Promise<User | null> {
     const user = await this._model
       .findByIdAndUpdate(
@@ -330,5 +365,109 @@ export class UserRepository
       .populate('education');
     if (!user) return null;
     else return this.mapToEntity(user);
+  }
+
+  async getCandidateStatus(): Promise<CandidateStatus> {
+    const now = new Date();
+
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    const statusDocs = await this._model.aggregate([
+      { $match: { role: 'candidate' } },
+      { $group: { _id: '$isBlocked', count: { $sum: 1 } } },
+    ]);
+    const total = statusDocs.reduce((acc, doc) => acc + doc.count, 0);
+    const status = Object.fromEntries(
+      statusDocs.map((doc) => [
+        doc._id === false ? 'active' : 'suspended',
+        doc.count,
+      ])
+    ) as CandidateStatus;
+    const newDocCount = await this._model.countDocuments({
+      createdAt: { $gte: startOfMonth },
+      role: 'candidate',
+    });
+    console.log(status);
+    status.new = newDocCount;
+    status.totalCandidate = total;
+    console.log('new dod', newDocCount);
+
+    return status;
+  }
+
+  async getCandidateList(
+    filter: Partial<User>,
+    page: number,
+    limit: number,
+    search?: string,
+    education?: string
+  ): Promise<PaginatedEntities<User>> {
+    console.log('filter', filter);
+    const skip = limit * (page - 1);
+    const query: any = { ...filter };
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+        { title: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const pipeline = [
+      { $match: query },
+      {
+        $lookup: {
+          from: 'educations',
+          localField: 'education',
+          foreignField: '_id',
+          as: 'edudata',
+        },
+      },
+    ];
+    if (education) {
+      pipeline.push({
+        $match: {
+          edudata: {
+            $elemMatch: {
+              level: education,
+            },
+          },
+        },
+      });
+    }
+
+    const candidates = await this._model
+      .aggregate(pipeline)
+      .skip(skip)
+      .limit(Number(limit));
+    let totalDocs = (await this._model.aggregate(pipeline)).length;
+    console.log('candidatesss', candidates);
+
+    return {
+      entities: candidates.map((doc) => this.mapToCandidateList(doc)),
+      totalDocs,
+    };
+  }
+
+  private mapToCandidateList(doc: any): User {
+    return {
+      id: doc._id.toString(),
+      email: doc.email,
+      password: doc.password,
+      phone: doc.phone,
+      createdAt: doc.createdAt,
+      isBlocked: doc.isBlocked,
+      updatedAt: doc.updatedAt,
+      isVerified: doc.isVerified,
+      isRequested: doc.isRequested,
+      companyRequests: doc.companyRequests ?? [],
+      experience: doc.experience || [],
+      education: doc.education || [],
+      resumes: doc.resumes || [],
+      title: doc.title ?? undefined,
+      imageUrl: doc.imageUrl ?? undefined,
+      name: doc.name ?? undefined,
+    };
   }
 }

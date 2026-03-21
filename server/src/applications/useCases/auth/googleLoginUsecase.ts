@@ -23,8 +23,8 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
     this._tokenService = tokenService;
   }
   async execute(token: string, role: UserRole): Promise<loginOutPutDto> {
-   /// console.log('from google login usecase');
-   // console.log(role);
+    /// console.log('from google login usecase');
+    // console.log(role);
 
     const googleUser = await this._googleAuthService.getUserInfo(token);
     //console.log('google user ', googleUser);

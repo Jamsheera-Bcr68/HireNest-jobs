@@ -1,9 +1,8 @@
 import * as Dialog from '@radix-ui/react-dialog';
 
-type ModalType = 'delete' | 'info'
+type ModalType = 'delete' | 'info';
 type ModalProps = {
   isOpen: boolean;
-
 
   onClose: () => void;
   onConfirm: () => Promise<void>;
@@ -19,8 +18,8 @@ export default function ConfirmationModal({
   type,
   action,
 }: ModalProps) {
-    console.log('type',type);
-    
+  console.log('type', type);
+
   return (
     <Dialog.Root
       open={isOpen}

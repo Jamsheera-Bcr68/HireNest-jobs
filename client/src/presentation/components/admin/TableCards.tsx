@@ -1,12 +1,5 @@
-
-
 function TableCards() {
-  return (
-    <div>
-       
-
-    </div>
-  )
+  return <div></div>;
 }
 
-export default TableCards
+export default TableCards;
