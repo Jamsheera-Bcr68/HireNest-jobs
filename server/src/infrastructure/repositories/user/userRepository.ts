@@ -157,6 +157,7 @@ export class UserRepository
       address: entity.address,
       imageUrl: entity.imageUrl,
       isRequested: entity.isRequested,
+      role: entity.role,
       companyRequests: entity.companyRequests,
       isBlocked: entity.isBlocked,
       resumes: entity.resumes?.map((resume) => {

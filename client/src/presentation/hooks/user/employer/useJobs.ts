@@ -123,7 +123,7 @@ export const useJobs = () => {
       console.log('created job', data.job);
 
       showToast({ msg: data.message, type: 'success' });
-      navigate('/employer');
+      navigate('/company');
     } catch (error: any) {
       showToast({
         msg: error?.response?.data?.message || error.message,

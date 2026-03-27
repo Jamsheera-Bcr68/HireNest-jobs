@@ -1,11 +1,15 @@
 import express from 'express';
+
 import {
   profileValidator,
   experienceFormValidator,
 } from '../middleweres/validatores/profileValidator';
 import { authValidator } from '../middleweres/authValidator';
 import { tokenService } from '../../../infrastructure/config/di';
-import { candidateProfileController } from '../../../infrastructure/config/di';
+import {
+  candidateProfileController,
+  userControlller,
+} from '../../../infrastructure/config/di';
 import { upload } from '../middleweres/imageUpload';
 import { educationValidator } from '../validators/educationFormValidator';
 import { fileUpload } from '../middleweres/pdfUpload';
@@ -97,4 +101,6 @@ router.delete(
   authValidator(tokenService),
   candidateProfileController.removeResume
 );
+
+router.get('/home', userControlller.getHomeData);
 export default router;

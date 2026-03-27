@@ -1,3 +1,4 @@
+import { StatusEnum } from '../enums/statusEnum';
 import { WorkMode } from '../enums/WorkMode';
 import { JobType, ExperienceType } from '../types/jobTypes';
 
@@ -5,7 +6,7 @@ export interface Job {
   id: string;
   title: string;
   mode: WorkMode;
-  userId: string;
+  companyId: string;
   jobType: JobType;
   vacancyCount: number;
   experience: ExperienceType;
@@ -18,6 +19,7 @@ export interface Job {
   education: string;
   responsibilities: string[] | [];
   skills: string[] | [];
+  status: StatusEnum;
   description: string;
   createdAt?: Date;
   updatedAt?: Date;

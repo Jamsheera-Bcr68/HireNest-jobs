@@ -39,7 +39,7 @@ export class SkillsController {
 
     const { skill } = req.body;
     const user = req.user;
-    console.log('user from auth', user);
+    console.log('user from skill controler', user);
 
     try {
       if (!user) {

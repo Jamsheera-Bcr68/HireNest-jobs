@@ -202,8 +202,6 @@ const Checkbox = ({ children, checked, handleChange, name }: CheckboxProps) => (
 );
 
 export default function CompanyRegistration() {
-  // const [blob, setblob] = useState<Blob | null>(null);
-
   const {
     formData,
     handleChange,
@@ -277,8 +275,8 @@ export default function CompanyRegistration() {
           {/* <Stepper current={1} /> */}
         {/* </div> */}
 
-        {/* ── Main form area ── */}
-        <div className="max-w-2xl mx-auto bg-white mt-3 px-4 py-10 flex flex-col gap-6">
+        {/* ── Main form area ──mt-3 */}
+        <div className="max-w-2xl mx-auto bg-white px-4 py-10 flex flex-col gap-6">
           {/* Info banner */}
           <div className="flex items-start gap-3 rounded-2xl bg-indigo-50 border border-indigo-100 px-5 py-4">
             <div className="flex-shrink-0 mt-0.5">

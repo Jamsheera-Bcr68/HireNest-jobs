@@ -6,4 +6,5 @@ export interface IBaseRepository<T> {
   deleteById(id: string): Promise<void>;
   create(data: Partial<T>): Promise<T>;
   update(id: string, data: Partial<T>): Promise<T | null>;
+  getCount(filter: Partial<T>): Promise<number>;
 }

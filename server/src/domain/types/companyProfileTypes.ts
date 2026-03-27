@@ -1,11 +1,11 @@
 export const Industry_Type = [
   'Information Technology',
-  'Finance & Banking',
+  'Finance And Banking',
   'Healthcare',
   'Manufacturing',
-  'Retail & E-commerce',
+  'Retail And E-commerce',
   'Education',
-  'Media & Communication',
+  'Media And Communication',
   'Logistics',
   'Other',
 ] as const;

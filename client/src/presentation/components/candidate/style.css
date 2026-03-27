@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+.hero-glow {
+  background: radial-gradient(
+    ellipse 80% 60% at 50% -10%,
+    rgba(99, 102, 241, 0.35) 0%,
+    transparent 70%
+  );
+}
+.card-hover {
+  transition:
+    transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.22s;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px 0 rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.55) !important;
+}
+.search-bar {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+}
+.search-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  transition:
+    opacity 0.18s,
+    transform 0.18s;
+}
+.search-btn:hover {
+  opacity: 0.88;
+  transform: scale(1.03);
+}
+.employer-btn {
+  background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+  transition:
+    opacity 0.18s,
+    transform 0.18s;
+}
+.employer-btn:hover {
+  opacity: 0.88;
+  transform: scale(1.04);
+}
+.cat-card:hover {
+  background: rgba(99, 102, 241, 0.18) !important;
+  border-color: rgba(99, 102, 241, 0.5) !important;
+}
+.nav-link {
+  transition: color 0.15s;
+}
+.nav-link:hover {
+  color: #a5b4fc;
+}
+.badge-remote {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+}
+.badge-hybrid {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+}
+.badge-onsite {
+  background: rgba(239, 68, 68, 0.13);
+  color: #fca5a5;
+}
+.badge-senior {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c4b5fd;
+}
+.badge-mid {
+  background: rgba(99, 102, 241, 0.13);
+  color: #a5b4fc;
+}
+.badge-lead {
+  background: rgba(236, 72, 153, 0.13);
+  color: #f9a8d4;
+}
+.dots-bg {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.045) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+}
+.stat-card {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(139, 92, 246, 0.07) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.18);
+}
+input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+input:focus {
+  outline: none;
+}

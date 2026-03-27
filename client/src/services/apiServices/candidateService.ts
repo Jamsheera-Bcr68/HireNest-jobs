@@ -1,4 +1,5 @@
 import axiosInstance from '../../libraries/axios';
+import { CANDIDATE_API_ENDPOINTS } from '../../constants/apiEndPoints/candidate';
 import { type AddExperienceFormData } from '../../libraries/validations/auth/candidate/experienceFormValidation';
 import { type EducationFormData } from '../../libraries/validations/auth/candidate/educationFormValidation';
 
@@ -71,6 +72,13 @@ export const profileService = {
   },
   async removeResume(id: string) {
     const res = await axiosInstance.delete(`/candidate/profile/resume/${id}`);
+    return res.data;
+  },
+};
+
+export const candidateService = {
+  async getHomeData() {
+    const res = await axiosInstance.get(CANDIDATE_API_ENDPOINTS.HOME_DATA);
     return res.data;
   },
 };

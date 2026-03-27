@@ -123,7 +123,7 @@ export function MissionVision({
               <SquarePenIcon size={18} />
             </button>
           </div>
-          {company?.vision.trim() ? (
+          {company?.vision?.trim() ? (
             <p className="text-sm mt-3">{company.vision}</p>
           ) : (
             <p className="text-gray-500 text-sm italic mt-3">

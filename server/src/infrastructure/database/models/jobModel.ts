@@ -7,12 +7,14 @@ import {
 import mongoose, { Schema } from 'mongoose';
 import { required } from 'zod/v4/core/util.cjs';
 import { WorkMode } from '../../../domain/enums/WorkMode';
+import { StatusEnum } from '../../../domain/enums/statusEnum';
+import { Industry_Type } from '../../../domain/types/companyProfileTypes';
 
 export interface IJobDocument {
   _id: Types.ObjectId;
   title: string;
   mode: WorkMode;
-  userId: Types.ObjectId;
+  companyId: Types.ObjectId;
   jobType: JobType;
   vacancyCount: number;
   experience: ExperienceType;
@@ -26,6 +28,9 @@ export interface IJobDocument {
   responsibilities: string[] | [];
   skills: Types.ObjectId[] | [];
   description: string;
+  status: StatusEnum;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const JobSchema = new Schema<IJobDocument>(
@@ -33,14 +38,20 @@ const JobSchema = new Schema<IJobDocument>(
     title: { type: String, required: true },
     mode: { type: String, enum: Object.values(WorkMode) },
     jobType: { type: String, enum: Object.values(JobType) },
+
     vacancyCount: { type: Number },
     experience: { type: String, enum: Object.values(Experience_LEVELS) },
     state: String,
+    status: {
+      type: String,
+      enum: Object.values(StatusEnum),
+      default: StatusEnum.ACTIVE,
+    },
     country: String,
     min_salary: Number,
     max_salary: Number,
     lastDate: Date,
-    userId: { type: Types.ObjectId, required: true },
+    companyId: { type: Types.ObjectId, required: true },
     languages: { type: [String], default: [] },
     education: String,
     responsibilities: { type: [String], default: [] },

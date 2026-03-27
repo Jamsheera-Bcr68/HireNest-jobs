@@ -20,7 +20,7 @@ export const userMessages = {
     COMPANY_UNDER_REVIEW: 'Your company registration is processing',
     DOC_UPLOADED: 'Document uploaded',
     COMPANY_FOUND: 'Company data fetched successfully',
-
+    HOME_DATA_FETCHED: 'Hoem  data fetched successfully',
     COMPANY_UPDATED: 'Company Updated successfully',
     LOGO_REMOVED: 'Company removed successfully',
   },

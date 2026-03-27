@@ -1,11 +1,11 @@
 export const Industry_Type = [
   'Information Technology',
-  'Finance & Banking',
+  'Finance And Banking',
   'Healthcare',
   'Manufacturing',
-  'Retail & E-commerce',
+  'Retail And E-commerce',
   'Education',
-  'Media & Communication',
+  'Media And Communication',
   'Logistics',
   'Other',
 ] as const;
@@ -40,6 +40,17 @@ export type FileType = {
   uploadedAt: string;
 };
 
+export const industryIcons: Record<IndustryType, string> = {
+  'Information Technology': '💻',
+  'Finance And Banking': '💰',
+  Healthcare: '🏥',
+  Manufacturing: '🏭',
+  'Retail And E-commerce': '🛒',
+  Education: '📚',
+  'Media And Communication': '📡',
+  Logistics: '🚚',
+  Other: '📁',
+};
 export type DocumentType = (typeof Document_Types)[number] | '';
 export type IndustryType = (typeof Industry_Type)[number];
 export type CompanySize = (typeof Company_Size)[number];

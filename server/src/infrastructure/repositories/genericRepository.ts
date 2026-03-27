@@ -77,7 +77,10 @@ export abstract class GenericRepository<
 
     return this.mapToEntity(doc);
   }
-
+  async getCount(filter?: Partial<T>): Promise<number> {
+    const count = await this._model.countDocuments(filter);
+    return count;
+  }
   protected abstract mapToEntity(doc: D): T;
   protected abstract mapToPersistance(entity: Partial<T>): Partial<D>;
 }

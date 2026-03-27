@@ -18,7 +18,7 @@ const HeroSection = ({ heroImage }: HeroProps) => {
   const navigate = useNavigate();
   const handlePostClick = () => {
     console.log('from handle post click');
-    if (user.role == 'employer') {
+    if (user.role == 'company') {
       navigate('/company/jobs/create');
     } else if (user.role == 'candidate' && user.isRequested) {
       setPendingOpen(true);
@@ -28,7 +28,7 @@ const HeroSection = ({ heroImage }: HeroProps) => {
   };
   const handleDashboardClick = () => {
     console.log('from handle post click');
-    if (user.role == 'employer') {
+    if (user.role == 'company') {
       navigate('/company/dashboard');
     } else if (user.role == 'candidate' && user.isRequested) {
       setPendingOpen(true);

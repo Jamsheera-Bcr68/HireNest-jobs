@@ -11,4 +11,6 @@ router.post(
   jobValidator,
   jobController.create
 );
+router.get('/', jobController.getJobs);
+router.get('/:id', jobController.getJobDetails);
 export default router;

@@ -40,23 +40,19 @@ export class FileStorageService implements IFileStorageService {
   }
 
   async checkExist(fileUrl: string) {
-  console.log('from service', fileUrl);
+    console.log('from service', fileUrl);
 
-  const filePath = path.join(
-    process.cwd(),
-    'public',
-    fileUrl
-  );
+    const filePath = path.join(process.cwd(), 'public', fileUrl);
 
-  console.log('checking path:', filePath);
+    console.log('checking path:', filePath);
 
-  try {
-    await fs.access(filePath);
-    console.log('File exists ');
-    return true;
-  } catch {
-    console.log('File NOT exists ');
-    return false;
+    try {
+      await fs.access(filePath);
+      console.log('File exists ');
+      return true;
+    } catch {
+      console.log('File NOT exists ');
+      return false;
+    }
   }
-}
 }

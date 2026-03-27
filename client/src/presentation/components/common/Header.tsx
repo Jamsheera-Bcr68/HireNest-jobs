@@ -39,7 +39,7 @@ const Header = () => {
               Services
             </a>
             <a
-              href="#"
+              href="/jobs"
               className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
             >
               Find Jobs
@@ -49,7 +49,7 @@ const Header = () => {
                 href={
                   user?.role == 'candidate'
                     ? '/profile'
-                    : user?.role == 'employer'
+                    : user?.role == 'company'
                       ? '/company/profile'
                       : '/'
                 }
@@ -87,7 +87,7 @@ const Header = () => {
               </button>
             )}
 
-            {user && (user.role === 'candidate' || 'employer') && (
+            {user && (user.role === 'candidate' || 'company') && (
               <button
                 onClick={() => navigate('/company')}
                 className="bg-green-600 text-white hover:bg-green-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"

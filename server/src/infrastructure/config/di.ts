@@ -1,3 +1,5 @@
+import { Job } from '../../domain/entities/Job';
+
 //*==================  usecases    ================*
 //auth
 import { RegisterUseCase } from '../../applications/useCases/auth/registerUserUsecases';
@@ -53,6 +55,9 @@ import { AdminGetCandidateUseCase } from '../../applications/useCases/admin/Admi
 import { AdminUpdateCandidateUseCase } from '../../applications/useCases/admin/AdminUpdateCandidateUseCase';
 import { AdminGetEntityUseCase } from '../../applications/useCases/admin/AdminGetCandidateUseCase';
 import { GetFileExistUseCase } from '../../applications/useCases/admin/GetFileExistUseCase';
+import { GetHomeDataUseCase } from '../../applications/useCases/candidate/GetHomeDataUseCase';
+import { GetAllJobssUseCase } from '../../applications/useCases/candidate/GetAllJobsUseCase';
+import { GetJobDetailsUseCase } from '../../applications/useCases/candidate/GetJobDetailsUseCase';
 //==Controllers
 //auth
 
@@ -69,7 +74,7 @@ import { ChangePasswordController } from '../../presentation/http/controllers/au
 import { CandidateProfileController } from '../../presentation/http/controllers/candidate/CandidateProfileController';
 import { SkillsController } from '../../presentation/http/controllers/SkillsController';
 import { CompanyProfileController } from '../../presentation/http/controllers/company/companyProfileController';
-//job
+import { UserController } from '../../presentation/http/controllers/userController';
 import { JobController } from '../../presentation/http/controllers/jobController';
 //admin
 import { AdminUserController } from '../../presentation/http/controllers/admin/adminUserController';
@@ -93,6 +98,7 @@ import { VerifyOtpService } from '../../applications/services/verifyOtpService';
 import { GoogleAuthService } from '../../applications/services/googleAuthService';
 import { ImageStorageService } from '../services/ImageStorageService';
 import { FileStorageService } from '../services/fileStorageService';
+import { JobCardDto } from '../../applications/Dtos/jobDto';
 
 //repositories
 const userRepository = new UserRepository();
@@ -209,7 +215,11 @@ const addLogoUseCase = new AddLogoUseCase(imageStorageService);
 const addDocumentUseCase = new AddDocumentUseCase(fileStorageServices);
 const addSkillUsecase = new AddSkillUseCase(skillRepository);
 //job
-const createJobUseCase = new CrateJobUseCase(userRepository, jobRepository);
+const createJobUseCase = new CrateJobUseCase(
+  userRepository,
+  jobRepository,
+  companyRepository
+);
 const getCompanyUseCase = new GetCompanyUseCase(companyRepository);
 const changeLogoUseCase = new ChangeLogoUseCase(
   companyRepository,
@@ -227,7 +237,8 @@ const companyAboutUpdateUseCase = new CompanyAboutUpdateUseCase(
 const getCompaniesUseCase = new GetCompaniesUseCase(companyRepository);
 const adminGetCompanyUseCase = new AdminGetCompanyUseCase(companyRepository);
 const adminUpdateCompanyUseCase = new AdminUpdateCompanyUseCase(
-  companyRepository
+  companyRepository,
+  userRepository
 );
 const getCompnayStatusUseCase = new GetCompanyStatusUseCase(companyRepository);
 const getCandidateStatusUseCase = new GetCandidateStatusUseCase(userRepository);
@@ -240,6 +251,20 @@ const adminUpdateCandidateUseCase = new AdminUpdateCandidateUseCase(
 );
 const adminGetEntityUseCase = new AdminGetEntityUseCase(userRepository);
 const getFileExistUseCase = new GetFileExistUseCase(fileStorageServices);
+const getHomeDataUseCase = new GetHomeDataUseCase(
+  jobRepository,
+  userRepository,
+  skillRepository
+);
+const getAllJobsUsecase = new GetAllJobssUseCase(
+  jobRepository,
+  skillRepository
+);
+const getJobDetailsUseCase = new GetJobDetailsUseCase(
+  jobRepository,
+  companyRepository,
+  skillRepository
+);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -299,7 +324,11 @@ export const companyProfileController = new CompanyProfileController(
   companyProfileUpdateUseCase,
   companyAboutUpdateUseCase
 );
-export const jobController = new JobController(createJobUseCase);
+export const jobController = new JobController(
+  createJobUseCase,
+  getAllJobsUsecase,
+  getJobDetailsUseCase
+);
 export const adminUserController = new AdminUserController(
   getCompaniesUseCase,
   adminGetCompanyUseCase,
@@ -311,3 +340,4 @@ export const adminUserController = new AdminUserController(
   adminGetEntityUseCase,
   getFileExistUseCase
 );
+export const userControlller = new UserController(getHomeDataUseCase);

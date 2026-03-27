@@ -10,17 +10,20 @@ import Login from '../presentation/pages/auth/Login';
 import Register from '../presentation/pages/auth/Register';
 import Otp from '../presentation/pages/auth/Otp';
 import AdminLogin from '../presentation/pages/auth/AdminLogin';
-
+import JobListingPage from '../Joblisting';
 import ForgotPassword from '../presentation/pages/auth/ForgotPassword';
 import ResetPassword from '../presentation/pages/auth/ResetPasswordForm';
 import { CompanyRoutes } from './userRoutes/companyRoutes';
 import { AdminRoutes } from './adminRoutes';
 import { AdminProtectedRoute } from './PrivateRoutes';
+import JobListing from '../presentation/pages/user/JobListing';
 
 export const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/jobs" element={<JobListing />} />
+      <Route path="/jobss" element={<JobListingPage />} />
 
       <Route element={<PublicRoutes />}>
         {' '}

@@ -1,11 +1,11 @@
 import { success } from 'zod';
 
 export const generalMessages = {
-  success: { RESUME_EXISTANCE_IDENTIFIED: 'Resume existance checked',
+  success: {
+    RESUME_EXISTANCE_IDENTIFIED: 'Resume existance checked',
 
-    RESUME_DELETED:'Resume deleted'
-    
-   },
+    RESUME_DELETED: 'Resume deleted',
+  },
   errors: {
     INTERNAL_SERVER_ERROR: 'Something went wrong, please try again later',
     INVALID_RESUME_FILE_TYPE: 'Only docx and pdf formats are allowed',

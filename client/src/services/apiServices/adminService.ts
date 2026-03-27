@@ -78,10 +78,10 @@ export const adminService = {
   },
 
   async checkExist(url: string) {
-    console.log('url from admnservice',url);
-    
+    console.log('url from admnservice', url);
+
     const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.CHECK_EXIST_FILE, {
-       params: { url }
+      params: { url },
     });
     return res.data;
   },

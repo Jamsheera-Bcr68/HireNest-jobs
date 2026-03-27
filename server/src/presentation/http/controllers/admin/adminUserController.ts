@@ -113,9 +113,9 @@ export class AdminUserController {
           statusCodes.UNAUTHERIZED
         );
       }
-
+      console.log('data ', data);
       const updated = await this.adminUpdateCompanyUseCase.execute(id, data);
-      //  console.log('updated company', updated);
+
       const message =
         data.status === 'active'
           ? adminMessages.success.COMPANY_APPROVED

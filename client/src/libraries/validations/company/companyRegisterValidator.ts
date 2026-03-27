@@ -52,7 +52,7 @@ export const companyRegisterSchema = z.object({
   email: stringValOpt('Email', 4, 30),
 
   phone: z.string().max(15, 'Enter a valid phone number').optional(),
-  about: stringValMand('About ', 5, 50),
+  about: stringValMand('About ', 5, 1000),
 
   documents: z.object({
     type: selectVal('Verification document ', Document_Types),

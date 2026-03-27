@@ -1,3 +1,5 @@
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
 type PaginationProps = {
   currentPage: number;
   totalPages: number;
@@ -40,7 +42,7 @@ function Pagination({
               onClick={() => onPageChange(currentPage - 1)}
               className="px-3 py-1.5 border bg-white border-slate-200 rounded-lg hover:bg-indigo-100 transition disabled:opacity-40"
             >
-              ← Prev
+              <ChevronLeft size={18} />
             </button>
             {pages.map((page, ind) => (
               <button
@@ -57,7 +59,7 @@ function Pagination({
               onClick={() => onPageChange(currentPage + 1)}
               className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg hover:bg-indigo1050 transition"
             >
-              Next →
+              <ChevronRight size={18} />
             </button>
           </div>
         </div>

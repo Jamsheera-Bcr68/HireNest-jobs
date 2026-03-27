@@ -5,9 +5,10 @@ import { useToast } from '../../../../shared/toast/useToast';
 import { skillService } from '../../../../services/apiServices/skillServices';
 import { type SkillType } from '../../../../types/dtos/skillTypes';
 import PermissionModal from '../../../modals/PermissionModal';
+import { useNavigate } from 'react-router-dom';
+import { Experience_Types } from '../../../../types/dtos/profileTypes/experienceType';
 
 const workMode = ['hybrid', 'remote', 'onsite'];
-const ExpreienceType = ['0-1', '1-2', '2-3', '3-4', '4-5', '5+'];
 
 const CreateJobPost = () => {
   console.log('from create page');
@@ -22,6 +23,7 @@ const CreateJobPost = () => {
   const [allSkills, setAllSkills] = useState<SkillType[] | []>([]);
   const [res, setRes] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const ErrorText = ({ error }: { error: string }) => {
     return <p className="text-sm text-red-600"> * {error}</p>;
@@ -279,7 +281,7 @@ const CreateJobPost = () => {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
               >
                 <option value="">Select </option>
-                {ExpreienceType.map((ex, i) => (
+                {Experience_Types.map((ex, i) => (
                   <option key={i} value={ex}>
                     {ex} years
                   </option>
@@ -570,6 +572,9 @@ const CreateJobPost = () => {
           <div className="flex justify-end gap-4 pt-6">
             <button
               type="button"
+              onClick={() => {
+                navigate(-1);
+              }}
               className="px-5 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition"
             >
               Cancel

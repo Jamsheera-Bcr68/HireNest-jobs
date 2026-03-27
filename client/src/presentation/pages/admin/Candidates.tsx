@@ -34,7 +34,7 @@ const filterOptions = [
   },
 ];
 function Candidates() {
-  const [limit] = useState(2);
+  const [limit] = useState(10);
   const [stats, setStats] = useState<StatusCardType[]>([]);
   const [filter, setFilter] = useState<Partial<CandidateFilter>>({});
   const [candidates, setCandidates] = useState<UserProfileType[]>([]);

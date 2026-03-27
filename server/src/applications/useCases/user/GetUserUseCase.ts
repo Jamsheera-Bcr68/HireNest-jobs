@@ -16,7 +16,7 @@ export class GetUserUseCase implements IGetUserUseCase {
     const user = await this._userRepository.findById(userId);
     if (!user || user.role !== role)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    // console.log('user from getuser ',user);
+    console.log('user from getuser ', user);
 
     return user;
   }
