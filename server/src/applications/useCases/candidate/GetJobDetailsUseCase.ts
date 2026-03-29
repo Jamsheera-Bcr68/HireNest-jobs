@@ -34,6 +34,8 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
       min_salary: job.min_salary,
       max_salary: job.max_salary,
       totalApplicants: 0,
+      isReported: job.isReported,
+      reportedBy: job.reportDetails.map((report) => report.reportedBy) || [],
       createdAt: job.createdAt?.toISOString() || '',
       vacancyCount: job.vacancyCount,
       description: job.description,

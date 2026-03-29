@@ -4,11 +4,10 @@ import {
   Experience_LEVELS,
   ExperienceType,
 } from '../../../domain/types/jobTypes';
-import mongoose, { Schema } from 'mongoose';
-import { required } from 'zod/v4/core/util.cjs';
+import { Schema } from 'mongoose';
+
 import { WorkMode } from '../../../domain/enums/WorkMode';
 import { StatusEnum } from '../../../domain/enums/statusEnum';
-import { Industry_Type } from '../../../domain/types/companyProfileTypes';
 
 export interface IJobDocument {
   _id: Types.ObjectId;
@@ -29,6 +28,13 @@ export interface IJobDocument {
   skills: Types.ObjectId[] | [];
   description: string;
   status: StatusEnum;
+  isReported: boolean;
+  reportDetails: {
+    reason: string;
+    info: string;
+    reportedBy: Types.ObjectId;
+    reportedAt: Date;
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -57,6 +63,24 @@ const JobSchema = new Schema<IJobDocument>(
     responsibilities: { type: [String], default: [] },
     skills: { type: [Types.ObjectId], ref: 'Skill', default: [] },
     description: String,
+    isReported: { type: Boolean, default: false },
+    reportDetails: {
+      type: [
+        {
+          reportedBy: {
+            type: Types.ObjectId,
+            ref: 'User',
+          },
+          reason: String,
+          info: String,
+          reportedAt: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 );

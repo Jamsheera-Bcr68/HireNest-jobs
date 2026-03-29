@@ -21,6 +21,13 @@ export interface Job {
   skills: string[] | [];
   status: StatusEnum;
   description: string;
+  isReported: boolean;
+  reportDetails: {
+    reason: string;
+    info: string;
+    reportedBy: string;
+    reportedAt?: Date;
+  }[];
   createdAt?: Date;
   updatedAt?: Date;
 }

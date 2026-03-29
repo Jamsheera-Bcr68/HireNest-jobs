@@ -55,6 +55,8 @@ export type JobDetailsDto = {
   responsibilities: string[];
   skills: string[];
   requirements: string[];
+  isReported: boolean;
+  reportedBy: string[];
 
   companyName: string;
   companyLogo: string;

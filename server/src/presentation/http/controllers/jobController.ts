@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { JobReqDto } from '../validators/company/jobValidation';
-import { JobCardDto, JobDto } from '../../../applications/Dtos/jobDto';
+import { asyncHandler } from '../middleweres/async-handler';
 import { JobMapper } from '../mappers/jobMapper';
 import { AppError } from '../../../domain/errors/AppError';
 import { userMessages } from '../../../shared/constants/messages/userMessages';
@@ -10,19 +10,22 @@ import { IGetJobDetailsUseCase } from '../../../applications/useCases/candidate/
 import { jobMessages } from '../../../shared/constants/messages/jobMessages';
 import { UserRole } from '../../../domain/enums/userEnums';
 import { IGetAllJobsUseCase } from '../../../applications/useCases/candidate/GetAllJobsUseCase';
+import { authMessages } from '../../../shared/constants/messages/authMesages';
+import { IReportJobUseCase } from '../../../applications/useCases/candidate/report-job.usecase';
 
 export class JobController {
   constructor(
     private createJobUseCase: ICrateJobUseCase,
     private getAllJobsUseCase: IGetAllJobsUseCase,
-    private getJobDetailsUseCase: IGetJobDetailsUseCase
+    private getJobDetailsUseCase: IGetJobDetailsUseCase,
+    private reportJobUseCase: IReportJobUseCase
   ) {}
   create = async (req: Request, res: Response, next: NextFunction) => {
-    console.log('from jobcontroller');
+    // console.log('from jobcontroller');
     const payload: JobReqDto = req.body;
 
     const user = req.user;
-    console.log('user from job controller', user);
+    //  console.log('user from job controller', user);
 
     try {
       if (!user || !user.userId || user.role !== UserRole.COMPANY) {
@@ -47,16 +50,6 @@ export class JobController {
 
   getJobs = async (req: Request, res: Response, next: NextFunction) => {
     let { search, page, limit, sortBy, ...rest } = req.query;
-    console.log(
-      'search,page,limit,rest,sortby',
-      search,
-      page,
-      limit,
-      rest,
-      sortBy
-    );
-
-    console.log('rest from controller', rest);
 
     try {
       const jobRes = await this.getAllJobsUseCase.execute(
@@ -81,7 +74,7 @@ export class JobController {
 
   getJobDetails = async (req: Request, res: Response, next: NextFunction) => {
     const jobId = req.params.id;
-    console.log('job id id ', jobId);
+    //console.log('job id id ', jobId);
     try {
       const jobDetails = await this.getJobDetailsUseCase.execute(jobId);
       return res.status(statusCodes.OK).json({
@@ -93,4 +86,24 @@ export class JobController {
       next();
     }
   };
+
+  reportJob = asyncHandler(async (req: Request, res: Response) => {
+    const data = req.body;
+    console.log('req.body', data);
+    const user = req.user;
+    if (!user)
+      throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
+    const jobId = req.params.id;
+    console.log('job id ', jobId);
+
+    if (!jobId)
+      throw new AppError(
+        jobMessages.error.JOBID_NOT_FOUND,
+        statusCodes.BADREQUEST
+      );
+    await this.reportJobUseCase.execute(jobId, data, user.userId);
+    return res
+      .status(statusCodes.OK)
+      .json({ success: true, message: jobMessages.success.JOB_REPORTED });
+  });
 }

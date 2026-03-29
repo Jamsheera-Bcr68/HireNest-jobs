@@ -3,6 +3,8 @@ import { type JobFilterType } from '../../presentation/pages/user/JobListing';
 import type { JobFormType } from '../../libraries/validations/company/jobFormValidation';
 import { CANDIDATE_API_ENDPOINTS } from '../../constants/apiEndPoints/candidate';
 
+import type { ReportFormType } from '../../presentation/pages/user/JobListing';
+
 export const jobService = {
   async createPost(jobData: JobFormType) {
     const res = await axiosInstance.post('/jobs', jobData);
@@ -26,6 +28,13 @@ export const jobService = {
     const res = await axiosInstance.get(
       CANDIDATE_API_ENDPOINTS.JOB_DETAILS(id)
     );
+    return res.data;
+  },
+
+  async reportJob(formData: ReportFormType) {
+    const { jobId, ...data } = formData;
+    console.log('report form from service', jobId, data);
+    const res = await axiosInstance.post(`/jobs/${jobId}/reports`, data);
     return res.data;
   },
 };

@@ -1,20 +1,51 @@
 import { useState } from 'react';
 import type { JobDetailsDto } from '../../../../types/dtos/jobDto';
-import { Save, MapIcon, CheckIcon } from 'lucide-react';
+import { MapIcon, CheckIcon } from 'lucide-react';
 import { formatSalary } from '../../../../utils/salaryFormat';
-import Skills from '../../user/profile/Skills';
+import { useToast } from '../../../../shared/toast/useToast';
+import { useSelector } from 'react-redux';
+import { type StateType } from '../../../../constants/types/user';
+import JobReportForm from './JobReportForm';
+import type { ErrorType, ReportFormType } from '../../../pages/user/JobListing';
 
 type Props = {
+  reportForm: ReportFormType;
+  error: ErrorType;
   viewMode: 'split' | 'grid';
   activeJob: JobDetailsDto | null;
+  handleChange: (data: Partial<ReportFormType>) => void;
+  onReportSumbit: () => void;
 };
+
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
-function JobDetails({ viewMode, activeJob }: Props) {
+function JobDetails({
+  reportForm,
+  error,
+  viewMode,
+  activeJob,
+  handleChange,
+  onReportSumbit,
+}: Props) {
+  const user = useSelector((state: StateType) => state.auth.user);
+  const { showToast } = useToast();
   const [savedJobs, setSavedJobs] = useState<string[]>([]);
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const handleReportClick = () => {
+    if (!user) {
+      showToast({ msg: 'Please Login', type: 'error' });
+      return;
+    }
+    if (activeJob) {
+      handleChange({ jobId: activeJob.id, reason: '', info: '' });
+    }
+    setModalOpen(true);
+  };
+
   if (!activeJob) return null;
+
   return (
     <div>
-      {/* ── JOB DETAIL PANEL (split mode) ── */}
       {viewMode === 'split' && activeJob && (
         <div className="flex-1 min-w-0 sticky top-24 ">
           <div
@@ -146,13 +177,13 @@ function JobDetails({ viewMode, activeJob }: Props) {
                 <h4 className="text-xs font-bold tracking-widest uppercase text-slate-400 mb-3">
                   About the Role
                 </h4>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-slate-600 text-sm leading-relaxed break-all">
                   {activeJob.description}
                 </p>
               </div>
 
               <div>
-                <h4 className="text-xs font-bold tracking-widest uppercase text-slate-400 mb-3">
+                <h4 className="text-xs font-bold tracking-widest uppercase break-all text-slate-400 mb-3">
                   Responsibilities
                 </h4>
                 <ul className="space-y-2">
@@ -233,8 +264,20 @@ function JobDetails({ viewMode, activeJob }: Props) {
                   </div>
                 </div>
               )}
-              <button>Report </button>
-
+              <div className="flex justify-end">
+                {user && activeJob.reportedBy?.includes(user.id) ? (
+                  <button className="text-xs font-semibold bg-gray-200 rounded-xl p-2 text-red-500">
+                    You Reported this Job
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleReportClick}
+                    className="text-xs font-semibold bg-gray-200 rounded-xl p-2 text-red-500 hover:text-red-700 transition-colors"
+                  >
+                    Report this job
+                  </button>
+                )}
+              </div>
               {/* Company card */}
               <div
                 className="rounded-2xl p-4"
@@ -267,6 +310,20 @@ function JobDetails({ viewMode, activeJob }: Props) {
             </div>
           </div>
         </div>
+      )}
+
+      {modalOpen && (
+        <JobReportForm
+          handleChange={handleChange}
+          formData={reportForm}
+          error={error}
+          onSubmit={onReportSumbit}
+          onClose={() => {
+            handleChange({ jobId: '', reason: '', info: '' });
+            setModalOpen(false);
+          }}
+          open={modalOpen}
+        />
       )}
     </div>
   );

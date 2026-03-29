@@ -58,6 +58,7 @@ import { GetFileExistUseCase } from '../../applications/useCases/admin/GetFileEx
 import { GetHomeDataUseCase } from '../../applications/useCases/candidate/GetHomeDataUseCase';
 import { GetAllJobssUseCase } from '../../applications/useCases/candidate/GetAllJobsUseCase';
 import { GetJobDetailsUseCase } from '../../applications/useCases/candidate/GetJobDetailsUseCase';
+import { ReportJobUseCase } from '../../applications/useCases/candidate/report-job.usecase';
 //==Controllers
 //auth
 
@@ -265,6 +266,7 @@ const getJobDetailsUseCase = new GetJobDetailsUseCase(
   companyRepository,
   skillRepository
 );
+const reportJobUseCase = new ReportJobUseCase(jobRepository);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -327,7 +329,8 @@ export const companyProfileController = new CompanyProfileController(
 export const jobController = new JobController(
   createJobUseCase,
   getAllJobsUsecase,
-  getJobDetailsUseCase
+  getJobDetailsUseCase,
+  reportJobUseCase
 );
 export const adminUserController = new AdminUserController(
   getCompaniesUseCase,

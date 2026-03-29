@@ -11,9 +11,17 @@ import { useToast } from '../../../shared/toast/useToast';
 import { jobService } from '../../../services/apiServices/jobService';
 import JobCards from '../../components/candidate/jobListing/JobCards';
 import JobDetails from '../../components/candidate/jobListing/JobDetails';
-import Pagination from '../../components/common/Pagination';
+import { reportFormSchema } from '../../../libraries/validations/company/jobFormValidation';
 import { useSearchParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import type { StateType } from '../../../constants/types/user';
 
+export type ReportFormType = {
+  jobId: string;
+  reason: string;
+  info: string;
+};
+export type ErrorType = ReportFormType;
 export type JobFilterType = {
   search: {
     job: string;
@@ -42,6 +50,11 @@ function JobListing() {
     },
     industry: industryFilter ? [industryFilter] : [],
   });
+  const initialReportForm: ReportFormType = {
+    jobId: '',
+    reason: '',
+    info: '',
+  };
 
   const [jobs, setJobs] = useState<JobCardDto[]>([]);
   const [totalDocs, setTotalDocs] = useState(0);
@@ -50,6 +63,12 @@ function JobListing() {
   const [sortBy, setSortBy] = useState('Newest');
   const [activeJobId, setActiveJobId] = useState<string>('');
   const [activeJob, setActiveJob] = useState<JobDetailsDto | null>(null);
+  const [error, setError] = useState<ReportFormType>(initialReportForm);
+
+  const user = useSelector((state: StateType) => state.auth.user);
+
+  const [reportForm, setReportForm] =
+    useState<ReportFormType>(initialReportForm);
   useEffect(() => {
     try {
       async function fetchJobs() {
@@ -84,6 +103,7 @@ function JobListing() {
 
     setPage(1);
   };
+
   useEffect(() => {
     setFilter({
       search: {
@@ -112,6 +132,56 @@ function JobListing() {
       });
     }
   }, [activeJobId]);
+
+  const handleReportFormChange = (data: Partial<ReportFormType>) => {
+    console.log('from handle form change', data);
+
+    setReportForm((prev) => ({ ...prev, ...data }));
+  };
+
+  const reportHandle = async () => {
+    if (!activeJob) return null;
+    const payload = { ...reportForm, jobId: activeJob.id };
+    setReportForm(payload);
+    const result = reportFormSchema.safeParse(payload);
+    if (result.success) {
+      try {
+        const data = await jobService.reportJob(payload);
+        console.log('data after submitting report', data);
+        setActiveJob((prev) =>
+          prev
+            ? {
+                ...prev,
+                isReported: true,
+                reportedBy: [...(prev.reportedBy || []), user.id],
+              }
+            : prev
+        );
+
+        showToast({
+          msg: data.message,
+          type: 'success',
+        });
+        setReportForm(initialReportForm);
+      } catch (error: any) {
+        showToast({
+          msg: error?.response?.data.message || error.message,
+          type: error,
+        });
+      }
+    } else {
+      const error = result.error.format();
+
+      const formattedErrors: ErrorType = {
+        jobId: error.jobId?._errors[0] || '',
+        reason: error.reason?._errors[0] || '',
+        info: error.info?._errors[0] || '',
+      };
+      setError(formattedErrors);
+      return;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
       <Header />
@@ -148,7 +218,14 @@ function JobListing() {
               viewMode={viewMode}
               jobs={jobs}
             />
-            <JobDetails viewMode={viewMode} activeJob={activeJob} />
+            <JobDetails
+              error={error}
+              handleChange={handleReportFormChange}
+              onReportSumbit={reportHandle}
+              viewMode={viewMode}
+              activeJob={activeJob}
+              reportForm={reportForm}
+            />
           </div>
         </div>
       </div>

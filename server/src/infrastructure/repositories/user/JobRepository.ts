@@ -3,14 +3,13 @@ import { StatusEnum } from '../../../domain/enums/statusEnum';
 import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
 import { IJobDocument, jobModel } from '../../database/models/jobModel';
 import { GenericRepository } from '../genericRepository';
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import {
   JobCardDto,
   JobCountByIndustryDto,
   JobFilter,
   SalaryRange,
 } from '../../../applications/Dtos/jobDto';
-import { JobType } from '../../../domain/types/jobTypes';
 
 export class JobRepository
   extends GenericRepository<Job, IJobDocument>
@@ -36,6 +35,16 @@ export class JobRepository
       lastDate: doc.lastDate,
       languages: doc.languages,
       education: doc.education,
+      isReported: doc.isReported,
+      reportDetails:
+        doc.reportDetails.map((report) => {
+          return {
+            reportedBy: report.reportedBy.toString(),
+            reason: report.reason,
+            info: report.info ?? '',
+            reportedAt: report.reportedAt,
+          };
+        }) || [],
       responsibilities: doc.responsibilities || [],
       skills: doc.skills.map((_id) => _id.toString()),
       description: doc.description,
@@ -50,6 +59,15 @@ export class JobRepository
       jobType: entity.jobType,
       vacancyCount: entity.vacancyCount,
       experience: entity.experience,
+      isReported: entity.isReported,
+      reportDetails: entity.reportDetails?.map((report) => {
+        return {
+          reportedBy: new mongoose.Types.ObjectId(report.reportedBy),
+          reason: report.reason,
+          reportedAt: report.reportedAt || new Date(),
+          info: report.info,
+        };
+      }),
       state: entity.state,
       country: entity.country,
       min_salary: entity.min_salary,

@@ -70,4 +70,15 @@ export const jobPostSchema = z
     }
   });
 
+export const reportFormSchema = z.object({
+  jobId: z.string().min(1, 'Job ID is required'),
+
+  reason: z.string().min(1, 'Please select a reason for reporting'),
+
+  info: z
+    .string()
+    .max(100, 'Description is too long')
+    .optional()
+    .refine((val) => !val || val.length >= 5, 'Please provide more details'),
+});
 export type JobFormType = z.infer<typeof jobPostSchema>;

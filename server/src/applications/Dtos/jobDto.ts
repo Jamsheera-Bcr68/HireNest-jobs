@@ -58,6 +58,8 @@ export type JobDetailsDto = {
   description: string;
   responsibilities: string[];
   skills: string[];
+  isReported: boolean;
+  reportedBy: string[];
 
   companyName: string;
   companyLogo: string;
@@ -93,3 +95,8 @@ export const SalaryRange = [
   { label: '₹50k - ₹100k', min_salary: 50000, max_salary: 100000 },
   { label: '₹100k +', min_salary: 100000, max_salary: null },
 ];
+
+export type ReportJobInputDto = {
+  reason: string;
+  info: string;
+};
