@@ -17,8 +17,14 @@ type Props = {
     count: number;
     page: number;
   };
+  mode: 'all' | 'saved';
+  handleSave: (id: string) => Promise<void>;
+  handleUnSave: (id: string) => Promise<void>;
 };
 function JobCards({
+  mode,
+  handleSave,
+  handleUnSave,
   viewMode,
   jobs,
   setActiveJobId,
@@ -41,12 +47,22 @@ function JobCards({
       >
         {jobs.length === 0 && (
           <div className="text-center py-20 text-slate-400">
-            <div className="text-4xl mb-3">🔍</div>
-            <p className="font-semibold">No jobs match your filters</p>
-            <p className="text-sm mt-1">Try adjusting your search or filters</p>
+            {mode === 'all' ? (
+              <>
+                <div className="text-4xl mb-3">🔍</div>
+                <p className="font-semibold">No jobs match your filters</p>
+                <p className="text-sm mt-1">
+                  Try adjusting your search or filters
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="text-4xl mb-3">⭐</div>
+                <p className="font-semibold">You did not save any jobs yet</p>
+              </>
+            )}
           </div>
         )}
-
         {jobs.map((job) => {
           const isActive = activeJob?.id === job.id;
           return (
@@ -68,7 +84,11 @@ function JobCards({
                   isActive && viewMode === 'split' ? '#fafbff' : 'white',
               }}
             >
-              <JobCard job={job} />
+              <JobCard
+                handleSave={handleSave}
+                handleUnSave={handleUnSave}
+                job={job}
+              />
             </div>
           );
         })}

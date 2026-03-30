@@ -18,12 +18,12 @@ const navItems = [
   'Logout',
 ];
 const navRoutes: Record<string, string> = {
-  Dashboard: '/dashboard',
-  'Saved Jobs': '/jobs',
-  Applications: '/applications',
-  Interviews: '/interviews',
-  Messages: '/messages',
-  Profile: '/profile',
+  Dashboard: '/candidate/dashboard',
+  'Saved Jobs': '/candidate/jobs',
+  Applications: '/candidate/applications',
+  Interviews: '/candidate/interviews',
+  Messages: '/candidate/messages',
+  Profile: '/candidate/profile',
   Logout: '/logout',
 };
 const navIcons = [

@@ -5,6 +5,8 @@ export const jobMessages = {
     JOB_FETCHED: 'Job fetched successfully',
     JOB_DETAILS_FETCHED: 'Job details fetched successfully',
     JOB_REPORTED: 'Job Reported successfully',
+    JOB_SAVED: 'Job Saved successfully',
+    JOB_UNSAVED: 'Job Unsaved successfully',
   },
   error: {
     JOB_NOT_FOUND: 'Job not found',
@@ -14,5 +16,7 @@ export const jobMessages = {
     REJECTED_SKILL: 'Skill already rejected',
     REEMOVED_SKILL: 'Skill already removed',
     USER_ALREADY_REPORTED: 'You already reported thid job',
+    JOB_ALREADY_SAVED: 'This Job is Already saved',
+    JOB_ALREADY_UNSAVED: 'This Job is Already unsaved',
   },
 };

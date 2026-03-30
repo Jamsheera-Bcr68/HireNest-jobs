@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import type { JobDetailsDto } from '../../../../types/dtos/jobDto';
-import { MapIcon, CheckIcon } from 'lucide-react';
+import { MapIcon, CheckIcon, Bookmark, BookmarkCheck } from 'lucide-react';
 import { formatSalary } from '../../../../utils/salaryFormat';
 import { useToast } from '../../../../shared/toast/useToast';
 import { useSelector } from 'react-redux';
 import { type StateType } from '../../../../constants/types/user';
 import JobReportForm from './JobReportForm';
-import type { ErrorType, ReportFormType } from '../../../pages/user/JobListing';
+import { type ErrorType, type ReportFormType } from './ListingContainter';
 
 type Props = {
   reportForm: ReportFormType;
@@ -15,6 +15,8 @@ type Props = {
   activeJob: JobDetailsDto | null;
   handleChange: (data: Partial<ReportFormType>) => void;
   onReportSumbit: () => void;
+  handleSave: (id: string) => Promise<void>;
+  handleUnSave: (id: string) => Promise<void>;
 };
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -25,6 +27,8 @@ function JobDetails({
   activeJob,
   handleChange,
   onReportSumbit,
+  handleSave,
+  handleUnSave,
 }: Props) {
   const user = useSelector((state: StateType) => state.auth.user);
   const { showToast } = useToast();
@@ -34,6 +38,10 @@ function JobDetails({
   const handleReportClick = () => {
     if (!user) {
       showToast({ msg: 'Please Login', type: 'error' });
+      return;
+    }
+    if (user.role !== 'candidate') {
+      showToast({ msg: 'You are not alloed to report the Job', type: 'error' });
       return;
     }
     if (activeJob) {
@@ -75,31 +83,27 @@ function JobDetails({
                     </p>
                   </div>
                 </div>
-                <button
-                  // onClick={() => toggleSave(activeJob.id)}
-                  className="p-2 rounded-xl hover:bg-slate-100 transition-colors"
-                  style={{
-                    color: savedJobs.includes(activeJob.id)
-                      ? '#4f46e5'
-                      : '#cbd5e1',
-                  }}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill={
-                      savedJobs.includes(activeJob.id) ? 'currentColor' : 'none'
-                    }
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                {user?.savedJobs?.includes(activeJob.id) ? (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUnSave(activeJob.id);
+                    }}
+                    className="text-gray-300 hover:bg-gray-200 p-2 rounded-full hover:text-red-400 transition-colors text-lg leading-none mt-0.5"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-                    />
-                  </svg>
-                </button>
+                    <Bookmark size={18} className="text-red-700" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleSave(activeJob.id);
+                    }}
+                    className="text-gray-300 hover:bg-gray-200 p-2 rounded-full hover:text-red-400 transition-colors text-lg leading-none mt-0.5"
+                  >
+                    <Bookmark size={18} className="text-gray-400" />
+                  </button>
+                )}
               </div>
 
               {/* Meta chips */}

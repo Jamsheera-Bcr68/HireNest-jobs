@@ -43,6 +43,7 @@ export interface IUserDocument extends Document {
   experience: Types.ObjectId[] | [];
   education: Types.ObjectId[] | [];
   resumes: ResumeDocument[] | [];
+  savedJobs: Types.ObjectId[] | [];
 }
 
 const userSchema = new Schema<IUserDocument>(
@@ -100,6 +101,7 @@ const userSchema = new Schema<IUserDocument>(
       default: [],
     },
     education: { type: [Schema.Types.ObjectId], ref: 'Education', default: [] },
+    savedJobs: { type: [Schema.Types.ObjectId], ref: 'Job', default: [] },
     resumes: {
       type: [
         { url: String, isDefault: Boolean, name: String, uploadedAt: Date },

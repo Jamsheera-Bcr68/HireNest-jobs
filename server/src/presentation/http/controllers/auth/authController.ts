@@ -17,6 +17,7 @@ export class AuthController {
   private _sendOtpService: ISendOtpService;
   private _verifyOtpService: IVerifyOtpService;
   private _logoutUsecase: ILogoutUsecase;
+
   constructor(
     registerUseCase: IRegisterUseCase,
     loginUseCase: IUserLoginUseCase,
@@ -30,6 +31,7 @@ export class AuthController {
     this._verifyOtpService = verifyOtpService;
     this._logoutUsecase = logoutUsecase;
   }
+
   register = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const payload = req.body;
@@ -62,6 +64,7 @@ export class AuthController {
       next(new AppError(error.message, 400));
     }
   };
+
   resendOtp = async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.body;
     console.log('from auth controller email is ', email);
@@ -77,6 +80,7 @@ export class AuthController {
       next(error);
     }
   };
+
   login = async (req: Request, res: Response, next: NextFunction) => {
     //  console.log('from login controller');
     try {
@@ -102,6 +106,7 @@ export class AuthController {
       next(err);
     }
   };
+
   logout = async (req: Request, res: Response, next: NextFunction) => {
     console.log('from logout controller');
     try {

@@ -16,4 +16,12 @@ export interface IJobRepository extends IBaseRepository<Job> {
     search?: { job: string; location: string },
     sortBy?: string
   ): Promise<JobCardDto[]>;
+  getSavedJobs(
+    savedJobIds: string[],
+    filter: JobFilter,
+    limit: number,
+    page: number,
+    search?: { job?: string; location?: string },
+    sortBy?: string
+  ): Promise<JobCardDto[]>;
 }

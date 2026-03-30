@@ -36,6 +36,7 @@ export class User {
   public experience: Experience[];
   public education: EducationDto[];
   public resumes: IResume[] | [];
+  public savedJobs: string[];
 
   constructor(
     email: string,
@@ -49,6 +50,7 @@ export class User {
     experience?: Experience[] | [],
     education?: EducationDto[] | [],
     resumes?: IResume[],
+
     id?: string | undefined,
     resetToken?: string,
     resetTokenExpiry?: Date | undefined,
@@ -62,7 +64,8 @@ export class User {
     imageUrl?: string | undefined,
     isBlocked?: boolean,
     about?: string,
-    skills?: UserSkillDto[] | []
+    skills?: UserSkillDto[] | [],
+    savedJobs?: string[]
   ) {
     this.id = id;
     this.email = email;
@@ -87,6 +90,7 @@ export class User {
     this.isBlocked = isBlocked;
     this.about = about;
     this.skills = skills;
+    this.savedJobs = savedJobs ?? [];
     this.education = education ?? [];
   }
 }

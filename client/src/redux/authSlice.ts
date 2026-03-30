@@ -32,6 +32,7 @@ export const authSlice = createSlice({
       localStorage.setItem('user', JSON.stringify(action.payload.user));
       localStorage.setItem('accessToken', action.payload.accessToken);
     },
+
     logout(state) {
       ((state.accessToken = ''),
         (state.user = null),
@@ -39,6 +40,7 @@ export const authSlice = createSlice({
       localStorage.removeItem('user');
       localStorage.removeItem('accessToken');
     },
+
     setAccessToken(state, action: PayloadAction<{ accessToken: string }>) {
       localStorage.setItem('accessToken', action.payload.accessToken);
       console.log('payload token ', action.payload.accessToken);
@@ -46,12 +48,13 @@ export const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       //console.log('new access tokes set',state.accessToken);
     },
+
     updateUser(state, action) {
       console.log('action update user', action);
       if (state.user) {
         state.user = { ...state.user, ...action.payload };
       }
-      localStorage.setItem('user', JSON.stringify({ ...state.user }));
+      localStorage.setItem('user', JSON.stringify(state.user));
     },
   },
 });

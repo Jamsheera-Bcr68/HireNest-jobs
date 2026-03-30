@@ -38,4 +38,7 @@ export interface IUserRepository extends IBaseRepository<User> {
     search: string,
     education: string
   ): Promise<PaginatedEntities<User>>;
+
+  removeSavedJob(userId: string, jobId: string): Promise<User | null>;
+  saveJob(userId: string, jobId: string): Promise<User | null>;
 }

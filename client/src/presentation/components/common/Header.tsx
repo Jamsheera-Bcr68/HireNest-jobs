@@ -26,7 +26,7 @@ const Header = () => {
             >
               Home
             </a>
-            <a
+            {/* <a
               href="#"
               className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
             >
@@ -37,7 +37,7 @@ const Header = () => {
               className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
             >
               Services
-            </a>
+            </a> */}
             <a
               href="/jobs"
               className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
@@ -48,7 +48,7 @@ const Header = () => {
               <a
                 href={
                   user?.role == 'candidate'
-                    ? '/profile'
+                    ? '/candidate/profile'
                     : user?.role == 'company'
                       ? '/company/profile'
                       : '/'
@@ -132,24 +132,24 @@ const Header = () => {
               >
                 Home
               </a>
-              <a
+              {/* <a
                 href="#"
                 className="text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-base font-medium transition-colors"
               >
                 About
-              </a>
-              <a
+              </a> */}
+              {/* <a
                 href="#"
                 className="text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-base font-medium transition-colors"
               >
                 Services
-              </a>
-              <a
+              </a> */}
+              {/* <a
                 href="#"
                 className="text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-base font-medium transition-colors"
               >
                 Contact
-              </a>
+              </a> */}
               <div className="border-t border-gray-200 pt-4 mt-2 space-y-2">
                 <button className="w-full text-left text-gray-700 hover:text-blue-600 hover:bg-gray-50 px-3 py-2 rounded-lg text-base font-medium transition-colors">
                   Login

@@ -11,6 +11,7 @@ export class UserMapper {
       isRequested: user.isRequested,
       imageUrl: user.imageUrl,
       isblocked: user.isBlocked,
+      savedJobs: user.savedJobs,
     };
   }
   static toUserProfileDto(user: User) {

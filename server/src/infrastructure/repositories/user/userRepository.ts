@@ -146,7 +146,8 @@ export class UserRepository
       doc.imageUrl,
       doc.isBlocked,
       doc.about ?? '',
-      skills
+      skills,
+      doc.savedJobs.map((_id) => _id.toString())
     );
   };
 
@@ -172,6 +173,7 @@ export class UserRepository
       socialMediaLinks: entity.socialMediaLinks,
       about: entity.about,
       skills: entity.skills?.map((skill) => new Types.ObjectId(skill.id)),
+      savedJobs: entity.savedJobs?.map((id) => new Types.ObjectId(id)),
     };
   };
 
@@ -469,6 +471,23 @@ export class UserRepository
       title: doc.title ?? undefined,
       imageUrl: doc.imageUrl ?? undefined,
       name: doc.name ?? undefined,
+      savedJobs: doc.savedJobs.map((_id: Types.ObjectId) => _id.toString()),
     };
+  }
+
+  async saveJob(userId: string, jobId: string): Promise<User | null> {
+    const updated = await this._model.findByIdAndUpdate(userId, {
+      $addToSet: { savedJobs: jobId },
+    });
+    if (!updated) return null;
+    return this.mapToEntity(updated);
+  }
+
+  async removeSavedJob(userId: string, jobId: string): Promise<User | null> {
+    const updated = await this._model.findByIdAndUpdate(userId, {
+      $pull: { savedJobs: jobId },
+    });
+    if (!updated) return null;
+    return this.mapToEntity(updated);
   }
 }

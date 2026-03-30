@@ -12,13 +12,19 @@ import { UserRole } from '../../../domain/enums/userEnums';
 import { IGetAllJobsUseCase } from '../../../applications/useCases/candidate/GetAllJobsUseCase';
 import { authMessages } from '../../../shared/constants/messages/authMesages';
 import { IReportJobUseCase } from '../../../applications/useCases/candidate/report-job.usecase';
+import { ISaveJobUseCase } from '../../../applications/useCases/candidate/save-job.usecase';
+import { IRemoveSavedJobUseCase } from '../../../applications/useCases/candidate/unsave-job.usecase';
+import { IGetSavedJobsUseCase } from '../../../applications/useCases/candidate/get-saved-jobs.usecase';
 
 export class JobController {
   constructor(
     private createJobUseCase: ICrateJobUseCase,
     private getAllJobsUseCase: IGetAllJobsUseCase,
     private getJobDetailsUseCase: IGetJobDetailsUseCase,
-    private reportJobUseCase: IReportJobUseCase
+    private reportJobUseCase: IReportJobUseCase,
+    private saveJobUseCase: ISaveJobUseCase,
+    private removeSavedJobUseCase: IRemoveSavedJobUseCase,
+    private getSavedJobsUseCase: IGetSavedJobsUseCase
   ) {}
   create = async (req: Request, res: Response, next: NextFunction) => {
     // console.log('from jobcontroller');
@@ -71,7 +77,35 @@ export class JobController {
       next(error);
     }
   };
+  getSavedJobs = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const user = req.user;
+      if (!user || !user.userId) {
+        throw new AppError(
+          authMessages.error.UNAUTHORIZED,
+          statusCodes.NOTFOUND
+        );
+      }
+      let { search, page, limit, sortBy, ...rest } = req.query;
 
+      const jobRes = await this.getSavedJobsUseCase.execute(
+        user.userId,
+        rest,
+
+        Number(limit),
+        Number(page),
+        search as { job: string; location: string },
+        sortBy?.toString().toLowerCase()
+      );
+      const { jobs, totalDocs } = jobRes;
+      return res.status(statusCodes.OK).json({
+        success: true,
+        message: jobMessages.success.JOB_FETCHED,
+        jobs,
+        totalDocs,
+      });
+    }
+  );
   getJobDetails = async (req: Request, res: Response, next: NextFunction) => {
     const jobId = req.params.id;
     //console.log('job id id ', jobId);
@@ -105,5 +139,48 @@ export class JobController {
     return res
       .status(statusCodes.OK)
       .json({ success: true, message: jobMessages.success.JOB_REPORTED });
+  });
+
+  saveJob = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user)
+      throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
+    const jobId = req.params.id;
+    console.log('job id ', jobId);
+
+    if (!jobId)
+      throw new AppError(
+        jobMessages.error.JOBID_NOT_FOUND,
+        statusCodes.BADREQUEST
+      );
+    const savedJobs = await this.saveJobUseCase.execute(jobId, user.userId);
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: jobMessages.success.JOB_SAVED,
+      savedJobs,
+    });
+  });
+
+  unSaveJob = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user)
+      throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
+    const jobId = req.params.id;
+    console.log('job id ', jobId);
+
+    if (!jobId)
+      throw new AppError(
+        jobMessages.error.JOBID_NOT_FOUND,
+        statusCodes.BADREQUEST
+      );
+    const savedJobs = await this.removeSavedJobUseCase.execute(
+      jobId,
+      user.userId
+    );
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: jobMessages.success.JOB_UNSAVED,
+      savedJobs,
+    });
   });
 }

@@ -1,13 +1,27 @@
 import type { JobCardDto } from '../../../types/dtos/jobDto';
 import { formatSalary } from '../../../utils/salaryFormat';
-import { Users, Calendar, Briefcase, Clock, MapPin, Heart } from 'lucide-react';
+import {
+  Users,
+  Calendar,
+  Briefcase,
+  Clock,
+  MapPin,
+  Bookmark,
+} from 'lucide-react';
+import { useSelector } from 'react-redux';
+import type { StateType } from '../../../constants/types/user';
 
 type JobCardProps = {
   job: JobCardDto;
+
+  handleSave: (id: string) => Promise<void>;
+  handleUnSave: (id: string) => Promise<void>;
 };
 
-const JobCard = ({ job }: JobCardProps) => {
+const JobCard = ({ job, handleSave, handleUnSave }: JobCardProps) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const user = useSelector((state: StateType) => state.auth.user);
+  console.log(user);
 
   return (
     <div className="max-w-sm w-full rounded-3xl bg-white border border-gray-200 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
@@ -35,9 +49,27 @@ const JobCard = ({ job }: JobCardProps) => {
                 </p>
               </div>
             </div>
-            <button className="text-gray-300 hover:text-red-400 transition-colors text-lg leading-none mt-0.5">
-              <Heart size={18} className="text-red-700" />
-            </button>
+            {user?.savedJobs?.includes(job.id) ? (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleUnSave(job.id);
+                }}
+                className="text-gray-300 hover:bg-gray-200 p-2 rounded-full hover:text-red-400 transition-colors text-lg leading-none mt-0.5"
+              >
+                <Bookmark size={18} className="text-red-700" />
+              </button>
+            ) : (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSave(job.id);
+                }}
+                className="text-gray-300 hover:bg-gray-200 p-2 rounded-full hover:text-red-400 transition-colors text-lg leading-none mt-0.5"
+              >
+                <Bookmark size={18} className="text-gray-400" />
+              </button>
+            )}
           </div>
 
           <div className="flex flex-wrap gap-2 mb-4">

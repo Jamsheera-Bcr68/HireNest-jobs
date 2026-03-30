@@ -59,6 +59,9 @@ import { GetHomeDataUseCase } from '../../applications/useCases/candidate/GetHom
 import { GetAllJobssUseCase } from '../../applications/useCases/candidate/GetAllJobsUseCase';
 import { GetJobDetailsUseCase } from '../../applications/useCases/candidate/GetJobDetailsUseCase';
 import { ReportJobUseCase } from '../../applications/useCases/candidate/report-job.usecase';
+import { SaveJobUseCase } from '../../applications/useCases/candidate/save-job.usecase';
+import { RemoveSavedJobUseCase } from '../../applications/useCases/candidate/unsave-job.usecase';
+import { GetSavedJobUseCase } from '../../applications/useCases/candidate/get-saved-jobs.usecase';
 //==Controllers
 //auth
 
@@ -267,6 +270,16 @@ const getJobDetailsUseCase = new GetJobDetailsUseCase(
   skillRepository
 );
 const reportJobUseCase = new ReportJobUseCase(jobRepository);
+const saveJobUseCase = new SaveJobUseCase(jobRepository, userRepository);
+const removeSavedJobUseCase = new RemoveSavedJobUseCase(
+  jobRepository,
+  userRepository
+);
+const getSavedJobsUseCase = new GetSavedJobUseCase(
+  jobRepository,
+  skillRepository,
+  userRepository
+);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -330,7 +343,10 @@ export const jobController = new JobController(
   createJobUseCase,
   getAllJobsUsecase,
   getJobDetailsUseCase,
-  reportJobUseCase
+  reportJobUseCase,
+  saveJobUseCase,
+  removeSavedJobUseCase,
+  getSavedJobsUseCase
 );
 export const adminUserController = new AdminUserController(
   getCompaniesUseCase,

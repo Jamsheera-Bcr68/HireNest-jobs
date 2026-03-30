@@ -15,6 +15,7 @@ export type userDto = {
   title: string;
   address: AddressType;
   socialLinks: ISocialLinks;
+  savedJobs: string[];
 };
 
 export interface UserProfileType {
