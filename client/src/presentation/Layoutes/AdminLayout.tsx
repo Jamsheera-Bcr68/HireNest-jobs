@@ -8,6 +8,7 @@ const menuItems = [
   { label: 'Dashboard', path: '/admin/dashboard' },
   { label: 'Candidates', path: '/admin/candidates' },
   { label: 'Companies', path: '/admin/companies' },
+  { label: 'Job Listings', path: '/admin/jobs' },
 ];
 export const AdminLayout = () => {
   const location = useLocation();
@@ -15,6 +16,7 @@ export const AdminLayout = () => {
   const activeItem = menuItems.find((item) =>
     currentPath.startsWith(item.path)
   );
+  console.log('active item', activeItem);
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [title, setTitle] = useState(`${activeItem?.label || 'Dashboard'}`);

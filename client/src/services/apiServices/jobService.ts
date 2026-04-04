@@ -2,24 +2,33 @@ import axiosInstance from '../../libraries/axios';
 import { type JobFilterType } from '../../presentation/components/candidate/jobListing/ListingContainter';
 import type { JobFormType } from '../../libraries/validations/company/jobFormValidation';
 import { CANDIDATE_API_ENDPOINTS } from '../../constants/apiEndPoints/candidate';
-
+import { GENERAL_API_ENDPOINTS } from '../../constants/apiEndPoints/general';
+import { type StatusType } from '../../types/dtos/profileTypes/userTypes';
 import type { ReportFormType } from '../../presentation/components/candidate/jobListing/ListingContainter';
+import { COMPANY_API_ENDPOINTS } from '../../constants/apiEndPoints/company';
 
 export const jobService = {
   async createPost(jobData: JobFormType) {
     const res = await axiosInstance.post('/jobs', jobData);
     return res.data;
   },
+  async updatePost(jobData: JobFormType, id: string) {
+    const res = await axiosInstance.put(
+      COMPANY_API_ENDPOINTS.UPDATE_JOB(id),
+      jobData
+    );
+    return res.data;
+  },
 
   async getJobs(
-    filter: Partial<JobFilterType | {}>,
-    sortBy: string,
-    limit: number,
-    page: number
+    filter?: Partial<JobFilterType | {}>,
+    sortBy?: string,
+    limit?: number,
+    page: number = 1
   ) {
     console.log('filter,', filter);
 
-    const res = await axiosInstance.get(CANDIDATE_API_ENDPOINTS.JOB, {
+    const res = await axiosInstance.get(GENERAL_API_ENDPOINTS.JOB, {
       params: { ...filter, sortBy, limit, page },
     });
     return res.data;
@@ -43,9 +52,7 @@ export const jobService = {
   },
 
   async getDetails(id: string) {
-    const res = await axiosInstance.get(
-      CANDIDATE_API_ENDPOINTS.JOB_DETAILS(id)
-    );
+    const res = await axiosInstance.get(GENERAL_API_ENDPOINTS.JOB_DETAILS(id));
     return res.data;
   },
 
@@ -67,6 +74,21 @@ export const jobService = {
     console.log('from service', id);
     const res = await axiosInstance.delete(
       CANDIDATE_API_ENDPOINTS.UNSAVE_JOB(id)
+    );
+    return res.data;
+  },
+  async getCompanyJobstatus() {
+    const res = await axiosInstance.get(COMPANY_API_ENDPOINTS.GET_POST_STATUS);
+    return res.data;
+  },
+  async updateJobstatus(
+    payload: { status: StatusType; lastDate?: string },
+    id: string
+  ) {
+    console.log('status', payload);
+    const res = await axiosInstance.patch(
+      COMPANY_API_ENDPOINTS.UPDATE_JOBSTATUS(id),
+      payload
     );
     return res.data;
   },

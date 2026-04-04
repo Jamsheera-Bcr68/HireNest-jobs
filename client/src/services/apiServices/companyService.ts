@@ -2,7 +2,6 @@ import axiosInstance from '../../libraries/axios';
 import { type CompanyRegisterType } from '../../libraries/validations/company/companyRegisterValidator';
 import { type CompanyProfileEditType } from '../../libraries/validations/company/companyEditFormValidation';
 import type { ISocialLinks } from '../../types/profileTypes';
-import { type CompanyProfileType } from '../../types/dtos/profileTypes/userTypes';
 
 export const companyService = {
   //did not passed id

@@ -20,11 +20,15 @@ export type CandidateFilter = {
   education?: string;
 };
 
-const statusStyles = {
+export const statusStyles = {
   active: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
   suspended: 'bg-red-50 text-red-600 border border-red-200',
   pending: 'bg-amber-50 text-amber-700 border border-amber-200',
   rejected: 'bg-red-50 text-red-600 border border-red-200',
+  expired: 'bg-red-50 text-red-600 border border-red-200',
+  removed: 'bg-red-50 text-red-600 border border-red-200',
+  closed: 'bg-red-50 text-red-600 border border-red-200',
+  paused: 'bg-amber-50 text-amber-700 border border-amber-200',
 };
 const filterOptions = [
   {

@@ -1,6 +1,9 @@
+import { UserSkillDto } from '../../applications/Dtos/skillDto';
+import { EducationType } from '../../presentation/http/validators/educationFormValidator';
 import { StatusEnum } from '../enums/statusEnum';
 import { WorkMode } from '../enums/WorkMode';
 import { JobType, ExperienceType } from '../types/jobTypes';
+import { Skill } from './skill';
 
 export interface Job {
   id: string;
@@ -22,6 +25,8 @@ export interface Job {
   status: StatusEnum;
   description: string;
   isReported: boolean;
+  reasonForSuspend?: string;
+  reasonForRemove?: string;
   reportDetails: {
     reason: string;
     info: string;

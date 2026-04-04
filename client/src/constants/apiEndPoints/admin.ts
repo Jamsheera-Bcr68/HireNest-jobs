@@ -6,4 +6,8 @@ export const ADMIN_API_ENDPOINTS = {
   CANDIDATES_STATUS: '/admin/candidates-status',
   CANDIDATES: '/admin/candidates',
   CHECK_EXIST_FILE: '/admin/check-fileExist',
+  JOB_STATUS: '/admin/job-status',
+  JOBS: '/admin/jobs',
+  UPDATE_JOBSTATUS: (id: string) => `/admin/jobs/${id}`,
+  JOB_DETAILS: (id: string) => `/admin/jobs/${id}`,
 };

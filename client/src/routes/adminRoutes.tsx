@@ -7,6 +7,7 @@ import Jobs from '../presentation/pages/admin/Jobs.tsx';
 import Pendings from '../presentation/pages/admin/Pendings.tsx';
 import CompanyDetails from '../presentation/pages/admin/CompanyDetails.tsx';
 import CandidateDetails from '../presentation/pages/admin/CandidateDetails.tsx';
+import AdminJobDetails from '../presentation/pages/admin/JobDetails.tsx';
 export const AdminRoutes = () => {
   console.log('from amin route');
 
@@ -20,6 +21,7 @@ export const AdminRoutes = () => {
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/pendings" element={<Pendings />} />
         <Route path="/candidates/:candidateId" element={<CandidateDetails />} />
+        <Route path="/jobs/:id" element={<AdminJobDetails />} />
       </Route>
     </Routes>
   );

@@ -73,7 +73,10 @@ export default function ConfirmationModal({
             </Dialog.Close>
 
             <button
-              onClick={onConfirm}
+              onClick={() => {
+                onConfirm();
+                onClose();
+              }}
               className={`rounded-lg px-4 py-2 text-sm
             
               

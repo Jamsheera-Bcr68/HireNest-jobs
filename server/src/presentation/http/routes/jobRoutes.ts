@@ -35,4 +35,10 @@ router.delete(
 
   jobController.unSaveJob
 );
+router.put(
+  '/:id/unsave',
+  authValidator(tokenService),
+
+  jobController.unSaveJob
+);
 export default router;

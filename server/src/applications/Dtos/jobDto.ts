@@ -3,6 +3,7 @@ import { ExperienceType, JobType } from '../../domain/types/jobTypes';
 import { WorkMode } from '../../domain/enums/WorkMode';
 import { StatusEnum } from '../../domain/enums/statusEnum';
 import { Job } from '../../domain/entities/Job';
+import { EducationType } from '../../presentation/http/validators/educationFormValidator';
 import {
   AddressType,
   IndustryType,
@@ -28,11 +29,32 @@ export interface JobDto {
   skills: string[] | [];
   description: string;
 }
+
+export interface JobUpdateDto {
+  title: string;
+
+  mode: WorkMode;
+  jobType: JobType;
+  vacancyCount: number;
+  experience: ExperienceType;
+  state: string;
+  country: string;
+  min_salary: number;
+  max_salary: number;
+  lastDate: Date;
+  languages: string[] | [];
+
+  education: string;
+  responsibilities: string[] | [];
+  skills: string[] | [];
+  description: string;
+}
 export interface JobCardDto {
   companyLogo: string;
   companyname: string;
   location: AddressType;
   vacancyCount: number;
+  reportDetails: JobReportType[];
   title: string;
   id: string;
   mode: WorkMode;
@@ -43,10 +65,12 @@ export interface JobCardDto {
   postedDate: Date;
   lastDate: Date;
   experience: ExperienceType;
+  status: StatusEnum;
 }
 export type JobDetailsDto = {
   id: string;
   title: string;
+  reportDetails: JobReportType[];
   mode: WorkMode;
   jobType: string;
   experience: ExperienceType;
@@ -57,18 +81,22 @@ export type JobDetailsDto = {
   vacancyCount: number;
   description: string;
   responsibilities: string[];
-  skills: string[];
+  skills: UserSkillDto[];
   isReported: boolean;
-  reportedBy: string[];
 
+  lastDate: string;
+  education: string;
+  languages?: string;
   companyName: string;
   companyLogo: string;
   industry: string;
   benefits: string[];
   aboutCompany: string;
   companySize: string;
+  companyId: string;
   companyEmployeeCount: string;
   location: IAddress;
+  status: StatusEnum;
 };
 export type JobCountByIndustryDto = {
   industry: IndustryType;
@@ -87,6 +115,8 @@ export type JobFilter = {
   industry?: string;
   salary?: string[];
   mode?: string[];
+  companyId?: string;
+  status?: StatusEnum;
 };
 export const SalaryRange = [
   { label: '₹0 - ₹10k', min_salary: 0, max_salary: 10000 },
@@ -99,4 +129,17 @@ export const SalaryRange = [
 export type ReportJobInputDto = {
   reason: string;
   info: string;
+};
+export type JobStatusCardDto = {
+  total: number;
+  active: number;
+  suspended: number;
+  expired: number;
+  reported: number;
+};
+export type JobReportType = {
+  reportedBy: string;
+  reason: string;
+  info?: string;
+  reportedDate?: Date;
 };

@@ -7,7 +7,7 @@ export const Header = () => {
 
   const navigate = useNavigate();
   return (
-    <header className="  sticky top-0 z-10 shadow-md">
+    <header className="  sticky top-0 z-8 shadow-md">
       <nav className="container header mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}

@@ -1,6 +1,7 @@
 import express from 'express';
 import { authValidator } from '../middleweres/authValidator';
-import { tokenService } from '../../../infrastructure/config/di';
+import { jobController, tokenService } from '../../../infrastructure/config/di';
+import { COMPANY_API_ENDPOINTS } from './api-end-points/company';
 import {
   companyRegisterValidator,
   companyProfileEditValidator,
@@ -9,6 +10,7 @@ import { upload } from '../middleweres/imageUpload';
 import { fileUpload } from '../middleweres/pdfUpload';
 import { companyProfileController } from '../../../infrastructure/config/di';
 import { companyProfileUpdateFieldsValidator } from '../middleweres/validatores/company/companyFormValidator';
+import { jobValidator } from '../middleweres/validatores/company/jobValidator';
 const router = express.Router();
 
 router.post(
@@ -58,6 +60,22 @@ router.patch(
   authValidator(tokenService),
   companyProfileUpdateFieldsValidator,
   companyProfileController.updateFields
+);
+router.get(
+  COMPANY_API_ENDPOINTS.GET_POST_STATUS,
+  authValidator(tokenService),
+  jobController.getJobStatus
+);
+router.patch(
+  COMPANY_API_ENDPOINTS.UPDATE_JOBSTATUS,
+  authValidator(tokenService),
+  jobController.updateStatus
+);
+router.put(
+  COMPANY_API_ENDPOINTS.UPDATE_JOB,
+  authValidator(tokenService),
+  jobValidator,
+  jobController.updateJob
 );
 
 export default router;

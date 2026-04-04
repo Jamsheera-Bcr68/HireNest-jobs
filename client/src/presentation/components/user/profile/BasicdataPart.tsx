@@ -3,12 +3,16 @@ import ChangePasswordModal from '../../../modals/ChangePasswordModal';
 import ProfileImageViewModal from '../../../modals/ProfileImageViewModal';
 import ProfileEditModal from '../../../modals/EditProfileModal';
 import { Twitter } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
 import { type BasicDataProps } from '../../../../types/propTypes/profileProps';
+import type { StateType } from '../../../../constants/types/user';
 
 const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
   const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   console.log('baser ulr', BASE_URL);
+  const userData = useSelector((state: StateType) => state.auth.user);
+  console.log('userData', userData);
 
   const {
     handleChangePassword,
@@ -103,7 +107,9 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
                 d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
               />
             </svg>
-            <span className="text-gray-700 text-sm">{user?.phone}</span>
+            <span className="text-gray-700 text-sm">
+              {user?.phone ? user.phone : userData.phone}
+            </span>
           </div>
 
           <div className="grid grid-cols-6 mt-4 gap-4">

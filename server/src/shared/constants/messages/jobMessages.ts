@@ -7,9 +7,14 @@ export const jobMessages = {
     JOB_REPORTED: 'Job Reported successfully',
     JOB_SAVED: 'Job Saved successfully',
     JOB_UNSAVED: 'Job Unsaved successfully',
+    JOB_STATUS_FETCHED: 'Company Job Status Fetched ',
+    JOB_STATUS_UPDATED: (status: string) =>
+      `Job ${status.charAt(0).toLocaleUpperCase() + status.slice(1)} Successfully`,
+    JOB_UPDATED: 'Job updated successfully',
   },
   error: {
     JOB_NOT_FOUND: 'Job not found',
+
     JOBID_NOT_FOUND: 'Job id not found',
     SKILL_NOT_FOUND: 'Skill not found',
     SKILL_ALREADY_EXIST: 'Skill already existing',

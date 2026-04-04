@@ -192,7 +192,7 @@ const CreateJobPost = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="max-h-[80vh] overflow-y-auto px-2">
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-8">
         <h1 className="text-2xl font-bold mb-8 text-gray-800">
           Create Job Post

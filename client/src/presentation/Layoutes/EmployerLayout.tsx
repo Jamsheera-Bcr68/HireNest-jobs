@@ -1,12 +1,25 @@
 import { useState, useEffect } from 'react';
 import { SideBar } from '../components/user/employer/SideBar';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import { Header } from '../components/user/employer/home/Header';
 
+const menuItems = [
+  { label: 'Dashboard', path: '/company/dashboard' },
+  { label: 'Create Job', path: '/company/jobs/create' },
+  { label: 'My Jobs', path: '/company/jobs' },
+  { label: 'Profile', path: '/company/profile' },
+];
 export const EmployerLayout = () => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const activeItem = menuItems.find((item) =>
+    currentPath.startsWith(item.path)
+  );
+  console.log('currentPath,activeItem', currentPath, activeItem);
+
   const [isSidebarOpen, setsidebarOpen] = useState(true);
-  const [title, seTitle] = useState('Dashboard');
+  const [title, seTitle] = useState(activeItem || 'Dashboard');
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -26,6 +39,7 @@ export const EmployerLayout = () => {
           isOpen={isSidebarOpen}
           setOpen={setsidebarOpen}
           setTitle={seTitle}
+          nav={`${activeItem?.label || 'Dashboard'}`}
         />
         <div className="flex-1  bg-gray-100">
           <Header />

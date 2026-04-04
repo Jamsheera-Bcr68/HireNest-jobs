@@ -471,7 +471,7 @@ export class UserRepository
       title: doc.title ?? undefined,
       imageUrl: doc.imageUrl ?? undefined,
       name: doc.name ?? undefined,
-      savedJobs: doc.savedJobs.map((_id: Types.ObjectId) => _id.toString()),
+      savedJobs: doc.savedJobs?.map((_id: Types.ObjectId) => _id.toString()),
     };
   }
 

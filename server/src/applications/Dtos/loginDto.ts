@@ -4,6 +4,7 @@ export interface loginOutPutDto {
   user: User;
   accessToken: string;
   refreshToken: string;
+  companyId?: string;
 }
 
 export interface IloginInput {

@@ -13,7 +13,7 @@ const navLinks: Record<string, string> = {
   Dashboard: '/admin',
   Candidates: '/admin/candidates ',
   Companies: '/admin/companies',
-  'Jobs Listings': '/admin/jobs',
+  'Job Listings': '/admin/jobs',
   Pendings: '/admin/reports',
 };
 function Sidebar({
@@ -54,6 +54,8 @@ function Sidebar({
             key={item}
             onClick={() => {
               setTitle(item);
+              console.log('item,navLinks[item]', item, navLinks[item]);
+
               navigate(navLinks[item]);
               setActiveNav(item);
             }}

@@ -7,6 +7,7 @@ import cors from 'cors';
 import { errorHandler } from '../presentation/http/middleweres/errorHandler';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import '../infrastructure/services/cronService';
 
 const app = express();
 //middleweres

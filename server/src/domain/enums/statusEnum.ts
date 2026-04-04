@@ -6,4 +6,6 @@ export enum StatusEnum {
   REMOVED = 'removed',
   EXPIRED = 'expired',
   REJECTED = 'rejected',
+  PAUSED = 'paused',
+  CLOSED = 'closed',
 }

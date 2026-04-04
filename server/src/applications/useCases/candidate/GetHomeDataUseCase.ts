@@ -34,7 +34,7 @@ export class GetHomeDataUseCase implements IGetHomeDataUseCase {
     );
     let industryWise = await this.jobRepository.industryBasedJobs();
     let limit = 6;
-    const featuredJobs = await this.jobRepository.getJobs({}, limit, 1);
+    const { jobs } = await this.jobRepository.getJobs({}, limit, 1);
     const companyCount = await this.userRepository.getCount({
       role: UserRole.COMPANY,
     });
@@ -47,7 +47,7 @@ export class GetHomeDataUseCase implements IGetHomeDataUseCase {
     const activeSkills = await this.SkillRepository.getAll({
       status: SkillStatus.APPROVED,
     });
-    const modifiedJobs = featuredJobs.map((featured) => {
+    const modifiedJobs = jobs.map((featured) => {
       const skillArray = featured.skills
         .map((id) => activeSkills.find((skill: Skill) => id == skill.id))
         .filter(Boolean);

@@ -15,6 +15,10 @@ import { IReportJobUseCase } from '../../../applications/useCases/candidate/repo
 import { ISaveJobUseCase } from '../../../applications/useCases/candidate/save-job.usecase';
 import { IRemoveSavedJobUseCase } from '../../../applications/useCases/candidate/unsave-job.usecase';
 import { IGetSavedJobsUseCase } from '../../../applications/useCases/candidate/get-saved-jobs.usecase';
+import { IGetPostSatusUseCase } from '../../../applications/useCases/company/company-post-status.usecase';
+import { IUpdateJobStatusUseCase } from '../../../applications/useCases/job/update-job-status.usecase';
+import { IUpdateJobUseCase } from '../../../applications/useCases/job/update-job.usecase';
+import { JobUpdateDto } from '../../../applications/Dtos/jobDto';
 
 export class JobController {
   constructor(
@@ -24,7 +28,10 @@ export class JobController {
     private reportJobUseCase: IReportJobUseCase,
     private saveJobUseCase: ISaveJobUseCase,
     private removeSavedJobUseCase: IRemoveSavedJobUseCase,
-    private getSavedJobsUseCase: IGetSavedJobsUseCase
+    private getSavedJobsUseCase: IGetSavedJobsUseCase,
+    private companyPostStatusUseCase: IGetPostSatusUseCase,
+    private updateJobStatusUseCase: IUpdateJobStatusUseCase,
+    private updateJobUseCase: IUpdateJobUseCase
   ) {}
   create = async (req: Request, res: Response, next: NextFunction) => {
     // console.log('from jobcontroller');
@@ -56,7 +63,7 @@ export class JobController {
 
   getJobs = async (req: Request, res: Response, next: NextFunction) => {
     let { search, page, limit, sortBy, ...rest } = req.query;
-
+    console.log('from getjob controller', rest);
     try {
       const jobRes = await this.getAllJobsUseCase.execute(
         rest,
@@ -123,12 +130,12 @@ export class JobController {
 
   reportJob = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body;
-    console.log('req.body', data);
+    //  console.log('req.body', data);
     const user = req.user;
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     const jobId = req.params.id;
-    console.log('job id ', jobId);
+    // console.log('job id ', jobId);
 
     if (!jobId)
       throw new AppError(
@@ -146,7 +153,7 @@ export class JobController {
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     const jobId = req.params.id;
-    console.log('job id ', jobId);
+    //console.log('job id ', jobId);
 
     if (!jobId)
       throw new AppError(
@@ -166,7 +173,7 @@ export class JobController {
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     const jobId = req.params.id;
-    console.log('job id ', jobId);
+    // console.log('job id ', jobId);
 
     if (!jobId)
       throw new AppError(
@@ -181,6 +188,70 @@ export class JobController {
       success: true,
       message: jobMessages.success.JOB_UNSAVED,
       savedJobs,
+    });
+  });
+
+  getJobStatus = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user)
+      throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
+    const statusData = await this.companyPostStatusUseCase.execute(
+      user.userId,
+      user.role
+    );
+    console.log('status data', statusData);
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: jobMessages.success.JOB_STATUS_FETCHED,
+      statusData: statusData,
+    });
+  });
+  updateStatus = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    const { id } = req.params;
+    const data = req.body;
+    console.log('data[status]', data.status);
+
+    if (!user)
+      throw new AppError(
+        authMessages.error.UNAUTHORIZED,
+        statusCodes.UNAUTHERIZED
+      );
+    console.log('from update status', id, data);
+    await this.updateJobStatusUseCase.execute(id, user.userId, user.role, data);
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: jobMessages.success.JOB_STATUS_UPDATED(data.status),
+    });
+  });
+  updateJob = asyncHandler(async (req: Request, res: Response) => {
+    console.log('from update job');
+    const user = req.user;
+    const { id } = req.params;
+
+    if (!user)
+      throw new AppError(
+        authMessages.error.UNAUTHORIZED,
+        statusCodes.UNAUTHERIZED
+      );
+    if (!id)
+      throw new AppError(
+        jobMessages.error.JOBID_NOT_FOUND,
+        statusCodes.NOTFOUND
+      );
+    const payload = req.body;
+    console.log('from update job', id, payload);
+    const updated = await this.updateJobUseCase.execute(
+      id,
+
+      user.role,
+      user.userId,
+      payload as JobUpdateDto
+    );
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: jobMessages.success.JOB_UPDATED,
+      job: updated,
     });
   });
 }

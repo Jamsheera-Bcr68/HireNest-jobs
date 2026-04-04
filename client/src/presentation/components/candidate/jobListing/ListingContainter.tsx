@@ -35,6 +35,8 @@ export type JobFilterType = {
   industry?: string[];
   salary?: string[];
   mode?: string[];
+  companyId?: string;
+  status?: string;
 };
 const limit = 9;
 type Props = {
@@ -84,9 +86,19 @@ function JobListingContainer({ mode }: Props) {
       try {
         let data;
         if (mode === 'saved') {
-          data = await jobService.getSavedJobs(filter, sortBy, limit, page);
+          data = await jobService.getSavedJobs(
+            { ...filter, status: 'active' },
+            sortBy,
+            limit,
+            page
+          );
         } else {
-          data = await jobService.getJobs(filter, sortBy, limit, page);
+          data = await jobService.getJobs(
+            { ...filter, status: 'active' },
+            sortBy,
+            limit,
+            page
+          );
         }
 
         console.log('after fetching jobs', data);

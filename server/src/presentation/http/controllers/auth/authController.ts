@@ -85,7 +85,7 @@ export class AuthController {
     //  console.log('from login controller');
     try {
       const payload: IloginInput = req.body;
-      const { user, refreshToken, accessToken } =
+      const { user, refreshToken, accessToken, companyId } =
         await this._loginUseCase.execute(payload);
       const userDto = UserMapper.toDto(user);
 
@@ -100,7 +100,7 @@ export class AuthController {
       return res.status(statusCodes.OK).json({
         success: true,
         message: authMessages.success.LOGIN_SUCCESS,
-        data: { user: userDto, accessToken },
+        data: { user: { ...userDto, companyId }, accessToken },
       });
     } catch (err) {
       next(err);

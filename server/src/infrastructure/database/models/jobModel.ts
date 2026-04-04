@@ -29,6 +29,8 @@ export interface IJobDocument {
   description: string;
   status: StatusEnum;
   isReported: boolean;
+  reasonForSuspend?: string;
+  reasonForRemove?: string;
   reportDetails: {
     reason: string;
     info: string;
@@ -64,6 +66,8 @@ const JobSchema = new Schema<IJobDocument>(
     skills: { type: [Types.ObjectId], ref: 'Skill', default: [] },
     description: String,
     isReported: { type: Boolean, default: false },
+    reasonForSuspend: { type: String, default: '' },
+    reasonForRemove: { type: String, default: '' },
     reportDetails: {
       type: [
         {

@@ -39,9 +39,12 @@ type SidebarProps = {
   isOpen: boolean;
   setOpen: (state: boolean) => void;
   setTitle: (title: string) => void;
+  nav: string;
 };
-export const SideBar = ({ isOpen, setOpen, setTitle }: SidebarProps) => {
-  const [activeNav, setActiveNav] = useState('Dashboard');
+export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
+  console.log('nav', nav);
+
+  const [activeNav, setActiveNav] = useState(nav ?? 'Dashboard');
   const navigate = useNavigate();
   return (
     <div

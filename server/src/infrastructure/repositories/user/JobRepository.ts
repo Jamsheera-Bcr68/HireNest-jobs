@@ -8,6 +8,7 @@ import {
   JobCardDto,
   JobCountByIndustryDto,
   JobFilter,
+  JobListDto,
   SalaryRange,
 } from '../../../applications/Dtos/jobDto';
 
@@ -54,36 +55,63 @@ export class JobRepository
   }
 
   protected mapToPersistance(entity: Partial<Job>): Partial<IJobDocument> {
-    return {
-      title: entity.title,
-      companyId: new Types.ObjectId(entity.companyId),
-      mode: entity.mode,
-      jobType: entity.jobType,
-      vacancyCount: entity.vacancyCount,
-      experience: entity.experience,
-      isReported: entity.isReported,
-      reportDetails: entity.reportDetails?.map((report) => {
-        return {
-          reportedBy: new mongoose.Types.ObjectId(report.reportedBy),
-          reason: report.reason,
-          reportedAt: report.reportedAt || new Date(),
-          info: report.info,
-        };
-      }),
-      state: entity.state,
-      country: entity.country,
-      min_salary: entity.min_salary,
-      max_salary: entity.max_salary,
-      lastDate: entity.lastDate,
-      languages: entity.languages,
-      education: entity.education,
-      responsibilities: entity.responsibilities,
-      skills: entity.skills
-        ? entity.skills.map((id) => new Types.ObjectId(id))
-        : [],
+    const data: Partial<IJobDocument> = {};
 
-      description: entity.description,
-    };
+    if (entity.title !== undefined) data.title = entity.title;
+
+    if (entity.companyId !== undefined)
+      data.companyId = new Types.ObjectId(entity.companyId);
+
+    if (entity.mode !== undefined) data.mode = entity.mode;
+
+    if (entity.jobType !== undefined) data.jobType = entity.jobType;
+
+    if (entity.vacancyCount !== undefined)
+      data.vacancyCount = entity.vacancyCount;
+
+    if (entity.experience !== undefined) data.experience = entity.experience;
+
+    if (entity.status !== undefined) data.status = entity.status;
+
+    if (entity.isReported !== undefined) data.isReported = entity.isReported;
+
+    if (entity.reportDetails !== undefined) {
+      data.reportDetails = entity.reportDetails.map((report) => ({
+        reportedBy: new mongoose.Types.ObjectId(report.reportedBy),
+        reason: report.reason,
+        reportedAt: report.reportedAt || new Date(),
+        info: report.info,
+      }));
+    }
+
+    if (entity.state !== undefined) data.state = entity.state;
+
+    if (entity.country !== undefined) data.country = entity.country;
+
+    if (entity.min_salary !== undefined) data.min_salary = entity.min_salary;
+
+    if (entity.max_salary !== undefined) data.max_salary = entity.max_salary;
+
+    if (entity.lastDate !== undefined) data.lastDate = entity.lastDate;
+
+    if (entity.languages !== undefined) data.languages = entity.languages;
+
+    if (entity.education !== undefined) data.education = entity.education;
+
+    if (entity.responsibilities !== undefined)
+      data.responsibilities = entity.responsibilities;
+
+    if (entity.skills !== undefined) {
+      data.skills = entity.skills.map((id) => new Types.ObjectId(id));
+    }
+
+    if (entity.description !== undefined) data.description = entity.description;
+    if (entity.reasonForSuspend !== undefined)
+      data.reasonForSuspend = entity.reasonForSuspend;
+    if (entity.reasonForRemove !== undefined)
+      data.reasonForRemove = entity.reasonForRemove;
+
+    return data;
   }
 
   async count(data: Partial<Job>, filter: string): Promise<number> {
@@ -153,8 +181,8 @@ export class JobRepository
     page: number = 1,
     search?: { job?: string; location?: string },
     sortBy?: string
-  ): Promise<JobCardDto[]> {
-    console.log('filte from rep', filter);
+  ): Promise<JobListDto> {
+    console.log('filter from rep', filter);
     let sortStage: any = { createdAt: -1 };
     switch (sortBy) {
       case 'salary-high-low':
@@ -177,16 +205,22 @@ export class JobRepository
         sortStage = { createdAt: -1 };
     }
 
-    const { industry, jobType, experience, salary, ...rest } = filter;
+    let { industry, jobType, experience, salary, companyId, status, ...rest } =
+      filter;
     const salaryLookup = Object.fromEntries(
       SalaryRange.map((range) => [range.label, range])
     );
     console.log('salartlookup', salaryLookup);
 
     const matchStage: any = {
-      status: StatusEnum.ACTIVE,
       ...rest,
     };
+    if (companyId) {
+      matchStage.companyId = { $eq: new Types.ObjectId(companyId) };
+    }
+    if (status) {
+      matchStage.status = { $eq: status };
+    }
     if (rest.mode && rest.mode.length) {
       matchStage.mode = { $in: rest.mode.map((m) => m.toLowerCase()) };
     }
@@ -279,45 +313,57 @@ export class JobRepository
         },
       });
     }
-    pipeLine.push(
-      {
-        $project: {
-          _id: 1,
-          title: 1,
-          min_salary: 1,
-          max_salary: 1,
-          createdAt: 1,
-          lastDate: 1,
-          vacancyCount: 1,
-          experience: 1,
-          jobType: 1,
-          mode: 1,
-          skills: 1,
-          companyName: '$companyData.companyName',
-          companyLogo: '$companyData.logoUrl',
-          location: '$companyData.address',
-        },
+
+    pipeLine.push({
+      $facet: {
+        data: [
+          {
+            $project: {
+              _id: 1,
+              title: 1,
+              min_salary: 1,
+              max_salary: 1,
+              createdAt: 1,
+              lastDate: 1,
+              status: 1,
+              vacancyCount: 1,
+              experience: 1,
+              jobType: 1,
+              mode: 1,
+              skills: 1,
+              reportDetails: 1,
+              companyName: '$companyData.companyName',
+              companyLogo: '$companyData.logoUrl',
+              location: '$companyData.address',
+            },
+          },
+          { $sort: sortStage },
+          { $skip: (page - 1) * limit },
+          { $limit: limit },
+        ],
+        totalCount: [{ $count: 'count' }],
       },
+    });
+    type AggregatedJobDocument = JobCardDto & {
+      _id: Types.ObjectId;
+    };
 
-      {
-        $sort: sortStage,
-      },
+    type AggregatedJobsResult = {
+      data: AggregatedJobDocument[];
+      totalCount: { count: number }[];
+    };
+    const result = await this._model.aggregate<AggregatedJobsResult>(pipeLine);
+    // console.log('result from repo', result);
 
-      {
-        $skip: (page - 1) * limit,
-      },
-
-      {
-        $limit: limit,
-      }
-    );
-
-    const jobs = await this._model.aggregate(pipeLine);
-
-    return jobs.map(({ _id, ...job }) => ({
-      id: _id.toString(),
-      ...job,
-    }));
+    const jobs = result[0]?.data || [];
+    const totalDocs = result[0]?.totalCount[0]?.count || 0;
+    return {
+      jobs: jobs.map(({ _id, id, ...job }) => ({
+        id: _id.toString(),
+        ...job,
+      })),
+      totalDocs,
+    };
   }
   async getSavedJobs(
     savedJobIds: string[],
@@ -499,49 +545,4 @@ export class JobRepository
       ...job,
     }));
   }
-  // async getSavedJobs(
-  //   savedJobIds: string[],
-  //   filter: JobFilter,
-  //   limit: number,
-  //   page: number = 1,
-  //   search?: { job?: string; location?: string },
-  //   sortBy?: string
-  // ): Promise<JobCardDto[]> {
-  //   if (!savedJobIds.length) return [];
-
-  //   const { industry, jobType, experience, salary, ...rest } = filter;
-
-  //   Object.assign(matchStage, rest);
-
-  //   if (jobType?.length) {
-  //     matchStage.jobType = { $in: jobType };
-  //   }
-
-  //   if (experience?.length) {
-  //     matchStage.experience = { $in: experience };
-  //   }
-  //   const pipeline: any[] = [
-  //     {
-  //       $match: matchStage,
-  //     },
-
-  //     {
-  //       $lookup: {
-  //         from: 'companies',
-  //         localField: 'companyId',
-  //         foreignField: '_id',
-  //         as: 'companyData',
-  //       },
-  //     },
-
-  //     {
-  //       $unwind: '$companyData',
-  //     },
-  //   ];
-  //   const jobs = await this._model.aggregate(pipeline);
-  //   return jobs.map(({ _id, ...job }) => ({
-  //     id: _id.toString(),
-  //     ...job,
-  //   }));
-  // }
 }

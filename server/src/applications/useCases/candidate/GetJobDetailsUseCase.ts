@@ -9,6 +9,9 @@ import { jobMessages } from '../../../shared/constants/messages/jobMessages';
 import { userMessages } from '../../../shared/constants/messages/userMessages';
 import { statusCodes } from '../../../shared/enums/statusCodes';
 import { JobDetailsDto } from '../../Dtos/jobDto';
+import { UserSkillDto } from '../../Dtos/skillDto';
+import { JobReportType } from '../../Dtos/jobDto';
+import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
 
 export interface IGetJobDetailsUseCase {
   execute(id: string): Promise<JobDetailsDto>;
@@ -18,27 +21,34 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
   constructor(
     private jobRepository: IJobRepository,
     private companyRepository: ICompanyRepository,
-    private skillRepository: ISkillRepository
+    private skillRepository: ISkillRepository,
+    private userRepository: IUserRepository
   ) {}
   private mapToJobDetailsDto(
     job: Job,
     company: Company,
-    skillNames: string[]
+    skillNames: UserSkillDto[],
+    reports: JobReportType[]
   ): JobDetailsDto {
     return {
       id: job.id.toString(),
       title: job.title,
+      languages: job.languages?.join(','),
       mode: job.mode,
       jobType: job.jobType,
+      education: job.education,
+      status: job.status,
       experience: job.experience,
       min_salary: job.min_salary,
       max_salary: job.max_salary,
       totalApplicants: 0,
       isReported: job.isReported,
-      reportedBy: job.reportDetails.map((report) => report.reportedBy) || [],
+      reportDetails: reports ?? job.reportDetails,
+      companyId: job.companyId,
       createdAt: job.createdAt?.toISOString() || '',
       vacancyCount: job.vacancyCount,
       description: job.description,
+      lastDate: job.lastDate.toString(),
       responsibilities: job.responsibilities ?? [],
       skills: skillNames || [],
       companyName: company.companyName,
@@ -73,9 +83,23 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
 
     const skillIds = new Set(job.skills.map(String));
 
-    const skillnames = skills
-      .filter((skill) => skillIds.has(String(skill.id)))
-      .map((skill) => skill.skillName);
-    return this.mapToJobDetailsDto(job, company, skillnames);
+    const skillnames = skills.filter((skill) => skillIds.has(String(skill.id)));
+    const reports = job.reportDetails
+      ? await Promise.all(
+          job.reportDetails.map(async (report) => {
+            const user = await this.userRepository.findById(report.reportedBy);
+
+            if (user) {
+              return {
+                ...report,
+                reportedBy: user.name ?? user.email,
+              };
+            }
+
+            return report;
+          })
+        )
+      : [];
+    return this.mapToJobDetailsDto(job, company, skillnames, reports);
   }
 }

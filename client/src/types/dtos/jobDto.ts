@@ -1,9 +1,12 @@
 import { type WorkMode } from './profileTypes/experienceType';
 import { Experience_Types } from './profileTypes/experienceType';
-
+import { type SkillDto } from './skill.dto';
 import type { StatusType } from './profileTypes/userTypes';
 import { type AddressType } from '../profileTypes';
+import type { EducationType } from './profileTypes/educationTypes';
+
 export const JOB_TYPES = ['partTime', 'fullTime'] as const;
+
 export type JobDto = {
   title: string;
   companyId?: string;
@@ -24,6 +27,7 @@ export type JobDto = {
   description: string;
 };
 export type JobCardDto = {
+  reportDetails: JobReportType[] | [];
   companyLogo: string;
   companyName: string;
   location: AddressType;
@@ -38,6 +42,7 @@ export type JobCardDto = {
   lastDate: string;
   skills: string[];
   vacancyCount: string;
+  status: StatusType;
 };
 
 export type JobDetailsDto = {
@@ -53,17 +58,28 @@ export type JobDetailsDto = {
   vacancyCount: number;
   description: string;
   responsibilities: string[];
-  skills: string[];
+  skills: SkillDto[];
+  languages: string;
   requirements: string[];
+  reportDetails: JobReportType[] | [];
+  education: EducationType;
   isReported: boolean;
   reportedBy: string[];
-
+  status: StatusType;
   companyName: string;
   companyLogo: string;
+  companyId: string;
   industry: string;
   benefits: string[];
   companySize: string;
   aboutCompany: string;
   companyEmployeeCount: number;
   location: AddressType;
+  lastDate: string;
+};
+export type JobReportType = {
+  reportedBy: string;
+  reason: string;
+  info?: string;
+  reportedDate?: Date;
 };

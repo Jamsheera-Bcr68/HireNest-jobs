@@ -62,6 +62,9 @@ import { ReportJobUseCase } from '../../applications/useCases/candidate/report-j
 import { SaveJobUseCase } from '../../applications/useCases/candidate/save-job.usecase';
 import { RemoveSavedJobUseCase } from '../../applications/useCases/candidate/unsave-job.usecase';
 import { GetSavedJobUseCase } from '../../applications/useCases/candidate/get-saved-jobs.usecase';
+import { GetPostSatusUseCase } from '../../applications/useCases/company/company-post-status.usecase';
+import { UpdateJobStatusUseCase } from '../../applications/useCases/job/update-job-status.usecase';
+import { UpdateJobUseCase } from '../../applications/useCases/job/update-job.usecase';
 //==Controllers
 //auth
 
@@ -82,6 +85,7 @@ import { UserController } from '../../presentation/http/controllers/userControll
 import { JobController } from '../../presentation/http/controllers/jobController';
 //admin
 import { AdminUserController } from '../../presentation/http/controllers/admin/adminUserController';
+import { AdminJobController } from '../../presentation/http/controllers/admin/admin-job.controller';
 //==repsitories
 
 import { UserRepository } from '../repositories/user/userRepository';
@@ -102,7 +106,6 @@ import { VerifyOtpService } from '../../applications/services/verifyOtpService';
 import { GoogleAuthService } from '../../applications/services/googleAuthService';
 import { ImageStorageService } from '../services/ImageStorageService';
 import { FileStorageService } from '../services/fileStorageService';
-import { JobCardDto } from '../../applications/Dtos/jobDto';
 
 //repositories
 const userRepository = new UserRepository();
@@ -128,7 +131,11 @@ const sendOtpService = new SendOtpService(
   emailService,
   otpRepository
 );
-const loginUseCase = new LoginUseCase(userRepository, tokenService);
+const loginUseCase = new LoginUseCase(
+  userRepository,
+  tokenService,
+  companyRepository
+);
 const adminLoginUsecase = new AdminLoginUsecase(adminRepository, tokenService);
 const forgotPasswordUsecase = new ForgotPassWordUsecase(
   userRepository,
@@ -267,7 +274,8 @@ const getAllJobsUsecase = new GetAllJobssUseCase(
 const getJobDetailsUseCase = new GetJobDetailsUseCase(
   jobRepository,
   companyRepository,
-  skillRepository
+  skillRepository,
+  userRepository
 );
 const reportJobUseCase = new ReportJobUseCase(jobRepository);
 const saveJobUseCase = new SaveJobUseCase(jobRepository, userRepository);
@@ -280,6 +288,16 @@ const getSavedJobsUseCase = new GetSavedJobUseCase(
   skillRepository,
   userRepository
 );
+
+const getPostStatusUseCase = new GetPostSatusUseCase(
+  jobRepository,
+  companyRepository
+);
+const updateJobStatusUseCase = new UpdateJobStatusUseCase(
+  jobRepository,
+  userRepository
+);
+const updateJobUseCase = new UpdateJobUseCase(jobRepository, userRepository);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -346,7 +364,10 @@ export const jobController = new JobController(
   reportJobUseCase,
   saveJobUseCase,
   removeSavedJobUseCase,
-  getSavedJobsUseCase
+  getSavedJobsUseCase,
+  getPostStatusUseCase,
+  updateJobStatusUseCase,
+  updateJobUseCase
 );
 export const adminUserController = new AdminUserController(
   getCompaniesUseCase,
@@ -358,5 +379,11 @@ export const adminUserController = new AdminUserController(
   adminUpdateCandidateUseCase,
   adminGetEntityUseCase,
   getFileExistUseCase
+);
+export const adminJobcontroller = new AdminJobController(
+  updateJobStatusUseCase,
+  getPostStatusUseCase,
+  getAllJobsUsecase,
+  getJobDetailsUseCase
 );
 export const userControlller = new UserController(getHomeDataUseCase);

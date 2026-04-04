@@ -207,7 +207,7 @@ function JobDetails({
                   ))}
                 </ul>
               </div>
-              {activeJob.requirements && activeJob.requirements.length > 0 && (
+              {activeJob && activeJob.requirements.length > 0 && (
                 <div>
                   <h4 className="text-xs font-bold tracking-widest uppercase text-slate-400 mb-3">
                     Requirements
@@ -233,16 +233,16 @@ function JobDetails({
                   Skills
                 </h4>
                 <div className="flex flex-wrap gap-2">
-                  {activeJob.skills.map((skill) => (
+                  {activeJob.skills.map((skill, index) => (
                     <span
-                      key={skill}
+                      key={index}
                       className="text-xs font-semibold text-slate-600 px-3 py-1.5 rounded-xl"
                       style={{
                         background: '#f1f5f9',
                         border: '1.5px solid #e2e8f0',
                       }}
                     >
-                      {skill}
+                      {skill.skillName}
                     </span>
                   ))}
                 </div>

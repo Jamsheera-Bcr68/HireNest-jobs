@@ -4,6 +4,7 @@ import {
   JobCountByIndustryDto,
   JobCardDto,
   JobFilter,
+  JobListDto,
 } from '../../applications/Dtos/jobDto';
 
 export interface IJobRepository extends IBaseRepository<Job> {
@@ -15,7 +16,7 @@ export interface IJobRepository extends IBaseRepository<Job> {
     page: number,
     search?: { job: string; location: string },
     sortBy?: string
-  ): Promise<JobCardDto[]>;
+  ): Promise<JobListDto>;
   getSavedJobs(
     savedJobIds: string[],
     filter: JobFilter,

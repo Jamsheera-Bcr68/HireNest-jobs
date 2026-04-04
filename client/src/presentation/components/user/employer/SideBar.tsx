@@ -21,17 +21,18 @@ const navRoutes: Record<string, string> = {
   'Create Job': '/company/jobs/create',
   Applications: '/employer/applications',
   Interviews: '/employer/interviews',
-  'My Jobs': '/employer/jobs',
-  Profile: '/employer/profile',
+  'My Jobs': '/company/jobs',
+  Profile: '/company/profile',
 };
 const navIcons = ['⊞', <PlusIcon />, '📋', '📅', '🔖', '👤', '⚙️', <Home />];
 type SidebarProps = {
   isOpen: boolean;
   setOpen: (state: boolean) => void;
   setTitle: (title: string) => void;
+  nav: string;
 };
-export const SideBar = ({ isOpen, setOpen, setTitle }: SidebarProps) => {
-  const [activeNav, setActiveNav] = useState('Dashboard');
+export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
+  const [activeNav, setActiveNav] = useState(nav);
   const navigate = useNavigate();
   return (
     <div

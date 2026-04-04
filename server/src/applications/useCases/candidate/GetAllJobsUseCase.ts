@@ -30,7 +30,7 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
     console.log('filter from usecase', filter);
     if (sortBy) {
     }
-    const jobs = await this.jobRepository.getJobs(
+    const { jobs, totalDocs } = await this.jobRepository.getJobs(
       filter ?? {},
 
       limit,
@@ -52,9 +52,7 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
         skills: skillArray.map((skill) => skill!.skillName),
       };
     });
-    const count = await this.jobRepository.count(
-      filter.datas ? filter.datas : {}
-    );
-    return { jobs: modifiedJobs, totalDocs: count };
+
+    return { jobs: modifiedJobs, totalDocs };
   }
 }

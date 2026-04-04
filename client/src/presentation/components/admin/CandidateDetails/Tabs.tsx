@@ -1,5 +1,3 @@
-import React from 'react';
-
 const tabs = ['Overview', 'Applications', 'Interviews'];
 type Props = {
   handleTabChange: (tab: string) => void;
