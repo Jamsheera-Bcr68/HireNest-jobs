@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import type { StateType } from '../../../constants/types/user';
+import { useApplications } from '../../hooks/user/candidate/profile/useApplication';
 
 type JobCardProps = {
   job: JobCardDto;
@@ -22,7 +23,7 @@ const JobCard = ({ job, handleSave, handleUnSave }: JobCardProps) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const user = useSelector((state: StateType) => state.auth.user);
   console.log(user);
-
+  const { handleApplyClick } = useApplications();
   return (
     <div className="max-w-sm w-full rounded-3xl bg-white border border-gray-200 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
       <>
@@ -146,7 +147,13 @@ const JobCard = ({ job, handleSave, handleUnSave }: JobCardProps) => {
                   })
                 : ''}
             </span>
-            <button className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-medium rounded-lg transition-colors">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleApplyClick();
+              }}
+              className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-medium rounded-lg transition-colors"
+            >
               Apply now
             </button>
           </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { JobDetailsDto } from '../../../../types/dtos/jobDto';
-import { MapIcon, CheckIcon, Bookmark, BookmarkCheck } from 'lucide-react';
+import { MapPinIcon, CheckIcon, Bookmark } from 'lucide-react';
 import { formatSalary } from '../../../../utils/salaryFormat';
 import { useToast } from '../../../../shared/toast/useToast';
 import { useSelector } from 'react-redux';
@@ -32,7 +32,6 @@ function JobDetails({
 }: Props) {
   const user = useSelector((state: StateType) => state.auth.user);
   const { showToast } = useToast();
-  const [savedJobs, setSavedJobs] = useState<string[]>([]);
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const handleReportClick = () => {
@@ -55,7 +54,7 @@ function JobDetails({
   return (
     <div>
       {viewMode === 'split' && activeJob && (
-        <div className="flex-1 min-w-0 sticky top-24 ">
+  <div className="hidden lg:block flex-1 min-w-0 sticky top-24">
           <div
             className="sticky top-24 bg-white rounded-2xl detail-scroll overflow-y-auto"
             style={{
@@ -110,7 +109,7 @@ function JobDetails({
               <div className="flex flex-wrap gap-2 mb-5">
                 {[
                   {
-                    icon: <MapIcon />,
+                    icon: <MapPinIcon size={16} className="text-red-400" />,
                     text: `${activeJob.location.place ?? ''},${activeJob.location.state},${activeJob.location.country}`,
                   },
                   { icon: '💼', text: activeJob.jobType },
@@ -207,7 +206,7 @@ function JobDetails({
                   ))}
                 </ul>
               </div>
-              {activeJob && activeJob.requirements.length > 0 && (
+              {/* {activeJob && activeJob.requirements.length > 0 && (
                 <div>
                   <h4 className="text-xs font-bold tracking-widest uppercase text-slate-400 mb-3">
                     Requirements
@@ -226,7 +225,7 @@ function JobDetails({
                     ))}
                   </ul>
                 </div>
-              )}
+              )} */}
 
               <div>
                 <h4 className="text-xs font-bold tracking-widest uppercase text-slate-400 mb-3">

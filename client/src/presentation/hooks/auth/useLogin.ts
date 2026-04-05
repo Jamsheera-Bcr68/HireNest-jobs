@@ -6,6 +6,7 @@ import type { UserRole } from '../../../constants/types/user';
 import { loginSuccess } from '../../../redux/authSlice';
 import { useDispatch } from 'react-redux';
 import { useGoogleLogin } from '@react-oauth/google';
+import { useLocation } from 'react-router-dom';
 
 import { type typeOfToast } from '../../../types/toastTypes';
 type Errors = {
@@ -17,6 +18,7 @@ export const useLogin = (
   role: UserRole,
   showToast: (toast: typeOfToast) => void
 ) => {
+  const location = useLocation();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState<Errors>({});
   const [showPassword, setShowPassword] = useState(false);
@@ -52,7 +54,10 @@ export const useLogin = (
           localStorage.setItem('accessToken', data.accessToken);
           dispatch(loginSuccess(data));
           showToast({ msg: response.data.message, type: 'success' });
-          navigate('/');
+         
+
+          const path = location.state?.from ??'/';
+          navigate(path);
         }
       } catch (error: any) {
         console.log(error);
@@ -111,8 +116,9 @@ export const useLogin = (
       }
 
       showToast({ msg: res.data.message, type: 'success' });
-      const url = role == 'admin' ? '/admin' : '/';
-      navigate(url, { replace: true });
+      const redirectPath =
+        role === 'admin' ? '/admin' : (location.state?.from ?? '/');
+      navigate(redirectPath, { replace: true });
     } catch (err: any) {
       console.log('error from backend ', err);
 

@@ -17,12 +17,14 @@ import { CompanyRoutes } from './userRoutes/companyRoutes';
 import { AdminRoutes } from './adminRoutes';
 import { AdminProtectedRoute } from './PrivateRoutes';
 import JobListing from '../presentation/pages/user/JobListing';
+import JobDetailsPage from '../presentation/components/candidate/jobListing/JobDetailsWrapper';
 
 export const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/jobs" element={<JobListing />} />
+      <Route path="/jobs/:id" element={<JobDetailsPage />} />
 
       <Route element={<PublicRoutes />}>
         {' '}

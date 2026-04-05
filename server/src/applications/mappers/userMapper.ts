@@ -3,7 +3,7 @@ import { User } from '../../domain/entities/User';
 
 export class UserMapper {
   static toDto(user: User) {
-    return {
+    let returnData = {
       id: user.id,
       email: user.email,
       phone: user.phone,
@@ -13,6 +13,8 @@ export class UserMapper {
       isblocked: user.isBlocked,
       savedJobs: user.savedJobs,
     };
+
+    return returnData;
   }
   static toUserProfileDto(user: User) {
     console.log('user befor converting user.isBlocked', user.isBlocked);

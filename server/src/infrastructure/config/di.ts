@@ -149,7 +149,7 @@ const resetPasswordUsecase = new ResetPasswordUsecase(
 const googleLoginUsecase = new GoogleLoginUsecase(
   userRepository,
   googleAuthService,
-  tokenService
+  tokenService,companyRepository
 );
 const adminGoogleAuthUsecase = new AdminGoogleAuthUsecase(
   googleAuthService,

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { JobCardDto } from '../../../../types/dtos/jobDto';
 import JobCard from '../Cards';
 import Pagination from '../../common/Pagination';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   viewMode: string;
@@ -32,6 +33,7 @@ function JobCards({
   setViewMode,
 }: Props) {
   const [activeJob, setActiveJob] = useState<JobCardDto | null>(null);
+  const navigate = useNavigate();
 
   return (
     <div className="w-full ">
@@ -70,8 +72,12 @@ function JobCards({
               onClickCapture={() => setActiveJobId(job.id)}
               key={job.id}
               onClick={() => {
-                if (viewMode !== 'split') setViewMode('split');
-                setActiveJob(job);
+                if (window.innerWidth < 1024) {
+                  navigate(`/jobs/${job.id}`, { state: activeJob });
+                } else {
+                  if (viewMode !== 'split') setViewMode('split');
+                  setActiveJob(job);
+                }
               }}
               className={`job-card cursor-pointer rounded-2xl  bg-white ${
                 isActive && viewMode === 'split' ? 'active' : ''

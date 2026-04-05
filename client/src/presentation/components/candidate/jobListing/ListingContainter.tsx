@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useApplications } from '../../../hooks/user/candidate/profile/useApplication';
 import Header from '../../common/Header';
 import SearchBar from './SearchBar';
 import Filter from './Filter';
@@ -131,7 +132,7 @@ function JobListingContainer({ mode }: Props) {
 
     setPage(1);
   };
-
+const {handleApplyClick}=useApplications()
   useEffect(() => {
     setFilter({
       search: {
@@ -287,6 +288,11 @@ function JobListingContainer({ mode }: Props) {
       });
     }
   };
+  useEffect(() => {
+    if (window.innerWidth < 1024) {
+      setViewMode('grid');
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
       {mode === 'all' && <Header />}
@@ -308,7 +314,9 @@ function JobListingContainer({ mode }: Props) {
             setSortBy={setSortBy}
           />
           <div
-            className={`flex gap-5 ${viewMode === 'split' ? '' : 'flex-col'}`}
+            className={`flex gap-5 ${
+              viewMode === 'split' ? 'flex-col lg:flex-row' : 'flex-col'
+            }`}
           >
             <JobCards
               handleSave={saveJobHandle}

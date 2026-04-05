@@ -67,7 +67,12 @@ export class LoginUseCase implements IUserLoginUseCase {
       user.email,
       user.role
     );
-
-    return { user, accessToken, refreshToken, companyId };
+    let isProfileCompleted;
+    if (user.role === UserRole.CANDIDATE) {
+      if (user.education.length && user.skills?.length && user.resumes.length) {
+        isProfileCompleted = true;
+      } else isProfileCompleted = false;
+    }
+    return { user, accessToken, refreshToken, companyId ,isProfileCompleted:isProfileCompleted};
   }
 }

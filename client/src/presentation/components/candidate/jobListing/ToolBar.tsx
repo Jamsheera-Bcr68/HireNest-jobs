@@ -50,8 +50,8 @@ function ToolBar({
             </select>
           </div>
           {/* View toggle */}
-          <div
-            className="flex items-center rounded-xl overflow-hidden"
+          {/* <div
+            className="flex hidden lg:flex items-center rounded-xl overflow-hidden"
             style={{ border: '1.5px solid #e2e8f0' }}
           >
             <button
@@ -74,7 +74,35 @@ function ToolBar({
             >
               Grid
             </button>
-          </div>
+          </div> */}
+          {jobs.length > 1 && (
+            <div
+              className="hidden lg:flex items-center rounded-xl overflow-hidden"
+              style={{ border: '1.5px solid #e2e8f0' }}
+            >
+              <button
+                onClick={() => changeView('split')}
+                className="px-3 py-1.5 text-xs font-bold transition-all"
+                style={{
+                  background: viewMode === 'split' ? '#eef2ff' : 'white',
+                  color: viewMode === 'split' ? '#4f46e5' : '#94a3b8',
+                }}
+              >
+                Split
+              </button>
+
+              <button
+                onClick={() => changeView('grid')}
+                className="px-3 py-1.5 text-xs font-bold transition-all"
+                style={{
+                  background: viewMode === 'grid' ? '#eef2ff' : 'white',
+                  color: viewMode === 'grid' ? '#4f46e5' : '#94a3b8',
+                }}
+              >
+                Grid
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

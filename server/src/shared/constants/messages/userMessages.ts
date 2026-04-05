@@ -14,7 +14,7 @@ export const userMessages = {
     EDUCATION_ADDED: 'Education added successfully',
     EDUCATION_UPDATED: 'Education updated successfully',
     EDUCATION_REMOVED: 'Education Removed Successfully',
-    RESUME_ADDED: 'Logo added succesfully',
+    RESUME_ADDED: 'Resume added succesfully',
     LOGO_UPLOADED: 'Logo added succesfully',
     RESUME_DELETED: 'Resume Deleted Succesfully',
     COMPANY_UNDER_REVIEW: 'Your company registration is processing',

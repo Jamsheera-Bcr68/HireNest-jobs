@@ -7,20 +7,25 @@ import { IGoogleLoginUsecase } from '../../interfaces/auth/IgoogleLoginUsecase';
 import { IGoogleAuthServices } from '../../interfaces/services/IGoogleAuthServices';
 import { ITokenService } from '../../interfaces/services/ITokenService';
 import { loginOutPutDto } from '../../Dtos/loginDto';
+import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
 //import {AdminLoginOutPutDto} from'../../Dtos/adminDto'
+
 
 export class GoogleLoginUsecase implements IGoogleLoginUsecase {
   private _userRepository: IUserRepository;
   private _googleAuthService: IGoogleAuthServices;
   private _tokenService: ITokenService;
+  private _companyRepository: ICompanyRepository;
   constructor(
     userRepository: IUserRepository,
     googleAuthService: IGoogleAuthServices,
-    tokenService: ITokenService
+    tokenService: ITokenService,
+    companyRepository:ICompanyRepository
   ) {
     this._userRepository = userRepository;
     this._googleAuthService = googleAuthService;
     this._tokenService = tokenService;
+    this._companyRepository = companyRepository;
   }
   async execute(token: string, role: UserRole): Promise<loginOutPutDto> {
     /// console.log('from google login usecase');
@@ -48,7 +53,17 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
         statusCodes.BADREQUEST
       );
     }
-
+    let companyId;
+    if (user.role == UserRole.COMPANY) {
+      const company = await this._companyRepository.findByUserId(user.id);
+      if (!company) {
+        throw new AppError(
+          authMessages.error.USER_NOT_FOUND,
+          statusCodes.NOTFOUND
+        );
+      }
+      companyId = company.id;
+    }
     const accessToken = this._tokenService.generateAccessToken(
       user.id,
       user.email,
@@ -59,6 +74,18 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
       user.email,
       user.role
     );
-    return { user, accessToken, refreshToken };
+    let isProfileCompleted;
+    if (user.role === UserRole.CANDIDATE) {
+      if (user.education.length && user.skills?.length && user.resumes.length) {
+        isProfileCompleted = true;
+      } else isProfileCompleted = false;
+    }
+    return {
+      user,
+      accessToken,
+      refreshToken,
+      companyId,
+      isProfileCompleted: isProfileCompleted,
+    };
   }
 }
