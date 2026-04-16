@@ -35,7 +35,10 @@ export const CandidateLayout = () => {
   const [title, seTitle] = useState(activeItem?.label ?? 'Dashboard');
   return (
     <>
-      <div className="flex min-h-screen ">
+      {/* <div className="flex min-h-screen "> */}
+      <div
+        className={`flex-1 h-screen bg-gray-100 ${isSidebarOpen ? 'ml-64' : 'ml-16'} transition-all duration-300`}
+      >
         <SideBar
           isOpen={isSidebarOpen}
           setOpen={setsidebarOpen}

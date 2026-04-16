@@ -7,6 +7,7 @@ import {
   Clock,
   MapPin,
   Bookmark,
+  Check,
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import type { StateType } from '../../../constants/types/user';
@@ -22,6 +23,7 @@ type JobCardProps = {
 const JobCard = ({ job, handleSave, handleUnSave }: JobCardProps) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const user = useSelector((state: StateType) => state.auth.user);
+
   console.log(user);
   const { handleApplyClick } = useApplications();
   return (
@@ -150,11 +152,20 @@ const JobCard = ({ job, handleSave, handleUnSave }: JobCardProps) => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                handleApplyClick();
+
+                handleApplyClick(job.id);
               }}
-              className="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-medium rounded-lg transition-colors"
+              disabled={user?.appliedJobs?.includes(job.id)}
+              className={`px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-medium rounded-lg transition-colors ${user?.appliedJobs?.includes(job.id) ? 'b-slate-400' : ''}`}
             >
-              Apply now
+              {user?.appliedJobs?.includes(job.id) ? (
+                <span className="inline-flex items-center gap-1">
+                  <Check size={16} className="text-white" />
+                  Applied
+                </span>
+              ) : (
+                'Apply Now'
+              )}
             </button>
           </div>
         </div>

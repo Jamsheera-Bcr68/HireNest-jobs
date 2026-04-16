@@ -19,6 +19,9 @@ export interface Company {
   joinedAt: Date;
   phone?: string;
   about: string;
+  reasonForReject?: string;
+  reasonForSuspend?: string;
+
   mission: string;
   vision: string;
   culture: string;

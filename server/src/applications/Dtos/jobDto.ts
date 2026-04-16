@@ -46,7 +46,7 @@ export interface JobUpdateDto {
 
   education: string;
   responsibilities: string[] | [];
-  skills: string[] | [];
+  skills: string[];
   description: string;
 }
 export interface JobCardDto {

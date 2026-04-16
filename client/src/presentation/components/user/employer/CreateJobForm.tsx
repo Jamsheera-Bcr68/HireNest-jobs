@@ -51,9 +51,9 @@ const CreateJobPost = () => {
   useEffect(() => {
     async function fetchskill() {
       try {
-        const data = await skillService.getSkills();
-        setAllSkills(data.skills);
-        console.log('skills ', data.skills);
+        const data = await skillService.getSkills({ status: 'approved' });
+        console.log('skills ', data);
+        setAllSkills(data.data.skills);
       } catch (error: any) {
         console.log(error);
         showToast({

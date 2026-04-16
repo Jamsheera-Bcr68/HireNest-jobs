@@ -1,23 +1,22 @@
 import { useState } from 'react';
-import type { StatusType } from '../../../../types/dtos/profileTypes/userTypes';
 
-type Props = {
+type Props<T> = {
   isOpen: boolean;
-  status: StatusType;
+  status: T;
   onClose: () => void;
   action: 'Suspend' | 'Reject' | 'Remove';
-  onConfirm: (status: StatusType, reason: string) => Promise<void>;
+  onConfirm: (status: T, reason: string) => Promise<void>;
   item: string;
 };
 
-export default function AddReasonModal({
+export default function AddReasonModal<T>({
   isOpen,
   onClose,
   status,
   action,
   onConfirm,
   item,
-}: Props) {
+}: Props<T>) {
   const [error, setError] = useState<string>('');
   const [value, setValue] = useState<string>('');
 

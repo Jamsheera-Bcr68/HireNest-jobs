@@ -5,6 +5,7 @@ import skillRoutes from './skillRoutes';
 import companyRoutes from './companyRoutes';
 import jobRoutes from './jobRoutes';
 import adminRoutes from './adminRoutes';
+import applicationRoutes from './applicationRoutes';
 
 const router = Router();
 console.log('from auth routes');
@@ -15,5 +16,6 @@ router.use('/company', companyRoutes);
 router.use('/skills', skillRoutes);
 router.use('/jobs', jobRoutes);
 router.use('/admin', adminRoutes);
+router.use('/applications', applicationRoutes);
 
 export default router;

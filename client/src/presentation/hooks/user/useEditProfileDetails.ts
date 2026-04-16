@@ -4,6 +4,7 @@ import axiosInstance from '../../../libraries/axios';
 import type { UserProfileType } from '../../../types/dtos/userTypes';
 import { skillService } from '../../../services/apiServices/skillServices';
 import { type SkillType } from '../../../types/dtos/skillTypes';
+import { profileService } from '../../../services/apiServices/candidateService';
 
 export const useEditProfileDetails = (
   showToast: (data: typeOfToast) => void,
@@ -102,7 +103,7 @@ export const useEditProfileDetails = (
 
   const removeSkill = async (skillId: string) => {
     try {
-      const data = await skillService.removeSkill(skillId);
+      const data = await profileService.removeSkill(skillId);
       console.log('data ', data);
 
       showToast({ msg: data.message, type: 'success' });

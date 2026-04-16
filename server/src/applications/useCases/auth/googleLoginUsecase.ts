@@ -8,24 +8,27 @@ import { IGoogleAuthServices } from '../../interfaces/services/IGoogleAuthServic
 import { ITokenService } from '../../interfaces/services/ITokenService';
 import { loginOutPutDto } from '../../Dtos/loginDto';
 import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
+import { IApplicationRepository } from '../../../domain/repositoriesInterfaces/application.repository.interface';
 //import {AdminLoginOutPutDto} from'../../Dtos/adminDto'
-
 
 export class GoogleLoginUsecase implements IGoogleLoginUsecase {
   private _userRepository: IUserRepository;
   private _googleAuthService: IGoogleAuthServices;
   private _tokenService: ITokenService;
   private _companyRepository: ICompanyRepository;
+  private _applicationRepository: IApplicationRepository;
   constructor(
     userRepository: IUserRepository,
     googleAuthService: IGoogleAuthServices,
     tokenService: ITokenService,
-    companyRepository:ICompanyRepository
+    companyRepository: ICompanyRepository,
+    applicationRepository: IApplicationRepository
   ) {
     this._userRepository = userRepository;
     this._googleAuthService = googleAuthService;
     this._tokenService = tokenService;
     this._companyRepository = companyRepository;
+    this._applicationRepository = applicationRepository;
   }
   async execute(token: string, role: UserRole): Promise<loginOutPutDto> {
     /// console.log('from google login usecase');
@@ -80,12 +83,18 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
         isProfileCompleted = true;
       } else isProfileCompleted = false;
     }
+
+    let applications;
+    if (user.role == UserRole.CANDIDATE) {
+      applications = await this._applicationRepository.getDocsByUserId(user.id);
+    }
     return {
       user,
       accessToken,
       refreshToken,
       companyId,
       isProfileCompleted: isProfileCompleted,
+      appliedJobs: applications ? applications.map((a) => a.jobId) : undefined,
     };
   }
 }

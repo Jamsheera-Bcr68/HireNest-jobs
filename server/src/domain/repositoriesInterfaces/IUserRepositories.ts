@@ -41,4 +41,5 @@ export interface IUserRepository extends IBaseRepository<User> {
 
   removeSavedJob(userId: string, jobId: string): Promise<User | null>;
   saveJob(userId: string, jobId: string): Promise<User | null>;
+  getCountBySkill(skillId: string, filter?: Partial<User>): Promise<number>;
 }

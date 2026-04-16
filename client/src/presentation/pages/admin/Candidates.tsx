@@ -22,6 +22,7 @@ export type CandidateFilter = {
 
 export const statusStyles = {
   active: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+  approved: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
   suspended: 'bg-red-50 text-red-600 border border-red-200',
   pending: 'bg-amber-50 text-amber-700 border border-amber-200',
   rejected: 'bg-red-50 text-red-600 border border-red-200',
@@ -38,7 +39,7 @@ const filterOptions = [
   },
 ];
 function Candidates() {
-  const [limit] = useState(10);
+  const [limit] = useState(5);
   const [stats, setStats] = useState<StatusCardType[]>([]);
   const [filter, setFilter] = useState<Partial<CandidateFilter>>({});
   const [candidates, setCandidates] = useState<UserProfileType[]>([]);
@@ -186,7 +187,7 @@ function Candidates() {
       setStats([total, active, newDocs, suspended]);
     }
     getCandidateStatusData();
-  }, []);
+  }, [candidates]);
 
   useEffect(() => {
     async function getCandidates() {
@@ -248,6 +249,7 @@ function Candidates() {
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable
+                totalDocs={totalDocs}
                 columns={candidateColumns as ColumnType<UserProfileType>[]}
                 tabs={tabs}
                 updateFilter={handleFilterChange}

@@ -2,7 +2,7 @@ import { GenericRepository } from '../genericRepository';
 import { User } from '../../../domain/entities/User';
 import { IUserDocument, userModel } from '../../database/models/user/userModel';
 import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { UserSkillDto } from '../../../applications/Dtos/skillDto';
 import { ISkillDocument } from '../../database/models/user/skillModel';
 import { IResume } from '../../../domain/values/profileTypes';
@@ -18,6 +18,7 @@ import {
 } from '../../../applications/types/candidateType';
 import { IEducationRepository } from '../../../domain/repositoriesInterfaces/IEducationRepository';
 import { userProfileDto } from '../../../applications/Dtos/userDto';
+import { date } from 'zod';
 
 type CandidateQuery = Partial<User> & {
   $or?: {
@@ -76,6 +77,7 @@ export class UserRepository
         return {
           id: skill._id.toString(),
           skillName: skill.skillName,
+          createdAt: skill.createdAt,
         };
       }
     );
@@ -490,4 +492,17 @@ export class UserRepository
     if (!updated) return null;
     return this.mapToEntity(updated);
   }
+
+  async getCountBySkill(
+    skillId: string,
+    filter: Partial<User>
+  ): Promise<number> {
+    const count = await this._model.countDocuments({
+      ...filter,
+      skills: new mongoose.Types.ObjectId(skillId),
+    });
+    return count ? count : 0;
+  }
+
+ ;
 }

@@ -9,6 +9,7 @@ const menuItems = [
   { label: 'Create Job', path: '/company/jobs/create' },
   { label: 'My Jobs', path: '/company/jobs' },
   { label: 'Profile', path: '/company/profile' },
+  { label: 'Skill Requests', path: '/company/skills' },
 ];
 export const EmployerLayout = () => {
   const location = useLocation();
@@ -43,9 +44,7 @@ export const EmployerLayout = () => {
         />
         <div className="flex-1  bg-gray-100">
           <Header />
-          {/* <div className="h-16 z-50 bg-white sticky top-0 shadow flex items-center px-6">
-            <h1 className="font-bold text-lg">My {title}</h1>
-          </div> */}
+
           <div className="p-3">
             <Outlet />
           </div>

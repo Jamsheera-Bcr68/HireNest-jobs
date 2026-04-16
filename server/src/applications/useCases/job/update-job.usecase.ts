@@ -2,11 +2,12 @@ import { AppError } from '../../../domain/errors/AppError';
 import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
 import { jobMessages } from '../../../shared/constants/messages/jobMessages';
 import { statusCodes } from '../../../shared/enums/statusCodes';
-import { JobDto, JobUpdateDto } from '../../Dtos/jobDto';
+import { JobDetailsDto, JobDto, JobUpdateDto } from '../../Dtos/jobDto';
 import { UserRole } from '../../../domain/enums/userEnums';
-import { User } from '../../../domain/entities/User';
+import { SkillStatus } from '../../../domain/enums/skillEnum';
 import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
 import { userMessages } from '../../../shared/constants/messages/userMessages';
+import { ISkillRepository } from '../../../domain/repositoriesInterfaces/ISkillRepository';
 
 export interface IUpdateJobUseCase {
   execute(
@@ -19,7 +20,8 @@ export interface IUpdateJobUseCase {
 export class UpdateJobUseCase implements IUpdateJobUseCase {
   constructor(
     private jobRepository: IJobRepository,
-    private userRepository: IUserRepository
+    private userRepository: IUserRepository,
+    private skillRepository: ISkillRepository
   ) {}
   async execute(
     jobid: string,
@@ -41,6 +43,20 @@ export class UpdateJobUseCase implements IUpdateJobUseCase {
       ...data,
       updatedAt: new Date(),
     });
+
+    const skills = await this.skillRepository.getAll({
+      status: SkillStatus.APPROVED,
+    });
+    if (!skills.length)
+      throw new AppError(
+        jobMessages.error.SKILL_NOT_FOUND,
+        statusCodes.NOTFOUND
+      );
+
+    const skillIds = new Set(job.skills.map(String));
+
+    const skillnames = skills.filter((skill) => skillIds.has(String(skill.id)));
+
     if (!updated)
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
     return updated as JobDto;

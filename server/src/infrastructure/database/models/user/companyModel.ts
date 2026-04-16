@@ -19,7 +19,8 @@ export interface ICompanyDocument {
   companyName: string;
   userId: Types.ObjectId;
   website: string;
-
+  reasonForSuspend?: string;
+  reasonForReject?: string;
   status: StatusEnum;
   tagLine: string;
   email: string;
@@ -33,6 +34,8 @@ export interface ICompanyDocument {
   isAgreed: boolean;
   isConsent: boolean;
   logoUrl: string;
+ 
+
   requestedSkills: Types.ObjectId[] | [];
   industry: IndustryType;
   socialMediaLinks: ISocialMediaLinks;
@@ -66,7 +69,8 @@ const companySchema = new Schema<ICompanyDocument>(
     },
     isVerified: { type: Boolean, default: false },
     logoUrl: String,
-
+    reasonForReject: { type: String },
+    reasonForSuspend: { type: String },
     requestedSkills: {
       type: [Schema.Types.ObjectId],
       ref: 'Skill',

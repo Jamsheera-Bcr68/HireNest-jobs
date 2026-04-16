@@ -54,9 +54,8 @@ export const useLogin = (
           localStorage.setItem('accessToken', data.accessToken);
           dispatch(loginSuccess(data));
           showToast({ msg: response.data.message, type: 'success' });
-         
 
-          const path = location.state?.from ??'/';
+          const path = location.state?.from ?? '/';
           navigate(path);
         }
       } catch (error: any) {

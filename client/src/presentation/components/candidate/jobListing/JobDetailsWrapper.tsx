@@ -34,16 +34,17 @@ export default function JobDetailsPage() {
       {!job ? (
         <div>Loading...</div>
       ) : (
-        <JobDetails
-          activeJob={job}
-          //   viewMode="page"
-          //   error={error}
-          //   handleSave={() => {}}
-          //   handleUnSave={() => {}}
-          handleChange={() => {}}
-          onReportSumbit={() => {}}
-          reportForm={{}}
-        />
+        <></>
+        // <JobDetails
+        //   activeJob={job}
+        //   //   viewMode="page"
+        //   //   error={error}
+        //   //   handleSave={() => {}}
+        //   //   handleUnSave={() => {}}
+        //   handleChange={() => {}}
+        //   onReportSumbit={() => {}}
+        // //  reportForm={{}}
+        // />
       )}
     </div>
   );

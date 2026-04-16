@@ -9,3 +9,10 @@ export enum StatusEnum {
   PAUSED = 'paused',
   CLOSED = 'closed',
 }
+export enum ApplicationStatusEnum {
+  PENDING = 'pending',
+  VIEWED = 'viewed',
+  SHORT_LISTED = 'short listed',
+  REJECTED = 'rejected',
+  INTERVIEW_SCHEDULED = 'interview sheduled',
+}

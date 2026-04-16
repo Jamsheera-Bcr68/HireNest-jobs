@@ -1,6 +1,7 @@
 export const jobMessages = {
   success: {
-    SKILL_CREATED: 'Skill Created,will add after approval of admin',
+    PENDING_SKILL_CREATED: 'Skill Created,will add after approval of admin',
+    SKILL_CREATED: 'Skill Created Successfully',
     JOB_CREATED: 'New Job created successfully',
     JOB_FETCHED: 'Job fetched successfully',
     JOB_DETAILS_FETCHED: 'Job details fetched successfully',
@@ -16,6 +17,7 @@ export const jobMessages = {
     JOB_NOT_FOUND: 'Job not found',
 
     JOBID_NOT_FOUND: 'Job id not found',
+    SKILLID_NOT_FOUND: 'Skill id not found',
     SKILL_NOT_FOUND: 'Skill not found',
     SKILL_ALREADY_EXIST: 'Skill already existing',
     REJECTED_SKILL: 'Skill already rejected',

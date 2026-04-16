@@ -65,6 +65,11 @@ import { GetSavedJobUseCase } from '../../applications/useCases/candidate/get-sa
 import { GetPostSatusUseCase } from '../../applications/useCases/company/company-post-status.usecase';
 import { UpdateJobStatusUseCase } from '../../applications/useCases/job/update-job-status.usecase';
 import { UpdateJobUseCase } from '../../applications/useCases/job/update-job.usecase';
+import { ApplyJobUseCase } from '../../applications/useCases/candidate/apply-job.usecase';
+import { GetSkillSatusUseCase } from '../../applications/useCases/skills/get-skill-status.usecase';
+import { UpdateSkillStatusUseCase } from '../../applications/useCases/skills/update-skill-status.usecase';
+import { UpdateSkillUsecase } from '../../applications/useCases/skills/update-skill.usecase';
+import { GetRequestedSkillsUseCase } from '../../applications/useCases/skills/requested-skills.usecase';
 //==Controllers
 //auth
 
@@ -83,6 +88,7 @@ import { SkillsController } from '../../presentation/http/controllers/SkillsCont
 import { CompanyProfileController } from '../../presentation/http/controllers/company/companyProfileController';
 import { UserController } from '../../presentation/http/controllers/userController';
 import { JobController } from '../../presentation/http/controllers/jobController';
+import { ApplicationController } from '../../presentation/http/controllers/application.controller';
 //admin
 import { AdminUserController } from '../../presentation/http/controllers/admin/adminUserController';
 import { AdminJobController } from '../../presentation/http/controllers/admin/admin-job.controller';
@@ -96,6 +102,7 @@ import { ExperieceRepository } from '../repositories/user/ExperienceRepository';
 import { EducationRepository } from '../repositories/user/educationRepository';
 import { CompanyRepository } from '../repositories/user/companyRepository';
 import { JobRepository } from '../repositories/user/JobRepository';
+import { ApplicationRepository } from '../repositories/application.repository';
 //services
 
 import { OtpGenerator } from '../services/otpgenerator';
@@ -117,6 +124,7 @@ const experienceRepository = new ExperieceRepository();
 const educationRepository = new EducationRepository();
 const companyRepository = new CompanyRepository();
 const jobRepository = new JobRepository();
+const applicationRepository = new ApplicationRepository();
 
 const emailService = new EmailService();
 const verifyOtpService = new VerifyOtpService(otpRepository, userRepository);
@@ -134,7 +142,8 @@ const sendOtpService = new SendOtpService(
 const loginUseCase = new LoginUseCase(
   userRepository,
   tokenService,
-  companyRepository
+  companyRepository,
+  applicationRepository
 );
 const adminLoginUsecase = new AdminLoginUsecase(adminRepository, tokenService);
 const forgotPasswordUsecase = new ForgotPassWordUsecase(
@@ -149,7 +158,9 @@ const resetPasswordUsecase = new ResetPasswordUsecase(
 const googleLoginUsecase = new GoogleLoginUsecase(
   userRepository,
   googleAuthService,
-  tokenService,companyRepository
+  tokenService,
+  companyRepository,
+  applicationRepository
 );
 const adminGoogleAuthUsecase = new AdminGoogleAuthUsecase(
   googleAuthService,
@@ -217,19 +228,28 @@ const removeResumeUseCase = new RemoveResumUseCase(
   fileStorageServices
 );
 //skills
-const getAllSkillsUseCase = new GetAllSkillsUseCase(skillRepository);
+const getAllSkillsUseCase = new GetAllSkillsUseCase(
+  skillRepository,
+  jobRepository,
+  userRepository
+);
 const companyRegisterUseCase = new CompanyRegisterUseCase(
   companyRepository,
   userRepository
 );
 const addLogoUseCase = new AddLogoUseCase(imageStorageService);
 const addDocumentUseCase = new AddDocumentUseCase(fileStorageServices);
-const addSkillUsecase = new AddSkillUseCase(skillRepository);
+const addSkillUsecase = new AddSkillUseCase(
+  skillRepository,
+  adminRepository,
+  companyRepository
+);
 //job
 const createJobUseCase = new CrateJobUseCase(
   userRepository,
   jobRepository,
-  companyRepository
+  companyRepository,
+  skillRepository
 );
 const getCompanyUseCase = new GetCompanyUseCase(companyRepository);
 const changeLogoUseCase = new ChangeLogoUseCase(
@@ -295,9 +315,20 @@ const getPostStatusUseCase = new GetPostSatusUseCase(
 );
 const updateJobStatusUseCase = new UpdateJobStatusUseCase(
   jobRepository,
-  userRepository
+  companyRepository,
+  skillRepository
 );
-const updateJobUseCase = new UpdateJobUseCase(jobRepository, userRepository);
+const updateJobUseCase = new UpdateJobUseCase(
+  jobRepository,
+  userRepository,
+  skillRepository
+);
+
+const applyJobUseCase = new ApplyJobUseCase(
+  applicationRepository,
+  userRepository,
+  jobRepository
+);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -306,6 +337,26 @@ export const authController = new AuthController(
   verifyOtpService,
   logoutUseCase
 );
+export const getSkillStatusUseCase = new GetSkillSatusUseCase(
+  skillRepository,
+  companyRepository,
+  adminRepository
+);
+
+export const updateSkillStatusUsecase = new UpdateSkillStatusUseCase(
+  skillRepository,
+  adminRepository
+);
+const updateSkillUseCase = new UpdateSkillUsecase(
+  skillRepository,
+  adminRepository
+);
+export const requestedSkillUsecase = new GetRequestedSkillsUseCase(
+  skillRepository,
+  jobRepository,
+  userRepository
+);
+
 export const refreshController = new RefreshTokenController(tokenService);
 export const adminAuthController = new AdminAuthController(adminLoginUsecase);
 export const forgotPasswordController = new ForgotPassWordController(
@@ -345,7 +396,11 @@ export const candidateProfileController = new CandidateProfileController(
 
 export const skillController = new SkillsController(
   getAllSkillsUseCase,
-  addSkillUsecase
+  addSkillUsecase,
+  getSkillStatusUseCase,
+  updateSkillStatusUsecase,
+  updateSkillUseCase,
+  requestedSkillUsecase
 );
 export const companyProfileController = new CompanyProfileController(
   companyRegisterUseCase,
@@ -387,3 +442,5 @@ export const adminJobcontroller = new AdminJobController(
   getJobDetailsUseCase
 );
 export const userControlller = new UserController(getHomeDataUseCase);
+
+export const applicationController = new ApplicationController(applyJobUseCase);

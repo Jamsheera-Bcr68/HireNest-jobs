@@ -28,6 +28,7 @@ export type UpdateStatusType = {
   lastDate?: string;
   reason?: string;
 };
+
 const filterOptions = [
   {
     key: 'experience',
@@ -40,6 +41,7 @@ const filterOptions = [
     options: ['onsite', 'remote', 'hybrid'],
   },
 ];
+
 const tabs = ['All', 'Active', 'Suspended', 'Expired', 'Closed'];
 
 function CompanyJobListingContainer() {
@@ -72,6 +74,7 @@ function CompanyJobListingContainer() {
     }
     await updateStatus(status);
   };
+
   const updateStatus = async (status: StatusType, lastDate?: string) => {
     console.log(
       'from update status before return',
@@ -111,6 +114,7 @@ function CompanyJobListingContainer() {
       setNewLastDate('');
     }
   };
+
   const postColumns = [
     {
       key: 'title',
@@ -118,9 +122,7 @@ function CompanyJobListingContainer() {
       render: (j: JobCardDto) => (
         <>
           {' '}
-          <div
-            className={`w-9 h-9 flex items-center justify-center font-bold text-xs flex-shrink-0`}
-          >
+          <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
             <span className="font-semibold text-slate-800">{j.title}</span>
           </div>
         </>
@@ -155,13 +157,13 @@ function CompanyJobListingContainer() {
     {
       key: 'createdAt',
       label: 'Posted',
-      render: (j: JobCardDto) => new Date(j.createdAt).toDateString(),
+      render: (j: JobCardDto) => new Date(j.createdAt).toLocaleDateString(),
     },
     {
       key: 'lastDate',
       label: 'Expiry',
       render: (j: JobCardDto) =>
-        j.lastDate ? new Date(j.lastDate).toDateString() : '---------',
+        j.lastDate ? new Date(j.lastDate).toLocaleDateString() : '---------',
     },
     {
       key: 'status',
@@ -351,6 +353,7 @@ function CompanyJobListingContainer() {
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable
+                totalDocs={totalDocs}
                 columns={postColumns as ColumnType<JobCardDto>[]}
                 tabs={tabs}
                 updateFilter={handleFilterChange}

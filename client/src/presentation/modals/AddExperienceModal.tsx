@@ -41,10 +41,10 @@ export default function ExperienceModal({
       }}
     >
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/40" />
+        <Dialog.Overlay className="fixed inset-0 z-[100] bg-black/40" />
 
         <Dialog.Content
-          className="    fixed
+          className="  z-[100]   fixed
     top-1/2 left-1/2
     w-[95%] max-w-lg
     -translate-x-1/2 -translate-y-1/2
@@ -213,7 +213,7 @@ export default function ExperienceModal({
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium">Description</label>
             <textarea
-              rows={1}
+              rows={4}
               placeholder="• Led development of e-commerce platform"
               name="description"
               value={formData.description}

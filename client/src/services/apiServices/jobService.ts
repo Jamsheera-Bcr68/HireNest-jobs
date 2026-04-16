@@ -2,7 +2,7 @@ import axiosInstance from '../../libraries/axios';
 import { type JobFilterType } from '../../presentation/components/candidate/jobListing/ListingContainter';
 import type { JobFormType } from '../../libraries/validations/company/jobFormValidation';
 import { CANDIDATE_API_ENDPOINTS } from '../../constants/apiEndPoints/candidate';
-import { GENERAL_API_ENDPOINTS } from '../../constants/apiEndPoints/general';
+import { API_ENDPOINTS } from '../../constants/apiEndPoints/general';
 import { type StatusType } from '../../types/dtos/profileTypes/userTypes';
 import type { ReportFormType } from '../../presentation/components/candidate/jobListing/ListingContainter';
 import { COMPANY_API_ENDPOINTS } from '../../constants/apiEndPoints/company';
@@ -28,7 +28,7 @@ export const jobService = {
   ) {
     console.log('filter,', filter);
 
-    const res = await axiosInstance.get(GENERAL_API_ENDPOINTS.JOB, {
+    const res = await axiosInstance.get(API_ENDPOINTS.JOB, {
       params: { ...filter, sortBy, limit, page },
     });
     return res.data;
@@ -52,7 +52,7 @@ export const jobService = {
   },
 
   async getDetails(id: string) {
-    const res = await axiosInstance.get(GENERAL_API_ENDPOINTS.JOB_DETAILS(id));
+    const res = await axiosInstance.get(API_ENDPOINTS.JOB_DETAILS(id));
     return res.data;
   },
 

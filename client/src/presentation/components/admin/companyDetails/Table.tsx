@@ -8,12 +8,19 @@ import { type StatusType } from '../../../../types/dtos/profileTypes/userTypes';
 import { useToast } from '../../../../shared/toast/useToast';
 import { adminService } from '../../../../services/apiServices/adminService';
 import { type CompanyFilter } from '../../../pages/admin/Companies';
+import AddReasonModal from '../jobs/AddReasonModal';
+
 const tabs = ['All', 'Active', 'Pending', 'Suspended', 'Rejected'];
+
 const statusStyles = {
   active: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
   suspended: 'bg-red-50 text-red-600 border border-red-200',
+  paused: 'bg-red-50 text-red-600 border border-red-200',
   pending: 'bg-amber-50 text-amber-700 border border-amber-200',
   rejected: 'bg-red-50 text-red-600 border border-red-200',
+  expired: 'bg-red-50 text-red-600 border border-red-200',
+  closed: 'bg-red-50 text-red-600 border border-red-200',
+  removed: 'bg-red-50 text-red-600 border border-red-200',
 };
 type Props = {
   companies: CompanyProfileType[] | [];
@@ -24,9 +31,9 @@ type Props = {
 function Table({ companies, onUpdate, updateFilter }: Props) {
   const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState('All');
-
+  const [showReasonModal, setShowReasonModal] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
-  const [rejectOpen, setRejectOpen] = useState(false);
+
   const [suspendOpen, setSuspendOpen] = useState(false);
   const [reactivateOpen, setReactivateOpen] = useState(false);
   const [companyId, setCompanyId] = useState<string>('');
@@ -62,19 +69,30 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
       });
     }
   };
-  const rejectCompany = async () => {
+
+  const rejectCompany = async (status: StatusType, reason: string) => {
     console.log('reject company');
+    console.log('company id', companyId);
+
     if (!companyId) return;
+
+    setShowReasonModal(true);
+    console.log('from reject company');
+
     try {
-      const data = await adminService.updateCompany(companyId, {
-        isVerified: false,
-        status: 'rejected',
-      });
+      const data = await adminService.updateCompany(
+        companyId,
+        {
+          isVerified: false,
+          status: status,
+        },
+        reason
+      );
       const rejected = data.company;
       console.log('after rejecting', data);
 
       onUpdate(rejected);
-      setRejectOpen(false);
+      setShowReasonModal(false);
       showToast({ msg: data.message, type: 'success' });
 
       setCompanyId('');
@@ -86,15 +104,15 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
     }
   };
 
-  const suspendCompany = async () => {
+  const suspendCompany = async (status:StatusType,reason:string) => {
     console.log('suspend company', companyId);
 
     if (!companyId) return;
     try {
       const data = await adminService.updateCompany(companyId, {
         isVerified: true,
-        status: 'suspended',
-      });
+        status: status,
+      },reason);
       const suspended = data.company;
       console.log('after suspending', data);
 
@@ -134,6 +152,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
   };
 
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
   return (
     <>
       <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center gap-4">
@@ -344,7 +363,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
                         <button
                           onClick={() => {
                             setCompanyId(company.id);
-                            setRejectOpen(true);
+                            setShowReasonModal(true);
                           }}
                           className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
                           title="Reject"
@@ -378,20 +397,10 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         item="company"
         onConfirm={approveCompany}
       />
-      <ConfirmationModal
-        action="Reject"
-        type="delete"
-        onClose={() => {
-          setCompanyId('');
-          setRejectOpen(false);
-        }}
-        isOpen={rejectOpen}
-        item="company"
-        onConfirm={rejectCompany}
-      />
-      <ConfirmationModal
+
+      <AddReasonModal
         action="Suspend"
-        type="delete"
+        status='suspended'
         onClose={() => {
           setCompanyId('');
           setSuspendOpen(false);
@@ -410,6 +419,14 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         isOpen={reactivateOpen}
         item="company"
         onConfirm={reactivateCompany}
+      />
+      <AddReasonModal
+        isOpen={showReasonModal}
+        onClose={() => setShowReasonModal(false)}
+        status="rejected"
+        item="Company"
+        onConfirm={rejectCompany}
+        action="Reject"
       />
     </>
   );

@@ -43,30 +43,35 @@ router.patch(
   authValidator(tokenService),
   candidateProfileController.addAbout
 );
-router.patch(
+
+router.post(
   '/profile/skills/:skillId',
   authValidator(tokenService),
   candidateProfileController.addSkill
 );
+
 router.patch(
-  '/profile/skills/remove/:skillId',
+  '/profile/skills/:skillId',
   authValidator(tokenService),
   candidateProfileController.removeSkill
 );
-router.patch(
-  '/profile/experience/add',
+
+router.post(
+  '/profile/experience',
   authValidator(tokenService),
   experienceFormValidator,
   candidateProfileController.addExperience
 );
-router.patch(
-  '/profile/experience/edit/:expId',
+
+router.put(
+  '/profile/experience/:expId',
   authValidator(tokenService),
   experienceFormValidator,
   candidateProfileController.editExperience
 );
+
 router.patch(
-  '/profile/experience/remove/:expId',
+  '/profile/experience/:expId',
   authValidator(tokenService),
 
   candidateProfileController.removeExperience
@@ -78,24 +83,28 @@ router.post(
   educationValidator,
   candidateProfileController.addEducation
 );
-router.patch(
+
+router.put(
   '/profile/education/:eduId',
   authValidator(tokenService),
   educationValidator,
   candidateProfileController.editEducation
 );
-router.delete(
+
+router.patch(
   '/profile/education/:eduId',
   authValidator(tokenService),
   educationValidator,
   candidateProfileController.deleteEducation
 );
-router.patch(
+
+router.post(
   '/profile/resume',
   authValidator(tokenService),
   fileUpload.single('resume'),
   candidateProfileController.addResume
 );
+
 router.delete(
   '/profile/resume/:id',
   authValidator(tokenService),

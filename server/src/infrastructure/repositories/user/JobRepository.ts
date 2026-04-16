@@ -545,4 +545,10 @@ export class JobRepository
       ...job,
     }));
   }
+  async getCountBySkill(skillId: string): Promise<number> {
+    const count = await this._model.countDocuments({
+      skills: new mongoose.Types.ObjectId(skillId),
+    });
+    return count ? count : 0;
+  }
 }

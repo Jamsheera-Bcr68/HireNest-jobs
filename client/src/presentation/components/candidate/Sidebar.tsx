@@ -49,13 +49,14 @@ export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
   return (
     <div
       style={{ fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}
-      className="flex sticky top-0 h-screen bg-slate-30 overflow-hidden"
+      // className="flex sticky top-0 h-screen bg-slate-30 overflow-hidden"
+      className="flex  bg-slate-30 "
     >
       {/* Sidebar */}
       <aside
         className={`${
           isOpen ? 'w-64' : 'w-16'
-        } transition-all duration-300 bg-slate-900 flex flex-col shrink-0`}
+        } transition-all h-screen  duration-300 fixed top-0 left-0 z-40 bg-slate-900 flex flex-col shrink-0`}
       >
         {/* Nav */}
 

@@ -150,6 +150,10 @@ export class CompanyRepository
 
     if (entity.logoUrl !== undefined) data.logoUrl = entity.logoUrl;
     if (entity.industry !== undefined) data.industry = entity.industry;
+    if (entity.reasonForReject !== undefined)
+      data.reasonForReject = entity.reasonForReject;
+    if (entity.reasonForSuspend !== undefined)
+      data.reasonForSuspend = entity.reasonForSuspend;
 
     if (entity.socialMediaLinks !== undefined)
       data.socialMediaLinks = entity.socialMediaLinks;

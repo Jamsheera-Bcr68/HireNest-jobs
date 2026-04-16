@@ -77,7 +77,7 @@ export const ExperienceSchema = z
       });
     }
 
-    if (data.endDate) {
+    if (data.endDate && !data.isWorking) {
       const endYM = toYearMonthNumber(data.endDate);
 
       if (endYM > currentYM) {

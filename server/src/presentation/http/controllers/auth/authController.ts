@@ -1,13 +1,13 @@
 import { IRegisterUseCase } from '../../../../applications/interfaces/auth/IUserRegisterUseCase';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { statusCodes } from '../../../../shared/enums/statusCodes';
 import { authMessages } from '../../../../shared/constants/messages/authMesages';
 import { IUserLoginUseCase } from '../../../../applications/interfaces/auth/IUserLoginUseCase';
-
+import { asyncHandler } from '../../middleweres/async-handler';
 import { ISendOtpService } from '../../../../applications/interfaces/services/ISendOtpservice';
 import { IVerifyOtpService } from '../../../../applications/interfaces/services/IVerifyOtpService';
 import { ILogoutUsecase } from '../../../../applications/interfaces/auth/ILogoutUsecase';
-import { AppError } from '../../../../domain/errors/AppError';
+
 import { IloginInput } from '../../../../applications/Dtos/loginDto';
 import { UserMapper } from '../../../../applications/mappers/userMapper';
 
@@ -32,90 +32,80 @@ export class AuthController {
     this._logoutUsecase = logoutUsecase;
   }
 
-  register = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const payload = req.body;
-      const pendingUser = await this._registerUseCase.execute(payload);
+  register = asyncHandler(async (req: Request, res: Response) => {
+    const payload = req.body;
+    const pendingUser = await this._registerUseCase.execute(payload);
 
-      const otp_expiry = await this._sendOtpService.execute(pendingUser.email);
-      res.status(statusCodes.CREATED).json({
-        sucess: true,
-        message: authMessages.success.PENDING_SIGNUP,
-        otp_expiry: otp_expiry,
-      });
-    } catch (err) {
-      next(err);
-    }
-  };
+    const otp_expiry = await this._sendOtpService.execute(pendingUser.email);
+    res.status(statusCodes.CREATED).json({
+      sucess: true,
+      message: authMessages.success.PENDING_SIGNUP,
+      otp_expiry: otp_expiry,
+    });
+  });
 
-  verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
+  verifyOtp = asyncHandler(async (req: Request, res: Response) => {
     const payload = req.body;
     console.log('from auth  controller verify otp');
 
-    try {
-      await this._verifyOtpService.execute(payload.email, payload.otp);
+    await this._verifyOtpService.execute(payload.email, payload.otp);
 
-      return res
-        .status(statusCodes.OK)
-        .json({ success: true, message: authMessages.success.OTP_VERIFIED });
-    } catch (error: any) {
-      console.log('error is ', error.message);
+    return res
+      .status(statusCodes.OK)
+      .json({ success: true, message: authMessages.success.OTP_VERIFIED });
+  });
 
-      next(new AppError(error.message, 400));
-    }
-  };
-
-  resendOtp = async (req: Request, res: Response, next: NextFunction) => {
+  resendOtp = asyncHandler(async (req: Request, res: Response) => {
     const { email } = req.body;
     console.log('from auth controller email is ', email);
-    try {
-      const otp_expiry = await this._sendOtpService.execute(email);
 
-      return res.status(statusCodes.OK).json({
-        success: true,
-        message: authMessages.success.OTP_RESEND,
-        otp_expiry: otp_expiry,
-      });
-    } catch (error: any) {
-      next(error);
-    }
-  };
+    const otp_expiry = await this._sendOtpService.execute(email);
 
-  login = async (req: Request, res: Response, next: NextFunction) => {
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: authMessages.success.OTP_RESEND,
+      otp_expiry: otp_expiry,
+    });
+  });
+
+  login = asyncHandler(async (req: Request, res: Response) => {
     //  console.log('from login controller');
-    try {
-      const payload: IloginInput = req.body;
-      const { user, refreshToken, accessToken, companyId, isProfileCompleted } =
-        await this._loginUseCase.execute(payload);
-      const userDto = UserMapper.toDto(user);
 
-      res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        path: '/auth/refresh-token',
-      });
+    const payload: IloginInput = req.body;
+    const {
+      user,
+      refreshToken,
+      accessToken,
+      companyId,
+      isProfileCompleted,
+      appliedJobs,
+    } = await this._loginUseCase.execute(payload);
+    const userDto = UserMapper.toDto(user);
 
-      return res.status(statusCodes.OK).json({
-        success: true,
-        message: authMessages.success.LOGIN_SUCCESS,
-        data: { user: { ...userDto, companyId ,isProfileCompleted}, accessToken },
-      });
-    } catch (err) {
-      next(err);
-    }
-  };
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/auth/refresh-token',
+    });
 
-  logout = async (req: Request, res: Response, next: NextFunction) => {
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: authMessages.success.LOGIN_SUCCESS,
+      data: {
+        user: { ...userDto, companyId, isProfileCompleted, appliedJobs },
+        accessToken,
+      },
+    });
+  });
+
+  logout = asyncHandler(async (req: Request, res: Response) => {
     console.log('from logout controller');
-    try {
-      this._logoutUsecase.execute(req, res);
-      return res
-        .status(statusCodes.OK)
-        .json({ success: true, message: authMessages.success.LOGOUT_SUCCESS });
-    } catch (error) {
-      next(error);
-    }
-  };
+
+    this._logoutUsecase.execute(req, res);
+    return res
+      .status(statusCodes.OK)
+      .json({ success: true, message: authMessages.success.LOGOUT_SUCCESS });
+  });
 }

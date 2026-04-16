@@ -6,7 +6,9 @@ import { useToast } from '../../../../shared/toast/useToast';
 import { useSelector } from 'react-redux';
 import { type StateType } from '../../../../constants/types/user';
 import JobReportForm from './JobReportForm';
+import { Check } from 'lucide-react';
 import { type ErrorType, type ReportFormType } from './ListingContainter';
+import { useApplications } from '../../../hooks/user/candidate/profile/useApplication';
 
 type Props = {
   reportForm: ReportFormType;
@@ -32,6 +34,7 @@ function JobDetails({
 }: Props) {
   const user = useSelector((state: StateType) => state.auth.user);
   const { showToast } = useToast();
+  const { handleApplyClick } = useApplications();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const handleReportClick = () => {
@@ -54,7 +57,7 @@ function JobDetails({
   return (
     <div>
       {viewMode === 'split' && activeJob && (
-  <div className="hidden lg:block flex-1 min-w-0 sticky top-24">
+        <div className="hidden lg:block flex-1 w-[600px] sticky top-24">
           <div
             className="sticky top-24 bg-white rounded-2xl detail-scroll overflow-y-auto"
             style={{
@@ -129,21 +132,40 @@ function JobDetails({
                 ))}
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center ">
                 <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    handleApplyClick(activeJob.id);
+                  }}
+                  disabled={user?.appliedJobs?.includes(activeJob.id)}
+                  className={`apply-btn flex-1 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-medium rounded-lg transition-colors ${user?.appliedJobs?.includes(activeJob.id) ? 'b-slate-400' : ''}`}
+                >
+                  {user?.appliedJobs?.includes(activeJob.id) ? (
+                    <span className="inline-flex items-center gap-1">
+                      <Check size={16} className="text-white" />
+                      Applied
+                    </span>
+                  ) : (
+                    'Apply Now'
+                  )}
+                </button>
+                {/* <button
                   className="apply-btn flex-1 py-3 rounded-xl text-sm font-bold text-white"
                   style={{
                     background: 'linear-gradient(135deg,#4f46e5,#7c3aed)',
                   }}
                 >
                   Apply Now
-                </button>
-                <button
+                </button> */}
+
+                {/* <button
                   className="px-5 py-3 rounded-xl text-sm font-bold text-indigo-600 transition-all hover:bg-indigo-50"
                   style={{ border: '1.5px solid #c7d2fe' }}
                 >
                   Easy Apply
-                </button>
+                </button> */}
               </div>
             </div>
 

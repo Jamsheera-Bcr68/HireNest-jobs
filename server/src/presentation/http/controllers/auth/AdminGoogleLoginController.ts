@@ -1,37 +1,37 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { authMessages } from '../../../../shared/constants/messages/authMesages';
 import { statusCodes } from '../../../../shared/enums/statusCodes';
 import { IAdminGoogleAuthUsecase } from '../../../../applications/interfaces/auth/IAdminGoogleAuthUsecase';
 import { AdminMapper } from '../../../../applications/mappers/adminMapper';
+import { asyncHandler } from '../../middleweres/async-handler';
 
 export class AdminGoogleAuthController {
   private _adminGoogleAuthUsecase: IAdminGoogleAuthUsecase;
+
   constructor(adminGoogleAuthUsecase: IAdminGoogleAuthUsecase) {
     this._adminGoogleAuthUsecase = adminGoogleAuthUsecase;
   }
-  handle = async (req: Request, res: Response, next: NextFunction) => {
+
+  handle = asyncHandler(async (req: Request, res: Response) => {
     const { token, role } = req.body;
-    try {
-      console.log('token, role', token, role);
 
-      const { admin, refreshToken, accessToken } =
-        await this._adminGoogleAuthUsecase.execute(token, role);
+    console.log('token, role', token, role);
 
-      res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        path: '/auth/refresh-token',
-      });
-      const adminDto = AdminMapper.toDto(admin);
-      return res.status(statusCodes.OK).json({
-        success: true,
-        message: authMessages.success.LOGIN_SUCCESS,
-        data: { admin: adminDto, accessToken },
-      });
-    } catch (error) {
-      next(error);
-    }
-  };
+    const { admin, refreshToken, accessToken } =
+      await this._adminGoogleAuthUsecase.execute(token, role);
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/auth/refresh-token',
+    });
+    const adminDto = AdminMapper.toDto(admin);
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: authMessages.success.LOGIN_SUCCESS,
+      data: { admin: adminDto, accessToken },
+    });
+  });
 }

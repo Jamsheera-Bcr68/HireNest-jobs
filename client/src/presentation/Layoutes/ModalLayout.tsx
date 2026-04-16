@@ -29,21 +29,15 @@ export default function ModalLayout({
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      {/* Modal Card */}
-      <div className="bg-white rounded-xl shadow-lg w-full max-w-md mx-4">
-        {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b">
-          <div></div>
+      <div className="relative bg-white rounded-xl shadow-lg w-full max-w-md mx-4 p-4">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+        >
+          <X size={18} />
+        </button>
 
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
-          >
-            <X size={18} />
-          </button>
-        </div>
-
-        <div className="pl-4 pb-3 pr-4 pt-0">{children}</div>
+        {children}
       </div>
     </div>
   );

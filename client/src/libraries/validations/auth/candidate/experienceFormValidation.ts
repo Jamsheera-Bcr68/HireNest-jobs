@@ -28,7 +28,7 @@ export const addExperienceSchema = z
     description: z
       .string()
       .trim()
-      .max(500, 'Description should not exceed 500 characters')
+      .max(500, 'Description should not exceed 1000 characters')
       .optional(),
   })
   .refine(
@@ -53,6 +53,26 @@ export const addExperienceSchema = z
     {
       message: 'Location is required for onsite or hybrid work',
       path: ['location'],
+    }
+  )
+  .refine(
+    (data) => {
+      return new Date(data.startDate) < new Date();
+    },
+    {
+      message: 'Start date cannot be in the future',
+      path: ['startDate'],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.isWorking || !data.endDate) return true;
+
+      return new Date(data.startDate) < new Date(data.endDate);
+    },
+    {
+      message: 'Start date must be before end date',
+      path: ['endDate'],
     }
   );
 

@@ -7,7 +7,7 @@ import { JobCreate } from '../../presentation/pages/user/employer/JobCreate';
 import Dashboard from '../../presentation/pages/admin/Dashboard';
 import CompanyJobListing from '../../presentation/pages/user/company/CompanyJobListing';
 import JobDetails from '../../presentation/pages/user/company/JobDetails';
-
+import SkillPage from '../../presentation/pages/user/company/Skills';
 export const CompanyRoutes = () => {
   return (
     <Routes>
@@ -18,6 +18,7 @@ export const CompanyRoutes = () => {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="jobs" element={<CompanyJobListing />} />
         <Route path="jobs/create" element={<JobCreate />} />
+        <Route path="skills" element={<SkillPage />} />
 
         <Route path="jobs/:jobId" element={<JobDetails />} />
 

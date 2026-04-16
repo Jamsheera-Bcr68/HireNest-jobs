@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import multer, { memoryStorage } from 'multer';
-import { file } from 'zod';
+import { statusCodes } from '../../../shared/enums/statusCodes';
+import { AppError } from '../../../domain/errors/AppError';
 import { generalMessages } from '../../../shared/constants/messages/generalMessages';
 
 const documentFilter = (req: any, file: any, cb: any) => {
@@ -11,7 +12,13 @@ const documentFilter = (req: any, file: any, cb: any) => {
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(generalMessages.errors.INVALID_RESUME_FILE_TYPE, false);
+    cb(
+      new AppError(
+        generalMessages.errors.INVALID_RESUME_FILE_TYPE,
+        statusCodes.BADREQUEST
+      ),
+      false
+    );
   }
 };
 export const fileUpload = multer({

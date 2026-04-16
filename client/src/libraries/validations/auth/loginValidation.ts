@@ -10,5 +10,6 @@ export const loginSchema = z.object({
   password: z
     .string()
     .trim()
+    .min(1, 'Password is required')
     .min(6, 'Password Should contain atleast 6 charectores'),
 });

@@ -19,6 +19,7 @@ router.post(
   companyRegisterValidator,
   companyProfileController.companyRegister
 );
+
 router.patch(
   '/logo',
   authValidator(tokenService),

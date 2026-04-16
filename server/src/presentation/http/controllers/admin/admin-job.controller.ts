@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { IUpdateJobStatusUseCase } from '../../../../applications/useCases/job/update-job-status.usecase';
 import { asyncHandler } from '../../middleweres/async-handler';
 import { AppError } from '../../../../domain/errors/AppError';
@@ -16,6 +16,7 @@ export class AdminJobController {
     private getAllJobsUseCase: IGetAllJobsUseCase,
     private getJobDetailsUseCase: IGetJobDetailsUseCase
   ) {}
+
   getJobStatus = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
     if (!user)
@@ -31,6 +32,7 @@ export class AdminJobController {
       statusData: statusData,
     });
   });
+
   getJobs = asyncHandler(async (req: Request, res: Response) => {
     let { search, page, limit, sortBy, ...rest } = req.query;
     console.log('from getjob controller', rest);
@@ -51,6 +53,7 @@ export class AdminJobController {
       totalDocs,
     });
   });
+
   updateJobStatus = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
     const { id } = req.params;

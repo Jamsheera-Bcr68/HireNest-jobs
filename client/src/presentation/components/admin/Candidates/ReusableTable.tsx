@@ -17,6 +17,9 @@ type Props<T extends { id: string }> = {
   entities: T[];
   columns: ColumnType<T>[];
   filterOptions: FilterOption[];
+  totalDocs: number;
+  sortOption?: FilterOption;
+  setSortBy?: (option: string) => void;
 };
 
 function ReusableTable<T extends { id: string }>({
@@ -25,6 +28,9 @@ function ReusableTable<T extends { id: string }>({
   entities,
   columns,
   filterOptions,
+  totalDocs,
+  sortOption,
+  setSortBy,
 }: Props<T>) {
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState('All');
@@ -32,7 +38,7 @@ function ReusableTable<T extends { id: string }>({
   useEffect(() => {
     const timer = setTimeout(() => {
       updateFilter({ search: searchInput });
-    }, 500);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [searchInput]);
@@ -88,6 +94,24 @@ function ReusableTable<T extends { id: string }>({
             );
           })}
         </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {sortOption && setSortBy && (
+            <select
+              key={sortOption.key}
+              onChange={(e) => setSortBy(e.target.value.toLocaleLowerCase())}
+              className="text-sm border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-slate-50 text-slate-600"
+            >
+              {sortOption.label}
+
+              {sortOption.options.map((opt) => (
+                <option value={opt} key={opt}>
+                  {' '}
+                  {opt}{' '}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
       </div>
       <div>
         <div className="flex items-center gap-1 px-5 pt-4 border-b border-slate-100">
@@ -110,7 +134,7 @@ function ReusableTable<T extends { id: string }>({
                 <span
                   className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${activeTab === tab ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-500'}`}
                 >
-                  {entities.length}
+                  {totalDocs}
                 </span>
               )}
             </button>

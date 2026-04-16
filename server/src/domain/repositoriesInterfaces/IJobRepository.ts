@@ -25,4 +25,5 @@ export interface IJobRepository extends IBaseRepository<Job> {
     search?: { job?: string; location?: string },
     sortBy?: string
   ): Promise<JobCardDto[]>;
+  getCountBySkill(skillId: string): Promise<number>;
 }

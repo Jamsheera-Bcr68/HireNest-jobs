@@ -25,6 +25,7 @@ const Skills = ({
     setIsAddSkill,
   } = useEditProfileDetails(showToast, onUserUpdate, user, skills);
   const inputRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleOutSideClick = (e: MouseEvent) => {
       if (inputRef.current && !inputRef.current.contains(e.target as Node)) {

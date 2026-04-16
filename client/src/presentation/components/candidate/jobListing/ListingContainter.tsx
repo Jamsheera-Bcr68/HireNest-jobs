@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useApplications } from '../../../hooks/user/candidate/profile/useApplication';
+
 import Header from '../../common/Header';
 import SearchBar from './SearchBar';
 import Filter from './Filter';
@@ -132,7 +132,7 @@ function JobListingContainer({ mode }: Props) {
 
     setPage(1);
   };
-const {handleApplyClick}=useApplications()
+
   useEffect(() => {
     setFilter({
       search: {
@@ -144,6 +144,7 @@ const {handleApplyClick}=useApplications()
 
     setPage(1);
   }, [job, location, industryFilter]);
+
   useEffect(() => {
     if (!activeJobId) return;
     try {
@@ -247,6 +248,7 @@ const {handleApplyClick}=useApplications()
       });
     }
   };
+
   const unSaveJobHandle = async (jobId: string) => {
     console.log('from unsave fun');
 
@@ -288,11 +290,13 @@ const {handleApplyClick}=useApplications()
       });
     }
   };
+
   useEffect(() => {
     if (window.innerWidth < 1024) {
       setViewMode('grid');
     }
   }, []);
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800">
       {mode === 'all' && <Header />}

@@ -3,7 +3,6 @@ import type { ILoginFormProps } from '../../../constants/interfaces/auth';
 import { useToast } from '../../../shared/toast/useToast';
 import { Eye, EyeClosedIcon } from 'lucide-react';
 
-
 const LoginForm = ({ role }: ILoginFormProps) => {
   const { showToast } = useToast();
   const {

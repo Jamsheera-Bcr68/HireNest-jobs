@@ -8,13 +8,16 @@ export const useEditBasicData = () => {
   const handleChangePassword = () => {
     setOpen(true);
   };
+
   const handleImageClick = () => {
     console.log('from image click');
     setOpenImageModal(true);
   };
+
   const handleEditProfile = () => {
     setOpenEditModal(true);
   };
+
   return {
     handleChangePassword,
     open,

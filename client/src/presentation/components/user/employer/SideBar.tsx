@@ -5,6 +5,7 @@ import {
   ChevronRight,
   BriefcaseBusiness,
   ChevronLeftIcon,
+  LightbulbIcon,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 const navItems = [
@@ -14,17 +15,29 @@ const navItems = [
   'Interviews',
   'My Jobs',
   'Profile',
+  'Skill Requests',
   'Settings',
 ];
 const navRoutes: Record<string, string> = {
-  Dashboard: '/employer/dashboard',
+  Dashboard: '/company/dashboard',
   'Create Job': '/company/jobs/create',
-  Applications: '/employer/applications',
-  Interviews: '/employer/interviews',
+  Applications: '/company/applications',
+  Interviews: '/company/interviews',
   'My Jobs': '/company/jobs',
   Profile: '/company/profile',
+  'Skill Requests': '/company/skills',
 };
-const navIcons = ['⊞', <PlusIcon />, '📋', '📅', '🔖', '👤', '⚙️', <Home />];
+const navIcons = [
+  '⊞',
+  <PlusIcon />,
+  '📋',
+  '📅',
+  '🔖',
+  '👤',
+  <LightbulbIcon />,
+  '⚙️',
+  <Home />,
+];
 type SidebarProps = {
   isOpen: boolean;
   setOpen: (state: boolean) => void;

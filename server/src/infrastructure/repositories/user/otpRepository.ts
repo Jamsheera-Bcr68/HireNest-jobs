@@ -1,8 +1,10 @@
 import { otpModel, IOtpDocument } from '../../database/models/user/otpModel';
 import { IOtpRepository } from '../../../domain/repositoriesInterfaces/IotpRepository';
-import { Model } from 'mongoose';
+import { Error, Model } from 'mongoose';
 //import { GenericRepository } from "../genericRepository";
-//import { AppError } from "../../../domain/errors/AppError";
+import { AppError } from '../../../domain/errors/AppError';
+import { statusCodes } from '../../../shared/enums/statusCodes';
+import { userMessages } from '../../../shared/constants/messages/userMessages';
 
 export class OtpRepository implements IOtpRepository {
   private _model: Model<IOtpDocument>;
@@ -26,14 +28,15 @@ export class OtpRepository implements IOtpRepository {
 
   async verifyOtp(email: string, otp: string): Promise<boolean> {
     const user = await otpModel.findOne({ email });
-    if (!user) throw new Error('user not found');
+    if (!user)
+      throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     if (!user?.otp || !user.expiredAt || new Date() > user.expiredAt)
-      throw new Error('OTP_EXPIRED');
+      throw new AppError('OTP Expired', statusCodes.BADREQUEST);
 
     const isValid = user?.otp === otp;
     // console.log('is valid ', isValid);
     if (!isValid) {
-      throw new Error('Invalid OTP');
+      throw new AppError('Invalid OTP', statusCodes.BADREQUEST);
     }
     user.isVerified = true;
     await user.save();

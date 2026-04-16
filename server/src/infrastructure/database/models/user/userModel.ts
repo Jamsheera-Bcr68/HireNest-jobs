@@ -89,7 +89,9 @@ const userSchema = new Schema<IUserDocument>(
             enum: Object.values(StatusEnum),
             default: StatusEnum.PENDING,
           },
+        
           companyId: { type: Schema.Types.ObjectId, ref: 'Company' },
+            reasonForReject:{type:String},
         },
       ],
       default: [],

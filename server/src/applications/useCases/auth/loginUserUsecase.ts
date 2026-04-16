@@ -10,20 +10,24 @@ import { ITokenService } from '../../interfaces/services/ITokenService';
 import { UserRole } from '../../../domain/enums/userEnums';
 import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
 import { userMessages } from '../../../shared/constants/messages/userMessages';
+import { IApplicationRepository } from '../../../domain/repositoriesInterfaces/application.repository.interface';
 //import { IAdminRepository } from "../../../domain/repositoriesInterfaces/IAdminRepository";
 
 export class LoginUseCase implements IUserLoginUseCase {
   private _userRepository: IUserRepository;
   private _companyRepository: ICompanyRepository;
   private _tokenService: ITokenService;
+  private _applicationRepository: IApplicationRepository;
   constructor(
     userRepository: IUserRepository,
     tokenService: ITokenService,
-    companyRepository: ICompanyRepository
+    companyRepository: ICompanyRepository,
+    applicationRepository: IApplicationRepository
   ) {
     this._userRepository = userRepository;
     this._tokenService = tokenService;
     this._companyRepository = companyRepository;
+    this._applicationRepository = applicationRepository;
   }
   async execute(input: IloginInput): Promise<loginOutPutDto> {
     const user: User | null = await this._userRepository.findByEmail(
@@ -73,6 +77,19 @@ export class LoginUseCase implements IUserLoginUseCase {
         isProfileCompleted = true;
       } else isProfileCompleted = false;
     }
-    return { user, accessToken, refreshToken, companyId ,isProfileCompleted:isProfileCompleted};
+    let applications;
+    if (user.role == UserRole.CANDIDATE) {
+      applications = await this._applicationRepository.getDocsByUserId(user.id);
+    }
+    // console.log('applied jobs',applications);
+
+    return {
+      user,
+      accessToken,
+      refreshToken,
+      companyId,
+      isProfileCompleted: isProfileCompleted,
+      appliedJobs: applications ? applications.map((a) => a.jobId) : undefined,
+    };
   }
 }

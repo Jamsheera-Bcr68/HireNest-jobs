@@ -133,9 +133,11 @@ export const useExperience = (
     }
   };
   const handleEdit = async () => {
+    setError({});
     console.log('edit form data', formData);
-
+    if (formData.isWorking) formData.endDate = '';
     const result = addExperienceSchema.safeParse(formData);
+
     if (!result.success) {
       const formatedError = result.error.flatten().fieldErrors;
       console.log(formatedError);

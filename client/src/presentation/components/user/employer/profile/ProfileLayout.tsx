@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import BasicPart from './BasicPart';
 import { type CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
 import { companyService } from '../../../../../services/apiServices/companyService';
@@ -7,8 +7,7 @@ import { AboutCompany } from './AboutCompany';
 import { MissionVision } from './MissionAndVision';
 import { CompanyStatistics } from './Statistics';
 import { CultureSection } from './Culture';
-import { BenefitsPerks } from './BenefitsAndPerks';
-import Footer from '../../../common/Footer';
+
 import { ContactLinks } from './Contact';
 
 function ProfileLayout() {

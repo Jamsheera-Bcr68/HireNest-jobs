@@ -1,7 +1,6 @@
 import axiosInstance from '../../libraries/axios';
 import { type RegisterFormType } from '../../libraries/validations/auth/registerValidations';
 import { AUTH_ENDPOINTS } from '../../constants/apiEndPoints/authEndPoints';
-import { email } from 'zod';
 
 export const authService = {
   async registerUser(formData: RegisterFormType) {

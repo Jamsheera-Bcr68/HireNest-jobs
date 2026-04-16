@@ -27,7 +27,7 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
   } = useEditBasicData();
   return (
     <div className="lg:col-span-1">
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white  rounded-lg shadow-md p-6">
         {/* Profile Picture */}
         <div className="flex flex-col items-center">
           <div

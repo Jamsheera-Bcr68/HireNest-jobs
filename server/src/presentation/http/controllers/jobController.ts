@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { JobReqDto } from '../validators/company/jobValidation';
 import { asyncHandler } from '../middleweres/async-handler';
 import { JobMapper } from '../mappers/jobMapper';
@@ -33,100 +33,87 @@ export class JobController {
     private updateJobStatusUseCase: IUpdateJobStatusUseCase,
     private updateJobUseCase: IUpdateJobUseCase
   ) {}
-  create = async (req: Request, res: Response, next: NextFunction) => {
+  create = asyncHandler(async (req: Request, res: Response) => {
     // console.log('from jobcontroller');
     const payload: JobReqDto = req.body;
 
     const user = req.user;
     //  console.log('user from job controller', user);
 
-    try {
-      if (!user || !user.userId || user.role !== UserRole.COMPANY) {
-        throw new AppError(
-          userMessages.error.NOT_FOUND,
-          statusCodes.UNAUTHERIZED
-        );
-      }
-      const jobData = JobMapper.toJobDto(payload);
-      const job = await this.createJobUseCase.execute(
-        jobData,
-        user.userId,
-        user.role
+    if (!user || !user.userId || user.role !== UserRole.COMPANY) {
+      throw new AppError(
+        userMessages.error.NOT_FOUND,
+        statusCodes.UNAUTHERIZED
       );
-      return res
-        .status(statusCodes.OK)
-        .json({ success: true, message: jobMessages.success.JOB_CREATED, job });
-    } catch (error) {
-      next(error);
     }
-  };
+    const jobData = JobMapper.toJobDto(payload);
+    const job = await this.createJobUseCase.execute(
+      jobData,
+      user.userId,
+      user.role
+    );
+    return res
+      .status(statusCodes.OK)
+      .json({ success: true, message: jobMessages.success.JOB_CREATED, job });
+  });
 
-  getJobs = async (req: Request, res: Response, next: NextFunction) => {
+  getJobs = asyncHandler(async (req: Request, res: Response) => {
     let { search, page, limit, sortBy, ...rest } = req.query;
     console.log('from getjob controller', rest);
-    try {
-      const jobRes = await this.getAllJobsUseCase.execute(
-        rest,
 
-        Number(limit),
-        Number(page),
-        search as { job: string; location: string },
-        sortBy?.toString().toLowerCase()
-      );
-      const { jobs, totalDocs } = jobRes;
-      return res.status(statusCodes.OK).json({
-        success: true,
-        message: jobMessages.success.JOB_FETCHED,
-        jobs,
-        totalDocs,
-      });
-    } catch (error: any) {
-      next(error);
+    const jobRes = await this.getAllJobsUseCase.execute(
+      rest,
+
+      Number(limit),
+      Number(page),
+      search as { job: string; location: string },
+      sortBy?.toString().toLowerCase()
+    );
+    const { jobs, totalDocs } = jobRes;
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: jobMessages.success.JOB_FETCHED,
+      jobs,
+      totalDocs,
+    });
+  });
+
+  getSavedJobs = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user || !user.userId) {
+      throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     }
-  };
-  getSavedJobs = asyncHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const user = req.user;
-      if (!user || !user.userId) {
-        throw new AppError(
-          authMessages.error.UNAUTHORIZED,
-          statusCodes.NOTFOUND
-        );
-      }
-      let { search, page, limit, sortBy, ...rest } = req.query;
+    let { search, page, limit, sortBy, ...rest } = req.query;
 
-      const jobRes = await this.getSavedJobsUseCase.execute(
-        user.userId,
-        rest,
+    const jobRes = await this.getSavedJobsUseCase.execute(
+      user.userId,
+      rest,
 
-        Number(limit),
-        Number(page),
-        search as { job: string; location: string },
-        sortBy?.toString().toLowerCase()
-      );
-      const { jobs, totalDocs } = jobRes;
-      return res.status(statusCodes.OK).json({
-        success: true,
-        message: jobMessages.success.JOB_FETCHED,
-        jobs,
-        totalDocs,
-      });
-    }
-  );
-  getJobDetails = async (req: Request, res: Response, next: NextFunction) => {
+      Number(limit),
+      Number(page),
+      search as { job: string; location: string },
+      sortBy?.toString().toLowerCase()
+    );
+    const { jobs, totalDocs } = jobRes;
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: jobMessages.success.JOB_FETCHED,
+      jobs,
+      totalDocs,
+    });
+  });
+
+  getJobDetails = asyncHandler(async (req: Request, res: Response) => {
     const jobId = req.params.id;
     //console.log('job id id ', jobId);
-    try {
-      const jobDetails = await this.getJobDetailsUseCase.execute(jobId);
-      return res.status(statusCodes.OK).json({
-        success: true,
-        message: jobMessages.success.JOB_DETAILS_FETCHED,
-        jobDetails,
-      });
-    } catch (error: any) {
-      next();
-    }
-  };
+
+    const jobDetails = await this.getJobDetailsUseCase.execute(jobId);
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: jobMessages.success.JOB_DETAILS_FETCHED,
+      jobDetails,
+    });
+  });
 
   reportJob = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body;
@@ -206,6 +193,7 @@ export class JobController {
       statusData: statusData,
     });
   });
+
   updateStatus = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
     const { id } = req.params;
@@ -224,8 +212,9 @@ export class JobController {
       message: jobMessages.success.JOB_STATUS_UPDATED(data.status),
     });
   });
+
   updateJob = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from update job');
+    // console.log('from update job');
     const user = req.user;
     const { id } = req.params;
 

@@ -6,6 +6,7 @@ import { type CompanyProfileType } from '../../../types/dtos/profileTypes/userTy
 import Table from '../../components/admin/companyDetails/Table';
 import Pagination from '../../components/common/Pagination';
 import { adminService } from '../../../services/apiServices/adminService';
+import AddReasonModal from '../../components/admin/jobs/AddReasonModal';
 
 export type StatusCardType = {
   label: string;
@@ -24,6 +25,7 @@ function Companies() {
   const [page, setPage] = useState(1);
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+
 
   const [filter, setFilter] = useState<Partial<CompanyFilter>>({});
   useEffect(() => {
@@ -55,6 +57,7 @@ function Companies() {
   const handleFilterChange = (newFilter: Partial<CompanyFilter>) => {
     setFilter((prev) => ({ ...prev, ...newFilter }));
   };
+
   const handleCompanyUpdate = (updatedCompany: CompanyProfileType) => {
     setCompanies((prev) =>
       prev.map((company) =>
@@ -64,6 +67,7 @@ function Companies() {
   };
 
   const [stats, setStatus] = useState<StatusCardType[]>([]);
+
   useEffect(() => {
     async function getCompanyStatus() {
       const data = await adminService.getCompanyStatus();
@@ -93,7 +97,8 @@ function Companies() {
       setStatus([total, active, pending, suspended]);
     }
     getCompanyStatus();
-  }, []);
+  }, [companies]);
+  
   return (
     <div>
       <div className="min-h-screen w-full bg-gray-100">

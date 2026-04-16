@@ -1,7 +1,7 @@
 import BasicDataPart from './BasicdataPart';
 import { useProfile } from '../../../hooks/user/candidate/profile/useProfile';
 import { useToast } from '../../../../shared/toast/useToast';
-import type { UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+
 import Resume from './Resume';
 
 import AboutMe from './AboutMe';
@@ -13,6 +13,7 @@ const ProfilePart = () => {
   console.log('from candidate profiel');
   const { showToast } = useToast();
   const { user, setUser, allSkills } = useProfile(showToast);
+
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[calc(100vh-4rem)]">

@@ -33,6 +33,6 @@ export class ChangePasswordUsecase implements IChangePasswordUsecase {
     }
     const passwordHashed = await hashedPassword(password);
     user.password = passwordHashed;
-    await this._userRepository.updatePassword(user.email, passwordHashed);
+    await this._userRepository.updatePassword(userId, passwordHashed);
   };
 }

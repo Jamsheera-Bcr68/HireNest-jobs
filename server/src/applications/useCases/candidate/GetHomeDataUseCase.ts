@@ -57,7 +57,7 @@ export class GetHomeDataUseCase implements IGetHomeDataUseCase {
         skills: skillArray.map((skill) => skill!.skillName),
       };
     });
-    console.log('jobs', modifiedJobs);
+    // console.log('jobs', modifiedJobs);
 
     return {
       currentDayPostCount: todayJobCount,

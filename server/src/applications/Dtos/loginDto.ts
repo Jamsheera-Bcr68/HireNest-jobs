@@ -5,7 +5,8 @@ export interface loginOutPutDto {
   accessToken: string;
   refreshToken: string;
   companyId?: string;
-  isProfileCompleted?:boolean
+  isProfileCompleted?: boolean;
+  appliedJobs?: string[];
 }
 
 export interface IloginInput {

@@ -86,12 +86,15 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
 
     getJob();
   }, [jobId]);
+
   useEffect(() => {
     async function fetchskill() {
       try {
-        const data = await skillService.getSkills();
-        setAllSkills(data.skills);
-        console.log('skills ', data.skills);
+        const data = await skillService.getSkills({ status: 'approved' });
+        console.log('data after fetching skill', data);
+
+        setAllSkills(data.data.skills);
+        console.log('skillssss ', data);
       } catch (error: any) {
         console.log(error);
         showToast({
@@ -102,6 +105,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
     }
     fetchskill();
   }, []);
+
   const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError((prev) => ({ ...prev, skills: '' }));
     const value = e.currentTarget.value;
@@ -119,6 +123,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
 
     setFilteredSkills(filtered);
   };
+
   const removeSkill = (id: string | undefined) => {
     if (!id) return;
     setFormData((prev) => ({
@@ -126,6 +131,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
       skills: prev.skills.filter((s) => s.id !== id),
     }));
   };
+
   const handleAddResponsibility = () => {
     if (!res.trim()) {
       setError((prev) => ({ ...prev, responsibilities: 'Nothing to add' }));
@@ -162,16 +168,19 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
     setAddRes(false);
     setRes('');
   };
+
   const removeResponsibility = (res: string) => {
     setFormData((prev) => ({
       ...prev,
       responsibilities: prev.responsibilities.filter((r) => r !== res),
     }));
   };
+
   const handleAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value, name } = e.currentTarget;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleAddSkill = () => {
     if (!skill.trim()) {
       showToast({ msg: 'Nothing to add', type: 'error' });

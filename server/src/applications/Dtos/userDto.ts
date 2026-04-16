@@ -10,6 +10,7 @@ export interface userDto {
   role: UserRole;
   phone: string;
   isBlocked: boolean;
+  appliedJobs?: string[];
 }
 export interface userProfileDto {
   id: string;
