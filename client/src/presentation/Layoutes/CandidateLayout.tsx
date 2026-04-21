@@ -8,6 +8,7 @@ const menuItems = [
   { label: 'Dashboard', path: '/candidate/dashboard' },
   { label: 'Saved Jobs', path: '/candidate/jobs' },
   { label: 'Profile', path: '/candidate/profile' },
+  { label: 'Applications', path: '/candidate/applications' },
 ];
 
 export const CandidateLayout = () => {

@@ -1,8 +1,5 @@
 import { JOB_REPORT_REASONS } from '../../../../constants/types/report-reasons';
-import {
-  type ErrorType,
-  type ReportFormType,
-} from '../../../pages/user/JobListing';
+import { type ErrorType, type ReportFormType } from './ListingContainter';
 
 export default function ReportJobModal({
   handleChange,

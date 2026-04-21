@@ -6,5 +6,5 @@ export interface IUpdateEntityStatusUseCase<T, S> {
     role: UserRole,
     status: S,
     reason?: string
-  ): Promise<void>;
+  ): Promise<void|T>;
 }

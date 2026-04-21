@@ -9,6 +9,7 @@ import { IAddResumeUseCase } from '../../interfaces/candidate/IAddResumeUseCase'
 import { IResume } from '../../../domain/values/profileTypes';
 import { userMessages } from '../../../shared/constants/messages/userMessages';
 import { IFileStorageService } from '../../interfaces/services/IFileStorageServices';
+import { generalMessages } from '../../../shared/constants/messages/generalMessages';
 
 export class AddResumeUseCase implements IAddResumeUseCase {
   private _userRepository: IUserRepository;
@@ -25,7 +26,7 @@ export class AddResumeUseCase implements IAddResumeUseCase {
     data: UploadFileDto,
     userId: string,
     role: UserRole
-  ): Promise<User> {
+  ): Promise<IResume> {
     const user = await this._userRepository.findById(userId);
     if (!user || !user.id || user.role !== role)
       throw new AppError(
@@ -34,15 +35,19 @@ export class AddResumeUseCase implements IAddResumeUseCase {
       );
 
     const imageUrl = await this._fileStorageService.uploadFile(data);
-    const payload: IResume = {
+    const newResume: IResume = {
       url: imageUrl,
       name: data.originalName,
       isDefault: false,
       uploadedAt: new Date(),
     };
-    const updatedUser = await this._userRepository.addResume(payload, userId);
-    if (!updatedUser)
-      throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return updatedUser;
+    let resume = await this._userRepository.addResume(newResume, userId);
+    if (!resume) {
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Resume'),
+        statusCodes.NOTFOUND
+      );
+    }
+    return resume;
   }
 }

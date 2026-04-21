@@ -12,6 +12,7 @@ export const jobService = {
     const res = await axiosInstance.post('/jobs', jobData);
     return res.data;
   },
+
   async updatePost(jobData: JobFormType, id: string) {
     const res = await axiosInstance.put(
       COMPANY_API_ENDPOINTS.UPDATE_JOB(id),
@@ -33,6 +34,7 @@ export const jobService = {
     });
     return res.data;
   },
+
   async getSavedJobs(
     filter: Partial<JobFilterType | {}>,
     sortBy: string,
@@ -65,11 +67,13 @@ export const jobService = {
     );
     return res.data;
   },
+  
   async saveJob(id: string) {
     console.log('from service', id);
     const res = await axiosInstance.post(CANDIDATE_API_ENDPOINTS.SAVE_JOB(id));
     return res.data;
   },
+
   async unsaveJob(id: string) {
     console.log('from service', id);
     const res = await axiosInstance.delete(
@@ -77,10 +81,12 @@ export const jobService = {
     );
     return res.data;
   },
+
   async getCompanyJobstatus() {
     const res = await axiosInstance.get(COMPANY_API_ENDPOINTS.GET_POST_STATUS);
     return res.data;
   },
+
   async updateJobstatus(
     payload: { status: StatusType; lastDate?: string },
     id: string

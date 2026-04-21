@@ -1,6 +1,10 @@
 import { GenericRepository } from '../genericRepository';
 import { User } from '../../../domain/entities/User';
-import { IUserDocument, userModel } from '../../database/models/user/userModel';
+import {
+  IUserDocument,
+  userModel,
+  ResumeDocument,
+} from '../../database/models/user/userModel';
 import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
 import mongoose, { Types } from 'mongoose';
 import { UserSkillDto } from '../../../applications/Dtos/skillDto';
@@ -317,20 +321,35 @@ export class UserRepository
     return this.mapToEntity(user);
   }
 
-  async addResume(data: IResume, userId: string): Promise<User | null> {
-    const doc = await this._model
-      .findByIdAndUpdate(
-        userId,
-        { $addToSet: { resumes: data } },
-        { new: true }
-      )
-      .populate('skills')
-      .populate('experience')
-      .populate('education');
-    if (!doc) return null;
-    return this.mapToEntity(doc);
-  }
+  async addResume(data: IResume, userId: string): Promise<IResume | null> {
+    const resume = {
+      _id: new mongoose.Types.ObjectId(),
+      ...data,
+    };
+    console.log('resume',resume);
+    
+    const doc = await this._model.findByIdAndUpdate(
+      userId,
+      { $addToSet: { resumes: resume } },
+      { new: true }
+    );
 
+    if (!doc) return null;
+    console.log('return rsume',this.mapToRsumeEntity(resume));
+    
+    return this.mapToRsumeEntity(resume);
+  }
+  private mapToRsumeEntity(doc: ResumeDocument): IResume {
+    console.log('doc',doc);
+    
+    return {
+      id: doc._id.toString(),
+      url: doc.url,
+      name: doc.name,
+      isDefault: doc.isDefault,
+      uploadedAt: doc.uploadedAt,
+    };
+  }
   async addProfileImage(
     userId: string,
     imageUrl: string
@@ -503,6 +522,4 @@ export class UserRepository
     });
     return count ? count : 0;
   }
-
- ;
 }

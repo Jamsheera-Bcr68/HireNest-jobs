@@ -8,7 +8,9 @@ import { Trash, X, LucideLoader } from 'lucide-react';
 import { FormatDate } from '../../../../utils/dateConversion';
 import DeleteConfirmationModal from '../../../modals/DeleteConfirmationModal';
 type ResumeProps = {
-  onUserUpdate: (user: UserProfileType) => void;
+  onUserUpdate: React.Dispatch<
+    React.SetStateAction<UserProfileType | undefined>
+  >;
   resumes: ResumeType[] | [];
 };
 function Resume({ onUserUpdate, resumes }: ResumeProps) {
@@ -32,8 +34,17 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
       const formData = new FormData();
       formData.append('resume', file);
       const data = await profileService.uploadResume(formData);
+
+      onUserUpdate((prev) =>
+        prev
+          ? {
+              ...prev,
+              resumes: [data.resume, ...prev.resumes],
+            }
+          : prev
+      );
       showToast({ msg: data.message, type: 'success' });
-      onUserUpdate(data.user);
+
       setFile(null);
       setIsUploading(false);
     } catch (error: any) {

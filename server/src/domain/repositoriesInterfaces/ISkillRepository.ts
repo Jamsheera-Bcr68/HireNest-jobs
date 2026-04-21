@@ -14,4 +14,5 @@ export interface ISkillRepository extends IBaseRepository<Skill> {
   getSkillByUserId(userId: string): Promise<Skill[]>;
   count(filter: Partial<Skill>): Promise<number>;
   findBySkillName(skillName: string): Promise<Skill | null>;
+   findByIds(skillIds: string[]): Promise<Skill[]>;
 }

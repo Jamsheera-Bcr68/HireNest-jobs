@@ -11,8 +11,10 @@ export enum StatusEnum {
 }
 export enum ApplicationStatusEnum {
   PENDING = 'pending',
-  VIEWED = 'viewed',
-  SHORT_LISTED = 'short listed',
+  REVIEWED = 'reviewed',
+  SHORT_LISTED = 'shortListed',
   REJECTED = 'rejected',
-  INTERVIEW_SCHEDULED = 'interview sheduled',
+  INTERVIEW_SCHEDULED = 'interviewSheduled',
+  OFFERED='offered',
+  WITHDRAWN='withdrawn'
 }

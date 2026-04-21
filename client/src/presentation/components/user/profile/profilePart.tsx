@@ -13,7 +13,7 @@ const ProfilePart = () => {
   console.log('from candidate profiel');
   const { showToast } = useToast();
   const { user, setUser, allSkills } = useProfile(showToast);
-
+if(!user)return null
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[calc(100vh-4rem)]">
@@ -35,7 +35,7 @@ const ProfilePart = () => {
             educations={user?.education || []}
           />
           {/* Resume Upload */}
-          <Resume resumes={user?.resumes || []} onUserUpdate={setUser} />
+          <Resume resumes={user.resumes || []} onUserUpdate={setUser} />
         </div>
       </div>
     </div>

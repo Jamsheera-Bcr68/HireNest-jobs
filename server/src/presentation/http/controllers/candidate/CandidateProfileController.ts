@@ -28,6 +28,7 @@ import { IRemoveEducationUseCase } from '../../../../applications/interfaces/can
 import { generalMessages } from '../../../../shared/constants/messages/generalMessages';
 import { IAddResumeUseCase } from '../../../../applications/interfaces/candidate/IAddResumeUseCase';
 import { IRemoveResumeUseCase } from '../../../../applications/interfaces/candidate/IRemoveResumeUseCase';
+import { IGetCandidateResumesUsecase } from '../../../../applications/useCases/candidate/get-resumes.usecase';
 
 export class CandidateProfileController {
   private _candidateEditProfileUsecase: IProfileEditUsecase;
@@ -60,7 +61,8 @@ export class CandidateProfileController {
     editEducationUseCase: IEditEducationUseCase,
     removeEducationUseCase: IRemoveEducationUseCase,
     addResumeUseCase: IAddResumeUseCase,
-    private removeResumeUseCase: IRemoveResumeUseCase
+    private removeResumeUseCase: IRemoveResumeUseCase,
+    private _getResumesUsecase: IGetCandidateResumesUsecase
   ) {
     this._candidateEditProfileUsecase = candidateEditProfileUsecase;
     this._getUserUseCase = getUserUseCase;
@@ -474,23 +476,16 @@ export class CandidateProfileController {
       originalName: file.originalname,
       size: file.size,
     };
-    const updatedUser = await this._addResumeUseCase.execute(
+    const resume = await this._addResumeUseCase.execute(
       data,
       user.userId,
       user.role
-    );
-    if (!updatedUser) {
-      throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    }
-    console.log(
-      'after adding resume:',
-      UserMapper.toUserProfileDto(updatedUser)
     );
 
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.RESUME_ADDED,
-      user: UserMapper.toUserProfileDto(updatedUser),
+      resume,
     });
   });
 
@@ -518,6 +513,29 @@ export class CandidateProfileController {
       success: true,
       message: userMessages.success.RESUME_DELETED,
       user: UserMapper.toUserProfileDto(updatedUser),
+    });
+  });
+
+  getResume = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    const { id } = req.params;
+
+    if (!user || !user.userId || !user.role)
+      throw new AppError(
+        authMessages.error.UNAUTHORIZED,
+        statusCodes.UNAUTHERIZED
+      );
+    if (!id)
+      throw new AppError(
+        userMessages.error.RESUMEID_NOT_FOUND,
+        statusCodes.BADREQUEST
+      );
+
+    const resumes = await this._getResumesUsecase.execute(user.userId);
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: generalMessages.success.ENTITY_DETAILS_FETCHED('Resumes '),
+      resumes,
     });
   });
 }

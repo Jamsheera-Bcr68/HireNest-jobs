@@ -13,6 +13,7 @@ import {
 import { upload } from '../middleweres/imageUpload';
 import { educationValidator } from '../validators/educationFormValidator';
 import { fileUpload } from '../middleweres/pdfUpload';
+import { API_END_POINTS } from './api-end-points/api-end.points';
 
 const router = express.Router();
 
@@ -109,6 +110,12 @@ router.delete(
   '/profile/resume/:id',
   authValidator(tokenService),
   candidateProfileController.removeResume
+);
+
+router.get(
+ API_END_POINTS.GET_RESUMES,
+  authValidator(tokenService),
+  candidateProfileController.getResume
 );
 
 router.get('/home', userControlller.getHomeData);

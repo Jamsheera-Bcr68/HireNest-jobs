@@ -19,6 +19,7 @@ type Props = {
   onReportSumbit: () => void;
   handleSave: (id: string) => Promise<void>;
   handleUnSave: (id: string) => Promise<void>;
+  onApply:(resumeId:string)=>Promise<void>
 };
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -31,10 +32,11 @@ function JobDetails({
   onReportSumbit,
   handleSave,
   handleUnSave,
+  onApply
 }: Props) {
   const user = useSelector((state: StateType) => state.auth.user);
   const { showToast } = useToast();
-  const { handleApplyClick } = useApplications();
+
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const handleReportClick = () => {
@@ -137,7 +139,7 @@ function JobDetails({
                   onClick={(e) => {
                     e.stopPropagation();
 
-                    handleApplyClick(activeJob.id);
+                    onApply(activeJob.id);
                   }}
                   disabled={user?.appliedJobs?.includes(activeJob.id)}
                   className={`apply-btn flex-1 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-medium rounded-lg transition-colors ${user?.appliedJobs?.includes(activeJob.id) ? 'b-slate-400' : ''}`}

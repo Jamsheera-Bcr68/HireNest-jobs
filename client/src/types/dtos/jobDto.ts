@@ -6,6 +6,7 @@ import { type AddressType } from '../profileTypes';
 import type { EducationType } from './profileTypes/educationTypes';
 
 export const JOB_TYPES = ['partTime', 'fullTime'] as const;
+export type JobType = typeof JOB_TYPES[number];
 
 export type JobDto = {
   title: string;

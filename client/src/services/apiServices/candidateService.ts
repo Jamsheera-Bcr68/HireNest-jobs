@@ -97,11 +97,8 @@ export const candidateService = {
     return res.data;
   },
 
-  async applyJob(jobId: string) {
-    console.log('job id from service', jobId);
-    const res = await axiosInstance.post(
-      CANDIDATE_API_ENDPOINTS.APPLY_JOB(jobId)
-    );
+  async getResumes(id: string) {
+    const res = await axiosInstance.get(CANDIDATE_API_ENDPOINTS.RESUMES(id));
     return res.data;
   },
 };

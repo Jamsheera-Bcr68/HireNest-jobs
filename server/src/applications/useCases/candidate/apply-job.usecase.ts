@@ -7,12 +7,18 @@ import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepos
 import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
 import { applicationMessage } from '../../../shared/constants/messages/application.messages';
 import { authMessages } from '../../../shared/constants/messages/authMesages';
+import { generalMessages } from '../../../shared/constants/messages/generalMessages';
 import { jobMessages } from '../../../shared/constants/messages/jobMessages';
-import { userMessages } from '../../../shared/constants/messages/userMessages';
+
 import { statusCodes } from '../../../shared/enums/statusCodes';
 
 export interface IApplyJobUseCase {
-  execute(jobId: string, userId: string, role: UserRole): Promise<String>;
+  execute(
+    jobId: string,
+    resumeId: string,
+    userId: string,
+    role: UserRole
+  ): Promise<String>;
 }
 export class ApplyJobUseCase implements IApplyJobUseCase {
   constructor(
@@ -23,6 +29,7 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
 
   async execute(
     jobId: string,
+    resumeId: string,
     userId: string,
     role: UserRole
   ): Promise<String> {
@@ -41,6 +48,8 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
+    const resume = user.resumes.find((r) => r.id == resumeId)
+    if(!resume)throw new AppError(generalMessages.errors.NOT_FOUND('Resume'),statusCodes.NOTFOUND)
     const isApplied = await this.applicationRepository.findByUserIdAndJobId(
       userId,
       jobId
@@ -49,6 +58,7 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
       jobId,
       companyId: job.companyId,
       candidateId: userId,
+      resumeId:resumeId,
       status: ApplicationStatusEnum.PENDING,
     };
     if (isApplied) {
@@ -59,10 +69,7 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
       );
     }
 
-    // const appliedCount=await this.applicationRepository.count({candidateId:userId,appliedAt:new Date().toString()})
-    // if(appliedCount>2){
-    //   throw new AppError('You cannot apply more than 2 jobs in  day',statusCodes.BADREQUEST)
-    // }
+  
     const application = await this.applicationRepository.create(newDoc);
     return application.id;
   }

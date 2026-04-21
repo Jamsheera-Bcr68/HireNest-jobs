@@ -1,6 +1,6 @@
 import express from 'express';
 import { authValidator } from '../middleweres/authValidator';
-import { jobController, tokenService } from '../../../infrastructure/config/di';
+import { jobController, tokenService, userControlller } from '../../../infrastructure/config/di';
 import { COMPANY_API_ENDPOINTS } from './api-end-points/company';
 import {
   companyRegisterValidator,
@@ -11,6 +11,7 @@ import { fileUpload } from '../middleweres/pdfUpload';
 import { companyProfileController } from '../../../infrastructure/config/di';
 import { companyProfileUpdateFieldsValidator } from '../middleweres/validatores/company/companyFormValidator';
 import { jobValidator } from '../middleweres/validatores/company/jobValidator';
+import { API_END_POINTS } from './api-end-points/api-end.points';
 const router = express.Router();
 
 router.post(
@@ -78,5 +79,6 @@ router.put(
   jobValidator,
   jobController.updateJob
 );
+router.get(API_END_POINTS.COMPANY_DATA,authValidator(tokenService),userControlller.getCompany)
 
 export default router;

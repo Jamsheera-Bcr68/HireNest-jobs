@@ -1,3 +1,3 @@
 export interface IGetEntityStatusUseCase<T> {
-  execute(): Promise<T>;
+  execute(userId?:string): Promise<T>;
 }

@@ -3,6 +3,7 @@ import { type CompanyRegisterType } from '../../libraries/validations/company/co
 import { type CompanyProfileEditType } from '../../libraries/validations/company/companyEditFormValidation';
 import type { ISocialLinks } from '../../types/profileTypes';
 import { COMPANY_API_ENDPOINTS } from '../../constants/apiEndPoints/company';
+import { API_ENDPOINTS } from '../../constants/apiEndPoints/general';
 
 export const companyService = {
   //did not passed id
@@ -15,6 +16,7 @@ export const companyService = {
     const res = await axiosInstance.patch('/company/logo', formData);
     return res.data;
   },
+
   async uploadDocument(formdata: FormData) {
     const data = await axiosInstance.patch(
       '/company/profle/document',
@@ -81,6 +83,12 @@ export const companyService = {
     const res = await axiosInstance.patch('/company/profile/fields', {
       socialMediaLinks: formData,
     });
+    return res.data;
+  },
+  async getCompanyDetails(id: string) {
+    console.log('company id',id);
+    
+    const res = await axiosInstance.get(API_ENDPOINTS.COMPANY_DATA(id));
     return res.data;
   },
 };

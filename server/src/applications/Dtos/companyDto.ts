@@ -67,3 +67,26 @@ export type CompanyStatus = {
   suspended?: number;
   rejected?: number;
 };
+export type CompanyDataDto = {
+  companyName: string;
+  logoUrl?: string;
+  tagLine?: string;
+
+  website?: string;
+
+  about: string;
+  mission: string;
+  vision: string;
+  culture: string;
+
+  benefits: string[];
+
+  startedIn: number;
+
+  industry: IndustryType;
+  size: CompanySize;
+
+  address: string;
+
+  socialMediaLinks: ISocialMediaLinks;
+};

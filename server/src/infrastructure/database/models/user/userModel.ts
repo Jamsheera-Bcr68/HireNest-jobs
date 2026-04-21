@@ -10,7 +10,7 @@ import {
 import { ISkillDocument } from './skillModel';
 import { StatusEnum } from '../../../../domain/enums/statusEnum';
 
-interface ResumeDocument {
+ export interface ResumeDocument {
   _id: Types.ObjectId;
   url: string;
   name: string;

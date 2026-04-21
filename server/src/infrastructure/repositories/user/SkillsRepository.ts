@@ -155,4 +155,17 @@ export class SkillRepository
       skillName: { $regex: `^${skillName}$`, $options: 'i' },
     });
   }
+async findByIds(skillIds: string[]): Promise<Skill[]> {
+   
+    const objectIds = skillIds.map(
+      id => new mongoose.Types.ObjectId(id)
+    );
+
+    const skills = await this._model.find({
+      _id: { $in: objectIds }
+    });
+
+    return skills.map(skill => this.mapToEntity(skill));
+  
+}
 }

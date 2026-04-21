@@ -70,6 +70,14 @@ import { GetSkillSatusUseCase } from '../../applications/useCases/skills/get-ski
 import { UpdateSkillStatusUseCase } from '../../applications/useCases/skills/update-skill-status.usecase';
 import { UpdateSkillUsecase } from '../../applications/useCases/skills/update-skill.usecase';
 import { GetRequestedSkillsUseCase } from '../../applications/useCases/skills/requested-skills.usecase';
+import { GetApplicationStatusUseCase } from '../../applications/useCases/applications/get-applications-status.usecase';
+import { GetAllApplicationsUsecase } from '../../applications/useCases/applications/get-all-applications.usecase';
+import { GetApplicationDetailUsecase } from '../../applications/useCases/applications/get-application-details.usecase';
+import { GetCompanyDataUseCase } from '../../applications/useCases/company/get-company-data.usecase';
+import { GetCandidateResumesUsecase } from '../../applications/useCases/candidate/get-resumes.usecase';
+import { UpdateApplicationStatusUseCase } from '../../applications/useCases/applications/update-application-status.usecase';
+
+
 //==Controllers
 //auth
 
@@ -330,6 +338,15 @@ const applyJobUseCase = new ApplyJobUseCase(
   jobRepository
 );
 
+const getApplicationDetailsUsecase=new GetApplicationDetailUsecase(applicationRepository,jobRepository,companyRepository,userRepository,skillRepository)
+const getCompanyDataUsecase=new GetCompanyDataUseCase(companyRepository)
+const getCandidateResumesUsecase=new GetCandidateResumesUsecase(userRepository)
+
+
+
+
+
+
 export const authController = new AuthController(
   registerUseCase,
   loginUseCase,
@@ -356,6 +373,13 @@ export const requestedSkillUsecase = new GetRequestedSkillsUseCase(
   jobRepository,
   userRepository
 );
+
+const getApplicationStatusUseCase=new GetApplicationStatusUseCase(applicationRepository)
+const getAllApplications=new GetAllApplicationsUsecase(applicationRepository,jobRepository,companyRepository)
+const updateApplicationStatusUsecase=new UpdateApplicationStatusUseCase(applicationRepository)
+
+
+
 
 export const refreshController = new RefreshTokenController(tokenService);
 export const adminAuthController = new AdminAuthController(adminLoginUsecase);
@@ -391,7 +415,7 @@ export const candidateProfileController = new CandidateProfileController(
   editEducationUseCase,
   removeEducationUseCase,
   addResumeUseCase,
-  removeResumeUseCase
+  removeResumeUseCase,getCandidateResumesUsecase
 );
 
 export const skillController = new SkillsController(
@@ -441,6 +465,6 @@ export const adminJobcontroller = new AdminJobController(
   getAllJobsUsecase,
   getJobDetailsUseCase
 );
-export const userControlller = new UserController(getHomeDataUseCase);
+export const userControlller = new UserController(getHomeDataUseCase,getCompanyDataUsecase);
 
-export const applicationController = new ApplicationController(applyJobUseCase);
+export const applicationController = new ApplicationController(applyJobUseCase,getApplicationStatusUseCase,getAllApplications,getApplicationDetailsUsecase,updateApplicationStatusUsecase);

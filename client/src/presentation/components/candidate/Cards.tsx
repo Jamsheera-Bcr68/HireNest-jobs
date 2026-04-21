@@ -1,5 +1,6 @@
 import type { JobCardDto } from '../../../types/dtos/jobDto';
 import { formatSalary } from '../../../utils/salaryFormat';
+
 import {
   Users,
   Calendar,
@@ -11,21 +12,21 @@ import {
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import type { StateType } from '../../../constants/types/user';
-import { useApplications } from '../../hooks/user/candidate/profile/useApplication';
+
 
 type JobCardProps = {
   job: JobCardDto;
-
+  onApply: (id: string) => Promise<void>;
   handleSave: (id: string) => Promise<void>;
   handleUnSave: (id: string) => Promise<void>;
 };
 
-const JobCard = ({ job, handleSave, handleUnSave }: JobCardProps) => {
+const JobCard = ({ job, handleSave, handleUnSave, onApply }: JobCardProps) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const user = useSelector((state: StateType) => state.auth.user);
 
   console.log(user);
-  const { handleApplyClick } = useApplications();
+ 
   return (
     <div className="max-w-sm w-full rounded-3xl bg-white border border-gray-200 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
       <>
@@ -153,7 +154,7 @@ const JobCard = ({ job, handleSave, handleUnSave }: JobCardProps) => {
               onClick={(e) => {
                 e.stopPropagation();
 
-                handleApplyClick(job.id);
+                onApply(job.id);
               }}
               disabled={user?.appliedJobs?.includes(job.id)}
               className={`px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-medium rounded-lg transition-colors ${user?.appliedJobs?.includes(job.id) ? 'b-slate-400' : ''}`}
@@ -170,6 +171,7 @@ const JobCard = ({ job, handleSave, handleUnSave }: JobCardProps) => {
           </div>
         </div>
       </>
+      
     </div>
   );
 };

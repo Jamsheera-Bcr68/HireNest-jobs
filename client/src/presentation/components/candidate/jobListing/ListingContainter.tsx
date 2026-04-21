@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import SelectResumeContent from '../applications/ResumeModal';
 
+import { useApplications } from '../../../hooks/user/candidate/profile/useApplication';
 import Header from '../../common/Header';
 import SearchBar from './SearchBar';
 import Filter from './Filter';
@@ -43,6 +45,7 @@ const limit = 9;
 type Props = {
   mode?: 'all' | 'saved';
 };
+
 function JobListingContainer({ mode }: Props) {
   console.log('mode is', mode);
 
@@ -52,7 +55,8 @@ function JobListingContainer({ mode }: Props) {
   const industryFilter = searchParams.get('industry');
 
   console.log('job,location,industry', job, location, industryFilter);
-
+  const { handleApplyClick, showResumeModal, setShowResumeModal,resumes,applyJob } =
+    useApplications();
   const { showToast } = useToast();
   const [filter, setFilter] = useState<JobFilterType>({
     search: {
@@ -323,6 +327,7 @@ function JobListingContainer({ mode }: Props) {
             }`}
           >
             <JobCards
+            onApply={handleApplyClick}
               handleSave={saveJobHandle}
               handleUnSave={unSaveJobHandle}
               mode={mode!}
@@ -344,6 +349,7 @@ function JobListingContainer({ mode }: Props) {
               handleSave={saveJobHandle}
               handleUnSave={unSaveJobHandle}
               error={error}
+              onApply={handleApplyClick}
               handleChange={handleReportFormChange}
               onReportSumbit={reportHandle}
               viewMode={viewMode}
@@ -353,6 +359,9 @@ function JobListingContainer({ mode }: Props) {
           </div>
         </div>
       </div>
+    
+         <SelectResumeContent resumes={resumes}  isOpen={showResumeModal} onClose={()=>setShowResumeModal(false)} onApply={(resumeId:string)=>applyJob(resumeId)} />
+     
     </div>
   );
 }
