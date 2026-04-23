@@ -1,4 +1,4 @@
-import { Model, Types, UpdateQuery } from 'mongoose';
+import mongoose, { Model, Types, UpdateQuery } from 'mongoose';
 import { IBaseRepository } from '../../domain/repositoriesInterfaces/IBaseRepository';
 
 export abstract class GenericRepository<
@@ -10,6 +10,7 @@ export abstract class GenericRepository<
   constructor(model: Model<D>) {
     this._model = model;
   }
+
   async create(data: Partial<T>): Promise<T> {
     console.log('before maptperistance ', data);
     console.log('after maptperistance ', this.mapToPersistance(data));
@@ -83,4 +84,14 @@ export abstract class GenericRepository<
   }
   protected abstract mapToEntity(doc: D): T;
   protected abstract mapToPersistance(entity: Partial<T>): Partial<D>;
+
+  async findByIds(ids: string[]): Promise<T[]> {
+    const objectIds = ids.map((id) => new mongoose.Types.ObjectId(id));
+
+    const docs = await this._model.find({
+      _id: { $in: objectIds },
+    });
+
+    return docs.map((doc) => this.mapToEntity(doc));
+  }
 }

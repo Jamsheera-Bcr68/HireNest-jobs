@@ -15,16 +15,20 @@ import type { JobType } from '../../../../types/dtos/jobDto';
 
 export type AppSortType = 'newest' | 'oldest';
 function ApplicationContainer() {
-  const {showToast}=useToast()
+  const { showToast } = useToast();
   const [stats, setStats] = useState<StatsCardType[]>([]);
   const [applications, setApplications] = useState<ApplicationDto[]>();
   const [limit] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
   const [totalDocs, setTotalDocs] = useState<number>(0);
-  const { filter, updateFilter } = useApplications(setPage);
+  const { filter, updateFilter } = useApplications((page?: number) => {
+    if (page) {
+      setPage(page);
+    }
+  });
   useEffect(() => {
     const getStatus = async () => {
-      const data = await applicationService.getCandidateApplicationStatus();
+      const data = await applicationService.getApplicationStatus();
       console.log('app status', data.appStatus);
       const total = {
         label: 'Total Applications',
@@ -52,25 +56,25 @@ function ApplicationContainer() {
 
   useEffect(() => {
     const getApplications = async () => {
-     try {
-       const data = await applicationService.getApplications(
-        filter,
-        page,
-        limit
-      );
-      console.log('applications', data.applications);
+      try {
+        const data = await applicationService.getApplications(
+          filter,
+          page,
+          limit
+        );
+        console.log('applications', data.applications);
 
-      setApplications(data.applications);
-      setTotalDocs(data.totalDocs);
-     } catch (error:any) {
-       showToast({
+        setApplications(data.applications);
+        setTotalDocs(data.totalDocs);
+      } catch (error: any) {
+        showToast({
           msg: error?.response?.data.message || error.message,
           type: 'error',
         });
-     }
+      }
     };
     getApplications();
-  }, [filter, page,limit]);
+  }, [filter, page, limit]);
 
   const statusFilter: FilterOption<ApplicationStatusType> = {
     key: 'status',

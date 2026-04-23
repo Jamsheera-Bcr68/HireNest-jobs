@@ -161,7 +161,7 @@ export class AdminUserController {
       );
     }
 
-    const candidateStatus = await this.getCandidateStatusUseCase.execute();
+    const candidateStatus = await this.getCandidateStatusUseCase.execute(user.userId,user.role);
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.STATUS_FETCHED,

@@ -1,3 +1,4 @@
+import { User } from '../../../domain/entities/User';
 import { UserRole } from '../../../domain/enums/userEnums';
 import { AppError } from '../../../domain/errors/AppError';
 import { IApplicationRepository } from '../../../domain/repositoriesInterfaces/application.repository.interface';
@@ -10,15 +11,16 @@ import { statusCodes } from '../../../shared/enums/statusCodes';
 import { ApplicationDetailsDto } from '../../Dtos/application.dto';
 import { IGetEntityDetailsUsecase } from '../../interfaces/usecases/get-entity-details.usecase.inerface';
 import { ApplicationMapper } from '../../mappers/application.mapper';
+import { IExperienseRepository } from '../../../domain/repositoriesInterfaces/IExperienceRepository';
 
 export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<ApplicationDetailsDto> {
-
   constructor(
     private _applicationRepository: IApplicationRepository,
     private _jobRepository: IJobRepository,
     private _companyRepository: ICompanyRepository,
     private _userRepository: IUserRepository,
-    private _skillRepository: ISkillRepository
+    private _skillRepository: ISkillRepository,
+ 
   ) {}
   async execute(
     id: string,
@@ -43,18 +45,33 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
         generalMessages.errors.NOT_FOUND('Company'),
         statusCodes.NOTFOUND
       );
-      //console.log('userId is',userId);
-      
-    const candidate = await this._userRepository.findById(userId);
 
-    if (!candidate || candidate.role !== UserRole.CANDIDATE)
+    const candidateId =
+      role === UserRole.CANDIDATE ? userId : application.candidateId;
+
+    const candidate = await this._userRepository.findById(candidateId);
+
+    if (!candidate)
       throw new AppError(
         generalMessages.errors.NOT_FOUND('Candidate'),
         statusCodes.NOTFOUND
       );
-      const resume=candidate.resumes.find(r=>r.id==application.resumeId)
-      if(!resume)throw new AppError(generalMessages.errors.NOT_FOUND("Resume"),statusCodes.NOTFOUND)
-      const skills=await this._skillRepository.findByIds(job.skills)
-      return ApplicationMapper.toApplicationDetailDto(application,job,company,candidate,skills,resume)
+    const resume = candidate.resumes.find((r) => r.id == application.resumeId);
+    if (!resume)
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Resume'),
+        statusCodes.NOTFOUND
+      )
+     
+    const skills = await this._skillRepository.findByIds(job.skills);
+    return ApplicationMapper.toApplicationDetailDto(
+      application,
+      job,
+      company,
+      candidate,
+      skills,
+      resume,
+      
+    );
   }
 }

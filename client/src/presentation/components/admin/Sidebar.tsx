@@ -7,15 +7,17 @@ const navItems = [
   'Companies',
   'Candidates',
   'Job Listings',
+  'Applications',
   'Pendings',
   'Skills',
 ];
-const navIcons = ['⊞', '🏢', '👥', '💼', '📊', '🛠️'];
+const navIcons = ['⊞', '🏢', '👥', '💼', '📋','📊', '🛠️'];
 const navLinks: Record<string, string> = {
   Dashboard: '/admin',
   Candidates: '/admin/candidates ',
   Companies: '/admin/companies',
   'Job Listings': '/admin/jobs',
+  Applications:'/admin/applications',
   Skills: '/admin/skills',
   Pendings: '/admin/reports',
 };

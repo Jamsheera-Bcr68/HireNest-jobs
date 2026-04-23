@@ -19,7 +19,14 @@ import type { StatusType } from '../../../../types/dtos/profileTypes/userTypes';
 
 import AddReasonModal from './AddReasonModal';
 
-const tabs = ['All', 'Active', 'Suspended', 'Expired', 'Closed', 'Removed'];
+const tabs = [
+  { label: 'All', value: '' },
+  { label: 'Active', value: 'active' },
+  { label: 'Suspended', value: 'suspended' },
+  { label: 'Expired', value: 'expired' },
+  { label: 'Closed', value: 'closed' },
+  { label: 'Removed', value: 'removed' },
+];
 const filterOptions = [
   {
     key: 'experience',
@@ -345,6 +352,7 @@ function JobContainer() {
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable
+              totalDocs={totalDocs}
                 columns={postColumns as ColumnType<JobCardDto>[]}
                 tabs={tabs}
                 updateFilter={handleFilterChange}

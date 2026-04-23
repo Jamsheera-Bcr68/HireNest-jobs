@@ -8,6 +8,9 @@ import Dashboard from '../../presentation/pages/admin/Dashboard';
 import CompanyJobListing from '../../presentation/pages/user/company/CompanyJobListing';
 import JobDetails from '../../presentation/pages/user/company/JobDetails';
 import SkillPage from '../../presentation/pages/user/company/Skills';
+import ApplicationsPage from '../../presentation/pages/user/company/ApplicationsPage';
+import ApplicationDetailsPage from '../../presentation/pages/user/company/ApplicationDetails';
+import ApplicationDetails from '../../AppDetails';
 export const CompanyRoutes = () => {
   return (
     <Routes>
@@ -19,7 +22,9 @@ export const CompanyRoutes = () => {
         <Route path="jobs" element={<CompanyJobListing />} />
         <Route path="jobs/create" element={<JobCreate />} />
         <Route path="skills" element={<SkillPage />} />
-
+        <Route path="applications" element={<ApplicationsPage />} />
+        <Route path="applicationss" element={<ApplicationDetails />} />
+        <Route path="applications/:id" element={<ApplicationDetailsPage />} />
         <Route path="jobs/:jobId" element={<JobDetails />} />
 
         <Route path="profile" element={<CompanyProfile />} />

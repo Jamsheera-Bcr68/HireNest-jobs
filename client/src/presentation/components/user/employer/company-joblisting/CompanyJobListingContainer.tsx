@@ -42,7 +42,13 @@ const filterOptions = [
   },
 ];
 
-const tabs = ['All', 'Active', 'Suspended', 'Expired', 'Closed'];
+const tabs = [
+  { label: 'All', value: '' },
+  { label: 'Active', value: 'active' },
+  { label: 'Suspended', value: 'suspended' },
+  { label: 'Expired', value: 'expired' },
+  { label: 'Closed', value: 'closed' },
+];;
 
 function CompanyJobListingContainer() {
   const user = useSelector((state: StateType) => state.auth.user);

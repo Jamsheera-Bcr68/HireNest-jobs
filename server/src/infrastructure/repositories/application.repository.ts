@@ -219,12 +219,15 @@ export class ApplicationRepository
   }
 
   async count(filter: Partial<Application>): Promise<number> {
-    const { candidateId } = filter;
+    const { candidateId ,companyId} = filter;
     // console.log('filter', filter);
 
     const q = {} as IApplicationDocument;
     if (candidateId) {
       q.candidateId = new mongoose.Types.ObjectId(candidateId);
+    }
+    if (companyId) {
+      q.companyId = new mongoose.Types.ObjectId(companyId);
     }
     if (filter.status) {
       q.status = filter.status;

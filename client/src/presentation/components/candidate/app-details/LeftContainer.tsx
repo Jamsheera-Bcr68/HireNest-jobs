@@ -87,7 +87,7 @@ function LeftContainer({ application, updateApplication }: Props) {
       //   ),
       // ];
       // console.log('data',data);
-      
+
       // const withdrawnStage = {
       //   stage: 'Withdrawn',
       //   date: new Date().toDateString(),

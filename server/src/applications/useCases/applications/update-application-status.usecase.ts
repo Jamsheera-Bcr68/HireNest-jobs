@@ -21,7 +21,7 @@ export class UpdateApplicationStatusUseCase implements IUpdateEntityStatusUseCas
     role: UserRole,
     status: ApplicationStatusEnum,
     reason?: string
-  ): Promise<void|Application> {
+  ): Promise<void | Application> {
     const application = await this._applicationRepository.findById(id);
     if (!application)
       throw new AppError(
@@ -31,17 +31,33 @@ export class UpdateApplicationStatusUseCase implements IUpdateEntityStatusUseCas
 
     const data = {} as Partial<Application>;
     if (status === ApplicationStatusEnum.WITHDRAWN) {
-      if (role !== UserRole.CANDIDATE) {
+      if (role !== UserRole.CANDIDATE || userId !== application.candidateId) {
         throw new AppError(
           authMessages.error.UNAUTHORIZED,
           statusCodes.UNAUTHERIZED
         );
       }
       data.status = status;
+    } else {
+      if (role !== UserRole.COMPANY) {
+        throw new AppError(
+          authMessages.error.UNAUTHORIZED,
+          statusCodes.UNAUTHERIZED
+        );
+      }
     }
-    const updated=await this._applicationRepository.update(id,data)
-    if(!updated)throw new AppError(generalMessages.errors.NOT_FOUND("Application"),statusCodes.NOTFOUND)
-    return updated
-
+     data.status = status;
+    if (status === 'rejected') {
+      data.rejectedReason = reason;
+    }
+    const updated = await this._applicationRepository.update(id, data);
+    console.log('updated',updated);
+    
+    if (!updated)
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Application'),
+        statusCodes.NOTFOUND
+      );
+    return updated;
   }
 }

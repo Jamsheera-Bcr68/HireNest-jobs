@@ -14,7 +14,7 @@ export const applicationService = {
     return res.data;
   },
 
-  async getCandidateApplicationStatus() {
+  async getApplicationStatus() {
     const res = await axiosInstance.get(
       API_ENDPOINTS.CANDIDATE_APPLICATON_STATUS
     );
@@ -45,4 +45,12 @@ export const applicationService = {
     const res = await axiosInstance.patch(API_ENDPOINTS.APPLICATION(id),{status})
     return res.data;
   },
+  async updateAppStatus(id: string,status?:ApplicationStatusType,reason?:string) {
+    console.log('application id reason', id,status,reason);
+
+    const res = await axiosInstance.patch(API_ENDPOINTS.APPLICATION(id),{status,reason})
+    return res.data;
+  },
+
+  
 };

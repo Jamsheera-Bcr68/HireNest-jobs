@@ -9,7 +9,7 @@ export const appStatusStyles: Record<ApplicationStatusType, string> = {
   shortListed: 'bg-green-100 text-green-700',
   interviewSheduled: 'bg-purple-100 text-purple-700',
   // offered: "bg-green-100 text-green-700",
-  viewed: 'bg-yellow-100 text-yellow-700',
+  reviewed: 'bg-yellow-100 text-yellow-700',
   rejected: 'bg-red-100 text-red-700',
   withdrawn: "bg-red-100 text-red-600",
 };

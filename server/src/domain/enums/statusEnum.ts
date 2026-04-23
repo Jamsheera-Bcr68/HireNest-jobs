@@ -18,3 +18,8 @@ export enum ApplicationStatusEnum {
   OFFERED='offered',
   WITHDRAWN='withdrawn'
 }
+export enum InterviewStatusEnum{
+  SCHEDULED='scheduled',
+  COMPLETED='completed',
+  CANCELLED='cancelled',
+}

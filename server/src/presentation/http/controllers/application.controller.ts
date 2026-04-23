@@ -64,7 +64,7 @@ export class ApplicationController {
     if (!user || !user.userId) {
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
     }
-    const appStatus = await this._getAppStatusUseCase.execute(user.userId);
+    const appStatus = await this._getAppStatusUseCase.execute(user.userId,user.role);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -153,12 +153,14 @@ export class ApplicationController {
         generalMessages.errors.ID_NOT_FOUND('Application'),
         statusCodes.NOTFOUND
       );
-    const { status } = req.body;
+    const { status ,reason} = req.body;
+    console.log('status,reason',status,reason);
+    
   const app=  await this._updateEntityStatusUsecase.execute(
       id,
       user.userId,
       user.role,
-      status
+      status,reason
     );
 const timeline=ApplicationMapper.getTimeline(app!)
 console.log('timeline',timeline);

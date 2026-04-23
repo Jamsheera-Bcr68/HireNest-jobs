@@ -76,7 +76,7 @@ import { GetApplicationDetailUsecase } from '../../applications/useCases/applica
 import { GetCompanyDataUseCase } from '../../applications/useCases/company/get-company-data.usecase';
 import { GetCandidateResumesUsecase } from '../../applications/useCases/candidate/get-resumes.usecase';
 import { UpdateApplicationStatusUseCase } from '../../applications/useCases/applications/update-application-status.usecase';
-
+import { ScheduleInterviewUsecase } from '../../applications/useCases/interviews/schedule-interveiw.usecase';
 
 //==Controllers
 //auth
@@ -97,7 +97,7 @@ import { CompanyProfileController } from '../../presentation/http/controllers/co
 import { UserController } from '../../presentation/http/controllers/userController';
 import { JobController } from '../../presentation/http/controllers/jobController';
 import { ApplicationController } from '../../presentation/http/controllers/application.controller';
-//admin
+import { InterviewController } from '../../presentation/http/controllers/interview.controller';
 import { AdminUserController } from '../../presentation/http/controllers/admin/adminUserController';
 import { AdminJobController } from '../../presentation/http/controllers/admin/admin-job.controller';
 //==repsitories
@@ -111,6 +111,7 @@ import { EducationRepository } from '../repositories/user/educationRepository';
 import { CompanyRepository } from '../repositories/user/companyRepository';
 import { JobRepository } from '../repositories/user/JobRepository';
 import { ApplicationRepository } from '../repositories/application.repository';
+import { InterviewRepository } from '../repositories/interview.repository';
 //services
 
 import { OtpGenerator } from '../services/otpgenerator';
@@ -121,6 +122,7 @@ import { VerifyOtpService } from '../../applications/services/verifyOtpService';
 import { GoogleAuthService } from '../../applications/services/googleAuthService';
 import { ImageStorageService } from '../services/ImageStorageService';
 import { FileStorageService } from '../services/fileStorageService';
+
 
 //repositories
 const userRepository = new UserRepository();
@@ -133,6 +135,7 @@ const educationRepository = new EducationRepository();
 const companyRepository = new CompanyRepository();
 const jobRepository = new JobRepository();
 const applicationRepository = new ApplicationRepository();
+const interviewRepository=new InterviewRepository()
 
 const emailService = new EmailService();
 const verifyOtpService = new VerifyOtpService(otpRepository, userRepository);
@@ -341,8 +344,7 @@ const applyJobUseCase = new ApplyJobUseCase(
 const getApplicationDetailsUsecase=new GetApplicationDetailUsecase(applicationRepository,jobRepository,companyRepository,userRepository,skillRepository)
 const getCompanyDataUsecase=new GetCompanyDataUseCase(companyRepository)
 const getCandidateResumesUsecase=new GetCandidateResumesUsecase(userRepository)
-
-
+const scheduleInterviewUsecase=new ScheduleInterviewUsecase(applicationRepository,interviewRepository)
 
 
 
@@ -374,7 +376,7 @@ export const requestedSkillUsecase = new GetRequestedSkillsUseCase(
   userRepository
 );
 
-const getApplicationStatusUseCase=new GetApplicationStatusUseCase(applicationRepository)
+const getApplicationStatusUseCase=new GetApplicationStatusUseCase(applicationRepository,companyRepository)
 const getAllApplications=new GetAllApplicationsUsecase(applicationRepository,jobRepository,companyRepository)
 const updateApplicationStatusUsecase=new UpdateApplicationStatusUseCase(applicationRepository)
 
@@ -468,3 +470,4 @@ export const adminJobcontroller = new AdminJobController(
 export const userControlller = new UserController(getHomeDataUseCase,getCompanyDataUsecase);
 
 export const applicationController = new ApplicationController(applyJobUseCase,getApplicationStatusUseCase,getAllApplications,getApplicationDetailsUsecase,updateApplicationStatusUsecase);
+export const interviewcontroller=new InterviewController(scheduleInterviewUsecase,updateApplicationStatusUsecase)

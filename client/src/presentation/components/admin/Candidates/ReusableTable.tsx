@@ -6,13 +6,14 @@ export type ColumnType<T> = {
   render: (row: T) => React.ReactNode;
 };
 
-type FilterOption = {
+export type FilterOption = {
   key: string;
   label: string;
   options: readonly string[];
 };
+export type TabType = { label: string; value: string };
 type Props<T extends { id: string }> = {
-  tabs: string[];
+  tabs: TabType[];
   updateFilter: (filter: any) => void;
   entities: T[];
   columns: ColumnType<T>[];
@@ -67,7 +68,7 @@ function ReusableTable<T extends { id: string }>({
             value={searchInput}
             onChange={(e) => {
               setSearchInput(e.target.value);
-              updateFilter({ status: 'all' });
+              updateFilter({ status: '' });
             }}
             className="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent bg-slate-50"
           />
@@ -117,22 +118,21 @@ function ReusableTable<T extends { id: string }>({
         <div className="flex items-center gap-1 px-5 pt-4 border-b border-slate-100">
           {tabs.map((tab) => (
             <button
-              key={tab}
+              key={tab.label}
               onClick={() => {
-                updateFilter({ status: tab.toLowerCase() });
-                setActiveTab(tab);
-                updateFilter({ status: tab.toLowerCase() });
+                setActiveTab(tab.label);
+                updateFilter({ status: tab.value });
               }}
               className={`px-4 py-2 text-sm font-medium rounded-t-lg transition border-b-2 -mb-px  ${
-                activeTab === tab
+                activeTab === tab.label
                   ? 'border-indigo-600 text-indigo-600'
                   : 'border-transparent text-slate-500 hover:text-slate-700'
               } `}
             >
-              {tab}
-              {tab == activeTab && (
+              {tab.label}
+              {tab.label == activeTab && (
                 <span
-                  className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${activeTab === tab ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-500'}`}
+                  className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${activeTab === tab.label ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-500'}`}
                 >
                   {totalDocs}
                 </span>

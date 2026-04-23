@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SideBar } from '../components/user/employer/SideBar';
 import { Outlet, useLocation } from 'react-router-dom';
-import Footer from '../components/common/Footer';
+
 import { Header } from '../components/user/employer/home/Header';
 
 const menuItems = [
@@ -10,6 +10,7 @@ const menuItems = [
   { label: 'My Jobs', path: '/company/jobs' },
   { label: 'Profile', path: '/company/profile' },
   { label: 'Skill Requests', path: '/company/skills' },
+  { label: 'Applications', path: '/company/applications' },
 ];
 export const EmployerLayout = () => {
   const location = useLocation();

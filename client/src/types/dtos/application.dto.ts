@@ -3,13 +3,13 @@ import type { WorkMode } from './profileTypes/experienceType';
 import type { IndustryType } from './profileTypes/industryType';
 import type { ResumeType } from './profileTypes/ResumeType';
 
-
 export type ApplicationStatusType =
   | 'pending'
-  | 'viewed'
+  | 'reviewed'
   | 'shortListed'
   | 'rejected'
-  | 'interviewSheduled'|'withdrawn'
+  | 'interviewSheduled'
+  | 'withdrawn';
 
 export type ApplicationDto = {
   id: string;
@@ -25,24 +25,47 @@ export type ApplicationDto = {
   logo: string;
 };
 
+
+export type ExpType = {};
 export type ApplicationDetailsDto = {
   id: string;
   status: ApplicationStatusType;
   resume: ResumeType;
-  candidateName: string;
-  role: string;
-  email: string;
-  resumes:ResumeType[]
-  phone: string;
+
   appliedAt: string;
   reviewedAt?: string;
   shortlistedAt?: string;
   interviewAt?: string;
   offeredAt?: string;
   timeline: { stage: string; date: string; status: string }[];
-  profileImg?:string,
+
+  candidate: {
+    about?: string;
+    profileImg?: string;
+    candidateName: string;
+    role: string;
+    email: string;
+    resumes: ResumeType[];
+    phone: string;
+    location: string;
+    experience: {
+      role: string;
+      mode: WorkMode;
+      isWorking: boolean;
+      company: string;
+      startYear: string;
+      endYear: string;
+    }[];
+    education: {
+      level: string;
+      institute: string;
+      univercity: string;
+      status: string;
+      year: string;
+    }[];
+  }
   job: {
-    id:string
+    id: string;
     title: string;
     location: string;
     jobType: JobType;
@@ -55,7 +78,7 @@ export type ApplicationDetailsDto = {
     postedDate: string;
   };
   company: {
-    id:string
+    id: string;
     companyName: string;
     industry: IndustryType;
     location: string;
@@ -63,3 +86,12 @@ export type ApplicationDetailsDto = {
     logoUrl: string;
   };
 };
+
+export const APP_STATUS_ORDER: ApplicationStatusType[] = [
+  'pending',
+  'reviewed',
+  'shortListed',
+  'interviewSheduled',
+
+  'rejected',
+];

@@ -1,438 +1,313 @@
-import {
-  FileText,
-  Building2,
-  MapPin,
-  CalendarDays,
-  Clock,
-  Download,
-  ExternalLink,
-  ChevronLeft,
-  CheckCircle2,
-  AlertCircle,
-  Mail,
-  Phone,
-  DollarSign,
-  Timer,
-  Globe,
-} from 'lucide-react';
+
+import { useState } from "react";
 
 const application = {
-  id: 'APP-20260412-0087',
-  status: 'shortListed',
-  appliedAt: 'Mar 12, 2026',
-  deadline: 'Apr 30, 2026',
-  resumeUrl: 'Resume_Arjun_K.pdf',
-  coverLetter: 'Cover_Letter.pdf',
-  salaryExpectation: '₹18 – 22 LPA',
-  noticePeriod: '30 days',
-  candidateName: 'Arjun Krishnan',
-  candidateEmail: 'arjun.k@email.com',
-  candidatePhone: '+91 98765 43210',
-  currentRole: 'Frontend Dev, InfyTech',
-
+  id: "APP-2041",
+  appliedAt: "April 18, 2026",
   job: {
-    title: 'Frontend Developer',
-    type: 'Full Time',
-    mode: 'Remote',
-    location: 'Kochi, Kerala, India',
-    postedDate: 'Mar 5, 2026',
-    experience: '3–5 years',
+    title: "Senior Frontend Developer",
+    department: "Engineering",
+    type: "Full-time",
+    location: "Remote",
   },
-
-  company: {
-    name: 'TechNova Pvt Ltd',
-    location: 'Kochi',
-    industry: 'Software & Technology',
-    size: '201–500 employees',
+  status: "Shortlisted",
+  candidate: {
+    name: "Arjun Menon",
+    initials: "AM",
+    email: "arjun.menon@email.com",
+    phone: "+91 98765 43210",
+    location: "Kochi, Kerala",
+    linkedin: "linkedin.com/in/arjunmenon",
+    portfolio: "arjunmenon.dev",
+    avatarColor: "bg-indigo-100 text-indigo-700",
   },
-
-  skills: ['React.js', 'TypeScript', 'Tailwind CSS', 'Next.js', 'REST APIs'],
-
-  timeline: [
+  resumeUrl: "#",
+  coverLetter:
+    "I'm excited to apply for the Senior Frontend Developer role. With 5 years of experience building scalable React applications and a passion for clean UI architecture, I believe I can make a strong contribution to your engineering team. I've led frontend migrations at two startups and have a strong eye for performance and accessibility.",
+  skills: ["React", "TypeScript", "Tailwind CSS", "GraphQL", "Node.js", "Figma", "Jest"],
+  experience: [
+    { role: "Frontend Engineer", company: "TechFlow Inc.", duration: "2022 – Present" },
+    { role: "UI Developer", company: "Startup Hub", duration: "2020 – 2022" },
+  ],
+  education: "B.Tech Computer Science, NIT Calicut (2020)",
+  screeningAnswers: [
     {
-      stage: 'Application Submitted',
-      date: 'Mar 12, 2026',
-      status: 'done',
-      note: '',
+      q: "How many years of React experience do you have?",
+      a: "5 years — built production apps from scratch and led migrations.",
     },
     {
-      stage: 'Viewed by Recruiter',
-      date: 'Mar 14, 2026',
-      status: 'done',
-      note: '',
+      q: "Are you comfortable working in a fully remote setup?",
+      a: "Yes, I've been remote-first for 3+ years with async communication.",
     },
     {
-      stage: 'Shortlisted',
-      date: 'Mar 18, 2026',
-      status: 'active',
-      note: 'Your profile stood out!',
+      q: "Expected CTC?",
+      a: "₹22–26 LPA, negotiable based on scope.",
     },
-    { stage: 'Interview Scheduled', date: null, status: 'pending', note: '' },
-    { stage: 'Final Decision', date: null, status: 'pending', note: '' },
+  ],
+  notes: [
+    { author: "Priya (HR)", time: "Apr 19, 10:30 AM", text: "Strong portfolio, check the case study on TechFlow's dashboard." },
+    { author: "Rahul (Tech Lead)", time: "Apr 20, 3:00 PM", text: "Reviewed GitHub. Code quality is solid, good TypeScript patterns." },
+  ],
+  activityLog: [
+    { event: "Application received", time: "Apr 18, 9:14 AM" },
+    { event: "Viewed by HR", time: "Apr 18, 11:00 AM" },
+    { event: "Status changed to Shortlisted", time: "Apr 19, 10:35 AM" },
+    { event: "Internal note added", time: "Apr 20, 3:01 PM" },
   ],
 };
 
-const statusConfig = {
-  shortListed: {
-    label: 'Shortlisted',
-    className: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-  },
-  underReview: {
-    label: 'Under Review',
-    className: 'bg-blue-50 text-blue-700 border border-blue-200',
-  },
-  applied: {
-    label: 'Applied',
-    className: 'bg-violet-50 text-violet-700 border border-violet-200',
-  },
-  rejected: {
-    label: 'Not Selected',
-    className: 'bg-red-50 text-red-600 border border-red-200',
-  },
+const STATUS_OPTIONS = ["New", "Reviewed", "Shortlisted", "Interview Scheduled", "Hired", "Rejected"];
+
+const STATUS_STYLES = {
+  New: "bg-gray-100 text-gray-700",
+  Reviewed: "bg-blue-100 text-blue-700",
+  Shortlisted: "bg-indigo-100 text-indigo-700",
+  "Interview Scheduled": "bg-amber-100 text-amber-700",
+  Hired: "bg-green-100 text-green-700",
+  Rejected: "bg-red-100 text-red-700",
 };
 
-const statusStyle = statusConfig.applied;
-
-function TimelineDot({ status }) {
-  if (status === 'done')
-    return (
-      <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0">
-        <CheckCircle2 size={12} className="text-white" />
-      </div>
-    );
-  if (status === 'active')
-    return (
-      <div className="w-5 h-5 rounded-full bg-blue-500 border-2 border-blue-200 flex items-center justify-center flex-shrink-0">
-        <div className="w-2 h-2 rounded-full bg-white" />
-      </div>
-    );
+function Section({ title, children }) {
   return (
-    <div className="w-5 h-5 rounded-full bg-gray-100 border-2 border-gray-200 flex-shrink-0" />
-  );
-}
-
-function InfoRow({ icon: Icon, label, value }) {
-  return (
-    <div className="flex items-start gap-3 py-2.5 border-b border-gray-100 last:border-0">
-      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-0.5">
-        <Icon size={13} className="text-gray-400" />
-      </div>
-      <div>
-        <p className="text-[11px] text-gray-400 font-medium mb-0.5">{label}</p>
-        <p className="text-sm text-gray-800 font-medium">{value}</p>
-      </div>
-    </div>
-  );
-}
-
-function SectionTitle({ children }) {
-  return (
-    <p className="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-4">
-      {children}
-    </p>
-  );
-}
-
-function Card({ children, className = '' }) {
-  return (
-    <div
-      className={`bg-white rounded-2xl border border-gray-100 shadow-sm ${className}`}
-    >
+    <div className="bg-white border border-gray-200 rounded-xl p-5">
+      <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">{title}</h3>
       {children}
     </div>
   );
 }
 
-export default function ApplicationDetailsPage() {
+export default function ApplicationDetails() {
+  const [status, setStatus] = useState(application.status);
+  const [note, setNote] = useState("");
+  const [notes, setNotes] = useState(application.notes);
+  const [showRejectConfirm, setShowRejectConfirm] = useState(false);
+
+  const addNote = () => {
+    if (!note.trim()) return;
+    setNotes([
+      ...notes,
+      { author: "You", time: "Just now", text: note.trim() },
+    ]);
+    setNote("");
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-8">
-      <div className="max-w-5xl mx-auto">
-        {/* Back Button */}
-        <button className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-6 transition-colors">
-          <ChevronLeft size={16} />
-          Back to My Applications
-        </button>
+    <div className="min-h-screen bg-gray-50 font-sans">
+      {/* Top bar */}
+      <div className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <button className="text-gray-400 hover:text-gray-600 text-sm flex items-center gap-1">
+            ← Back to Applications
+          </button>
+          <span className="text-gray-300">|</span>
+          <span className="text-sm text-gray-500">{application.id}</span>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <button className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 font-medium transition">
+            Send Message
+          </button>
+          <button className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition">
+            Schedule Interview
+          </button>
+          <button
+            onClick={() => setShowRejectConfirm(true)}
+            className="px-4 py-2 text-sm border border-red-200 text-red-600 rounded-lg hover:bg-red-50 font-medium transition"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
 
-        {/* Hero Header */}
-        <Card className="mb-5 overflow-hidden">
-          <div className="relative p-7">
-            <div className="absolute top-0 right-0 w-56 h-56 rounded-bl-full bg-gradient-to-br from-emerald-50 to-blue-50 opacity-60 pointer-events-none" />
-            <div className="relative flex flex-wrap items-start gap-5">
-              {/* Logo */}
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-md">
-                TN
-              </div>
+      {/* Reject confirm */}
+      {showRejectConfirm && (
+        <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-xl p-6 shadow-xl max-w-sm w-full mx-4">
+            <h4 className="font-semibold text-gray-800 mb-2">Reject this applicant?</h4>
+            <p className="text-sm text-gray-500 mb-4">This will move the application to Rejected. The applicant may be notified.</p>
+            <div className="flex gap-3 justify-end">
+              <button onClick={() => setShowRejectConfirm(false)} className="px-4 py-2 text-sm border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">Cancel</button>
+              <button
+                onClick={() => { setStatus("Rejected"); setShowRejectConfirm(false); }}
+                className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700"
+              >
+                Yes, Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-              {/* Title */}
-              <div className="flex-1 min-w-[200px]">
-                <h1 className="text-2xl font-bold text-gray-900 mb-1">
-                  {application.job.title}
-                </h1>
-                <div className="flex flex-wrap items-center gap-1.5 text-sm text-gray-500 mb-3">
-                  <Building2 size={13} />
-                  <span>{application.company.name}</span>
-                  <span className="text-gray-300">·</span>
-                  <MapPin size={13} />
-                  <span>{application.job.location}</span>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* LEFT — main content */}
+        <div className="lg:col-span-2 flex flex-col gap-5">
+
+          {/* Candidate header */}
+          <div className="bg-white border border-gray-200 rounded-xl p-5 flex flex-col sm:flex-row items-start gap-4">
+            <div className={`w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold shrink-0 ${application.candidate.avatarColor}`}>
+              {application.candidate.initials}
+            </div>
+            <div className="flex-1 w-full">
+              <div className="flex items-start sm:items-center justify-between flex-col sm:flex-row gap-2">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <h2 className="text-xl font-semibold text-gray-900">{application.candidate.name}</h2>
+                  <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_STYLES[status]}`}>{status}</span>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-xs px-3 py-1 rounded-full bg-violet-50 text-violet-700 font-medium">
-                    {application.job.type}
-                  </span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-medium">
-                    {application.job.mode}
-                  </span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-700 font-medium">
-                    {application.job.experience} exp
-                  </span>
+                <div className="text-xs text-gray-400 shrink-0">Applied {application.appliedAt}</div>
+              </div>
+              <p className="text-sm text-gray-500 mt-0.5">{application.job.title} · {application.job.department}</p>
+              <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-gray-500">
+                <span>📍 {application.candidate.location}</span>
+                <a href={`mailto:${application.candidate.email}`} className="text-indigo-600 hover:underline">{application.candidate.email}</a>
+                <span>{application.candidate.phone}</span>
+              </div>
+              <div className="flex gap-3 mt-2 text-sm">
+                <a href="#" className="text-indigo-500 hover:underline">🔗 LinkedIn</a>
+                <a href="#" className="text-indigo-500 hover:underline">🌐 Portfolio</a>
+              </div>
+            </div>
+          </div>
+
+          {/* Resume + Cover Letter */}
+          <Section title="Resume & Cover Letter">
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center text-red-600 text-xs font-bold">PDF</div>
+                <div>
+                  <p className="text-sm font-medium text-gray-800">Arjun_Menon_Resume.pdf</p>
+                  <p className="text-xs text-gray-400">Uploaded Apr 18, 2026</p>
                 </div>
               </div>
+              <div className="flex gap-2">
+                <button className="text-sm px-3 py-1.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100">Preview</button>
+                <button className="text-sm px-3 py-1.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100">Download</button>
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 leading-relaxed">{application.coverLetter}</p>
+          </Section>
 
-              {/* Status */}
-              <div className="flex flex-col items-end gap-2">
-                <span
-                  className={`text-xs font-semibold px-4 py-1.5 rounded-full ${statusStyle.className}`}
+          {/* Skills */}
+          <Section title="Skills">
+            <div className="flex flex-wrap gap-2">
+              {application.skills.map((s) => (
+                <span key={s} className="bg-indigo-50 text-indigo-700 text-sm px-3 py-1 rounded-full font-medium">{s}</span>
+              ))}
+            </div>
+          </Section>
+
+          {/* Experience & Education */}
+          <Section title="Experience & Education">
+            <div className="space-y-3 mb-4">
+              {application.experience.map((e, i) => (
+                <div key={i} className="flex items-center justify-between text-sm">
+                  <div>
+                    <span className="font-medium text-gray-800">{e.role}</span>
+                    <span className="text-gray-400 mx-1">·</span>
+                    <span className="text-gray-500">{e.company}</span>
+                  </div>
+                  <span className="text-gray-400">{e.duration}</span>
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-gray-100 pt-3 text-sm text-gray-600">
+              🎓 {application.education}
+            </div>
+          </Section>
+
+          {/* Screening Answers */}
+          <Section title="Screening Questions">
+            <div className="space-y-4">
+              {application.screeningAnswers.map((qa, i) => (
+                <div key={i}>
+                  <p className="text-sm font-medium text-gray-700 mb-1">Q{i + 1}. {qa.q}</p>
+                  <p className="text-sm text-gray-500 bg-gray-50 rounded-lg px-3 py-2">{qa.a}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          {/* Internal Notes */}
+          <Section title="Internal Notes (visible to your team only)">
+            <div className="space-y-3 mb-4">
+              {notes.map((n, i) => (
+                <div key={i} className="bg-amber-50 border border-amber-100 rounded-lg p-3 text-sm">
+                  <div className="flex justify-between mb-1">
+                    <span className="font-medium text-amber-800">{n.author}</span>
+                    <span className="text-amber-500 text-xs">{n.time}</span>
+                  </div>
+                  <p className="text-amber-900">{n.text}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && addNote()}
+                placeholder="Add a team note..."
+                className="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+              />
+              <button
+                onClick={addNote}
+                className="px-4 py-2 text-sm bg-amber-500 text-white rounded-lg hover:bg-amber-600 font-medium transition"
+              >
+                Add
+              </button>
+            </div>
+          </Section>
+        </div>
+
+        {/* RIGHT sidebar */}
+        <div className="lg:col-span-1 flex flex-col gap-5">
+
+          {/* Job details */}
+          <Section title="Applied For">
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between"><span className="text-gray-500">Position</span><span className="font-medium text-gray-800">{application.job.title}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">Department</span><span className="text-gray-700">{application.job.department}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">Type</span><span className="text-gray-700">{application.job.type}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">Location</span><span className="text-gray-700">{application.job.location}</span></div>
+              <div className="flex justify-between"><span className="text-gray-500">Applied on</span><span className="text-gray-700">{application.appliedAt}</span></div>
+            </div>
+          </Section>
+
+          {/* Update status */}
+          <Section title="Update Status">
+            <div className="space-y-2">
+              {STATUS_OPTIONS.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setStatus(s)}
+                  className={`w-full text-left text-sm px-3 py-2 rounded-lg border transition font-medium ${
+                    status === s
+                      ? `${STATUS_STYLES[s]} border-transparent`
+                      : "border-gray-200 text-gray-600 hover:bg-gray-50"
+                  }`}
                 >
-                  {statusStyle.label}
-                </span>
-                <p className="text-xs text-gray-400">
-                  Applied {application.appliedAt}
-                </p>
-                <p className="text-[11px] text-gray-300 font-mono">
-                  {application.id}
-                </p>
-              </div>
+                  {status === s && <span className="mr-1.5">✓</span>}
+                  {s}
+                </button>
+              ))}
             </div>
-          </div>
-        </Card>
+          </Section>
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          {/* LEFT */}
-          <div className="lg:col-span-2 flex flex-col gap-5">
-            {/* Timeline */}
-            <Card className="p-6">
-              <SectionTitle>Application Progress</SectionTitle>
-              <div className="flex flex-col">
-                {application.timeline.map((item, i) => (
-                  <div key={i} className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <TimelineDot status={item.status} />
-                      {i < application.timeline.length - 1 && (
-                        <div
-                          className={`w-0.5 flex-1 my-1 min-h-[28px] ${item.status === 'done' ? 'bg-emerald-200' : 'bg-gray-100'}`}
-                        />
-                      )}
-                    </div>
-                    <div className="pb-6 last:pb-0 pt-0.5">
-                      <p
-                        className={`text-sm font-medium ${item.status === 'pending' ? 'text-gray-300' : item.status === 'active' ? 'text-gray-900 font-semibold' : 'text-gray-700'}`}
-                      >
-                        {item.stage}
-                      </p>
-                      {item.date && (
-                        <p className="text-xs text-gray-400 mt-0.5">
-                          {item.date}
-                        </p>
-                      )}
-                      {item.note && (
-                        <p className="text-xs text-emerald-600 mt-1 italic">
-                          {item.note}
-                        </p>
-                      )}
-                    </div>
+          {/* Activity log */}
+          <Section title="Activity Log">
+            <div className="space-y-3">
+              {application.activityLog.map((log, i) => (
+                <div key={i} className="flex gap-3">
+                  <div className="flex flex-col items-center">
+                    <div className="w-2 h-2 bg-indigo-400 rounded-full mt-1.5 shrink-0"></div>
+                    {i < application.activityLog.length - 1 && <div className="w-px flex-1 bg-gray-200 mt-1"></div>}
                   </div>
-                ))}
-              </div>
-            </Card>
-
-            {/* Application Details */}
-            <Card className="p-6">
-              <SectionTitle>Application Details</SectionTitle>
-              <InfoRow
-                icon={CalendarDays}
-                label="Applied On"
-                value={application.appliedAt}
-              />
-              <InfoRow
-                icon={Timer}
-                label="Application Deadline"
-                value={application.deadline}
-              />
-              <InfoRow
-                icon={Clock}
-                label="Notice Period"
-                value={application.noticePeriod}
-              />
-              <InfoRow
-                icon={DollarSign}
-                label="Salary Expectation"
-                value={application.salaryExpectation}
-              />
-              <InfoRow
-                icon={CalendarDays}
-                label="Job Posted"
-                value={application.job.postedDate}
-              />
-
-              {/* Skills */}
-              <div className="mt-5">
-                <p className="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-3">
-                  Skills You Applied With
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {application.skills.map((s) => (
-                    <span
-                      key={s}
-                      className="text-xs px-3 py-1 rounded-full bg-violet-50 text-violet-700 font-medium"
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Documents */}
-              <div className="mt-5">
-                <p className="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-3">
-                  Documents Submitted
-                </p>
-                <div className="flex flex-col gap-2.5">
-                  {[application.resumeUrl, application.coverLetter].map(
-                    (doc) => (
-                      <div
-                        key={doc}
-                        className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100"
-                      >
-                        <div className="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
-                          <FileText size={15} className="text-red-400" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-800 truncate">
-                            {doc}
-                          </p>
-                          <p className="text-xs text-gray-400">PDF</p>
-                        </div>
-                        <button className="flex items-center gap-1.5 text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors">
-                          <Download size={11} /> Download
-                        </button>
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
-            </Card>
-
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              <button className="flex-1 py-3 rounded-xl text-sm font-medium border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 transition-colors">
-                Edit Application
-              </button>
-              <button className="flex-1 py-3 rounded-xl text-sm font-medium border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
-                Withdraw Application
-              </button>
-            </div>
-          </div>
-
-          {/* RIGHT Sidebar */}
-          <div className="flex flex-col gap-5">
-            {/* Candidate Profile */}
-            <Card className="p-5">
-              <SectionTitle>Your Profile</SectionTitle>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-violet-100 to-blue-100 flex items-center justify-center text-violet-700 font-bold text-base flex-shrink-0">
-                  AK
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">
-                    {application.candidateName}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {application.currentRole}
-                  </p>
-                </div>
-              </div>
-              <div className="border-t border-gray-100 pt-3 flex flex-col gap-2.5">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Mail size={13} className="text-gray-300" />
-                  {application.candidateEmail}
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Phone size={13} className="text-gray-300" />
-                  {application.candidatePhone}
-                </div>
-              </div>
-            </Card>
-
-            {/* Job Summary */}
-            <Card className="p-5">
-              <SectionTitle>Job Summary</SectionTitle>
-              <div className="flex flex-col divide-y divide-gray-100">
-                {[
-                  { label: 'Type', value: application.job.type },
-                  { label: 'Mode', value: application.job.mode },
-                  { label: 'Experience', value: application.job.experience },
-                  { label: 'Location', value: application.job.location },
-                ].map(({ label, value }) => (
-                  <div
-                    key={label}
-                    className="flex justify-between items-start py-2.5"
-                  >
-                    <span className="text-xs text-gray-400">{label}</span>
-                    <span className="text-xs text-gray-800 font-medium text-right max-w-[55%]">
-                      {value}
-                    </span>
+                  <div className="pb-3">
+                    <p className="text-sm text-gray-700">{log.event}</p>
+                    <p className="text-xs text-gray-400">{log.time}</p>
                   </div>
-                ))}
-              </div>
-              <button className="w-full mt-4 py-2.5 rounded-xl text-xs font-medium border border-gray-200 bg-gray-50 text-gray-600 flex items-center justify-center gap-1.5 hover:bg-gray-100 transition-colors">
-                <ExternalLink size={12} /> View Job Posting
-              </button>
-            </Card>
-
-            {/* Company */}
-            <Card className="p-5">
-              <SectionTitle>Company</SectionTitle>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
-                  TN
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">
-                    {application.company.name}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {application.company.industry}
-                  </p>
-                </div>
-              </div>
-              <div className="border-t border-gray-100 pt-3 flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <MapPin size={12} className="text-gray-300" />{' '}
-                  {application.company.location}
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <Building2 size={12} className="text-gray-300" />{' '}
-                  {application.company.size}
-                </div>
-              </div>
-              <button className="w-full mt-4 py-2.5 rounded-xl text-xs font-medium border border-gray-200 bg-gray-50 text-gray-600 flex items-center justify-center gap-1.5 hover:bg-gray-100 transition-colors">
-                <Globe size={12} /> View Company Profile
-              </button>
-            </Card>
-
-            {/* Warning */}
-            <div className="flex gap-3 items-start bg-amber-50 border border-amber-100 rounded-2xl p-4">
-              <AlertCircle
-                size={14}
-                className="text-amber-500 flex-shrink-0 mt-0.5"
-              />
-              <p className="text-xs text-amber-700 leading-relaxed">
-                Withdrawing your application is permanent. You'll need to
-                re-apply if you change your mind.
-              </p>
+              ))}
             </div>
-          </div>
+          </Section>
         </div>
       </div>
     </div>

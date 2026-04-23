@@ -89,8 +89,8 @@ export const useApplications = (setPage?: (page?: number) => void) => {
       });
     }
   };
-  const applyJob = async ( resumeId: string) => {
-  //  console.log('jobid,resumeid', jobId, resumeId);
+  const applyJob = async (resumeId: string) => {
+    //  console.log('jobid,resumeid', jobId, resumeId);
 
     try {
       const data = await applicationService.applyJob(jobId, resumeId);
@@ -102,7 +102,7 @@ export const useApplications = (setPage?: (page?: number) => void) => {
           appliedJobs: data.appliedJobs || [...user.appliedJobs, id],
         })
       );
-      setShowResumeModal(false)
+      setShowResumeModal(false);
     } catch (error: any) {
       showToast({
         msg: error.response?.data?.message || error.message,
@@ -118,6 +118,8 @@ export const useApplications = (setPage?: (page?: number) => void) => {
     setFilter((prev) => ({ ...prev, ...data }));
     setPage(1);
   };
+
+ 
   return {
     handleApplyClick,
     filter,
