@@ -24,7 +24,7 @@ export class GetCompaniesUseCase implements IGetCompaniesUseCase {
       search,
       limit
     );
-   // console.log('filtered companes', data);
+    // console.log('filtered companes', data);
 
     return data;
   }

@@ -2,7 +2,7 @@ import HeroSection from '../../../admin/HeroSection';
 import StatusCards from '../../../admin/StatusCards';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {  Eye } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import type { StatusCardType } from '../../../../pages/admin/Companies';
 import { applicationService } from '../../../../../services/apiServices/application.service';
 import { useToast } from '../../../../../shared/toast/useToast';
@@ -141,7 +141,10 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
           <button
             onClick={() => {
               if (a.status == 'pending') handleUpdate(a.id);
-              const url=role==='admin'?`/admin/applications/${a.id}`:`/company/applications/${a.id}`
+              const url =
+                role === 'admin'
+                  ? `/admin/applications/${a.id}`
+                  : `/company/applications/${a.id}`;
               navigate(url);
             }}
             className="text-indigo-600 hover:text-indigo-800"
@@ -149,9 +152,6 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
           >
             <Eye size={18} />
           </button>
-
-          
-
         </div>
       ),
     },
@@ -163,7 +163,6 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
         console.log(data);
 
         const statusData = data.appStatus;
-        console.log(`status data after fetching `, data);
 
         const total: StatusCardType = {
           label: 'Total Applications',
@@ -219,7 +218,6 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
     getApplications();
   }, [filter, page, limit]);
 
- 
   return (
     <>
       <div>

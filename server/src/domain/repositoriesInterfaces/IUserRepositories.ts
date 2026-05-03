@@ -8,7 +8,6 @@ import { User } from '../entities/User';
 import { IExperience, IResume } from '../values/profileTypes';
 import { IBaseRepository } from './IBaseRepository';
 export interface IUserRepository extends IBaseRepository<User> {
-
   findByEmail(email: string, userId?: string): Promise<User | null>;
 
   createUser(user: User): Promise<User>;
@@ -60,7 +59,7 @@ export interface IUserRepository extends IBaseRepository<User> {
   ): Promise<PaginatedEntities<User>>;
 
   removeSavedJob(userId: string, jobId: string): Promise<User | null>;
-  
+
   saveJob(userId: string, jobId: string): Promise<User | null>;
 
   getCountBySkill(skillId: string, filter?: Partial<User>): Promise<number>;

@@ -19,7 +19,7 @@ type Props = {
   onReportSumbit: () => void;
   handleSave: (id: string) => Promise<void>;
   handleUnSave: (id: string) => Promise<void>;
-  onApply:(resumeId:string)=>Promise<void>
+  onApply: (resumeId: string) => Promise<void>;
 };
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -32,11 +32,10 @@ function JobDetails({
   onReportSumbit,
   handleSave,
   handleUnSave,
-  onApply
+  onApply,
 }: Props) {
   const user = useSelector((state: StateType) => state.auth.user);
   const { showToast } = useToast();
-
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const handleReportClick = () => {

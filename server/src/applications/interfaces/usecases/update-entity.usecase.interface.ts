@@ -1,10 +1,10 @@
 import { UserRole } from '../../../domain/enums/userEnums';
 
-export interface IUpdateEntityUseCase<T, S> {
+export interface IUpdateEntityUseCase<T, D> {
   execute(
     id: string,
     role: UserRole,
     userId: string,
     data: Partial<T>
-  ): Promise<S>;
+  ): Promise<D>;
 }

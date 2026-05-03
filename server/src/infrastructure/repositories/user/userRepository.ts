@@ -326,8 +326,8 @@ export class UserRepository
       _id: new mongoose.Types.ObjectId(),
       ...data,
     };
-    console.log('resume',resume);
-    
+    console.log('resume', resume);
+
     const doc = await this._model.findByIdAndUpdate(
       userId,
       { $addToSet: { resumes: resume } },
@@ -335,13 +335,13 @@ export class UserRepository
     );
 
     if (!doc) return null;
-    console.log('return rsume',this.mapToRsumeEntity(resume));
-    
+    console.log('return rsume', this.mapToRsumeEntity(resume));
+
     return this.mapToRsumeEntity(resume);
   }
   private mapToRsumeEntity(doc: ResumeDocument): IResume {
-    console.log('doc',doc);
-    
+    console.log('doc', doc);
+
     return {
       id: doc._id.toString(),
       url: doc.url,

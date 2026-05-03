@@ -119,7 +119,6 @@ export const useApplications = (setPage?: (page?: number) => void) => {
     setPage(1);
   };
 
- 
   return {
     handleApplyClick,
     filter,

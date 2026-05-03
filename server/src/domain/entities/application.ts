@@ -13,5 +13,5 @@ export interface Application {
   shortlistedAt?: string;
   interviewSheduledAt?: string;
   offeredAt?: string;
-  rejectedAt?:string
+  rejectedAt?: string;
 }

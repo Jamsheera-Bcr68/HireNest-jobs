@@ -1,6 +1,7 @@
 import React, { useState, type ReactNode } from 'react';
 import { useInterviews } from '../../../../hooks/user/useInterview';
 import type { ApplicationStatusType } from '../../../../../types/dtos/application.dto';
+import { initialData } from '../../../../hooks/user/useInterview';
 import {
   Durations,
   type InterviewMode,
@@ -132,16 +133,6 @@ const Select = ({ children, className = '', ...props }: SelectProps) => (
   </select>
 );
 
-// ─── Textarea ─────────────────────────────────────────────────────────────────
-// const Textarea = ({ className = '', ...props }) => (
-//   <textarea
-//     className={`w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-white text-slate-800
-//       placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20
-//       focus:border-indigo-400 transition-all duration-150 resize-none ${className}`}
-//     {...props}
-//   />
-// );
-
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -154,6 +145,7 @@ type Props = {
   };
   jobTitle: string;
   appId: string;
+  onSchedule: (status: ApplicationStatusType) => void;
 };
 export default function InterviewModal({
   isOpen,
@@ -161,9 +153,17 @@ export default function InterviewModal({
   candidate,
   jobTitle,
   appId,
+  onSchedule,
 }: Props) {
-  const { formData, updateFormdata, scheduleInterview, error } =
-    useInterviews(appId);
+  const { formData, updateFormdata, submitInterviewForm, error } =
+    useInterviews();
+
+  const handleSchedule = async () => {
+    const updated = await submitInterviewForm('add', { applicationId: appId });
+    if (!updated) return;
+    updateFormdata(initialData);
+    onSchedule('interviewScheduled');
+  };
 
   if (!isOpen) return null;
 
@@ -215,7 +215,7 @@ export default function InterviewModal({
           </div>
 
           <div>
-            <Label>Interview Type</Label>
+            <Label>Interview mode</Label>
             <div className="grid grid-cols-2 gap-2">
               {[
                 { val: 'online', icon: <GlobeIcon />, label: 'Online' },
@@ -359,9 +359,9 @@ export default function InterviewModal({
                   <div className="flex gap-2">
                     <Input
                       type="url"
-                      value={formData.meetlink}
+                      value={formData.meetLink}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        updateFormdata({ meetlink: e.currentTarget.value })
+                        updateFormdata({ meetLink: e.currentTarget.value })
                       }
                       placeholder="https://meet.google.com/..."
                       className="flex-1"
@@ -371,8 +371,8 @@ export default function InterviewModal({
                       Generate
                     </button>
                   </div>
-                  {error && error.meetlink && (
-                    <p className="text-red-600 text-sm">* {error.meetlink}</p>
+                  {error && error.meetLink && (
+                    <p className="text-red-600 text-sm">* {error.meetLink}</p>
                   )}
                 </>
               ) : (
@@ -434,7 +434,7 @@ export default function InterviewModal({
               Cancel
             </button>
             <button
-              onClick={scheduleInterview}
+              onClick={handleSchedule}
               className="flex-1 sm:flex-none px-5 py-2.5 text-sm font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-sm shadow-indigo-200"
             >
               Send Invite

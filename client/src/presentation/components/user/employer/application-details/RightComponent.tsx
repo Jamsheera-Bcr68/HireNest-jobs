@@ -16,7 +16,7 @@ const STATUS_OPTIONS: { label: string; value: ApplicationStatusType }[] = [
   { label: 'Pending', value: 'pending' },
   { label: 'Reviewed', value: 'reviewed' },
   { label: 'Short Listed', value: 'shortListed' },
-  { label: 'Interview Scheduled', value: 'interviewSheduled' },
+  { label: 'Interview Scheduled', value: 'interviewScheduled' },
   { label: 'Rejected', value: 'rejected' },
 ];
 
@@ -28,7 +28,7 @@ function RightComponent({ application, updateStatus, role }: Props) {
     const currentIndex = APP_STATUS_ORDER.indexOf(current);
     const nextIndex = APP_STATUS_ORDER.indexOf(next);
 
-    return nextIndex >= currentIndex;
+    return nextIndex > currentIndex;
   };
   return (
     <div className="lg:col-span-1 flex flex-col gap-5">
@@ -59,46 +59,63 @@ function RightComponent({ application, updateStatus, role }: Props) {
 
       {/* Update status */}
       <Section title="Status Level">
-        {role=='company'?(<><div className="space-y-2">
-          {STATUS_OPTIONS.map((s) => (
-           <button
-              key={s.label}
-              disabled={
-                !canUpdateStatus(application.status, s.value) 
-              }
-              onClick={() => updateStatus(s.value)}
-              className={`w-full text-left text-sm px-3 py-2 rounded-lg border transition font-medium ${
-                application.status === s.value
-                  ? `${appStatusStyles[s.value]} border-transparent`
-                  : 'border-gray-200 text-gray-600 hover:bg-gray-50'
-              } ${
-                !canUpdateStatus(application.status, s.value)
-                  ? 'opacity-40 cursor-not-allowed'
-                  : ''
-              }`}
-            >
-              {s.label}{' '}
-            </button>
-          ))}
-        </div></>):(<><div className="space-y-2">
-          {STATUS_OPTIONS.map((s) => (
-           <button
-              key={s.label}
-              disabled={
-                !canUpdateStatus(application.status, s.value) || role == 'admin'
-              }
-             
-              className={`w-full text-left text-sm px-3 py-2 rounded-lg border transition font-medium ${
-                application.status === s.value
-                  ? `${appStatusStyles[s.value]} border-transparent`
-                  : 'border-gray-200 text-gray-600 hover:bg-gray-50'
-              }`}
-            >
-              {s.label}{' '}
-            </button>
-          ))}
-        </div></>)}
-        
+        {role == 'company' ? (
+          <>
+            <div className="space-y-2">
+              {STATUS_OPTIONS.map((s) => {
+                const currentIndex = APP_STATUS_ORDER.indexOf(
+                  application.status
+                );
+                const nextIndex = APP_STATUS_ORDER.indexOf(s.value);
+
+                const isPast = nextIndex < currentIndex;
+                const isCurrent = nextIndex === currentIndex;
+                const isFuture = nextIndex > currentIndex;
+
+                return (
+                  <button
+                    key={s.value}
+                    disabled={!isFuture}
+                    onClick={() => {
+                      if (!isFuture) return;
+                      updateStatus(s.value);
+                    }}
+                    className={`w-full text-left text-sm px-3 py-2 rounded-lg border transition font-medium ${
+                      isCurrent
+                        ? `${appStatusStyles[s.value]} border-transparent cursor-not-allowed` // 🟡 same style, disabled
+                        : isFuture
+                          ? 'border-gray-200 text-gray-600 hover:bg-gray-50 cursor-pointer' // 🟢 clickable
+                          : 'border-gray-200 text-gray-400 bg-gray-100 cursor-not-allowed' // 🔴 grey
+                    }`}
+                  >
+                    {s.label}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="space-y-2">
+              {STATUS_OPTIONS.map((s) => (
+                <button
+                  key={s.label}
+                  disabled={
+                    !canUpdateStatus(application.status, s.value) ||
+                    role == 'admin'
+                  }
+                  className={`w-full text-left text-sm px-3 py-2 rounded-lg border transition font-medium ${
+                    application.status === s.value
+                      ? `${appStatusStyles[s.value]} border-transparent`
+                      : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  {s.label}{' '}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </Section>
 
       {/* Activity log */}

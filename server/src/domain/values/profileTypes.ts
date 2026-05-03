@@ -41,5 +41,5 @@ export interface CompanyRequestType {
   date: Date;
   companyId: string;
   status: StatusEnum;
-  reasonForReject?:String
+  reasonForReject?: String;
 }

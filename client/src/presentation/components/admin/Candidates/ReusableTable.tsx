@@ -11,6 +11,11 @@ export type FilterOption = {
   label: string;
   options: readonly string[];
 };
+export type SortOption = {
+  key: string;
+  label: string;
+  options: { label: string; value: string }[];
+};
 export type TabType = { label: string; value: string };
 type Props<T extends { id: string }> = {
   tabs: TabType[];
@@ -19,7 +24,7 @@ type Props<T extends { id: string }> = {
   columns: ColumnType<T>[];
   filterOptions: FilterOption[];
   totalDocs: number;
-  sortOption?: FilterOption;
+  sortOption?: SortOption;
   setSortBy?: (option: string) => void;
 };
 
@@ -95,6 +100,7 @@ function ReusableTable<T extends { id: string }>({
             );
           })}
         </div>
+
         <div className="flex items-center gap-2 flex-wrap">
           {sortOption && setSortBy && (
             <select
@@ -105,9 +111,9 @@ function ReusableTable<T extends { id: string }>({
               {sortOption.label}
 
               {sortOption.options.map((opt) => (
-                <option value={opt} key={opt}>
+                <option value={opt.value} key={opt.label}>
                   {' '}
-                  {opt}{' '}
+                  {opt.label}{' '}
                 </option>
               ))}
             </select>

@@ -48,7 +48,7 @@ const tabs = [
   { label: 'Suspended', value: 'suspended' },
   { label: 'Expired', value: 'expired' },
   { label: 'Closed', value: 'closed' },
-];;
+];
 
 function CompanyJobListingContainer() {
   const user = useSelector((state: StateType) => state.auth.user);

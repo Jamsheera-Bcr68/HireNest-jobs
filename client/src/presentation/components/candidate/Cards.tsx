@@ -13,7 +13,6 @@ import {
 import { useSelector } from 'react-redux';
 import type { StateType } from '../../../constants/types/user';
 
-
 type JobCardProps = {
   job: JobCardDto;
   onApply: (id: string) => Promise<void>;
@@ -26,7 +25,7 @@ const JobCard = ({ job, handleSave, handleUnSave, onApply }: JobCardProps) => {
   const user = useSelector((state: StateType) => state.auth.user);
 
   console.log(user);
- 
+
   return (
     <div className="max-w-sm w-full rounded-3xl bg-white border border-gray-200 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
       <>
@@ -171,7 +170,6 @@ const JobCard = ({ job, handleSave, handleUnSave, onApply }: JobCardProps) => {
           </div>
         </div>
       </>
-      
     </div>
   );
 };

@@ -1,9 +1,9 @@
-import AppDetailsContainer from "../../../components/user/employer/application-details/AppDetailsContainer";
+import AppDetailsContainer from '../../../components/user/employer/application-details/AppDetailsContainer';
 
 function ApplicationDetailsPage() {
   return (
     <div>
-      <AppDetailsContainer role='company' />
+      <AppDetailsContainer role="company" />
     </div>
   );
 }

@@ -1,11 +1,11 @@
-import ApplicationContainer from "../../../components/candidate/applications/ApplicationContainer"
+import ApplicationContainer from '../../../components/candidate/applications/ApplicationContainer';
 
 function ApplicationsPage() {
   return (
     <div>
-      <ApplicationContainer/>
+      <ApplicationContainer />
     </div>
-  )
+  );
 }
 
-export default ApplicationsPage
+export default ApplicationsPage;

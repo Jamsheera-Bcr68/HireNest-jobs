@@ -26,7 +26,6 @@ function Companies() {
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
 
-
   const [filter, setFilter] = useState<Partial<CompanyFilter>>({});
   useEffect(() => {
     async function getCompanies() {
@@ -98,7 +97,7 @@ function Companies() {
     }
     getCompanyStatus();
   }, [companies]);
-  
+
   return (
     <div>
       <div className="min-h-screen w-full bg-gray-100">

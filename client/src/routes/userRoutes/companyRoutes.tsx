@@ -11,6 +11,7 @@ import SkillPage from '../../presentation/pages/user/company/Skills';
 import ApplicationsPage from '../../presentation/pages/user/company/ApplicationsPage';
 import ApplicationDetailsPage from '../../presentation/pages/user/company/ApplicationDetails';
 import ApplicationDetails from '../../AppDetails';
+import InterviewsPage from '../../presentation/pages/user/company/InterviewsPage';
 export const CompanyRoutes = () => {
   return (
     <Routes>
@@ -26,7 +27,7 @@ export const CompanyRoutes = () => {
         <Route path="applicationss" element={<ApplicationDetails />} />
         <Route path="applications/:id" element={<ApplicationDetailsPage />} />
         <Route path="jobs/:jobId" element={<JobDetails />} />
-
+        <Route path="interviews" element={<InterviewsPage />} />
         <Route path="profile" element={<CompanyProfile />} />
       </Route>
     </Routes>

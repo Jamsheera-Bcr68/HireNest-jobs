@@ -46,13 +46,13 @@ export class UpdateApplicationStatusUseCase implements IUpdateEntityStatusUseCas
         );
       }
     }
-     data.status = status;
+    data.status = status;
     if (status === 'rejected') {
       data.rejectedReason = reason;
     }
     const updated = await this._applicationRepository.update(id, data);
-    console.log('updated',updated);
-    
+    console.log('updated', updated);
+
     if (!updated)
       throw new AppError(
         generalMessages.errors.NOT_FOUND('Application'),

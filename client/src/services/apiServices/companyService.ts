@@ -86,8 +86,8 @@ export const companyService = {
     return res.data;
   },
   async getCompanyDetails(id: string) {
-    console.log('company id',id);
-    
+    console.log('company id', id);
+
     const res = await axiosInstance.get(API_ENDPOINTS.COMPANY_DATA(id));
     return res.data;
   },

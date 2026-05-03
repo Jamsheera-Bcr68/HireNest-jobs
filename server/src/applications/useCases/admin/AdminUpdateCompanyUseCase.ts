@@ -27,8 +27,8 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     reason?: string
   ): Promise<Company> {
     const company = await this.companyRepository.findById(id);
-    console.log('reason',reason);
-    
+    console.log('reason', reason);
+
     if (!company) {
       throw new AppError(
         adminMessages.error.COMPANY_NOTFOUND,

@@ -3,7 +3,13 @@ import { appStatusStyles } from '../../../candidate/applications/ApplicationCard
 import type { ApplicationDetailsDto } from '../../../../../types/dtos/application.dto';
 import { File, Mail, Phone } from 'lucide-react';
 
-export function Section({ title, children }: { title: string; children: ReactNode }) {
+export function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5">
       <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
@@ -16,7 +22,7 @@ export function Section({ title, children }: { title: string; children: ReactNod
 type Props = {
   application: ApplicationDetailsDto;
 };
-const baseUrl=import.meta.env.VITE_BACKEND_URL
+const baseUrl = import.meta.env.VITE_BACKEND_URL;
 function LeftComponent({ application }: Props) {
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
   return (
@@ -97,14 +103,17 @@ function LeftComponent({ application }: Props) {
             </div>
           </div>
           <div className="flex gap-2">
-            <button  onClick={() =>
-                    window.open(
-                      `${import.meta.env.VITE_BACKEND_URL}${application.resume.url}`,
-                      '_blank'
-                    )} className="text-sm px-3 py-1.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100">
+            <button
+              onClick={() =>
+                window.open(
+                  `${import.meta.env.VITE_BACKEND_URL}${application.resume.url}`,
+                  '_blank'
+                )
+              }
+              className="text-sm px-3 py-1.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100"
+            >
               Preview
             </button>
-            
           </div>
         </div>
         <p className="text-sm text-gray-600 leading-relaxed">
@@ -128,44 +137,39 @@ function LeftComponent({ application }: Props) {
 
       {/* Experience & Education */}
       <Section title="Experience & Education">
-  
-  {/* Experience */}
-  <div className="space-y-3 mb-4">
-    {application.candidate.experience.map((e, i) => (
-      <div
-        key={i}
-        className="flex items-center justify-between text-sm"
-      >
-        <div>
-          <span className="font-medium text-gray-800">{e.role}</span>
-          <span className="text-gray-400 mx-1">·</span>
-          <span className="text-gray-500">{e.company}</span>
-          <span className="text-gray-400 mx-1">·</span>
-          <span className="text-gray-500">{e.mode}</span>
+        {/* Experience */}
+        <div className="space-y-3 mb-4">
+          {application.candidate.experience.map((e, i) => (
+            <div key={i} className="flex items-center justify-between text-sm">
+              <div>
+                <span className="font-medium text-gray-800">{e.role}</span>
+                <span className="text-gray-400 mx-1">·</span>
+                <span className="text-gray-500">{e.company}</span>
+                <span className="text-gray-400 mx-1">·</span>
+                <span className="text-gray-500">{e.mode}</span>
+              </div>
+
+              <span className="text-gray-400">
+                {e.startYear} - {e.isWorking ? 'Present' : e.endYear}
+              </span>
+            </div>
+          ))}
         </div>
 
-        <span className="text-gray-400">
-          {e.startYear} - {e.isWorking ? "Present" : e.endYear}
-        </span>
-      </div>
-    ))}
-  </div>
-
-  {/* Education (show latest only) */}
-  {application.candidate.education.length > 0 && (
-    <div className="border-t border-gray-100 pt-3 text-sm text-gray-600">
-      🎓{" "}
-      <span className="font-medium">
-        {application.candidate.education[0].level}
-      </span>
-      {" · "}
-      {application.candidate.education[0].institute}
-      {" · "}
-      {application.candidate.education[0].year}
-    </div>
-  )}
-
-</Section>
+        {/* Education (show latest only) */}
+        {application.candidate.education.length > 0 && (
+          <div className="border-t border-gray-100 pt-3 text-sm text-gray-600">
+            🎓{' '}
+            <span className="font-medium">
+              {application.candidate.education[0].level}
+            </span>
+            {' · '}
+            {application.candidate.education[0].institute}
+            {' · '}
+            {application.candidate.education[0].year}
+          </div>
+        )}
+      </Section>
 
       {/* Screening Answers */}
       {/* <Section title="Screening Questions">

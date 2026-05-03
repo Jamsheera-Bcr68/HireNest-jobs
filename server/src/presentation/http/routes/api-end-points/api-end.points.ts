@@ -8,5 +8,9 @@ export const API_END_POINTS = {
   APPLICATION: '/:id',
   COMPANY_DATA: '/:id',
   GET_RESUMES: '/:id/resumes',
-  INTERVIEWS:'/'
+  INTERVIEWS: '/',
+  UPDATE_STATUS: '/:id/status',
+  INTERVIEW: '/:id',
+  INTERVIEW_RESULT: '/:id/result',
+  INTERVIEWS_STATUS: '/interviews-status',
 };

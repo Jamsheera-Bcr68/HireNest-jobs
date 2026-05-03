@@ -1,6 +1,6 @@
 import axiosInstance from '../../libraries/axios';
 import { API_ENDPOINTS } from '../../constants/apiEndPoints/general';
-import {type ApplicationStatusType } from '../../types/dtos/application.dto';
+import { type ApplicationStatusType } from '../../types/dtos/application.dto';
 import { type ApplicationFilterType } from '../../presentation/hooks/user/candidate/profile/useApplication';
 
 export const applicationService = {
@@ -39,18 +39,25 @@ export const applicationService = {
     return res.data;
   },
 
-  async withdrawApplication(id: string,status?:ApplicationStatusType) {
+  async withdrawApplication(id: string, status?: ApplicationStatusType) {
     console.log('application id', id);
 
-    const res = await axiosInstance.patch(API_ENDPOINTS.APPLICATION(id),{status})
+    const res = await axiosInstance.patch(API_ENDPOINTS.APPLICATION(id), {
+      status,
+    });
     return res.data;
   },
-  async updateAppStatus(id: string,status?:ApplicationStatusType,reason?:string) {
-    console.log('application id reason', id,status,reason);
+  async updateAppStatus(
+    id: string,
+    status?: ApplicationStatusType,
+    reason?: string
+  ) {
+    console.log('application id reason', id, status, reason);
 
-    const res = await axiosInstance.patch(API_ENDPOINTS.APPLICATION(id),{status,reason})
+    const res = await axiosInstance.patch(API_ENDPOINTS.APPLICATION(id), {
+      status,
+      reason,
+    });
     return res.data;
   },
-
-  
 };

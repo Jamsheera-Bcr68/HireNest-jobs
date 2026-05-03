@@ -113,7 +113,7 @@ router.delete(
 );
 
 router.get(
- API_END_POINTS.GET_RESUMES,
+  API_END_POINTS.GET_RESUMES,
   authValidator(tokenService),
   candidateProfileController.getResume
 );

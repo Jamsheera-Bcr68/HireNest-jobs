@@ -43,7 +43,10 @@ function AppDetailContainer() {
         />
         <HeroHeader application={application} />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <LeftContainer updateApplication={setApplication} application={application} />
+          <LeftContainer
+            updateApplication={setApplication}
+            application={application}
+          />
           <RightContainer application={application} />
         </div>
       </div>

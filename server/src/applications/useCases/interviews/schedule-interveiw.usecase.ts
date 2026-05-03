@@ -9,7 +9,7 @@ import { Interview } from '../../../domain/entities/interview.entity';
 import { InterviewStatusEnum } from '../../../domain/enums/statusEnum';
 
 export interface IScheduleInterviewUsecase {
-  execute(data: interviewInputDto): Promise<interviewDto>;
+  execute(data: interviewInputDto): Promise<string>;
 }
 
 export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
@@ -17,7 +17,7 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
     private _applicationRepository: IApplicationRepository,
     private _interviewRepository: IInterviewRepository
   ) {}
-  async execute(data: interviewInputDto): Promise<interviewDto> {
+  async execute(data: interviewInputDto): Promise<string> {
     const { applicationId } = data;
 
     const application =
@@ -59,6 +59,6 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
     const newInterview = await this._interviewRepository.create(
       doc as Partial<Interview>
     );
-    return newInterview;
+    return newInterview.id;
   }
 }

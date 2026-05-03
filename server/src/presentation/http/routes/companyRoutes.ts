@@ -1,6 +1,10 @@
 import express from 'express';
 import { authValidator } from '../middleweres/authValidator';
-import { jobController, tokenService, userControlller } from '../../../infrastructure/config/di';
+import {
+  jobController,
+  tokenService,
+  userControlller,
+} from '../../../infrastructure/config/di';
 import { COMPANY_API_ENDPOINTS } from './api-end-points/company';
 import {
   companyRegisterValidator,
@@ -79,6 +83,10 @@ router.put(
   jobValidator,
   jobController.updateJob
 );
-router.get(API_END_POINTS.COMPANY_DATA,authValidator(tokenService),userControlller.getCompany)
+router.get(
+  API_END_POINTS.COMPANY_DATA,
+  authValidator(tokenService),
+  userControlller.getCompany
+);
 
 export default router;

@@ -4,11 +4,14 @@ export const generalMessages = {
   success: {
     RESUME_EXISTANCE_IDENTIFIED: 'Resume existance checked',
     STATUS_FETCHED: (entity: string) => `${entity} Status fetched Successfully`,
-    ENTITY_CREATED: (entity: string,action:string) => `${entity} ${action} Successfully`,
-    STATUS_UPDATED: (entity: string,status:string) => `${entity} Status ${status} Successfully`,
+    ENTITY_CREATED: (entity: string, action: string) =>
+      `${entity} ${action} Successfully`,
+    STATUS_UPDATED: (entity: string, status: string) =>
+      `${entity} Status ${status} Successfully`,
     RESUME_DELETED: 'Resume deleted',
     ENTITY_DETAILS_FETCHED: (item: string) =>
       `${item} Details Fetched SuccessFully`,
+    RESULT_UPDATED: (item: string) => `${item} result updated`,
   },
   errors: {
     NOT_FOUND: (entity: string) => `${entity} not found`,

@@ -11,6 +11,7 @@ const menuItems = [
   { label: 'Profile', path: '/company/profile' },
   { label: 'Skill Requests', path: '/company/skills' },
   { label: 'Applications', path: '/company/applications' },
+  { label: 'Interviews', path: '/company/interviews' },
 ];
 export const EmployerLayout = () => {
   const location = useLocation();

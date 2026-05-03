@@ -352,7 +352,7 @@ function JobContainer() {
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable
-              totalDocs={totalDocs}
+                totalDocs={totalDocs}
                 columns={postColumns as ColumnType<JobCardDto>[]}
                 tabs={tabs}
                 updateFilter={handleFilterChange}

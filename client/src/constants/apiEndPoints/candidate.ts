@@ -16,5 +16,5 @@ export const CANDIDATE_API_ENDPOINTS = {
   SAVE_JOB: (jobId: string) => `/jobs/${jobId}/save`,
   UNSAVE_JOB: (jobId: string) => `/jobs/${jobId}/unsave`,
   SAVED_JOBS: `/jobs/saved`,
- RESUMES:(candidateId:string)=>`/candidate/${candidateId}/resumes`
+  RESUMES: (candidateId: string) => `/candidate/${candidateId}/resumes`,
 };

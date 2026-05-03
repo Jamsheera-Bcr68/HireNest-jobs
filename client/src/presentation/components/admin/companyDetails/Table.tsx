@@ -104,15 +104,19 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
     }
   };
 
-  const suspendCompany = async (status:StatusType,reason:string) => {
+  const suspendCompany = async (status: StatusType, reason: string) => {
     console.log('suspend company', companyId);
 
     if (!companyId) return;
     try {
-      const data = await adminService.updateCompany(companyId, {
-        isVerified: true,
-        status: status,
-      },reason);
+      const data = await adminService.updateCompany(
+        companyId,
+        {
+          isVerified: true,
+          status: status,
+        },
+        reason
+      );
       const suspended = data.company;
       console.log('after suspending', data);
 
@@ -400,7 +404,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
 
       <AddReasonModal
         action="Suspend"
-        status='suspended'
+        status="suspended"
         onClose={() => {
           setCompanyId('');
           setSuspendOpen(false);

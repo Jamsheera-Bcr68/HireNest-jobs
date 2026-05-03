@@ -55,8 +55,13 @@ function JobListingContainer({ mode }: Props) {
   const industryFilter = searchParams.get('industry');
 
   console.log('job,location,industry', job, location, industryFilter);
-  const { handleApplyClick, showResumeModal, setShowResumeModal,resumes,applyJob } =
-    useApplications();
+  const {
+    handleApplyClick,
+    showResumeModal,
+    setShowResumeModal,
+    resumes,
+    applyJob,
+  } = useApplications();
   const { showToast } = useToast();
   const [filter, setFilter] = useState<JobFilterType>({
     search: {
@@ -327,7 +332,7 @@ function JobListingContainer({ mode }: Props) {
             }`}
           >
             <JobCards
-            onApply={handleApplyClick}
+              onApply={handleApplyClick}
               handleSave={saveJobHandle}
               handleUnSave={unSaveJobHandle}
               mode={mode!}
@@ -359,9 +364,13 @@ function JobListingContainer({ mode }: Props) {
           </div>
         </div>
       </div>
-    
-         <SelectResumeContent resumes={resumes}  isOpen={showResumeModal} onClose={()=>setShowResumeModal(false)} onApply={(resumeId:string)=>applyJob(resumeId)} />
-     
+
+      <SelectResumeContent
+        resumes={resumes}
+        isOpen={showResumeModal}
+        onClose={() => setShowResumeModal(false)}
+        onApply={(resumeId: string) => applyJob(resumeId)}
+      />
     </div>
   );
 }

@@ -7,5 +7,5 @@ export interface IBaseRepository<T> {
   create(data: Partial<T>): Promise<T>;
   update(id: string, data: Partial<T>): Promise<T | null>;
   getCount(filter: Partial<T>): Promise<number>;
-  findByIds(ids:string[]):Promise<T[]>
+  findByIds(ids: string[]): Promise<T[]>;
 }

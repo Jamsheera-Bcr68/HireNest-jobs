@@ -11,13 +11,12 @@ import type { JobDetailsDto } from '../../../../types/dtos/jobDto';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-
-function JobData({ job }: { job: JobDetailsDto|null }) {
+function JobData({ job }: { job: JobDetailsDto | null }) {
   const dispatch = useDispatch();
   const { showToast } = useToast();
   const user = useSelector((state: StateType) => state.auth.user);
 
-    if (!job) return null;
+  if (!job) return null;
   const saveJobHandle = async () => {
     if (!user) {
       showToast({
@@ -33,7 +32,7 @@ function JobData({ job }: { job: JobDetailsDto|null }) {
       });
       return;
     }
-    if(!job)return null
+    if (!job) return null;
     try {
       const data = await jobService.saveJob(job.id);
       console.log('after saving', data);
@@ -86,7 +85,6 @@ function JobData({ job }: { job: JobDetailsDto|null }) {
       });
     }
   };
-
 
   return (
     <div>

@@ -7,11 +7,11 @@ import { useNavigate } from 'react-router-dom';
 export const appStatusStyles: Record<ApplicationStatusType, string> = {
   pending: 'bg-amber-100 text-amber-700',
   shortListed: 'bg-green-100 text-green-700',
-  interviewSheduled: 'bg-purple-100 text-purple-700',
+  interviewScheduled: 'bg-purple-100 text-purple-700',
   // offered: "bg-green-100 text-green-700",
   reviewed: 'bg-yellow-100 text-yellow-700',
   rejected: 'bg-red-100 text-red-700',
-  withdrawn: "bg-red-100 text-red-600",
+  withdrawn: 'bg-red-100 text-red-600',
 };
 
 type Props = {

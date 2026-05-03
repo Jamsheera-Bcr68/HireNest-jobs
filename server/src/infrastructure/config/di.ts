@@ -77,6 +77,12 @@ import { GetCompanyDataUseCase } from '../../applications/useCases/company/get-c
 import { GetCandidateResumesUsecase } from '../../applications/useCases/candidate/get-resumes.usecase';
 import { UpdateApplicationStatusUseCase } from '../../applications/useCases/applications/update-application-status.usecase';
 import { ScheduleInterviewUsecase } from '../../applications/useCases/interviews/schedule-interveiw.usecase';
+import { GetInterviewStatusUseCase } from '../../applications/useCases/interviews/get-interview-status.usecase';
+import { GetInterviewsUsecase } from '../../applications/useCases/interviews/get-interviews.usecase';
+import { UpdateInterviewStatusUsecase } from '../../applications/useCases/interviews/update-interview-status.usecase';
+import { GetInterviewDetailsUsecase } from '../../applications/useCases/interviews/get-interview.usecase';
+import { UpdateInterviewUsecase } from '../../applications/useCases/interviews/update-interview.usecase';
+import { UpdateInterviewResultUsecase } from '../../applications/useCases/interviews/update-result.usecase';
 
 //==Controllers
 //auth
@@ -123,7 +129,6 @@ import { GoogleAuthService } from '../../applications/services/googleAuthService
 import { ImageStorageService } from '../services/ImageStorageService';
 import { FileStorageService } from '../services/fileStorageService';
 
-
 //repositories
 const userRepository = new UserRepository();
 const otpGenerator = new OtpGenerator();
@@ -135,7 +140,7 @@ const educationRepository = new EducationRepository();
 const companyRepository = new CompanyRepository();
 const jobRepository = new JobRepository();
 const applicationRepository = new ApplicationRepository();
-const interviewRepository=new InterviewRepository()
+const interviewRepository = new InterviewRepository();
 
 const emailService = new EmailService();
 const verifyOtpService = new VerifyOtpService(otpRepository, userRepository);
@@ -341,13 +346,29 @@ const applyJobUseCase = new ApplyJobUseCase(
   jobRepository
 );
 
-const getApplicationDetailsUsecase=new GetApplicationDetailUsecase(applicationRepository,jobRepository,companyRepository,userRepository,skillRepository)
-const getCompanyDataUsecase=new GetCompanyDataUseCase(companyRepository)
-const getCandidateResumesUsecase=new GetCandidateResumesUsecase(userRepository)
-const scheduleInterviewUsecase=new ScheduleInterviewUsecase(applicationRepository,interviewRepository)
-
-
-
+const getApplicationDetailsUsecase = new GetApplicationDetailUsecase(
+  applicationRepository,
+  jobRepository,
+  companyRepository,
+  userRepository,
+  skillRepository
+);
+const getCompanyDataUsecase = new GetCompanyDataUseCase(companyRepository);
+const getCandidateResumesUsecase = new GetCandidateResumesUsecase(
+  userRepository
+);
+const scheduleInterviewUsecase = new ScheduleInterviewUsecase(
+  applicationRepository,
+  interviewRepository
+);
+const getInterviewStatusUsecase = new GetInterviewStatusUseCase(
+  interviewRepository,
+  companyRepository
+);
+const updateInterviewStatusUsecase = new UpdateInterviewStatusUsecase(
+  interviewRepository,
+  companyRepository
+);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -376,12 +397,38 @@ export const requestedSkillUsecase = new GetRequestedSkillsUseCase(
   userRepository
 );
 
-const getApplicationStatusUseCase=new GetApplicationStatusUseCase(applicationRepository,companyRepository)
-const getAllApplications=new GetAllApplicationsUsecase(applicationRepository,jobRepository,companyRepository)
-const updateApplicationStatusUsecase=new UpdateApplicationStatusUseCase(applicationRepository)
-
-
-
+const getApplicationStatusUseCase = new GetApplicationStatusUseCase(
+  applicationRepository,
+  companyRepository
+);
+const getAllApplications = new GetAllApplicationsUsecase(
+  applicationRepository,
+  jobRepository,
+  companyRepository
+);
+const updateApplicationStatusUsecase = new UpdateApplicationStatusUseCase(
+  applicationRepository
+);
+const getInterviewsUsecase = new GetInterviewsUsecase(
+  interviewRepository,
+  companyRepository
+);
+const getInterviewDetailsUsecase = new GetInterviewDetailsUsecase(
+  interviewRepository,
+  jobRepository,
+  companyRepository,
+  userRepository
+);
+const updateInterviewUsecase = new UpdateInterviewUsecase(
+  interviewRepository,
+  companyRepository,
+  jobRepository,
+  userRepository
+);
+const upateInterviewResultUsecase = new UpdateInterviewResultUsecase(
+  interviewRepository,
+  companyRepository
+);
 
 export const refreshController = new RefreshTokenController(tokenService);
 export const adminAuthController = new AdminAuthController(adminLoginUsecase);
@@ -417,7 +464,8 @@ export const candidateProfileController = new CandidateProfileController(
   editEducationUseCase,
   removeEducationUseCase,
   addResumeUseCase,
-  removeResumeUseCase,getCandidateResumesUsecase
+  removeResumeUseCase,
+  getCandidateResumesUsecase
 );
 
 export const skillController = new SkillsController(
@@ -467,7 +515,25 @@ export const adminJobcontroller = new AdminJobController(
   getAllJobsUsecase,
   getJobDetailsUseCase
 );
-export const userControlller = new UserController(getHomeDataUseCase,getCompanyDataUsecase);
+export const userControlller = new UserController(
+  getHomeDataUseCase,
+  getCompanyDataUsecase
+);
 
-export const applicationController = new ApplicationController(applyJobUseCase,getApplicationStatusUseCase,getAllApplications,getApplicationDetailsUsecase,updateApplicationStatusUsecase);
-export const interviewcontroller=new InterviewController(scheduleInterviewUsecase,updateApplicationStatusUsecase)
+export const applicationController = new ApplicationController(
+  applyJobUseCase,
+  getApplicationStatusUseCase,
+  getAllApplications,
+  getApplicationDetailsUsecase,
+  updateApplicationStatusUsecase
+);
+export const interviewcontroller = new InterviewController(
+  scheduleInterviewUsecase,
+  updateApplicationStatusUsecase,
+  getInterviewStatusUsecase,
+  getInterviewsUsecase,
+  updateInterviewStatusUsecase,
+  getInterviewDetailsUsecase,
+  updateInterviewUsecase,
+  upateInterviewResultUsecase
+);

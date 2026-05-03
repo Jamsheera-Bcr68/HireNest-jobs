@@ -67,7 +67,7 @@ export const jobService = {
     );
     return res.data;
   },
-  
+
   async saveJob(id: string) {
     console.log('from service', id);
     const res = await axiosInstance.post(CANDIDATE_API_ENDPOINTS.SAVE_JOB(id));

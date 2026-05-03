@@ -11,9 +11,25 @@ router.post(
   authValidator(tokenService),
   applicationController.applyJob
 );
-router.get(API_END_POINTS.APPLICATION_STATUS,authValidator(tokenService),applicationController.getApplicationStatus)
-router.get(API_END_POINTS.APPLICATIONS,authValidator(tokenService),applicationController.getApplications)
-router.get(API_END_POINTS.APPLICATION,authValidator(tokenService),applicationController.getApplicationDetails)
-router.patch(API_END_POINTS.APPLICATION,authValidator(tokenService),applicationController.updateAppStatus)
+router.get(
+  API_END_POINTS.APPLICATION_STATUS,
+  authValidator(tokenService),
+  applicationController.getApplicationStatus
+);
+router.get(
+  API_END_POINTS.APPLICATIONS,
+  authValidator(tokenService),
+  applicationController.getApplications
+);
+router.get(
+  API_END_POINTS.APPLICATION,
+  authValidator(tokenService),
+  applicationController.getApplicationDetails
+);
+router.patch(
+  API_END_POINTS.APPLICATION,
+  authValidator(tokenService),
+  applicationController.updateAppStatus
+);
 
 export default router;

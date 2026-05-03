@@ -1,5 +1,5 @@
-import { UserRole } from "../../../domain/enums/userEnums";
+import { UserRole } from '../../../domain/enums/userEnums';
 
 export interface IGetEntityStatusUseCase<T> {
-  execute(userId: string,role:UserRole): Promise<T>;
+  execute(userId: string, role: UserRole): Promise<T>;
 }

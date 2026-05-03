@@ -1,9 +1,7 @@
-import ApplicationListingContainer from "../../../components/user/employer/application-listing/ApplicationListingContainer"
+import ApplicationListingContainer from '../../../components/user/employer/application-listing/ApplicationListingContainer';
 
 const ApplicationsPage = () => {
-  return (
-    <ApplicationListingContainer role="company" />
-  )
-}
+  return <ApplicationListingContainer role="company" />;
+};
 
-export default ApplicationsPage
+export default ApplicationsPage;

@@ -22,11 +22,6 @@ app.use(
 
 connectDB();
 
-app.use((req, res, next) => {
-  console.log('from server');
-  next();
-});
-
 app.get('/', (req, res) => {
   console.log('env', env);
 

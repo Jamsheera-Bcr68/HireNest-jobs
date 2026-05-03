@@ -8,7 +8,7 @@ export type ApplicationStatusType =
   | 'reviewed'
   | 'shortListed'
   | 'rejected'
-  | 'interviewSheduled'
+  | 'interviewScheduled'
   | 'withdrawn';
 
 export type ApplicationDto = {
@@ -24,7 +24,6 @@ export type ApplicationDto = {
   appliedDate: string;
   logo: string;
 };
-
 
 export type ExpType = {};
 export type ApplicationDetailsDto = {
@@ -63,7 +62,7 @@ export type ApplicationDetailsDto = {
       status: string;
       year: string;
     }[];
-  }
+  };
   job: {
     id: string;
     title: string;
@@ -91,7 +90,7 @@ export const APP_STATUS_ORDER: ApplicationStatusType[] = [
   'pending',
   'reviewed',
   'shortListed',
-  'interviewSheduled',
+  'interviewScheduled',
 
   'rejected',
 ];

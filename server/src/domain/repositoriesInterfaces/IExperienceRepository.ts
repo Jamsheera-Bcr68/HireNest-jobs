@@ -8,5 +8,4 @@ export interface IExperienseRepository extends IBaseRepository<Experience> {
     expId: string,
     data: Partial<Experience>
   ): Promise<Experience | null>;
-  
 }

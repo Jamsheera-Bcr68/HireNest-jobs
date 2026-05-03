@@ -48,8 +48,12 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    const resume = user.resumes.find((r) => r.id == resumeId)
-    if(!resume)throw new AppError(generalMessages.errors.NOT_FOUND('Resume'),statusCodes.NOTFOUND)
+    const resume = user.resumes.find((r) => r.id == resumeId);
+    if (!resume)
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Resume'),
+        statusCodes.NOTFOUND
+      );
     const isApplied = await this.applicationRepository.findByUserIdAndJobId(
       userId,
       jobId
@@ -58,7 +62,7 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
       jobId,
       companyId: job.companyId,
       candidateId: userId,
-      resumeId:resumeId,
+      resumeId: resumeId,
       status: ApplicationStatusEnum.PENDING,
     };
     if (isApplied) {
@@ -69,7 +73,6 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
       );
     }
 
-  
     const application = await this.applicationRepository.create(newDoc);
     return application.id;
   }

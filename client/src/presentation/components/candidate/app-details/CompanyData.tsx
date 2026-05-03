@@ -2,8 +2,8 @@ import type { CompanyDataDto } from '../../../../types/dtos/company.dto';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
-function CompanyModalContent({ company }: { company: CompanyDataDto|null }) {
-  if(!company)return null
+function CompanyModalContent({ company }: { company: CompanyDataDto | null }) {
+  if (!company) return null;
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -26,15 +26,23 @@ function CompanyModalContent({ company }: { company: CompanyDataDto|null }) {
           </h2>
 
           {company.tagLine && (
-            <p className="text-sm text-blue-500 mt-1 italic">"{company.tagLine}"</p>
+            <p className="text-sm text-blue-500 mt-1 italic">
+              "{company.tagLine}"
+            </p>
           )}
 
           <div className="flex flex-wrap gap-2 mt-2">
-            <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full border border-slate-200 bg-slate-50 text-slate-600">{company.industry}</span>
+            <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full border border-slate-200 bg-slate-50 text-slate-600">
+              {company.industry}
+            </span>
 
-            <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full border border-slate-200 bg-slate-50 text-slate-600">Est. {company.startedIn}</span>
+            <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full border border-slate-200 bg-slate-50 text-slate-600">
+              Est. {company.startedIn}
+            </span>
 
-            <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full border border-slate-200 bg-slate-50 text-slate-600">{company.size}</span>
+            <span className="inline-flex items-center px-2.5 py-1 text-xs font-medium rounded-full border border-slate-200 bg-slate-50 text-slate-600">
+              {company.size}
+            </span>
           </div>
         </div>
       </div>

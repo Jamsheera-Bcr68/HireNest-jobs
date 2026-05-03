@@ -6,7 +6,7 @@ import companyRoutes from './companyRoutes';
 import jobRoutes from './jobRoutes';
 import adminRoutes from './adminRoutes';
 import applicationRoutes from './applicationRoutes';
-import interviewRoutes from './interview.routes'
+import interviewRoutes from './interview.routes';
 
 const router = Router();
 console.log('from auth routes');

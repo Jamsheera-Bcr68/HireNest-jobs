@@ -4,7 +4,7 @@ type Props<T> = {
   isOpen: boolean;
   status: T;
   onClose: () => void;
-  action: 'Suspend' | 'Reject' | 'Remove';
+  action: 'Suspend' | 'Reject' | 'Remove' | 'Cancel';
   onConfirm: (status: T, reason: string) => Promise<void>;
   item: string;
 };

@@ -1,9 +1,9 @@
 export enum InterviewMode {
-    ONLINE='online',
-    OFFLINE='offline',
+  ONLINE = 'online',
+  OFFLINE = 'offline',
 }
 
-export enum InterviewResult{
-    PASSED='passed',
-    FAILED='failed',
+export enum InterviewResult {
+  PASSED = 'passed',
+  FAILED = 'failed',
 }

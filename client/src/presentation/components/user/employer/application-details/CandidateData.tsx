@@ -8,9 +8,15 @@ type Props = {
   application: ApplicationDetailsDto;
   updateStatus: (status: ApplicationStatusType) => Promise<void>;
   role: 'admin' | 'company';
+  onScheduleClick: () => void;
 };
 
-function CandidateData({ application, updateStatus, role }: Props) {
+function CandidateData({
+  application,
+  updateStatus,
+  role,
+  onScheduleClick,
+}: Props) {
   const navigate = useNavigate();
   return (
     <div className="bg-white border-b border-gray-200 px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -31,8 +37,13 @@ function CandidateData({ application, updateStatus, role }: Props) {
           <button className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 font-medium transition">
             Send Message
           </button>
-          <button className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition">
-            Schedule Interview
+          <button
+            onClick={onScheduleClick}
+            className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition"
+          >
+            {application.status === 'interviewScheduled'
+              ? 'View Interview'
+              : 'Schedule Interview'}
           </button>
           <button
             disabled={application.status === 'rejected'}

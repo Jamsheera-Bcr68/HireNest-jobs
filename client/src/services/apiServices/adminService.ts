@@ -33,13 +33,17 @@ export const adminService = {
     return res.data;
   },
 
-  async updateCompany(id: string, data: Partial<CompanyProfileType>,reason?:string) {
-    console.log('data', data,reason);
+  async updateCompany(
+    id: string,
+    data: Partial<CompanyProfileType>,
+    reason?: string
+  ) {
+    console.log('data', data, reason);
 
-    const res = await axiosInstance.patch(
-      ADMIN_API_ENDPOINTS.COMPANY(id),
-      {...data,reason}
-    );
+    const res = await axiosInstance.patch(ADMIN_API_ENDPOINTS.COMPANY(id), {
+      ...data,
+      reason,
+    });
     return res.data;
   },
 

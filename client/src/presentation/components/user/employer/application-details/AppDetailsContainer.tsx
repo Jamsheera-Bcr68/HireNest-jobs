@@ -3,17 +3,15 @@ import CandidateData from './CandidateData';
 import LeftComponent from './LeftComponent';
 import RightComponent from './RightComponent';
 import { useToast } from '../../../../../shared/toast/useToast';
-import { useApplications } from '../../../../hooks/user/candidate/profile/useApplication';
+
 import { useParams } from 'react-router-dom';
 import { type ApplicationDetailsDto } from '../../../../../types/dtos/application.dto';
 import { applicationService } from '../../../../../services/apiServices/application.service';
 import { type ApplicationStatusType } from '../../../../../types/dtos/application.dto';
 import AddReasonModal from '../../../admin/jobs/AddReasonModal';
 import InterviewModal from './InterviewModal';
-import { useInterviews } from '../../../../hooks/user/useInterview';
 
 function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
-  const {} = useApplications();
   const { showToast } = useToast();
   const { id } = useParams();
   if (!id) return;
@@ -39,13 +37,26 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
     getApplication();
   }, []);
 
+  const onSchedule = (status: ApplicationStatusType) => {
+    console.log('from onschedule', status);
+
+    setApplication((prev) => {
+      if (prev) {
+        return { ...prev, status: status };
+      }
+      return prev;
+    });
+
+    setShowInterview(false);
+  };
+
   const updateAppStatus = async (status: ApplicationStatusType) => {
     console.log('id,status', id, status);
     if (status == 'rejected') {
       setShowRejectReason(true);
       return;
     }
-    if (status == 'interviewSheduled') {
+    if (status == 'interviewScheduled') {
       setShowInterview(true);
       return;
     }
@@ -82,6 +93,7 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <CandidateData
+        onScheduleClick={() => setShowInterview(true)}
         role={role}
         updateStatus={updateAppStatus}
         application={application}
@@ -107,6 +119,7 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
         appId={application.id}
         isOpen={showInterview}
         onClose={() => setShowInterview(false)}
+        onSchedule={onSchedule}
         candidate={{
           name: application.candidate.candidateName,
           email: application.candidate.email,

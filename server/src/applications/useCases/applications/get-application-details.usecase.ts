@@ -19,8 +19,7 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
     private _jobRepository: IJobRepository,
     private _companyRepository: ICompanyRepository,
     private _userRepository: IUserRepository,
-    private _skillRepository: ISkillRepository,
- 
+    private _skillRepository: ISkillRepository
   ) {}
   async execute(
     id: string,
@@ -61,8 +60,8 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
       throw new AppError(
         generalMessages.errors.NOT_FOUND('Resume'),
         statusCodes.NOTFOUND
-      )
-     
+      );
+
     const skills = await this._skillRepository.findByIds(job.skills);
     return ApplicationMapper.toApplicationDetailDto(
       application,
@@ -70,8 +69,7 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
       company,
       candidate,
       skills,
-      resume,
-      
+      resume
     );
   }
 }

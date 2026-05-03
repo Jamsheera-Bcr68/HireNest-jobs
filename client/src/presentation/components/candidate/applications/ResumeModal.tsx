@@ -12,7 +12,7 @@ type Props = {
   onApply: (resumeId: string) => void;
 };
 
-const baseUrl=import.meta.env.VITE_BACKEND_URL
+const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function SelectResumeModal({
   resumes,
@@ -23,7 +23,7 @@ export default function SelectResumeModal({
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const {showToast}=useToast()
+  const { showToast } = useToast();
 
   const handleApplyClick = async () => {
     let resumeId = selectedResumeId;
@@ -58,9 +58,9 @@ export default function SelectResumeModal({
       return data.resume.id;
     } catch (error: any) {
       showToast({
-          msg: error?.response?.data.message || error.message,
-          type: 'error',
-        });
+        msg: error?.response?.data.message || error.message,
+        type: 'error',
+      });
     }
   };
   useLockBodyScroll(isOpen);
@@ -179,7 +179,7 @@ export default function SelectResumeModal({
           </button>
 
           <button
-            disabled={!selectedResumeId&&!file}
+            disabled={!selectedResumeId && !file}
             onClick={handleApplyClick}
             className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
           >

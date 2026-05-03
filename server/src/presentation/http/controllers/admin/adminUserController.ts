@@ -38,7 +38,7 @@ export class AdminUserController {
     //console.log('user ', user);
 
     let query = req.query;
-   // console.log('query is ', query);
+    // console.log('query is ', query);
     const { status, industry } = query;
     if (!status || status == 'all') delete query.status;
     if (!industry || industry == 'all') delete query.industry;
@@ -50,7 +50,7 @@ export class AdminUserController {
       );
     }
     let { page, limit, search = '', ...rest } = query;
-   // console.log('page,rest,limit,search', page, rest, limit, search);
+    // console.log('page,rest,limit,search', page, rest, limit, search);
     const pagenumber = Number(page);
 
     const paginated = await this.getCompaniesUseCase.execute(
@@ -101,8 +101,7 @@ export class AdminUserController {
     const { id } = req.params;
 
     const { reason, ...data } = req.body;
-    console.log('reason,data',reason,data);
-    
+    console.log('reason,data', reason, data);
 
     if (!user || user.role !== UserRole.ADMIN) {
       throw new AppError(
@@ -161,7 +160,10 @@ export class AdminUserController {
       );
     }
 
-    const candidateStatus = await this.getCandidateStatusUseCase.execute(user.userId,user.role);
+    const candidateStatus = await this.getCandidateStatusUseCase.execute(
+      user.userId,
+      user.role
+    );
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.STATUS_FETCHED,

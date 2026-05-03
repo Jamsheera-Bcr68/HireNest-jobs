@@ -11,12 +11,15 @@ export interface Interview {
   location: string;
   updatedAt: Date;
   status: InterviewStatusEnum;
- createdAt:Date,
+  createdAt: Date;
   feedback?: string;
   notes?: string;
   applicationId: string;
   result?: InterviewResult;
   meetLink: string;
-  duration:string
-  isAddlinkLater:boolean
+  duration: string;
+  isAddlinkLater: boolean;
+  isConfirmed: boolean;
+  isRescheduleRequested: boolean;
+  reasonForCancel?: string;
 }

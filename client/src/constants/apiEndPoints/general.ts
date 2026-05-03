@@ -13,4 +13,8 @@ export const API_ENDPOINTS = {
   COMPANY_DATA: (id: string) => `/company/${id}`,
 
   INTERVIEWS: '/interviews',
+  INTERVIEWS_STATUS: '/interviews/interviews-status',
+  INTERVIEW_STATUS: (id: string) => `/interviews/${id}/status`,
+  INTERVIEW: (id: string) => `/interviews/${id}`,
+  UPDATE_RESULT: (id: string) => `/interviews/${id}/result`,
 };

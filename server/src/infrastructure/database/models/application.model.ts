@@ -14,7 +14,7 @@ export interface IApplicationDocument {
   shortlistedAt?: string;
   interviewSheduledAt?: string;
   offeredAt?: string;
-  rejectedAt?:string
+  rejectedAt?: string;
 }
 
 export const applicationSchema = new mongoose.Schema<IApplicationDocument>({

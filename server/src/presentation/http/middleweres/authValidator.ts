@@ -32,7 +32,7 @@ export function authValidator(tokenService: ITokenService) {
       // console.log('token is ', token);
 
       const user: TokenPayload = tokenService.verifyAccessToken(token);
-      console.log('user from validator', user);
+      // console.log('user from validator', user);
 
       req.user = user;
       next();

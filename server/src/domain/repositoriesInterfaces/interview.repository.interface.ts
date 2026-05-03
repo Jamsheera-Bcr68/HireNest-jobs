@@ -1,7 +1,14 @@
-import { IBaseRepository } from "./IBaseRepository";
-import { Interview } from "../entities/interview.entity";
-import { IInterviewDocument } from "../../infrastructure/database/models/interview.model";
+import { IBaseRepository } from './IBaseRepository';
+import { Interview } from '../entities/interview.entity';
 
-export interface IInterviewRepository extends IBaseRepository<Interview>{
+import {
+  AggregatedInterviewDto,
+  InterviewFilterDto,
+} from '../../applications/Dtos/interview.dto';
 
+export interface IInterviewRepository extends IBaseRepository<Interview> {
+  count(filter?: Partial<Interview>): Promise<number>;
+  getAllInterviews(
+    filter: Partial<InterviewFilterDto>
+  ): Promise<{ interviews: AggregatedInterviewDto[]; totalDocs: number }>;
 }

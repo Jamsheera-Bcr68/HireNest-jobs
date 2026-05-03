@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import type {
   ApplicationFilterType,
   FilterOption,
@@ -153,7 +153,7 @@ export function Card({
   );
 }
 
-export function SectionTitle({ children }:{children:ReactNode}) {
+export function SectionTitle({ children }: { children: ReactNode }) {
   return (
     <p className="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-4">
       {children}

@@ -10,7 +10,7 @@ import {
 import { ISkillDocument } from './skillModel';
 import { StatusEnum } from '../../../../domain/enums/statusEnum';
 
- export interface ResumeDocument {
+export interface ResumeDocument {
   _id: Types.ObjectId;
   url: string;
   name: string;
@@ -89,9 +89,9 @@ const userSchema = new Schema<IUserDocument>(
             enum: Object.values(StatusEnum),
             default: StatusEnum.PENDING,
           },
-        
+
           companyId: { type: Schema.Types.ObjectId, ref: 'Company' },
-            reasonForReject:{type:String},
+          reasonForReject: { type: String },
         },
       ],
       default: [],

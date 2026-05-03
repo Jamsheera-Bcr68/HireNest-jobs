@@ -5,7 +5,7 @@ import Pagination from '../../common/Pagination';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
-  onApply:(id:string)=>Promise<void>
+  onApply: (id: string) => Promise<void>;
   viewMode: string;
   setViewMode: (mode: 'grid' | 'split') => void;
   jobs: JobCardDto[];
@@ -32,7 +32,7 @@ function JobCards({
   setActiveJobId,
   paginationData,
   setViewMode,
-  onApply
+  onApply,
 }: Props) {
   const [activeJob, setActiveJob] = useState<JobCardDto | null>(null);
   const navigate = useNavigate();

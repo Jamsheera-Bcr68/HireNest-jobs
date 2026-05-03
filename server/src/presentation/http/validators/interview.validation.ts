@@ -12,7 +12,7 @@ export const interviewFormSchema = z
 
     isAddlinkLater: z.boolean(),
     applicationId: z.string().min(1, 'Application id is not found'),
-    meetlink: z
+    meetLink: z
       .string()
       .url('Enter a valid meeting link')
       .optional()
@@ -25,9 +25,9 @@ export const interviewFormSchema = z
 
   .superRefine((data, ctx) => {
     // If online interview AND link not added later → meeting link required
-    if (data.mode === 'online' && !data.isAddlinkLater && !data.meetlink) {
+    if (data.mode === 'online' && !data.isAddlinkLater && !data.meetLink) {
       ctx.addIssue({
-        path: ['meetlink'],
+        path: ['meetLink'],
         code: z.ZodIssueCode.custom,
         message: 'Meeting link is required',
       });

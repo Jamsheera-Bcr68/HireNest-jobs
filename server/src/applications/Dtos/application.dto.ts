@@ -67,42 +67,6 @@ export interface ApplicationTimelineItemDTO {
   date?: string;
   note?: string;
 }
-// export type ApplicationDetailsDto = {
-//   id: string;
-//   status: string;
-//   resume:IResume;
-//   candidateName: string;
-//   role: string;
-//   email: string;
-//   phone: string;
-//   appliedAt: string;
-//   reviewedAt?: string;
-//   shortlistedAt?: string;
-//   interviewSheduledAt?: string;
-//   offeredAt?: string;
-//   timeline: ApplicationTimelineItemDTO[];
-//   profileImg?:string,
-//   job: {
-//     id:string
-//     title: string;
-//     location: string;
-//     jobType: JobType;
-//     mode: WorkMode;
-//     experience: string;
-//     skills: string[];
-//     min_salary:number
-//     max_salary:number,
-//     postedDate:string
-//   };
-//   company: {
-//     id:string
-//     companyName: string;
-//     industry: IndustryType;
-//     location: string;
-//     size: string;
-//     logoUrl: string;
-//   };
-// }
 
 export type ApplicationDetailsDto = {
   id: string;
@@ -117,12 +81,12 @@ export type ApplicationDetailsDto = {
   timeline: ApplicationTimelineItemDTO[];
 
   candidate: {
-    about:string,
+    about: string;
     profileImg?: string;
     candidateName: string;
     role: string;
     email: string;
-   
+
     phone: string;
     location: string;
     experience: {
@@ -132,15 +96,14 @@ export type ApplicationDetailsDto = {
       startYear: string;
       endYear?: string;
       company: string;
-     
     }[];
     education: {
       level: string;
       institute: string;
       status: EducationStatus;
       year?: number;
-      univercity:string
-    }[]
+      univercity: string;
+    }[];
   };
   job: {
     id: string;

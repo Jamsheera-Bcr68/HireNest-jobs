@@ -34,7 +34,6 @@ export interface ICompanyDocument {
   isAgreed: boolean;
   isConsent: boolean;
   logoUrl: string;
- 
 
   requestedSkills: Types.ObjectId[] | [];
   industry: IndustryType;

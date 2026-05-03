@@ -35,7 +35,8 @@ export class ApplicationRepository
     if (entity.status !== undefined) data.status = entity.status;
     if (entity.rejectedReason !== undefined)
       data.rejectedReason = entity.rejectedReason;
-    if (entity.resumeId !== undefined) data.resumeId = new mongoose.Types.ObjectId(entity.resumeId)
+    if (entity.resumeId !== undefined)
+      data.resumeId = new mongoose.Types.ObjectId(entity.resumeId);
     if (entity.reviewedAt !== undefined) data.reviewedAt = entity.reviewedAt;
     if (entity.shortlistedAt !== undefined)
       data.shortlistedAt = entity.shortlistedAt;
@@ -219,7 +220,7 @@ export class ApplicationRepository
   }
 
   async count(filter: Partial<Application>): Promise<number> {
-    const { candidateId ,companyId} = filter;
+    const { candidateId, companyId } = filter;
     // console.log('filter', filter);
 
     const q = {} as IApplicationDocument;
