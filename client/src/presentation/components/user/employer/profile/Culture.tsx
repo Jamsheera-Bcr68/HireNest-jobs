@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { type CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import { type CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import ModalLayout from '../../../../Layoutes/ModalLayout';
 import { Users, SquarePenIcon } from 'lucide-react';
 import CompanyProfileInputForm from './CompanyProfileInputForm';
-import { companyService } from '../../../../../services/apiServices/companyService';
-import { useToast } from '../../../../../shared/toast/useToast';
-import { updateCompanyFieldSchema } from '../../../../../libraries/validations/company/companyUpdateFieldsValidation';
+import { companyService } from '../../../../../services/api-services/companyService';
+import { useToast } from '../../../../../shared/toast/use-toast';
+import { updateCompanyFieldSchema } from '../../../../../libraries/validations/company/company-update-fields.validation';
 
 export function CultureSection({
   company,

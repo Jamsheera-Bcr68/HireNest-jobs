@@ -4,13 +4,11 @@ import type {
   InterviewStatusType,
 } from '../../../types/dtos/interview.dto';
 import { interviewSchema } from '../../../libraries/validations/company/interview.form.validation';
-import { useToast } from '../../../shared/toast/useToast';
+import { useToast } from '../../../shared/toast/use-toast';
 import { interviewService } from '../../../services/interview.service';
 import { type InterviewResult } from '../../../types/dtos/interview.dto';
-import type {
-  FilterOption,
-  SortOption,
-} from '../../components/admin/Candidates/ReusableTable';
+import type { SortOption } from '../../components/admin/Candidates/ReusableTable';
+import { type FilterOption } from './candidate/profile/useApplication';
 
 export type InterviewFilter = {
   status?: InterviewStatusType;
@@ -76,7 +74,25 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     console.log('data', data);
     setFormData((prev) => ({ ...prev, ...data }));
   };
-
+  const statusFilter: FilterOption<InterviewFilter> = {
+    key: 'status',
+    label: 'Status',
+    options: [
+      { label: 'All Status', value: '' },
+      { label: 'Scheduled', value: 'scheduled' },
+      { label: 'Completed', value: 'completed' },
+      { label: 'Cancelled', value: 'cancelled' },
+    ],
+  };
+  const resultFilter: FilterOption<InterviewFilter> = {
+    key: 'result',
+    label: 'Result',
+    options: [
+      { label: 'All Result', value: '' },
+      { label: 'Passed', value: 'passed' },
+      { label: 'Failed', value: 'failed' },
+    ],
+  };
   const submitInterviewForm = async (
     mode: 'add' | 'edit',
     ids: { applicationId?: string; interviewId?: string }
@@ -142,15 +158,21 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     }
   };
 
-  const modeFilter: FilterOption = {
+  const modeFilter: FilterOption<InterviewFilter> = {
     key: 'mode',
     label: 'Mode',
-    options: ['online', 'offline'],
+    options: [
+      { label: 'Online', value: 'online' },
+      { label: 'Offline', value: 'offline' },
+    ],
   };
-  const resultFilter: FilterOption = {
+  const resultsFilter: FilterOption<InterviewFilter> = {
     key: 'result',
     label: 'Result',
-    options: ['passed', 'failed'],
+    options: [
+      { label: 'Passed', value: 'passed' },
+      { label: 'Failed', value: 'failed' },
+    ],
   };
 
   const sortFilter: SortOption = {
@@ -162,7 +184,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
       { label: 'Role A-Z', value: 'a-z' },
     ],
   };
-  const filterOptions = [modeFilter, resultFilter];
+  const filterOptions = [modeFilter, resultsFilter];
 
   const updateFilter = (data: Partial<InterviewFilter>) => {
     console.log('from update filter', data);
@@ -220,10 +242,13 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     error,
     initialData,
     filter,
+
     updateFilter,
     filterOptions,
     sortFilter,
     upsateStatus,
     getInterviewDetails,
+    statusFilter,
+    resultFilter,
   };
 };

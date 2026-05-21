@@ -1,11 +1,11 @@
 import React from 'react';
-import type { UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 import { Section } from 'lucide-react';
 
 function InterviewTab({ candidate }: { candidate: UserProfileType }) {
   return (
     <div>
-      {activeTab === 'Interviews' && (
+      {/* {activeTab === 'Interviews' && (
         <Section title="Interview History" icon="🎤">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -64,7 +64,7 @@ function InterviewTab({ candidate }: { candidate: UserProfileType }) {
             </table>
           </div>
         </Section>
-      )}
+      )} */}
     </div>
   );
 }

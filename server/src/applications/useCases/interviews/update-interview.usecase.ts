@@ -1,17 +1,17 @@
 import { Interview } from '../../../domain/entities/interview.entity';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { AppError } from '../../../domain/errors/AppError';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { IInterviewRepository } from '../../../domain/repositoriesInterfaces/interview.repository.interface';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { interviewDto } from '../../Dtos/interview.dto';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { AppError } from '../../../domain/errors/app-error';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { interviewDto } from '../../dtos/interview.dto';
 import { IUpdateEntityUseCase } from '../../interfaces/usecases/update-entity.usecase.interface';
 import { InterviewMapper } from '../../mappers/interview.mapper';
-import { interviewInputDto } from '../../Dtos/interview.dto';
+import { interviewInputDto } from '../../dtos/interview.dto';
 
 export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
   interviewInputDto,
@@ -79,6 +79,11 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
         generalMessages.errors.NOT_FOUND('Candidate'),
         statusCodes.NOTFOUND
       );
-    return InterviewMapper.entityToInterviewDto(updated, job, candidate);
+    return InterviewMapper.entityToInterviewDto(
+      updated,
+      job,
+      candidate,
+      company
+    );
   }
 }

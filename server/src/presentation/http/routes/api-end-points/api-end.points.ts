@@ -11,6 +11,8 @@ export const API_END_POINTS = {
   INTERVIEWS: '/',
   UPDATE_STATUS: '/:id/status',
   INTERVIEW: '/:id',
+  CONFIRM_INTERVIEW: '/:id/confirm',
   INTERVIEW_RESULT: '/:id/result',
   INTERVIEWS_STATUS: '/interviews-status',
+  RESCHEDULE_REQUEST: '/:id/request-reschedule',
 };

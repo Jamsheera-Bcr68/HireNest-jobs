@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import EducationModal from '../../../modals/AddEducationModal';
-import { type EducationType } from '../../../../types/dtos/profileTypes/educationTypes';
-import type { UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+import { type EducationType } from '../../../../types/dtos/profile-types/education.types';
+import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 import { PenIcon, Trash } from 'lucide-react';
 import DeleteConfirmationModal from '../../../modals/DeleteConfirmationModal';
-import { useToast } from '../../../../shared/toast/useToast';
-import { profileService } from '../../../../services/apiServices/candidateService';
+import { useToast } from '../../../../shared/toast/use-toast';
+import { profileService } from '../../../../services/api-services/candidateService';
 
 type EducationProps = {
   onUserUpdate: (user: UserProfileType) => void;

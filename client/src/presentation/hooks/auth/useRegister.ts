@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { registerSchema } from '../../../libraries/validations/auth/registerValidations';
+import { registerSchema } from '../../../libraries/validations/auth/register.validations';
 
 import { useNavigate } from 'react-router-dom';
-import { type typeOfToast } from '../../../types/toastTypes';
-import { authService } from '../../../services/apiServices/authServices';
+import { useToast } from '../../../shared/toast/use-toast';
+import { authService } from '../../../services/api-services/authServices';
 
 type FormErrors = {
   email?: string;
@@ -19,13 +19,14 @@ type FormData = {
   phone: string;
 };
 
-export const useRegister = (showToast: (toast: typeOfToast) => void) => {
+export const useRegister = () => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
     confirm_password: '',
     phone: '',
   });
+  const { showToast } = useToast();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -38,13 +39,11 @@ export const useRegister = (showToast: (toast: typeOfToast) => void) => {
     e: React.SyntheticEvent<HTMLButtonElement>
   ): Promise<void> => {
     e.preventDefault();
-    console.log('formData', formData);
+
     const result = registerSchema.safeParse(formData);
-    console.log('result', result);
 
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
-      console.log('fieldErrors', fieldErrors);
 
       const formattedErrors: FormErrors = {
         email: fieldErrors?.email?.[0],
@@ -56,7 +55,6 @@ export const useRegister = (showToast: (toast: typeOfToast) => void) => {
       return;
     }
     setErrors({});
-    console.log('validation successful');
 
     try {
       const data = await authService.registerUser(formData);
@@ -64,14 +62,11 @@ export const useRegister = (showToast: (toast: typeOfToast) => void) => {
       setMsg(data.message);
 
       sessionStorage.setItem('otp_email', formData.email);
-      console.log('expirey from useRegister before setting ', data.otp_expiry);
 
       sessionStorage.setItem('otp_expiredAt', data.otp_expiry);
       showToast({ msg: data.message, type: 'success' });
       navigate('/otp');
     } catch (error: any) {
-      console.log('error response', error.response);
-
       showToast({
         msg: error.response?.data.message || error.message,
         type: 'error',

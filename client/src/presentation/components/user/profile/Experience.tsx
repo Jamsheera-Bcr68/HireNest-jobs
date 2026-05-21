@@ -1,11 +1,11 @@
-import type { UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 import DeleteConfirmationModal from '../../../modals/DeleteConfirmationModal';
 import ExperienceModal from '../../../modals/AddExperienceModal';
 import { Trash } from 'lucide-react';
-import { useToast } from '../../../../shared/toast/useToast';
+import { useToast } from '../../../../shared/toast/use-toast';
 import { useState } from 'react';
-import { type ExperienceType } from '../../../../types/dtos/profileTypes/experienceType';
-import { profileService } from '../../../../services/apiServices/candidateService';
+import { type ExperienceType } from '../../../../types/dtos/profile-types/experience.type';
+import { profileService } from '../../../../services/api-services/candidateService';
 
 type ExperienceProps = {
   user: UserProfileType | undefined;

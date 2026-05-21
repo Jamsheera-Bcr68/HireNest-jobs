@@ -3,12 +3,12 @@ import {
   type EducationLevel,
   EDUCATION_STATUS,
   type EducationType,
-} from '../../../../../types/dtos/profileTypes/educationTypes';
-import { educationSchema } from '../../../../../libraries/validations/auth/candidate/educationFormValidation';
+} from '../../../../../types/dtos/profile-types/education.types';
+import { educationSchema } from '../../../../../libraries/validations/auth/candidate/education-form.validation';
 import React, { useEffect, useState } from 'react';
-import { useToast } from '../../../../../shared/toast/useToast';
-import { profileService } from '../../../../../services/apiServices/candidateService';
-import type { UserProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import { useToast } from '../../../../../shared/toast/use-toast';
+import { profileService } from '../../../../../services/api-services/candidateService';
+import type { UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
 
 type FormData = {
   level: EducationLevel | '';
@@ -76,7 +76,7 @@ export const useEducation = (
       status: edu.status || '',
       startYear: edu.startYear.toString() || '',
       completedYear:
-        edu.status === 'Ongoing' ? '' : edu.completedYear.toString() || '',
+        edu.status === 'Ongoing' ? '' : edu.completedYear?.toString() || '',
       university: edu.university || '',
       location: edu.location || '',
       cgpa: edu.cgpa.toString() || '',

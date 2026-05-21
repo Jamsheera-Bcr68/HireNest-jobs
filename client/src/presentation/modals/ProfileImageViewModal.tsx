@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 
-import { type ProfileImgViewModalProps } from '../../types/propTypes/profileProps';
+import { type ProfileImgViewModalProps } from '../../types/prop-types/profileProps';
 import Cropper from 'react-easy-crop';
 
 import { useImageChange } from '../hooks/user/candidate/profile/useImageChange';

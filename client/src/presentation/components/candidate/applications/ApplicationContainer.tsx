@@ -2,16 +2,16 @@ import { Hero, StatusCards, Filters } from '../ReusableComponents';
 import ApplicationList from './ApplicationList';
 import Pagination from '../../common/Pagination';
 import { useEffect, useState } from 'react';
-import { useToast } from '../../../../shared/toast/useToast';
-import { type ApplicationStatusType } from '../../../../types/dtos/application.dto';
+import { useToast } from '../../../../shared/toast/use-toast';
+
 import type { StatsCardType } from '../ReusableComponents';
-import { applicationService } from '../../../../services/apiServices/application.service';
+import { applicationService } from '../../../../services/api-services/application.service';
 import { type ApplicationDto } from '../../../../types/dtos/application.dto';
 import {
   useApplications,
+  type ApplicationFilterType,
   type FilterOption,
 } from '../../../hooks/user/candidate/profile/useApplication';
-import type { JobType } from '../../../../types/dtos/jobDto';
 
 export type AppSortType = 'newest' | 'oldest';
 function ApplicationContainer() {
@@ -43,12 +43,12 @@ function ApplicationContainer() {
         label: 'Short Listed',
         value: data.appStatus.shortListed,
       };
-      const rejected = {
-        label: 'Rejected',
-        value: data.appStatus.rejected,
+      const interviewSheduled = {
+        label: 'Interview',
+        value: data.appStatus.interviewScheduled,
       };
 
-      setStats([total, pending, shortListed, rejected]);
+      setStats([total, pending, shortListed, interviewSheduled]);
     };
 
     getStatus();
@@ -76,29 +76,31 @@ function ApplicationContainer() {
     getApplications();
   }, [filter, page, limit]);
 
-  const statusFilter: FilterOption<ApplicationStatusType> = {
+  const statusFilter: FilterOption<ApplicationFilterType> = {
     key: 'status',
     label: 'All Status',
     options: [
+      { label: 'All', value: '' },
       { label: 'Pending', value: 'pending' },
-      { label: 'Viewed', value: 'viewed' },
+      { label: 'Viewed', value: 'reviewed' },
       { label: 'Short Listed', value: 'shortListed' },
       { label: 'Rejected', value: 'rejected' },
-      { label: 'Interview Scheduled', value: 'interviewSheduled' },
+      { label: 'Interview Scheduled', value: 'interviewScheduled' },
     ],
   };
 
-  const typeFilter: FilterOption<JobType> = {
-    key: 'Type',
+  const typeFilter: FilterOption<ApplicationFilterType> = {
+    key: 'jobType',
     label: 'All Types',
     options: [
+      { label: 'All Types', value: '' },
       { label: 'Full Time', value: 'fullTime' },
       { label: 'Part Time', value: 'partTime' },
     ],
   };
 
-  const sortOrder: FilterOption<AppSortType> = {
-    key: 'Sort',
+  const sortOrder: FilterOption<ApplicationFilterType> = {
+    key: 'sortBy',
     label: 'All ',
     options: [
       { label: 'Newest', value: 'newest' },
@@ -114,11 +116,17 @@ function ApplicationContainer() {
           tag="  Track and manage all your job applications"
         />
         <StatusCards stats={stats} />
-        <Filters
+        {/* <Filters
           filter={filter}
           statusFilter={statusFilter}
           onFilterChange={updateFilter}
           typeFilter={typeFilter}
+          sortOrder={sortOrder}
+        /> */}
+        <Filters
+          filter={filter}
+          filterOptions={[statusFilter, typeFilter]}
+          onFilterChange={updateFilter}
           sortOrder={sortOrder}
         />
         <ApplicationList applications={applications ?? []} />

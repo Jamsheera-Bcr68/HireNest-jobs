@@ -1,13 +1,13 @@
-import { ApplicationStatsCardType } from '../../Dtos/application.dto';
-import { IGetEntityStatusUseCase } from '../../interfaces/admin/IGetEntityStatusUseCase';
-import { Application } from '../../../domain/entities/application';
-import { IApplicationRepository } from '../../../domain/repositoriesInterfaces/application.repository.interface';
-import { ApplicationStatusEnum } from '../../../domain/enums/statusEnum';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { AppError } from '../../../domain/errors/AppError';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { ApplicationStatsCardType } from '../../dtos/application.dto';
+import { IGetEntityStatusUseCase } from '../../interfaces/admin/get-admin-entity-status.usecase';
+import { Application } from '../../../domain/entities/application.entity';
+import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
+import { ApplicationStatusEnum } from '../../../domain/enums/status.enum';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { AppError } from '../../../domain/errors/app-error';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
 
 export class GetApplicationStatusUseCase implements IGetEntityStatusUseCase<ApplicationStatsCardType> {
   constructor(

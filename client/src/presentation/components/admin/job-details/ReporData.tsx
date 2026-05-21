@@ -1,5 +1,5 @@
 import { ShieldAlert } from 'lucide-react';
-import type { JobDetailsDto } from '../../../../types/dtos/jobDto';
+import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
 
 type Report = {
   id: number;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import { type CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import { Gift, SquarePenIcon } from 'lucide-react';
 import ModalLayout from '../../../../Layoutes/ModalLayout';
 import CompanyProfileInputForm from './CompanyProfileInputForm';

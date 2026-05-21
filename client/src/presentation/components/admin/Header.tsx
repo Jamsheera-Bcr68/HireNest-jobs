@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '../../../shared/toast/useToast';
-import { adminService } from '../../../services/apiServices/adminService';
-import { logout } from '../../../redux/authSlice';
+import { useToast } from '../../../shared/toast/use-toast';
+
+import { logout } from '../../../redux/auth-slice';
 import type { StateType } from '../../../constants/types/user';
+import { authService } from '../../../services/api-services/authServices';
 
 function Header({
   title,
@@ -23,7 +24,7 @@ function Header({
   const HandleLogout = async () => {
     console.log('form logout function');
     try {
-      const data = await adminService.logout();
+      const data = await authService.logout();
       console.log(data);
       showToast({ msg: data.message, type: 'success' });
 

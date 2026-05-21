@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import LogoImgViewModal from '../../../../modals/LogoPreviewModal';
 import EditCompanyProfileModal from '../../../../modals/EditCompanyProfile';
-import type { CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import type { CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import { Twitter } from 'lucide-react';
 import ChangePasswordModal from '../../../../modals/ChangePasswordModal';
 

@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import CandidateData from './CandidateData';
 import LeftComponent from './LeftComponent';
 import RightComponent from './RightComponent';
-import { useToast } from '../../../../../shared/toast/useToast';
+import { useToast } from '../../../../../shared/toast/use-toast';
 
 import { useParams } from 'react-router-dom';
 import { type ApplicationDetailsDto } from '../../../../../types/dtos/application.dto';
-import { applicationService } from '../../../../../services/apiServices/application.service';
+import { applicationService } from '../../../../../services/api-services/application.service';
 import { type ApplicationStatusType } from '../../../../../types/dtos/application.dto';
 import AddReasonModal from '../../../admin/jobs/AddReasonModal';
 import InterviewModal from './InterviewModal';

@@ -1,4 +1,4 @@
-import type { ISocialLinks } from '../../../../../types/profileTypes';
+import type { ISocialLinks } from '../../../../../types/profile.types';
 import { Github, Twitter, Youtube, Globe } from 'lucide-react';
 import { YoutubeIcon } from 'lucide-react';
 type Props = {

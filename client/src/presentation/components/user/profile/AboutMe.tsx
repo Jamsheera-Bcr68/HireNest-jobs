@@ -1,6 +1,6 @@
 import { useEditProfileDetails } from '../../../hooks/user/candidate/profile/useEditProfileDetails';
-import { useToast } from '../../../../shared/toast/useToast';
-import type { UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+import { useToast } from '../../../../shared/toast/use-toast';
+import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 import { useEffect } from 'react';
 
 const AboutMe = ({
@@ -21,6 +21,7 @@ const AboutMe = ({
     cancelEdit,
     onBlur,
   } = useEditProfileDetails(showToast, onUserUpdate, user, []);
+
   const autoResize = () => {
     const textarea = textref.current;
     if (!textarea) return;
@@ -28,9 +29,11 @@ const AboutMe = ({
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
   };
+
   useEffect(() => {
     autoResize();
   }, [value]);
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-4">

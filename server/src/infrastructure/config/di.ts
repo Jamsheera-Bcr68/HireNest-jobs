@@ -1,63 +1,61 @@
-import { Job } from '../../domain/entities/Job';
-
 //*==================  usecases    ================*
 //auth
-import { RegisterUseCase } from '../../applications/useCases/auth/registerUserUsecases';
-import { AdminGoogleAuthUsecase } from '../../applications/useCases/auth/adminGoogleAuthUsecase';
-import { LoginUseCase } from '../../applications/useCases/auth/loginUserUsecase';
-import { LogoutUsecase } from '../../applications/useCases/auth/logoutUsecase';
-import { AdminLoginUsecase } from '../../applications/useCases/auth/adminLoginUsecase';
-import { ForgotPassWordUsecase } from '../../applications/useCases/auth/forgotPasswordUsecase';
-import { ResetPasswordUsecase } from '../../applications/useCases/auth/resetPasswordUsecase';
-import { GoogleLoginUsecase } from '../../applications/useCases/auth/googleLoginUsecase';
-import { ChangePasswordUsecase } from '../../applications/useCases/auth/ChangePasswordUsecase';
+import { RegisterUseCase } from '../../applications/useCases/auth/register-user.usecases';
+import { AdminGoogleAuthUsecase } from '../../applications/useCases/auth/admin-google-auth.usecase';
+import { LoginUseCase } from '../../applications/useCases/auth/login-user.usecase';
+import { LogoutUsecase } from '../../applications/useCases/auth/logout.usecase';
+import { AdminLoginUsecase } from '../../applications/useCases/auth/admin-login.usecase';
+import { ForgotPassWordUsecase } from '../../applications/useCases/auth/forgot-password.usecase';
+import { ResetPasswordUsecase } from '../../applications/useCases/auth/reset-password.usecase';
+import { GoogleLoginUsecase } from '../../applications/useCases/auth/google-login.usecase';
+import { ChangePasswordUsecase } from '../../applications/useCases/auth/change-password.usecase';
 
 //candidate
 
-import { CandidateProfileEditUsecase } from '../../applications/useCases/candidate/CandidateProfileEditUsecase';
-import { GetUserUseCase } from '../../applications/useCases/user/GetUserUseCase';
-import { EditProfileImageUseCase } from '../../applications/useCases/user/EditProfileImageUseCase';
-import { RemoveProfileImageUseCase } from '../../applications/useCases/user/RemoveProfileImageUseCase';
-import { EditAboutUseCase } from '../../applications/useCases/candidate/EditAboutUseCase';
-import { AddSkillsToProfieUseCase } from '../../applications/useCases/candidate/AddSkillstoProfileUseCase';
-import { RemoveSkillFromProfileUseCase } from '../../applications/useCases/candidate/RemoveSkillFromProfileUseCase';
-import { AddExperienceUseCase } from '../../applications/useCases/candidate/AddExperienceUseCase';
-import { EditExperienceUseCase } from '../../applications/useCases/candidate/EditExperienceUseCase';
-import { RemoveExperienceUseCase } from '../../applications/useCases/candidate/RemoveExperienceUseCase';
-import { AddEducationUseCase } from '../../applications/useCases/candidate/AddEducationUseCase';
-import { GetAllEducationUseCase } from '../../applications/useCases/candidate/GetAllEducationUseCase';
-import { EditEducationUseCase } from '../../applications/useCases/candidate/EditEducationUseCase';
-import { RemoveEducationUseCase } from '../../applications/useCases/candidate/RemoveEducationUseCase';
-import { AddResumeUseCase } from '../../applications/useCases/candidate/AddResumeUseCase';
-import { RemoveResumUseCase } from '../../applications/useCases/candidate/RemoveResumeUseCase';
+import { CandidateProfileEditUsecase } from '../../applications/useCases/candidate/update-candidate-profile.usecase';
+import { GetUserUseCase } from '../../applications/useCases/user/get-user.usecase';
+import { EditProfileImageUseCase } from '../../applications/useCases/user/update-profile-image.usecase';
+import { RemoveProfileImageUseCase } from '../../applications/useCases/user/remove-profile-image.usecase';
+import { EditAboutUseCase } from '../../applications/useCases/candidate/update-about.usecase';
+import { AddSkillsToProfieUseCase } from '../../applications/useCases/candidate/add-profile-skill.usecase';
+import { RemoveSkillFromProfileUseCase } from '../../applications/useCases/candidate/remove-profile-skill.usecase';
+import { AddExperienceUseCase } from '../../applications/useCases/candidate/add-experience.usecase';
+import { EditExperienceUseCase } from '../../applications/useCases/candidate/update-experience.usecase';
+import { RemoveExperienceUseCase } from '../../applications/useCases/candidate/remove-experience.usecase';
+import { AddEducationUseCase } from '../../applications/useCases/candidate/add-education.usecase';
+import { GetAllEducationUseCase } from '../../applications/useCases/candidate/get-educations.usecase';
+import { EditEducationUseCase } from '../../applications/useCases/candidate/update-education.usecase';
+import { RemoveEducationUseCase } from '../../applications/useCases/candidate/remove-education.usecase';
+import { AddResumeUseCase } from '../../applications/useCases/candidate/add-resume.usecase';
+import { RemoveResumUseCase } from '../../applications/useCases/candidate/remove-resume.usecase';
 //skills
-import { GetAllSkillsUseCase } from '../../applications/useCases/skills/GetAllSkillsUseCase';
-import { CompanyRegisterUseCase } from '../../applications/useCases/company/companyRegisterUseCase';
-import { AddLogoUseCase } from '../../applications/useCases/company/AddLogoUseCase';
-import { AddDocumentUseCase } from '../../applications/useCases/company/AddDocumentUseCase';
+import { GetAllSkillsUseCase } from '../../applications/useCases/skills/get-skills.usecase';
+import { CompanyRegisterUseCase } from '../../applications/useCases/company/company-register.usecase';
+import { AddLogoUseCase } from '../../applications/useCases/company/add-logo.usecase';
+import { AddDocumentUseCase } from '../../applications/useCases/company/add-document.usecase';
 
-import { AddSkillUseCase } from '../../applications/useCases/skills/AddSkillUseCase';
+import { AddSkillUseCase } from '../../applications/useCases/skills/add-skill.usecase';
 //job
-import { CrateJobUseCase } from '../../applications/useCases/job/createJobUseCase';
-import { GetCompanyUseCase } from '../../applications/useCases/company/GetCompanyUseCase';
-import { ChangeLogoUseCase } from '../../applications/useCases/company/ChangeLogoUseCase';
-import { LogoRemoveUseCase } from '../../applications/useCases/company/LogoRemoveUsecase';
-import { CompanyProfileUpdate } from '../../applications/useCases/company/CompanyUpdateProfileUseCase';
-import { CompanyAboutUpdateUseCase } from '../../applications/useCases/company/CompanyAboutUpdateUseCase';
+import { CrateJobUseCase } from '../../applications/useCases/job/create-job.usecase';
+import { GetCompanyUseCase } from '../../applications/useCases/company/get-company.usecase';
+import { ChangeLogoUseCase } from '../../applications/useCases/company/update-logo.usecase';
+import { LogoRemoveUseCase } from '../../applications/useCases/company/remove-logo.usecase';
+import { CompanyProfileUpdate } from '../../applications/useCases/company/company-update-profile.usecase';
+import { CompanyAboutUpdateUseCase } from '../../applications/useCases/company/company-update-about.usecase';
 //admin
 
-import { GetCompaniesUseCase } from '../../applications/useCases/admin/GetCompaniesUseCase';
-import { AdminGetCompanyUseCase } from '../../applications/useCases/admin/GetCompanyUseCase';
-import { AdminUpdateCompanyUseCase } from '../../applications/useCases/admin/AdminUpdateCompanyUseCase';
-import { GetCompanyStatusUseCase } from '../../applications/useCases/admin/GetCompanyStatusUseCase';
-import { GetCandidateStatusUseCase } from '../../applications/useCases/admin/GetCandidatesStatus';
-import { AdminGetCandidateUseCase } from '../../applications/useCases/admin/AdminGetCandidatesUseCase';
-import { AdminUpdateCandidateUseCase } from '../../applications/useCases/admin/AdminUpdateCandidateUseCase';
-import { AdminGetEntityUseCase } from '../../applications/useCases/admin/AdminGetCandidateUseCase';
-import { GetFileExistUseCase } from '../../applications/useCases/admin/GetFileExistUseCase';
-import { GetHomeDataUseCase } from '../../applications/useCases/candidate/GetHomeDataUseCase';
-import { GetAllJobssUseCase } from '../../applications/useCases/candidate/GetAllJobsUseCase';
-import { GetJobDetailsUseCase } from '../../applications/useCases/candidate/GetJobDetailsUseCase';
+import { GetCompaniesUseCase } from '../../applications/useCases/admin/get-companies.usecase';
+import { AdminGetCompanyUseCase } from '../../applications/useCases/admin/get-company-usecase';
+import { AdminUpdateCompanyUseCase } from '../../applications/useCases/admin/admin-update-company.usecase';
+import { GetCompanyStatusUseCase } from '../../applications/useCases/admin/get-company-status.usecase';
+import { GetCandidateStatusUseCase } from '../../applications/useCases/admin/get-candidate-status.usecase';
+import { AdminGetCandidateUseCase } from '../../applications/useCases/admin/admin-get-candidates.usecase';
+import { AdminUpdateCandidateUseCase } from '../../applications/useCases/admin/admin-update-candidate.usecase';
+import { AdminGetEntityUseCase } from '../../applications/useCases/admin/admin-get-candidate.usecase';
+import { GetFileExistUseCase } from '../../applications/useCases/admin/file-exist.usecase';
+import { GetHomeDataUseCase } from '../../applications/useCases/candidate/get-homedata.usecase';
+import { GetAllJobssUseCase } from '../../applications/useCases/candidate/get-jobs.usecase';
+import { GetJobDetailsUseCase } from '../../applications/useCases/candidate/get-job.usecase';
 import { ReportJobUseCase } from '../../applications/useCases/candidate/report-job.usecase';
 import { SaveJobUseCase } from '../../applications/useCases/candidate/save-job.usecase';
 import { RemoveSavedJobUseCase } from '../../applications/useCases/candidate/unsave-job.usecase';
@@ -83,51 +81,52 @@ import { UpdateInterviewStatusUsecase } from '../../applications/useCases/interv
 import { GetInterviewDetailsUsecase } from '../../applications/useCases/interviews/get-interview.usecase';
 import { UpdateInterviewUsecase } from '../../applications/useCases/interviews/update-interview.usecase';
 import { UpdateInterviewResultUsecase } from '../../applications/useCases/interviews/update-result.usecase';
-
+import { ConfirmInterviewUsecase } from '../../applications/useCases/interviews/confirm-interview.usecase';
+import { RescheduleRequestUsecase } from '../../applications/useCases/interviews/reschedule-request.usecase';
 //==Controllers
 //auth
 
-import { AuthController } from '../../presentation/http/controllers/auth/authController';
-import { RefreshTokenController } from '../../presentation/http/controllers/auth/refreshTokenController';
-import { AdminAuthController } from '../../presentation/http/controllers/auth/adminAuthController';
-import { ForgotPassWordController } from '../../presentation/http/controllers/auth/forgotPasswordController';
-import { ResetPasswordController } from '../../presentation/http/controllers/auth/resetPasswordController';
-import { GoogleLoginController } from '../../presentation/http/controllers/auth/googleLoginController';
-import { AdminGoogleAuthController } from '../../presentation/http/controllers/auth/AdminGoogleLoginController';
-import { ChangePasswordController } from '../../presentation/http/controllers/auth/ChangePasswordController';
+import { AuthController } from '../../presentation/http/controllers/auth/auth.controller';
+import { RefreshTokenController } from '../../presentation/http/controllers/auth/refresh-token.controller';
+import { AdminAuthController } from '../../presentation/http/controllers/auth/admin-auth.controller';
+import { ForgotPassWordController } from '../../presentation/http/controllers/auth/forgot-password.controller';
+import { ResetPasswordController } from '../../presentation/http/controllers/auth/reset-password.controller';
+import { GoogleLoginController } from '../../presentation/http/controllers/auth/google-login.controller';
+import { AdminGoogleAuthController } from '../../presentation/http/controllers/auth/admin-google-login.controller';
+import { ChangePasswordController } from '../../presentation/http/controllers/auth/change-password.controller';
 
 //candidate
-import { CandidateProfileController } from '../../presentation/http/controllers/candidate/CandidateProfileController';
-import { SkillsController } from '../../presentation/http/controllers/SkillsController';
-import { CompanyProfileController } from '../../presentation/http/controllers/company/companyProfileController';
-import { UserController } from '../../presentation/http/controllers/userController';
-import { JobController } from '../../presentation/http/controllers/jobController';
+import { CandidateProfileController } from '../../presentation/http/controllers/candidate-profile.controller';
+import { SkillsController } from '../../presentation/http/controllers/skills.controller';
+import { CompanyProfileController } from '../../presentation/http/controllers/company-profile.controller';
+import { UserController } from '../../presentation/http/controllers/user.controller';
+import { JobController } from '../../presentation/http/controllers/job.controller';
 import { ApplicationController } from '../../presentation/http/controllers/application.controller';
 import { InterviewController } from '../../presentation/http/controllers/interview.controller';
-import { AdminUserController } from '../../presentation/http/controllers/admin/adminUserController';
+import { AdminUserController } from '../../presentation/http/controllers/admin/admin-user.controller';
 import { AdminJobController } from '../../presentation/http/controllers/admin/admin-job.controller';
 //==repsitories
 
-import { UserRepository } from '../repositories/user/userRepository';
-import { OtpRepository } from '../repositories/user/otpRepository';
-import { AdminRepository } from '../repositories/admin/adminRepository';
-import { SkillRepository } from '../repositories/user/SkillsRepository';
-import { ExperieceRepository } from '../repositories/user/ExperienceRepository';
-import { EducationRepository } from '../repositories/user/educationRepository';
-import { CompanyRepository } from '../repositories/user/companyRepository';
-import { JobRepository } from '../repositories/user/JobRepository';
+import { UserRepository } from '../repositories/user.repository';
+import { OtpRepository } from '../repositories/otp.repository';
+import { AdminRepository } from '../repositories/admin.repository';
+import { SkillRepository } from '../repositories/skills.repository';
+import { ExperieceRepository } from '../repositories/experience.repository';
+import { EducationRepository } from '../repositories/education.repository';
+import { CompanyRepository } from '../repositories/company.repository';
+import { JobRepository } from '../repositories/job.repository';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { InterviewRepository } from '../repositories/interview.repository';
 //services
 
-import { OtpGenerator } from '../services/otpgenerator';
-import { EmailService } from '../../applications/services/emailService';
-import { TokenService } from '../../applications/services/TokenService';
-import { SendOtpService } from '../../applications/services/sendOtpServices';
-import { VerifyOtpService } from '../../applications/services/verifyOtpService';
-import { GoogleAuthService } from '../../applications/services/googleAuthService';
-import { ImageStorageService } from '../services/ImageStorageService';
-import { FileStorageService } from '../services/fileStorageService';
+import { OtpGenerator } from '../services/otp-generator.service';
+import { EmailService } from '../../applications/services/email.service';
+import { TokenService } from '../../applications/services/token.service';
+import { SendOtpService } from '../../applications/services/send-otp.services';
+import { VerifyOtpService } from '../../applications/services/verify-otp.service';
+import { GoogleAuthService } from '../../applications/services/google-auth.service';
+import { ImageStorageService } from '../services/image-storage.service';
+import { FileStorageService } from '../services/file-storage.service';
 
 //repositories
 const userRepository = new UserRepository();
@@ -411,7 +410,8 @@ const updateApplicationStatusUsecase = new UpdateApplicationStatusUseCase(
 );
 const getInterviewsUsecase = new GetInterviewsUsecase(
   interviewRepository,
-  companyRepository
+  companyRepository,
+  userRepository
 );
 const getInterviewDetailsUsecase = new GetInterviewDetailsUsecase(
   interviewRepository,
@@ -428,6 +428,13 @@ const updateInterviewUsecase = new UpdateInterviewUsecase(
 const upateInterviewResultUsecase = new UpdateInterviewResultUsecase(
   interviewRepository,
   companyRepository
+);
+
+const confirmInterviewUsecase = new ConfirmInterviewUsecase(
+  interviewRepository
+);
+const rescheduleInterviewUsecase = new RescheduleRequestUsecase(
+  interviewRepository
 );
 
 export const refreshController = new RefreshTokenController(tokenService);
@@ -535,5 +542,7 @@ export const interviewcontroller = new InterviewController(
   updateInterviewStatusUsecase,
   getInterviewDetailsUsecase,
   updateInterviewUsecase,
-  upateInterviewResultUsecase
+  upateInterviewResultUsecase,
+  confirmInterviewUsecase,
+  rescheduleInterviewUsecase
 );

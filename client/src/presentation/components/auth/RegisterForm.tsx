@@ -1,9 +1,8 @@
 import { useRegister } from '../../hooks/auth/useRegister';
-import { useToast } from '../../../shared/toast/useToast';
+
 import { Eye, EyeClosedIcon } from 'lucide-react';
 
 function RegisterForm() {
-  const { showToast } = useToast();
   const {
     formData,
     succesMsg,
@@ -12,7 +11,7 @@ function RegisterForm() {
     submitHandle,
     showPassword,
     setShowPassword,
-  } = useRegister(showToast);
+  } = useRegister();
 
   return (
     <>

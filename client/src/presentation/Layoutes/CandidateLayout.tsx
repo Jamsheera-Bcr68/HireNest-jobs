@@ -9,6 +9,7 @@ const menuItems = [
   { label: 'Saved Jobs', path: '/candidate/jobs' },
   { label: 'Profile', path: '/candidate/profile' },
   { label: 'Applications', path: '/candidate/applications' },
+  { label: 'Interviews', path: '/candidate/interviews' },
 ];
 
 export const CandidateLayout = () => {
@@ -19,7 +20,6 @@ export const CandidateLayout = () => {
   const activeItem = menuItems.find((item) =>
     currentPath.startsWith(item.path)
   );
-  console.log('curentpath,activeitem', currentPath, activeItem);
 
   useEffect(() => {
     const handleResize = () => {
@@ -33,6 +33,7 @@ export const CandidateLayout = () => {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
   const [title, seTitle] = useState(activeItem?.label ?? 'Dashboard');
   return (
     <>

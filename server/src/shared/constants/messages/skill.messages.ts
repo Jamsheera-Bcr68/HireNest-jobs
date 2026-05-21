@@ -1,4 +1,4 @@
-import { SkillStatus } from '../../../domain/enums/skillEnum';
+import { SkillStatus } from '../../../domain/enums/skill.enum';
 
 export const skillMessages = {
   error: {

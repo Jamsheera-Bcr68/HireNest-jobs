@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { useInterviews } from '../../../../hooks/user/useInterview';
 import type { ApplicationStatusType } from '../../../../../types/dtos/application.dto';
 import { initialData } from '../../../../hooks/user/useInterview';

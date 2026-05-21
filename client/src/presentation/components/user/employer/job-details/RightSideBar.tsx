@@ -9,10 +9,10 @@ import {
   MapPin,
   Calendar,
 } from 'lucide-react';
-import { formatSalary } from '../../../../../utils/salaryFormat';
-import type { JobDetailsDto } from '../../../../../types/dtos/jobDto';
+import { formatSalary } from '../../../../../utils/salary-format';
+import type { JobDetailsDto } from '../../../../../types/dtos/job.dto';
 import ConfirmationModal from '../../../../modals/ConfirmationModal';
-import type { StatusType } from '../../../../../types/dtos/profileTypes/userTypes';
+import type { StatusType } from '../../../../../types/dtos/profile-types/user.types';
 import type { UserRole } from '../../../../../constants/types/user';
 
 type Props = {

@@ -1,4 +1,4 @@
-import { UserRole } from '../../../domain/enums/userEnums';
+import { UserRole } from '../../../domain/enums/user.enums';
 
 export interface IUpdateEntityUseCase<T, D> {
   execute(

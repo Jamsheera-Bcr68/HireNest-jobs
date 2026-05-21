@@ -1,15 +1,15 @@
-import { type ISocialLinks } from '../../../../types/profileTypes';
-import { companyRegisterSchema } from '../../../../libraries/validations/company/companyRegisterValidator';
+import { type ISocialLinks } from '../../../../types/profile.types';
+import { companyRegisterSchema } from '../../../../libraries/validations/company/company-register.validator';
 import {
   type IndustryType,
   type CompanySize,
   type DocumentType,
   type AddressType,
-} from '../../../../types/dtos/profileTypes/industryType';
-import { updateUser } from '../../../../redux/authSlice';
+} from '../../../../types/dtos/profile-types/industry.type';
+import { updateUser } from '../../../../redux/auth-slice';
 
-import { useToast } from '../../../../shared/toast/useToast';
-import { companyService } from '../../../../services/apiServices/companyService';
+import { useToast } from '../../../../shared/toast/use-toast';
+import { companyService } from '../../../../services/api-services/companyService';
 import { useDispatch } from 'react-redux';
 
 type NestedKeys = 'links' | 'adress';

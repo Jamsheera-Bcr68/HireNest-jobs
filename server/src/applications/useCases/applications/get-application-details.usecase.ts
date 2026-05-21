@@ -1,17 +1,17 @@
-import { User } from '../../../domain/entities/User';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { AppError } from '../../../domain/errors/AppError';
-import { IApplicationRepository } from '../../../domain/repositoriesInterfaces/application.repository.interface';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { ISkillRepository } from '../../../domain/repositoriesInterfaces/ISkillRepository';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { ApplicationDetailsDto } from '../../Dtos/application.dto';
+import { User } from '../../../domain/entities/user.entity';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { AppError } from '../../../domain/errors/app-error';
+import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { ApplicationDetailsDto } from '../../dtos/application.dto';
 import { IGetEntityDetailsUsecase } from '../../interfaces/usecases/get-entity-details.usecase.inerface';
 import { ApplicationMapper } from '../../mappers/application.mapper';
-import { IExperienseRepository } from '../../../domain/repositoriesInterfaces/IExperienceRepository';
+import { IExperienseRepository } from '../../../domain/repository-iInterfaces/experience-repository.interface';
 
 export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<ApplicationDetailsDto> {
   constructor(

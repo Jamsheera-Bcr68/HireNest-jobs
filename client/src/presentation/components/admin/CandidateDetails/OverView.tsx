@@ -1,4 +1,4 @@
-import type { UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 import { Section } from './Section';
 import RightSideBar, { type ContactDataType } from './RightSideBar';
 

@@ -7,11 +7,11 @@ import FeaturedJobs from '../../components/candidate/home/FeaturedJobs';
 import ForEmployers from '../../components/candidate/home/ForEmployers';
 import Working from '../../components/candidate/home/Working';
 import Footer from '../../components/common/Footer';
-import { candidateService } from '../../../services/apiServices/candidateService';
-import { useToast } from '../../../shared/toast/useToast';
+import { candidateService } from '../../../services/api-services/candidateService';
+import { useToast } from '../../../shared/toast/use-toast';
 import { useEffect, useState } from 'react';
-import { type HomeResponseDto } from '../../../types/dtos/HomeResponseDto';
-import { industryIcons } from '../../../types/dtos/profileTypes/industryType';
+import { type HomeResponseDto } from '../../../types/dtos/home-response.dto';
+import { industryIcons } from '../../../types/dtos/profile-types/industry.type';
 import { type JobFilterType } from './JobListing';
 
 import { useNavigate } from 'react-router-dom';

@@ -1,6 +1,6 @@
-import { type UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
-import type { SkillType } from '../../../../types/dtos/profileTypes/skillTypes';
-import { useToast } from '../../../../shared/toast/useToast';
+import { type UserProfileType } from '../../../../types/dtos/profile-types/user.types';
+import type { SkillType } from '../../../../types/dtos/profile-types/skill.types';
+import { useToast } from '../../../../shared/toast/use-toast';
 import { useEditProfileDetails } from '../../../hooks/user/candidate/profile/useEditProfileDetails';
 import { X } from 'lucide-react';
 import { useEffect, useRef } from 'react';

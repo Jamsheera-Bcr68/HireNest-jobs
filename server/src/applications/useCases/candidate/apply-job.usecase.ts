@@ -1,16 +1,16 @@
-import { Application } from '../../../domain/entities/application';
-import { ApplicationStatusEnum } from '../../../domain/enums/statusEnum';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { AppError } from '../../../domain/errors/AppError';
-import { IApplicationRepository } from '../../../domain/repositoriesInterfaces/application.repository.interface';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
+import { Application } from '../../../domain/entities/application.entity';
+import { ApplicationStatusEnum } from '../../../domain/enums/status.enum';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { AppError } from '../../../domain/errors/app-error';
+import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
 import { applicationMessage } from '../../../shared/constants/messages/application.messages';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { jobMessages } from '../../../shared/constants/messages/jobMessages';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { jobMessages } from '../../../shared/constants/messages/job.messages';
 
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { statusCodes } from '../../../shared/enums/statuscodes';
 
 export interface IApplyJobUseCase {
   execute(

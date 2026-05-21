@@ -12,10 +12,12 @@ type HeroProps = {
 
 const HeroSection = ({ heroImage }: HeroProps) => {
   const user = useSelector((state: StateType) => state.auth.user);
-  console.log(heroImage);
+
   const [pendingOpen, setPendingOpen] = useState(false);
   const [infoOpen, setinfoOpen] = useState(false);
+
   const navigate = useNavigate();
+
   const handlePostClick = () => {
     console.log('from handle post click');
     if (user.role == 'company') {
@@ -26,6 +28,7 @@ const HeroSection = ({ heroImage }: HeroProps) => {
       setinfoOpen(true);
     }
   };
+
   const handleDashboardClick = () => {
     console.log('from handle post click');
     if (user.role == 'company') {
@@ -36,6 +39,7 @@ const HeroSection = ({ heroImage }: HeroProps) => {
       setinfoOpen(true);
     }
   };
+
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0">

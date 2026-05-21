@@ -1,10 +1,9 @@
 import { useLogin } from '../../hooks/auth/useLogin';
 import type { ILoginFormProps } from '../../../constants/interfaces/auth';
-import { useToast } from '../../../shared/toast/useToast';
+
 import { Eye, EyeClosedIcon } from 'lucide-react';
 
 const LoginForm = ({ role }: ILoginFormProps) => {
-  const { showToast } = useToast();
   const {
     handleChange,
     handleForgotPassword,
@@ -14,7 +13,7 @@ const LoginForm = ({ role }: ILoginFormProps) => {
     handleGoogleSignIn,
     showPassword,
     setShowPassword,
-  } = useLogin(role, showToast);
+  } = useLogin(role);
 
   return (
     <div className="rounded-md">

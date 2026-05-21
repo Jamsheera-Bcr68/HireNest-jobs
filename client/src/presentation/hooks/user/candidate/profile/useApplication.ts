@@ -1,15 +1,15 @@
 import { useSelector } from 'react-redux';
 import type { StateType } from '../../../../../constants/types/user';
-import { useToast } from '../../../../../shared/toast/useToast';
+import { useToast } from '../../../../../shared/toast/use-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { applicationService } from '../../../../../services/apiServices/application.service';
+import { applicationService } from '../../../../../services/api-services/application.service';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../../../../../redux/authSlice';
+import { updateUser } from '../../../../../redux/auth-slice';
 import type { ApplicationStatusType } from '../../../../../types/dtos/application.dto';
 import { useState } from 'react';
-import { candidateService } from '../../../../../services/apiServices/candidateService';
+import { candidateService } from '../../../../../services/api-services/candidateService';
 
-import type { ResumeType } from '../../../../../types/dtos/profileTypes/ResumeType';
+import type { ResumeType } from '../../../../../types/dtos/profile-types/resume.type';
 
 export const appStatusConfig = {
   shortListed: {
@@ -34,9 +34,9 @@ export const appStatusConfig = {
   },
 };
 export type FilterOption<T> = {
-  key: string;
+  key: keyof T;
   label: string;
-  options: { label: string; value: T }[];
+  options: { label: string; value: string }[];
 };
 export type ApplicationFilterType = {
   search?: string;

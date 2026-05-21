@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useJobs } from '../../../hooks/user/employer/useJobs';
 import { X, PlusIcon } from 'lucide-react';
-import { useToast } from '../../../../shared/toast/useToast';
-import { skillService } from '../../../../services/apiServices/skillServices';
-import { type SkillType } from '../../../../types/dtos/skillTypes';
+import { useToast } from '../../../../shared/toast/use-toast';
+import { skillService } from '../../../../services/api-services/skillServices';
+import { type SkillType } from '../../../../types/dtos/skill.types';
 import PermissionModal from '../../../modals/PermissionModal';
 
-import { Experience_Types } from '../../../../types/dtos/profileTypes/experienceType';
-import { jobService } from '../../../../services/apiServices/jobService';
-import type { JobDetailsDto } from '../../../../types/dtos/jobDto';
+import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
+import { jobService } from '../../../../services/api-services/jobService';
+import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
 
 const workMode = ['hybrid', 'remote', 'onsite'];
 type Props = {
@@ -46,7 +46,6 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
   const selectSkill = (skill: SkillType) => {
     const skill_exist = formData.skills.find((s) => s.id == skill.id);
     if (skill_exist) {
-      // setError((prev) => ({ ...prev, skills: 'Skill already exist' }));
       showToast({ msg: 'Already existing ', type: 'error' });
       setFilteredSkills([]);
       setAddSkill(false);

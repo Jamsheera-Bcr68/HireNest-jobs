@@ -1,13 +1,13 @@
-import { UserRole } from '../../../domain/enums/userEnums';
-import { AppError } from '../../../domain/errors/AppError';
-import { IAdminRepository } from '../../../domain/repositoriesInterfaces/IAdminRepository';
-import { ISkillRepository } from '../../../domain/repositoriesInterfaces/ISkillRepository';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { AppError } from '../../../domain/errors/app-error';
+import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
+import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { skillMessages } from '../../../shared/constants/messages/skill.messages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { SkillStatus } from '../../../domain/enums/skillEnum';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { SkillStatus } from '../../../domain/enums/skill.enum';
 import { IUpdateEntityUseCase } from '../../interfaces/usecases/update-entity.usecase.interface';
-import { Skill } from '../../../domain/entities/skill';
+import { Skill } from '../../../domain/entities/skill.entity';
 
 export class UpdateSkillUsecase implements IUpdateEntityUseCase<
   { skill: string },

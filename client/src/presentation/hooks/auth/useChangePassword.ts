@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { changePasswordSchema } from '../../../libraries/validations/auth/changePasswordValidator';
+import { changePasswordSchema } from '../../../libraries/validations/auth/change-password.validator';
 import axiosInstance from '../../../libraries/axios';
-import { useToast } from '../../../shared/toast/useToast';
+import { useToast } from '../../../shared/toast/use-toast';
 
 type FormDataType = {
   current_password: string;

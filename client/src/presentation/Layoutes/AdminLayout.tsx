@@ -11,6 +11,7 @@ const menuItems = [
   { label: 'Job Listings', path: '/admin/jobs' },
   { label: 'Skills', path: '/admin/skills' },
   { label: 'Applications', path: '/admin/applications' },
+  { label: 'Interviews', path: '/admin/interviews' },
 ];
 export const AdminLayout = () => {
   const location = useLocation();

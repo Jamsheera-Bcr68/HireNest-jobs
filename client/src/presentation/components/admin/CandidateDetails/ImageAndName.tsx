@@ -1,8 +1,8 @@
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { useState } from 'react';
-import { type UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
-import { adminService } from '../../../../services/apiServices/adminService';
-import { useToast } from '../../../../shared/toast/useToast';
+import { type UserProfileType } from '../../../../types/dtos/profile-types/user.types';
+import { adminService } from '../../../../services/api-services/adminService';
+import { useToast } from '../../../../shared/toast/use-toast';
 type Props = {
   candidate: UserProfileType;
   updateCandidate: (candidate: UserProfileType) => void;

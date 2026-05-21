@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react';
-import { getCroppedImage } from '../../../../../utils/cropImage';
-import { useToast } from '../../../../../shared/toast/useToast';
-import axiosInstance from '../../../../../libraries/axios';
-import type { UserProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import { getCroppedImage } from '../../../../../utils/crop-image';
+import { useToast } from '../../../../../shared/toast/use-toast';
+
+import type { UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
+import { profileService } from '../../../../../services/api-services/candidateService';
 
 export const useImageChange = (
   onClose: () => void,
@@ -52,22 +53,15 @@ export const useImageChange = (
     setPreview(croppedUrl);
 
     const file = new File([croppedBlob], 'image', { type: 'image/jpeg' });
-    console.log('croppd blob is ', croppedBlob);
-    console.log('crepped url is ', croppedUrl);
-    console.log('file is ', file);
 
     const formdata = new FormData();
     formdata.append('image', file);
-    console.log('form data is ', formdata.get('image'));
 
     try {
-      const response = await axiosInstance.patch(
-        '/candidate/profile/image',
-        formdata
-      );
-      console.log('response user', response.data.user);
-      const user = response.data.user;
-      showToast({ msg: response.data.message, type: 'success' });
+      const data = await profileService.saveImage(formdata);
+
+      const user = data.user;
+      showToast({ msg: data.message, type: 'success' });
       onUserUpdate(user);
       onClose();
     } catch (error: any) {
@@ -78,13 +72,14 @@ export const useImageChange = (
       console.log(error);
     }
   };
+
   const removeProfleImage = async () => {
     console.log('from remove profile image');
     try {
-      const response = await axiosInstance.delete('/candidate/profile/image');
-      console.log(response.data.user);
-      onUserUpdate(response.data.user);
-      showToast({ msg: response.data.message, type: 'success' });
+      const data = await profileService.removeImage();
+
+      onUserUpdate(data.user);
+      showToast({ msg: data.message, type: 'success' });
       setPreview(null);
       onClose();
     } catch (error: any) {
@@ -94,6 +89,7 @@ export const useImageChange = (
       });
     }
   };
+
   return {
     preview,
     setPreview,

@@ -1,11 +1,11 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
-import type { CompanyProfileType } from '../../types/dtos/profileTypes/userTypes';
-import { companyService } from '../../services/apiServices/companyService';
+import type { CompanyProfileType } from '../../types/dtos/profile-types/user.types';
+import { companyService } from '../../services/api-services/companyService';
 import { useState, useRef } from 'react';
 import Cropper from 'react-easy-crop';
-import { useToast } from '../../shared/toast/useToast';
-import { getCroppedImage } from '../../utils/cropImage';
+import { useToast } from '../../shared/toast/use-toast';
+import { getCroppedImage } from '../../utils/crop-image';
 
 type ImgViewModalProps = {
   open: boolean;

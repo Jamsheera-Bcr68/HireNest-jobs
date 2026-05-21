@@ -4,10 +4,10 @@ import routes from '../presentation/http/routes/index';
 import { connectDB } from '../infrastructure/database';
 import { env } from '../infrastructure/config/env';
 import cors from 'cors';
-import { errorHandler } from '../presentation/http/middleweres/errorHandler';
+import { errorHandler } from '../presentation/http/middleweres/error-handler';
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import '../infrastructure/services/cronService';
+import '../infrastructure/services/cron.service';
 
 const app = express();
 //middleweres

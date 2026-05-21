@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
 import NavPart from '../../user/employer/job-details/NavPart';
 import { useEffect, useState } from 'react';
-import { adminService } from '../../../../services/apiServices/adminService';
-import { type JobDetailsDto } from '../../../../types/dtos/jobDto';
-import { useToast } from '../../../../shared/toast/useToast';
-import type { StatusType } from '../../../../types/dtos/profileTypes/userTypes';
+import { adminService } from '../../../../services/api-services/adminService';
+import { type JobDetailsDto } from '../../../../types/dtos/job.dto';
+import { useToast } from '../../../../shared/toast/use-toast';
+import type { StatusType } from '../../../../types/dtos/profile-types/user.types';
 import { type UpdateStatusType } from '../../user/employer/company-joblisting/CompanyJobListingContainer';
 import AddReasonModal from '../jobs/AddReasonModal';
 import HeroPart from '../../user/employer/job-details/HeroPart';

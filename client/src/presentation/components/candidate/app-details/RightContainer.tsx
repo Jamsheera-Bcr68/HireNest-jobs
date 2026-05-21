@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ApplicationDetailsDto } from '../../../../types/dtos/application.dto';
 import { Card, SectionTitle } from '../ReusableComponents';
-import { useToast } from '../../../../shared/toast/useToast';
+import { useToast } from '../../../../shared/toast/use-toast';
 import ModalFormat from '../../common/ModalFormat';
 import CompanyData from './CompanyData';
 import {
@@ -13,10 +13,10 @@ import {
   Globe,
   AlertCircle,
 } from 'lucide-react';
-import { jobService } from '../../../../services/apiServices/jobService';
-import { type JobDetailsDto } from '../../../../types/dtos/jobDto';
+import { jobService } from '../../../../services/api-services/jobService';
+import { type JobDetailsDto } from '../../../../types/dtos/job.dto';
 import JobData from './JobData';
-import { companyService } from '../../../../services/apiServices/companyService';
+import { companyService } from '../../../../services/api-services/companyService';
 import { type CompanyDataDto } from '../../../../types/dtos/company.dto';
 
 type Props = {
@@ -67,6 +67,7 @@ function RightContainer({ application }: Props) {
     };
     getCompany();
   };
+
   return (
     <div className="flex flex-col gap-5">
       {/* Candidate Profile */}
@@ -74,31 +75,33 @@ function RightContainer({ application }: Props) {
         <SectionTitle>Your Profile</SectionTitle>
         <div className="flex items-center gap-3 mb-4">
           <div className="w-11 h-11 rounded-full bg-gradient-to-br from-violet-100 to-blue-100 flex items-center justify-center text-violet-700 font-bold text-base flex-shrink-0">
-            {application.profileImg ? (
+            {application.candidate ? (
               <img
                 className="w-11 h-11 rounded-full"
-                src={`${baseUrl}${application.profileImg}`}
-                alt={`${application.candidateName.charAt(0).toUpperCase()}`}
+                src={`${baseUrl}${application.candidate.profileImg}`}
+                alt={`${application.candidate.candidateName.charAt(0).toUpperCase()}`}
               />
             ) : (
-              <>{application.candidateName.charAt(0).toUpperCase()}</>
+              <></>
             )}
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-800">
-              {application.candidateName}
+              {application.candidate.candidateName}
             </p>
-            <p className="text-xs text-gray-400">{application.role}</p>
+            <p className="text-xs text-gray-400">
+              {application.candidate.role}
+            </p>
           </div>
         </div>
         <div className="border-t border-gray-100 pt-3 flex flex-col gap-2.5">
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Mail size={13} className="text-blue-500" />
-            {application.email}
+            {application.candidate.email}
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Phone size={13} className="text-green-500" />
-            {application.phone}
+            {application.candidate.phone}
           </div>
         </div>
       </Card>

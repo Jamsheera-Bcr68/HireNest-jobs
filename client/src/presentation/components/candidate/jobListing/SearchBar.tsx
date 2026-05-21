@@ -1,6 +1,6 @@
 import { Search } from 'lucide-react';
 import { useState } from 'react';
-import { type JobFilterType } from '../../../pages/user/JobListing';
+import { type JobFilterType } from './ListingContainter';
 
 type Props = {
   handleFilterChange: (data: Partial<JobFilterType>) => void;

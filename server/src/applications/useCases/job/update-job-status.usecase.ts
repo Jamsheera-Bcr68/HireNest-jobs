@@ -1,14 +1,14 @@
-import { Job } from '../../../domain/entities/Job';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { AppError } from '../../../domain/errors/AppError';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { ISkillRepository } from '../../../domain/repositoriesInterfaces/ISkillRepository';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
-import { jobMessages } from '../../../shared/constants/messages/jobMessages';
-import { userMessages } from '../../../shared/constants/messages/userMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { Job } from '../../../domain/entities/job.entity';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { AppError } from '../../../domain/errors/app-error';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
+import { jobMessages } from '../../../shared/constants/messages/job.messages';
+import { userMessages } from '../../../shared/constants/messages/user.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
 
 export interface IUpdateJobStatusUseCase {
   execute(

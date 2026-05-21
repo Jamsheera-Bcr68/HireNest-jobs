@@ -6,17 +6,17 @@ import Header from '../../common/Header';
 import SearchBar from './SearchBar';
 import Filter from './Filter';
 import ToolBar from './ToolBar';
-import { updateUser } from '../../../../redux/authSlice';
+import { updateUser } from '../../../../redux/auth-slice';
 import {
   type JobCardDto,
   type JobDetailsDto,
-} from '../../../../types/dtos/jobDto';
+} from '../../../../types/dtos/job.dto';
 
-import { useToast } from '../../../../shared/toast/useToast';
-import { jobService } from '../../../../services/apiServices/jobService';
+import { useToast } from '../../../../shared/toast/use-toast';
+import { jobService } from '../../../../services/api-services/jobService';
 import JobCards from './JobCards';
 import JobDetails from './JobDetails';
-import { reportFormSchema } from '../../../../libraries/validations/company/jobFormValidation';
+import { reportFormSchema } from '../../../../libraries/validations/company/job-form.validation';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import type { StateType } from '../../../../constants/types/user';

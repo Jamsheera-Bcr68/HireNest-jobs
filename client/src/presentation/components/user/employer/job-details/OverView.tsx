@@ -1,6 +1,6 @@
 import React from 'react';
 import SectionTitle from './SectionTitle';
-import type { JobDetailsDto } from '../../../../../types/dtos/jobDto';
+import type { JobDetailsDto } from '../../../../../types/dtos/job.dto';
 import {
   BriefcaseBusiness,
   MapPin,
@@ -9,7 +9,7 @@ import {
   CircleDollarSign,
   Users,
 } from 'lucide-react';
-import { formatSalary } from '../../../../../utils/salaryFormat';
+import { formatSalary } from '../../../../../utils/salary-format';
 
 type Props = {
   tab: string;

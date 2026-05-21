@@ -1,11 +1,11 @@
-import { StatusEnum } from '../../../domain/enums/statusEnum';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { AppError } from '../../../domain/errors/AppError';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { userMessages } from '../../../shared/constants/messages/userMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { type JobStatusCardDto } from '../../Dtos/jobDto';
+import { StatusEnum } from '../../../domain/enums/status.enum';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { AppError } from '../../../domain/errors/app-error';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { userMessages } from '../../../shared/constants/messages/user.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { type JobStatusCardDto } from '../../dtos/job.dto';
 
 export interface IGetPostSatusUseCase {
   execute(userId: string, role: UserRole): Promise<JobStatusCardDto>;

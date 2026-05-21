@@ -3,14 +3,14 @@ import { useEffect } from 'react';
 import { useInterviews } from '../../../../hooks/user/useInterview';
 import AddReasonModal from '../../../admin/jobs/AddReasonModal';
 import ConfirmationModal from '../../../../modals/ConfirmationModal';
-import { Eye, XCircle, Calendar, CheckCircle } from 'lucide-react';
+import { Eye, XCircle, Calendar, CheckCircle, PlusCircle } from 'lucide-react';
 import { interviewStatusStyles } from '../../../../hooks/user/useInterview';
 import HeroSection from '../../../admin/HeroSection';
 import StatusCards from '../../../admin/StatusCards';
 import ReusableTable from '../../../admin/Candidates/ReusableTable';
 import Pagination from '../../../common/Pagination';
 import RescheduleModal from './RescheduleModal';
-import { useToast } from '../../../../../shared/toast/useToast';
+import { useToast } from '../../../../../shared/toast/use-toast';
 import { type TabType } from '../../../admin/Candidates/ReusableTable';
 import { type StatusCardType } from '../../../../pages/admin/Companies';
 import { type ColumnType } from '../../../admin/Candidates/ReusableTable';
@@ -23,7 +23,7 @@ import type {
 } from '../../../../../types/dtos/interview.dto';
 import { interviewService } from '../../../../../services/interview.service';
 import InterviewDetailsModal from './InterviewViewModal';
-import { to12Hour } from '../../../../../utils/dateConversion';
+import { to12Hour } from '../../../../../utils/date-conversion';
 
 const tabs: TabType[] = [
   { label: 'All', value: '' },
@@ -34,6 +34,7 @@ const tabs: TabType[] = [
   { label: 'Not Show', value: 'not_show' },
   { label: 'Reschedule Requested', value: 'isRescheduleRequested' },
 ];
+
 export type OpenModalType = {
   isOpen: boolean;
   mode: 'edit';
@@ -127,158 +128,6 @@ function InterviewListingContainer() {
     };
     getInterviews();
   }, [filter, page, limit, sortby]);
-
-  // const interviewColumns = [
-  //   {
-  //     key: 'jobTitle',
-  //     label: 'Job Role',
-  //     render: (i: InterviewDto) => (
-  //       <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800  text-sm inline-block">
-  //         <span className="text-sm text-slate-800">{i.jobTitle}</span>
-  //       </div>
-  //     ),
-  //   },
-
-  //   {
-  //     key: 'candidateName',
-  //     label: 'Candidate',
-  //     render: (i: InterviewDto) => (
-  //       <span className="text-slate-700">{i.name}</span>
-  //     ),
-  //   },
-
-  //   {
-  //     key: 'mode',
-  //     label: 'Mode',
-  //     render: (i: InterviewDto) => (
-  //       <span className="text-slate-700 capitalize">{i.mode}</span> // online/offline
-  //     ),
-  //   },
-
-  //   // {
-  //   //   key: 'interviewType',
-  //   //   label: 'Round',
-  //   //   render: (i: InterviewDto) => (
-  //   //     <span className="font-semibold text-slate-800">
-  //   //       {i.interviewType} {/* HR / Technical / Final */}
-  //   //     </span>
-  //   //   ),
-  //   // },
-
-  //   {
-  //     key: 'scheduledAt',
-  //     label: 'Date',
-  //     render: (i: InterviewDto) => (
-  //       <>
-  //         {' '}
-  //         <span className="text-slate-700 text-center">
-  //           {i.scheduledAt.date}
-  //         </span>
-  //       </>
-  //     ),
-  //   },
-  //   {
-  //     key: 'scheduledAt',
-  //     label: 'Time',
-  //     render: (i: InterviewDto) => (
-  //       <>
-  //         {' '}
-  //         <span className="text-slate-700 text-center">
-  //           {to12Hour(i.scheduledAt.time)}
-  //         </span>
-  //       </>
-  //     ),
-  //   },
-
-  //   {
-  //     key: 'status',
-  //     label: 'Status',
-  //     render: (i: InterviewDto) => (
-  //       <span
-  //         className={`text-xs font-semibold px-2.5 py-1 rounded-full ${interviewStatusStyles[i.status]}`}
-  //       >
-  //         {i.status}
-  //       </span>
-  //     ),
-  //   },
-  //   {
-  //     key: 'result',
-  //     label: 'Result',
-  //     render: (i: InterviewDto) => (
-  //       <span
-  //         className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
-  //           i.status=='cancelled'?null:
-  //           i?.result === 'passed'
-  //             ? 'bg-green-50 text-green-600'
-  //             : interview?.result === 'failed'
-  //               ? 'bg-red-50 text-red-600'
-  //               : 'bg-amber-50 text-amber-600'
-  //         }`}
-  //       >
-  //         {i.status=='cancelled'?'------': i?.result ? i.result : 'pending'}
-  //       </span>
-  //     ),
-  //   },
-
-  //   {
-  //     key: 'actions',
-  //     label: 'Actions',
-  //     render: (i: InterviewDto) => (
-  //       <div className="flex items-center gap-2">
-  //         {/* View */}
-  //         <button
-  //           onClick={() => handleView(i.id)}
-  //           className="text-indigo-600 hover:text-indigo-800"
-  //           title="View"
-  //         >
-  //           <Eye size={18} />
-  //         </button>
-
-  //         {/* Reschedule */}
-  //         {i.status === 'scheduled' && (
-  //           <button
-  //             onClick={() => {
-  //               setSelected(i);
-  //               setRescheduleModal(true);
-  //             }}
-  //             className="text-yellow-600 hover:text-yellow-800"
-  //             title="Reschedule"
-  //           >
-  //             <Calendar size={18} />
-  //           </button>
-  //         )}
-
-  //         {/* Mark Completed */}
-  //         {i.status === 'scheduled' && (
-  //           <button
-  //             onClick={() => {
-  //               setSelectedId(i.id);
-  //               setCompltedModal(true);
-  //             }}
-  //             className="text-green-600 hover:text-green-800"
-  //             title="Mark Completed"
-  //           >
-  //             <CheckCircle size={18} />
-  //           </button>
-  //         )}
-
-  //         {/* Cancel */}
-  //         {i.status === 'scheduled' && (
-  //           <button
-  //             onClick={() => {
-  //               setSelectedId(i.id);
-  //               setCancelModal(true);
-  //             }}
-  //             className="text-red-600 hover:text-red-800"
-  //             title="Cancel"
-  //           >
-  //             <XCircle size={18} />
-  //           </button>
-  //         )}
-  //       </div>
-  //     ),
-  //   },
-  // ];
 
   const interviewColumns = [
     {
@@ -421,10 +270,23 @@ function InterviewListingContainer() {
               <XCircle size={18} />
             </button>
           )}
+          {i.status === 'completed' && !i.result && (
+            <button
+              onClick={() => {
+                setSelectedId(i.id);
+                setResultModal(true);
+              }}
+              className="text-green-600 hover:text-green-800"
+              title="Update Result"
+            >
+              <PlusCircle size={18} />
+            </button>
+          )}
         </div>
       ),
     },
   ];
+
   const handleStatusChange = async (
     status: InterviewStatusType,
     reason?: string
@@ -487,11 +349,12 @@ function InterviewListingContainer() {
     result: InterviewResult;
     feedback?: string;
   }) => {
-    if (!interview) return;
-    console.log('data is', values);
+    console.log('from add result,', selected);
+
+    if (!selected) return;
 
     try {
-      const data = await interviewService.updateResult(interview.id, values);
+      const data = await interviewService.updateResult(selected.id, values);
       console.log('data after adding result', data);
       showToast({
         msg: data.message,
@@ -499,6 +362,7 @@ function InterviewListingContainer() {
       });
 
       setResultModal(false);
+      onUpdate({ result: values.result });
     } catch (error: any) {
       showToast({
         msg: error.response?.data.message || error.message,
@@ -540,17 +404,7 @@ function InterviewListingContainer() {
             </div>
           </div>
         </div>
-        {/* <ConfirmationModal
-          isOpen={cancelModal}
-          onClose={() => {
-            setSelectedId(null);
-            setCancelModal(false);
-          }}
-          item="Interview"
-          type="delete"
-          action="Cancel"
-          onConfirm={}
-        /> */}
+
         <AddReasonModal
           isOpen={cancelModal}
           onClose={() => {

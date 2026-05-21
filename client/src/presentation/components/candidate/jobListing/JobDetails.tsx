@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import type { JobDetailsDto } from '../../../../types/dtos/jobDto';
+import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
 import { MapPinIcon, CheckIcon, Bookmark } from 'lucide-react';
-import { formatSalary } from '../../../../utils/salaryFormat';
-import { useToast } from '../../../../shared/toast/useToast';
+import { formatSalary } from '../../../../utils/salary-format';
+import { useToast } from '../../../../shared/toast/use-toast';
 import { useSelector } from 'react-redux';
 import { type StateType } from '../../../../constants/types/user';
 import JobReportForm from './JobReportForm';

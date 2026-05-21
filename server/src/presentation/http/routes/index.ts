@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import authRoutes from './authRoutes';
-import candidateRoutes from './candidateRoutes';
-import skillRoutes from './skillRoutes';
-import companyRoutes from './companyRoutes';
-import jobRoutes from './jobRoutes';
-import adminRoutes from './adminRoutes';
-import applicationRoutes from './applicationRoutes';
+import authRoutes from './auth.routes';
+import candidateRoutes from './candidate.routes';
+import skillRoutes from './skill.routes';
+import companyRoutes from './company.routes';
+import jobRoutes from './job.routes';
+import adminRoutes from './admin.routes';
+import applicationRoutes from './application.routes';
 import interviewRoutes from './interview.routes';
 
 const router = Router();

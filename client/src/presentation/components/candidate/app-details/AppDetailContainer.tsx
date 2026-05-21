@@ -3,11 +3,11 @@ import { BackButton } from '../ReusableComponents';
 import { useNavigate } from 'react-router-dom';
 import HeroHeader from './HeroHeader';
 import { useEffect, useState } from 'react';
-import { useToast } from '../../../../shared/toast/useToast';
+import { useToast } from '../../../../shared/toast/use-toast';
 import LeftContainer from './LeftContainer';
 import RightContainer from './RightContainer';
 import { type ApplicationDetailsDto } from '../../../../types/dtos/application.dto';
-import { applicationService } from '../../../../services/apiServices/application.service';
+import { applicationService } from '../../../../services/api-services/application.service';
 
 function AppDetailContainer() {
   const { showToast } = useToast();

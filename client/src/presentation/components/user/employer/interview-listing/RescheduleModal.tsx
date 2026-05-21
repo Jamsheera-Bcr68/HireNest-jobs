@@ -4,7 +4,7 @@ import type { InterviewDto } from '../../../../../types/dtos/interview.dto';
 import {
   convertDateStringToInputDate,
   formatTimeForInput,
-} from '../../../../../utils/dateConversion';
+} from '../../../../../utils/date-conversion';
 import { useLockBodyScroll } from '../../../../hooks/useBodyLock';
 
 type ErrorType = {

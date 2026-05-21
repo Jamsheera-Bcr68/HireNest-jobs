@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { type SkillType } from '../../../../types/dtos/skillTypes';
-import { jobPostSchema } from '../../../../libraries/validations/company/jobFormValidation';
-import { useToast } from '../../../../shared/toast/useToast';
-import { jobService } from '../../../../services/apiServices/jobService';
+import { type SkillType } from '../../../../types/dtos/skill.types';
+import { jobPostSchema } from '../../../../libraries/validations/company/job-form.validation';
+import { useToast } from '../../../../shared/toast/use-toast';
+import { jobService } from '../../../../services/api-services/jobService';
 import { useNavigate } from 'react-router-dom';
-import type { JobDetailsDto } from '../../../../types/dtos/jobDto';
+import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
 
 type FormType = {
   title: string;

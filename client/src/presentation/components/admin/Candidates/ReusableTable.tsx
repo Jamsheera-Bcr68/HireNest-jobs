@@ -9,7 +9,7 @@ export type ColumnType<T> = {
 export type FilterOption = {
   key: string;
   label: string;
-  options: readonly string[];
+  options: { label: string; value: string }[];
 };
 export type SortOption = {
   key: string;
@@ -91,9 +91,9 @@ function ReusableTable<T extends { id: string }>({
                 {option.label}
                 <option value={''}>All {option.label} </option>
                 {option.options.map((opt) => (
-                  <option value={opt} key={opt}>
+                  <option value={opt.value} key={opt.value}>
                     {' '}
-                    {opt}{' '}
+                    {opt.label}{' '}
                   </option>
                 ))}
               </select>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import JobDetails from './JobDetails';
-import { jobService } from '../../../../services/apiServices/jobService';
-import { type JobDetailsDto } from '../../../../types/dtos/jobDto';
+import { jobService } from '../../../../services/api-services/jobService';
+import { type JobDetailsDto } from '../../../../types/dtos/job.dto';
 import Header from '../../common/Header';
 import { useLocation, useParams } from 'react-router-dom';
 

@@ -1,16 +1,16 @@
-import { Application } from '../../../domain/entities/application';
-import { AppError } from '../../../domain/errors/AppError';
-import { IApplicationRepository } from '../../../domain/repositoriesInterfaces/application.repository.interface';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { jobMessages } from '../../../shared/constants/messages/jobMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { Application } from '../../../domain/entities/application.entity';
+import { AppError } from '../../../domain/errors/app-error';
+import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { jobMessages } from '../../../shared/constants/messages/job.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
 import {
   ApplicationListDto,
   ApplicationFilterDto,
   AggregatedApplication,
-} from '../../Dtos/application.dto';
+} from '../../dtos/application.dto';
 import { IGetAllEntitiesUsecase } from '../../interfaces/usecases/get-all-entities.usecase.interface';
 import { ApplicationMapper } from '../../mappers/application.mapper';
 

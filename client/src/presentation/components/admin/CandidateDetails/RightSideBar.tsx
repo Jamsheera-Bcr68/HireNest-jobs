@@ -1,10 +1,10 @@
 import { Section } from './Section';
 import { StatCard } from '../../common/StateCards';
-import type { ResumeType } from '../../../../types/dtos/profileTypes/ResumeType';
+import type { ResumeType } from '../../../../types/dtos/profile-types/resume.type';
 import type { ReactNode } from 'react';
 import { Eye, NotepadText } from 'lucide-react';
-import { adminService } from '../../../../services/apiServices/adminService';
-import { useToast } from '../../../../shared/toast/useToast';
+import { adminService } from '../../../../services/api-services/adminService';
+import { useToast } from '../../../../shared/toast/use-toast';
 
 export type ContactDataType = {
   label: string;

@@ -1,18 +1,20 @@
 import { useState } from 'react';
-import { type ResumeType } from '../../../../types/dtos/profileTypes/ResumeType';
-import { profileService } from '../../../../services/apiServices/candidateService';
-import { useToast } from '../../../../shared/toast/useToast';
-import type { UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+import { type ResumeType } from '../../../../types/dtos/profile-types/resume.type';
+import { profileService } from '../../../../services/api-services/candidateService';
+import { useToast } from '../../../../shared/toast/use-toast';
+import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 import { Upload } from 'lucide-react';
 import { Trash, X, LucideLoader } from 'lucide-react';
-import { FormatDate } from '../../../../utils/dateConversion';
+import { FormatDate } from '../../../../utils/date-conversion';
 import DeleteConfirmationModal from '../../../modals/DeleteConfirmationModal';
+
 type ResumeProps = {
   onUserUpdate: React.Dispatch<
     React.SetStateAction<UserProfileType | undefined>
   >;
   resumes: ResumeType[] | [];
 };
+
 function Resume({ onUserUpdate, resumes }: ResumeProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -55,6 +57,7 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
       });
     }
   };
+
   const handleRemove = async () => {
     if (!deleteId) {
       showToast({ msg: 'Delete Id is not found', type: 'error' });

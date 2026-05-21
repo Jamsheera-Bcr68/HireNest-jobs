@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Building, MapPin, Users } from 'lucide-react';
-import type { JobDetailsDto } from '../../../../../types/dtos/jobDto';
+import type { JobDetailsDto } from '../../../../../types/dtos/job.dto';
 import SectionTitle from './SectionTitle';
 
 type Props = {

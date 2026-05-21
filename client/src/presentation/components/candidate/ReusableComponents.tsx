@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react';
 import { type ReactNode } from 'react';
-import type {
-  ApplicationFilterType,
-  FilterOption,
-} from '../../hooks/user/candidate/profile/useApplication';
-import type { ApplicationStatusType } from '../../../types/dtos/application.dto';
-import { type JobType } from '../../../types/dtos/jobDto';
-import type { AppSortType } from './applications/ApplicationContainer';
+import { type SortOption } from '../admin/Candidates/ReusableTable';
+import type { FilterOption } from '../../hooks/user/candidate/profile/useApplication';
+
 import { ChevronLeft } from 'lucide-react';
 
 type Props = {
@@ -44,28 +40,110 @@ export const StatusCards = ({ stats }: { stats: StatsCardType[] }) => {
   );
 };
 
-type FilterProps = {
-  onFilterChange: (data: ApplicationFilterType) => void;
-  statusFilter: FilterOption<ApplicationStatusType>;
-  typeFilter: FilterOption<JobType>;
-  filter: ApplicationFilterType;
-  sortOrder: FilterOption<AppSortType>;
+// type FilterProps<> = {
+//   onFilterChange: (data: Partial<ApplicationFilterType>) => void;
+//   statusFilter: FilterOption<ApplicationStatusType>
+//   typeFilter: FilterOption<JobType>;
+//   filter: ApplicationFilterType;
+//   sortOrder: FilterOption<AppSortType>;
+// };
+// export const Filters= ({
+//   onFilterChange,
+//   statusFilter,
+//   filter,
+//   typeFilter,
+//   sortOrder,
+// }: FilterProps) => {
+//   const [search, setSearch] = useState('');
+//   useEffect(() => {
+//     const timeoutId = setTimeout(() => {
+//       onFilterChange({ search });
+//     }, 400);
+
+//     return () => clearTimeout(timeoutId);
+//   }, [search]);
+//   return (
+//     <div className="flex flex-wrap gap-3 mb-6 items-center">
+//       <input
+//         type="text"
+//         placeholder="Search by job title or company..."
+//         value={search}
+//         onChange={(e) => setSearch(e.target.value)}
+//         className="flex-1 min-w-[200px] text-sm px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+//       />
+//       <select
+//         value={filter.status || ''}
+//         onChange={(e) =>
+//           onFilterChange({ status: e.target.value as ApplicationStatusType })
+//         }
+//         className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
+//       >
+//         <option value="">All Status</option>
+
+//         {statusFilter.options.map((s) => (
+//           <option key={s.value} value={s.value}>
+//             {s.label}
+//           </option>
+//         ))}
+//       </select>
+//       <select
+//         value={filter.jobType}
+//         onChange={(e) => onFilterChange({ jobType: e.target.value as JobType })}
+//         className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
+//       >
+//         <option value="">All Types</option>
+//         {typeFilter.options.map((t, i) => (
+//           <option value={t.value} key={i}>
+//             {t.label}
+//           </option>
+//         ))}
+//       </select>
+//       <select
+//         value={filter.sortBy}
+//         onChange={(e) =>
+//           onFilterChange({ sortBy: e.target.value as AppSortType })
+//         }
+//         className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
+//       >
+//         {sortOrder.options.map((o) => (
+//           <option value={o.value} key={o.value}>
+//             {o.label}
+//           </option>
+//         ))}
+//       </select>
+//     </div>
+//   );
+// };
+
+type BaseFilter = {
+  search?: string;
+  sortBy?: string;
 };
-export const Filters = ({
+type FilterProps<T extends BaseFilter> = {
+  onFilterChange: (data: Partial<T>) => void;
+
+  filterOptions: FilterOption<T>[];
+  filter: T;
+  sortOrder: SortOption;
+};
+export const Filters = <T extends BaseFilter>({
   onFilterChange,
-  statusFilter,
+  filterOptions,
   filter,
-  typeFilter,
   sortOrder,
-}: FilterProps) => {
+}: FilterProps<T>) => {
   const [search, setSearch] = useState('');
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      onFilterChange({ search });
+      onFilterChange({ search } as Partial<T>);
     }, 400);
 
     return () => clearTimeout(timeoutId);
   }, [search]);
+  const hasFilters = Object.values(filter).some(
+    (value) => value !== undefined && value !== ''
+  );
+
   return (
     <div className="flex flex-wrap gap-3 mb-6 items-center">
       <input
@@ -75,37 +153,28 @@ export const Filters = ({
         onChange={(e) => setSearch(e.target.value)}
         className="flex-1 min-w-[200px] text-sm px-4 py-2 border border-gray-200 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
       />
-      <select
-        value={filter.status || ''}
-        onChange={(e) =>
-          onFilterChange({ status: e.target.value as ApplicationStatusType })
-        }
-        className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
-      >
-        <option value="">All Status</option>
-
-        {statusFilter.options.map((s) => (
-          <option key={s.value} value={s.value}>
-            {s.label}
-          </option>
-        ))}
-      </select>
-      <select
-        value={filter.jobType}
-        onChange={(e) => onFilterChange({ jobType: e.target.value as JobType })}
-        className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
-      >
-        <option value="">All Types</option>
-        {typeFilter.options.map((t, i) => (
-          <option value={t.value} key={t.value}>
-            {t.label}
-          </option>
-        ))}
-      </select>
+      {filterOptions.map((option) => (
+        <select
+          key={String(option.key)}
+          value={filter[option.key]?.toString() ?? ''}
+          onChange={(e) =>
+            onFilterChange({
+              [option.key]: e.target.value,
+            } as Partial<T>)
+          }
+          className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
+        >
+          {option.options.map((item) => (
+            <option key={String(item.value)} value={String(item.value)}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      ))}
       <select
         value={filter.sortBy}
         onChange={(e) =>
-          onFilterChange({ sortBy: e.target.value as AppSortType })
+          onFilterChange({ sortBy: e.target.value } as Partial<T>)
         }
         className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
       >
@@ -115,6 +184,14 @@ export const Filters = ({
           </option>
         ))}
       </select>
+      {/* {hasFilters && (
+        <button
+          onClick={() => onFilterChange({})}
+          className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
+        >
+          Reset
+        </button>
+      )} */}
     </div>
   );
 };

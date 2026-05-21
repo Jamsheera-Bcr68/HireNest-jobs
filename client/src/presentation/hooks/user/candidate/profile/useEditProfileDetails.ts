@@ -1,10 +1,10 @@
 import { useMemo, useRef, useState } from 'react';
-import { type typeOfToast } from '../../../../../types/toastTypes';
+import { type typeOfToast } from '../../../../../types/toast.types';
 import axiosInstance from '../../../../../libraries/axios';
-import type { UserProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import type { UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
 
-import { type SkillType } from '../../../../../types/dtos/profileTypes/skillTypes';
-import { profileService } from '../../../../../services/apiServices/candidateService';
+import { type SkillType } from '../../../../../types/dtos/profile-types/skill.types';
+import { profileService } from '../../../../../services/api-services/candidateService';
 
 export const useEditProfileDetails = (
   showToast: (data: typeOfToast) => void,

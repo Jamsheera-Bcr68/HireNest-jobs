@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
 import StatusCards from '../../components/admin/StatusCards';
 import { type StatusCardType } from './Companies';
-import { adminService } from '../../../services/apiServices/adminService';
+import { adminService } from '../../../services/api-services/adminService';
 import HeroSection from '../../components/admin/HeroSection';
 import ReusableTable from '../../components/admin/Candidates/ReusableTable';
 import { type ColumnType } from '../../components/admin/Candidates/ReusableTable';
-import { type UserProfileType } from '../../../types/dtos/userTypes';
-import { EDUCATION_LEVELS } from '../../../types/dtos/profileTypes/educationTypes';
+import { type UserProfileType } from '../../../types/dtos/user.types';
+import { EDUCATION_LEVELS } from '../../../types/dtos/profile-types/education.types';
 import { useNavigate } from 'react-router-dom';
 import { Eye, BanIcon, ThumbsUp } from 'lucide-react';
 import Pagination from '../../components/common/Pagination';
 import ConfirmationModal from '../../modals/ConfirmationModal';
-import { useToast } from '../../../shared/toast/useToast';
+import { useToast } from '../../../shared/toast/use-toast';
 
-const tabs = ['All', 'Active', 'Suspended'];
+const tabs = [
+  { label: 'All', value: '' },
+  { label: 'Active', value: 'active' },
+  { label: 'Suspended', value: 'suspended' },
+];
 export type CandidateFilter = {
   search?: string;
   status?: string;
@@ -212,12 +216,7 @@ function Candidates() {
       setId('');
       showToast({ msg: data.message, type: 'success' });
       setModalOpen(false);
-    } catch (error: any) {
-      showToast({
-        msg: error?.response?.data.message || error.message,
-        type: 'error',
-      });
-    }
+    } catch (error: any) {}
   };
   const handleActivate = async () => {
     if (!id) return;

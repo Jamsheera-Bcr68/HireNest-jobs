@@ -1,12 +1,12 @@
 import { Interview } from '../../../domain/entities/interview.entity';
-import { InterviewStatusEnum } from '../../../domain/enums/statusEnum';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { AppError } from '../../../domain/errors/AppError';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { IInterviewRepository } from '../../../domain/repositoriesInterfaces/interview.repository.interface';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { AppError } from '../../../domain/errors/app-error';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
 import { IUpdateEntityStatusUseCase } from '../../interfaces/usecases/update-entity-status.usecase.interface';
 
 export class UpdateInterviewStatusUsecase implements IUpdateEntityStatusUseCase<
@@ -58,6 +58,7 @@ export class UpdateInterviewStatusUsecase implements IUpdateEntityStatusUseCase<
     data.status = status;
     if (status == 'cancelled') {
       data.reasonForCancel = reason;
+      data.cancelledBy = role;
     }
     const updated = this._interviewRepository.update(id, data);
   }

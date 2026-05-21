@@ -1,4 +1,4 @@
-import type { JobCardDto } from '../../../../types/dtos/jobDto';
+import type { JobCardDto } from '../../../../types/dtos/job.dto';
 
 type Props = {
   search: string;

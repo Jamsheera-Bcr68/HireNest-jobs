@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import ProtectedRoutes from './PrivateRoutes';
-import { CandidateRoutes } from './userRoutes/candidateRoute';
+import { CandidateRoutes } from './user.routes/candidate.route';
 
 import NotFound from '../presentation/pages/NotFound';
 import Home from '../presentation/pages/user/Home';
@@ -13,8 +13,8 @@ import AdminLogin from '../presentation/pages/auth/AdminLogin';
 
 import ForgotPassword from '../presentation/pages/auth/ForgotPassword';
 import ResetPassword from '../presentation/pages/auth/ResetPasswordForm';
-import { CompanyRoutes } from './userRoutes/companyRoutes';
-import { AdminRoutes } from './adminRoutes';
+import { CompanyRoutes } from './user.routes/company.routes';
+import { AdminRoutes } from './admin.routes';
 import { AdminProtectedRoute } from './PrivateRoutes';
 import JobListing from '../presentation/pages/user/JobListing';
 import JobDetailsPage from '../presentation/components/candidate/jobListing/JobDetailsWrapper';

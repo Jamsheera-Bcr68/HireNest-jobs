@@ -1,14 +1,14 @@
-import { Skill } from '../../../domain/entities/skill';
-import { IGetAllSkillsUseCase } from '../../interfaces/user/IGetSkillsUseCase';
-import { ISkillRepository } from '../../../domain/repositoriesInterfaces/ISkillRepository';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { SkillListDto, UserSkillDto } from '../../Dtos/skillDto';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { AppError } from '../../../domain/errors/AppError';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { SkillStatus } from '../../../domain/enums/skillEnum';
+import { Skill } from '../../../domain/entities/skill.entity';
+import { IGetAllSkillsUseCase } from '../../interfaces/user/get-skills.usecase';
+import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { SkillListDto, UserSkillDto } from '../../dtos/skill.dto';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { AppError } from '../../../domain/errors/app-error';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { SkillStatus } from '../../../domain/enums/skill.enum';
 
 export class GetRequestedSkillsUseCase implements IGetAllSkillsUseCase {
   constructor(

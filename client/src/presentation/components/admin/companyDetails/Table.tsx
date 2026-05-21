@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Industry_Type } from '../../../../types/dtos/profileTypes/industryType';
-import type { CompanyProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+import { Industry_Type } from '../../../../types/dtos/profile-types/industry.type';
+import type { CompanyProfileType } from '../../../../types/dtos/profile-types/user.types';
 import { Eye, BanIcon, ThumbsUpIcon, ThumbsDownIcon } from 'lucide-react';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
-import { type StatusType } from '../../../../types/dtos/profileTypes/userTypes';
-import { useToast } from '../../../../shared/toast/useToast';
-import { adminService } from '../../../../services/apiServices/adminService';
+import { type StatusType } from '../../../../types/dtos/profile-types/user.types';
+import { useToast } from '../../../../shared/toast/use-toast';
+import { adminService } from '../../../../services/api-services/adminService';
 import { type CompanyFilter } from '../../../pages/admin/Companies';
 import AddReasonModal from '../jobs/AddReasonModal';
 

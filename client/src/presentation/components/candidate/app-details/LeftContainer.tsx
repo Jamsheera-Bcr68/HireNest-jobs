@@ -1,11 +1,11 @@
 import { useState, type ReactNode, useEffect } from 'react';
 import type { ApplicationDetailsDto } from '../../../../types/dtos/application.dto';
-import { formatSalary } from '../../../../utils/salaryFormat';
+import { formatSalary } from '../../../../utils/salary-format';
 import { Card, SectionTitle } from '../ReusableComponents';
 import { useDispatch } from 'react-redux';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
-import { updateUser } from '../../../../redux/authSlice';
-import { useToast } from '../../../../shared/toast/useToast';
+import { updateUser } from '../../../../redux/auth-slice';
+import { useToast } from '../../../../shared/toast/use-toast';
 import { useSelector } from 'react-redux';
 import {
   CheckCircle2,
@@ -14,7 +14,7 @@ import {
   DollarSign,
   Eye,
 } from 'lucide-react';
-import { applicationService } from '../../../../services/apiServices/application.service';
+import { applicationService } from '../../../../services/api-services/application.service';
 import type { StateType } from '../../../../constants/types/user';
 
 function InfoRow({

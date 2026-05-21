@@ -1,12 +1,11 @@
 import HeroSection from '../../components/admin/HeroSection';
 import { useState, useEffect } from 'react';
 import StatusCards from '../../components/admin/StatusCards';
-import { useToast } from '../../../shared/toast/useToast';
-import { type CompanyProfileType } from '../../../types/dtos/profileTypes/userTypes';
+import { useToast } from '../../../shared/toast/use-toast';
+import { type CompanyProfileType } from '../../../types/dtos/profile-types/user.types';
 import Table from '../../components/admin/companyDetails/Table';
 import Pagination from '../../components/common/Pagination';
-import { adminService } from '../../../services/apiServices/adminService';
-import AddReasonModal from '../../components/admin/jobs/AddReasonModal';
+import { adminService } from '../../../services/api-services/adminService';
 
 export type StatusCardType = {
   label: string;
@@ -37,18 +36,12 @@ function Companies() {
           page,
           10
         );
-        // console.log('after getting all companies', data);
+
         const { totalDocs, totalPages } = data;
         setTotalDocs(totalDocs);
         setTotalPages(totalPages);
         setCompanies(data.companies);
-      } catch (error: any) {
-        // console.log(error);
-        showToast({
-          msg: error?.response?.data.message || error.message,
-          type: 'error',
-        });
-      }
+      } catch (error: any) {}
     }
     getCompanies();
   }, [filter, page]);

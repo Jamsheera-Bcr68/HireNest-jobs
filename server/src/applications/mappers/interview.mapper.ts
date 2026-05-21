@@ -2,11 +2,12 @@ import {
   interviewDto,
   AggregatedInterviewDto,
   interviewDetailDto,
-} from '../Dtos/interview.dto';
+} from '../dtos/interview.dto';
 import { getTime, getDateAndTime } from '../../shared/utils';
 import { Interview } from '../../domain/entities/interview.entity';
-import { Job } from '../../domain/entities/Job';
-import { User } from '../../domain/entities/User';
+import { Job } from '../../domain/entities/job.entity';
+import { User } from '../../domain/entities/user.entity';
+import { Company } from '../../domain/entities/company.entity';
 export class InterviewMapper {
   static toInterviewDto(data: AggregatedInterviewDto): interviewDto {
     return {
@@ -17,6 +18,10 @@ export class InterviewMapper {
       result: data.result,
       createdAt: new Date(data.createdAt).toDateString(),
       status: data.status,
+      company: data.company,
+      isRescheduleRequested: data.isRescheduleRequested,
+      companyLogo: data.companyLogo,
+      isConfirmed: data.isConfirmed,
       scheduledAt: getDateAndTime(data.scheduledAt),
     };
   }
@@ -24,16 +29,21 @@ export class InterviewMapper {
   static entityToInterviewDto(
     data: Interview,
     job: Job,
-    candidate: User
+    candidate: User,
+    company: Company
   ): interviewDto {
     return {
       id: data.id,
       name: candidate.name ?? '',
       mode: data.mode,
       jobTitle: job.title,
+      company: company.companyName,
+      companyLogo: company.logoUrl,
       result: data.result,
       createdAt: new Date(data.createdAt).toDateString(),
       status: data.status,
+      isConfirmed: data.isConfirmed,
+      isRescheduleRequested: data.isRescheduleRequested,
       scheduledAt: getDateAndTime(data.scheduledAt),
     };
   }
@@ -41,7 +51,8 @@ export class InterviewMapper {
   static toInterviewDetailDto(
     interview: Interview,
     job: Job,
-    candidate: User
+    candidate: User,
+    company: Company
   ): interviewDetailDto {
     return {
       id: interview.id,
@@ -51,6 +62,7 @@ export class InterviewMapper {
       time: getTime(interview.scheduledAt),
       mode: interview.mode,
       status: interview.status,
+      reasonForRescheduleRequest: interview.reasonForRescheduleRequest,
       meetLink: interview.meetLink,
       location: interview.location,
       duration: interview.duration,
@@ -59,6 +71,9 @@ export class InterviewMapper {
       note: interview.notes,
       result: interview.result,
       feedback: interview.feedback,
+      companyLogo: company.logoUrl,
+      companyName: company.companyName,
+      cancelledBy: interview.cancelledBy,
     };
   }
 }

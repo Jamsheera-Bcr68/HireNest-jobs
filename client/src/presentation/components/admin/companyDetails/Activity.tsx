@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Activity() {
   return (
     <div className="bg-white rounded-xl shadow-sm p-6">

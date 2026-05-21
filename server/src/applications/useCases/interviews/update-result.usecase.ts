@@ -1,12 +1,12 @@
 import { Interview } from '../../../domain/entities/interview.entity';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { IInterviewRepository } from '../../../domain/repositoriesInterfaces/interview.repository.interface';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
 import { IUpdateEntityUseCase } from '../../interfaces/usecases/update-entity.usecase.interface';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { AppError } from '../../../domain/errors/AppError';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { AppError } from '../../../domain/errors/app-error';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 
 export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<
   Interview,

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { profileService } from '../../../../../services/apiServices/candidateService';
-import { addExperienceSchema } from '../../../../../libraries/validations/auth/candidate/experienceFormValidation';
-import type { UserProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import { profileService } from '../../../../../services/api-services/candidateService';
+import { addExperienceSchema } from '../../../../../libraries/validations/auth/candidate/experience-form.validation';
+import type { UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
 
-import type { ExperienceType } from '../../../../../types/dtos/profileTypes/experienceType';
-import { useToast } from '../../../../../shared/toast/useToast';
-import { type WorkMode } from '../../../../..//types/dtos/profileTypes/experienceType';
+import type { ExperienceType } from '../../../../../types/dtos/profile-types/experience.type';
+import { useToast } from '../../../../../shared/toast/use-toast';
+import { type WorkMode } from '../../../../../types/dtos/profile-types/experience.type';
 
 type FormError = {
   title?: string;

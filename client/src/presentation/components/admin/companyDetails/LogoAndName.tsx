@@ -1,6 +1,6 @@
-import { adminService } from '../../../../services/apiServices/adminService';
-import type { CompanyProfileType } from '../../../../types/dtos/profileTypes/userTypes';
-import { useToast } from '../../../../shared/toast/useToast';
+import { adminService } from '../../../../services/api-services/adminService';
+import type { CompanyProfileType } from '../../../../types/dtos/profile-types/user.types';
+import { useToast } from '../../../../shared/toast/use-toast';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { useState } from 'react';
 

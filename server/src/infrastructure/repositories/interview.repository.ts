@@ -1,7 +1,7 @@
-import { GenericRepository } from './genericRepository';
-import { IInterviewRepository } from '../../domain/repositoriesInterfaces/interview.repository.interface';
+import { GenericRepository } from './generic.repository';
+import { IInterviewRepository } from '../../domain/repository-iInterfaces/interview.repository.interface';
 import { Interview } from '../../domain/entities/interview.entity';
-import { AggregatedInterviewDto } from '../../applications/Dtos/interview.dto';
+import { AggregatedInterviewDto } from '../../applications/dtos/interview.dto';
 
 import {
   IInterviewDocument,
@@ -12,7 +12,7 @@ import { duration } from 'zod/v4/classic/iso.cjs';
 import {
   InterviewFilterDto,
   InterviewListDto,
-} from '../../applications/Dtos/interview.dto';
+} from '../../applications/dtos/interview.dto';
 import { id } from 'zod/v4/locales';
 
 export class InterviewRepository
@@ -45,6 +45,8 @@ export class InterviewRepository
       isConfirmed: doc.isConfirmed,
       isRescheduleRequested: doc.isRescheduleRequested,
       reasonForCancel: doc.reasonForCancel,
+      reasonForRescheduleRequest: doc.reasonForRescheduleRequest,
+      cancelledBy: doc.cancelledBy,
     };
   }
 
@@ -76,6 +78,9 @@ export class InterviewRepository
     if (entity.isRescheduleRequested)
       data.isRescheduleRequested = entity.isRescheduleRequested;
     if (entity.reasonForCancel) data.reasonForCancel = entity.reasonForCancel;
+    if (entity.reasonForRescheduleRequest)
+      data.reasonForRescheduleRequest = entity.reasonForRescheduleRequest;
+    if (entity.cancelledBy) data.cancelledBy = entity.cancelledBy;
     return data;
   }
 
@@ -95,6 +100,9 @@ export class InterviewRepository
     }
     if (filter.jobId) {
       q.jobId = new mongoose.Types.ObjectId(filter.jobId);
+    }
+    if (filter.result) {
+      q.result = filter.result;
     }
     // console.log('q is ', q);
 
@@ -209,9 +217,12 @@ export class InterviewRepository
               result: '$result',
               jobTitle: '$job.title',
               company: '$company.companyName',
+              companyLogo: '$company.logoUrl',
               createdAt: '$createdAt',
               status: '$status',
               scheduledAt: '$scheduledAt',
+              isConfirmed: '$isConfirmed',
+              isRescheduleRequested: '$isRescheduleRequested',
             },
           },
 

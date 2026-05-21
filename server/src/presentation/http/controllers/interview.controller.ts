@@ -1,16 +1,16 @@
-import { AppError } from '../../../domain/errors/AppError';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { AppError } from '../../../domain/errors/app-error';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
 import { asyncHandler } from '../middleweres/async-handler';
 import { Request, Response } from 'express';
-import { UserRole } from '../../../domain/enums/userEnums';
+import { UserRole } from '../../../domain/enums/user.enums';
 import { IScheduleInterviewUsecase } from '../../../applications/useCases/interviews/schedule-interveiw.usecase';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { Application } from '../../../domain/entities/application';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { Application } from '../../../domain/entities/application.entity';
 import {
   ApplicationStatusEnum,
   InterviewStatusEnum,
-} from '../../../domain/enums/statusEnum';
+} from '../../../domain/enums/status.enum';
 import { IGetEntitySatusUseCase } from '../../../applications/interfaces/usecases/get-entity-status.usecase.interface';
 import { IUpdateEntityStatusUseCase } from '../../../applications/interfaces/usecases/update-entity-status.usecase.interface';
 import {
@@ -19,17 +19,19 @@ import {
   InterviewListDto,
   interviewDetailDto,
   interviewDto,
-} from '../../../applications/Dtos/interview.dto';
+} from '../../../applications/dtos/interview.dto';
 import {
   InterviewMode,
   InterviewResult,
 } from '../../../domain/enums/interview.enum';
-import { interviewInputDto } from '../../../applications/Dtos/interview.dto';
+import { interviewInputDto } from '../../../applications/dtos/interview.dto';
 import { IGetAllEntitiesUsecase } from '../../../applications/interfaces/usecases/get-all-entities.usecase.interface';
 import { Interview } from '../../../domain/entities/interview.entity';
 import { success } from 'zod';
 import { IGetEntityDetailsUsecase } from '../../../applications/interfaces/usecases/get-entity-details.usecase.inerface';
 import { IUpdateEntityUseCase } from '../../../applications/interfaces/usecases/update-entity.usecase.interface';
+import { IConfirmInterviewUsecase } from '../../../applications/useCases/interviews/confirm-interview.usecase';
+import { IRescheduleRequestUsecase } from '../../../applications/useCases/interviews/reschedule-request.usecase';
 
 export class InterviewController {
   constructor(
@@ -52,7 +54,12 @@ export class InterviewController {
       Interview,
       interviewDto
     >,
-    private _updateInterviewResultUsecase: IUpdateEntityUseCase<Interview, void>
+    private _updateInterviewResultUsecase: IUpdateEntityUseCase<
+      Interview,
+      void
+    >,
+    private _confirmInterviewUsecase: IConfirmInterviewUsecase,
+    private _requestForRescheduleUsecase: IRescheduleRequestUsecase
   ) {}
   scheduleInterview = asyncHandler(async (req: Request, res: Response) => {
     // console.log('from interview controller', req.body);
@@ -87,7 +94,7 @@ export class InterviewController {
         statusCodes.UNAUTHERIZED
       );
     const { id } = req.params;
-    const data = req.body;
+    const { action = 'Updated', ...data } = req.body;
 
     const interview = await this._updateInterviewUsecase.execute(
       id,
@@ -99,7 +106,7 @@ export class InterviewController {
 
     return res.status(statusCodes.OK).json({
       success: true,
-      message: generalMessages.success.ENTITY_CREATED('Interview', 'Updated'),
+      message: generalMessages.success.ENTITY_CREATED('Interview', action),
       interview,
     });
   });
@@ -289,6 +296,64 @@ export class InterviewController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: generalMessages.success.RESULT_UPDATED('Interview'),
+    });
+  });
+
+  confirmInterview = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user || !user.userId) {
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('User'),
+        statusCodes.NOTFOUND
+      );
+    }
+
+    const { id } = req.params;
+    if (!id)
+      throw new AppError(
+        generalMessages.errors.ID_NOT_FOUND('Interviw'),
+        statusCodes.BADREQUEST
+      );
+
+    await this._confirmInterviewUsecase.execute(user.userId, id);
+
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: generalMessages.success.ENTITY_UPDATED('Interveiw ', 'Confimed'),
+    });
+  });
+
+  requestForReschedule = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user || !user.userId) {
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('User'),
+        statusCodes.NOTFOUND
+      );
+    }
+
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    if (!id)
+      throw new AppError(
+        generalMessages.errors.ID_NOT_FOUND('Interviw'),
+        statusCodes.BADREQUEST
+      );
+    if (!reason)
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Reason'),
+        statusCodes.BADREQUEST
+      );
+
+    await this._requestForRescheduleUsecase.execute(user.userId, id, reason);
+
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: generalMessages.success.ENTITY_UPDATED(
+        'Interveiw ',
+        'Requested for Reschedule'
+      ),
     });
   });
 }

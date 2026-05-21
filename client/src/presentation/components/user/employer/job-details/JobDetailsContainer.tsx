@@ -6,13 +6,13 @@ import Company from './Company';
 import Responsibilities from './Responsibilities';
 import RightSideBar from './RightSideBar';
 import Tabs from './Tabs';
-import { type StatusType } from '../../../../../types/dtos/profileTypes/userTypes';
+import { type StatusType } from '../../../../../types/dtos/profile-types/user.types';
 import { type UpdateStatusType } from '../company-joblisting/CompanyJobListingContainer';
-import { useToast } from '../../../../../shared/toast/useToast';
+import { useToast } from '../../../../../shared/toast/use-toast';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { type JobDetailsDto } from '../../../../../types/dtos/jobDto';
-import { jobService } from '../../../../../services/apiServices/jobService';
+import { type JobDetailsDto } from '../../../../../types/dtos/job.dto';
+import { jobService } from '../../../../../services/api-services/jobService';
 import UpdateLastDateModal from './UpdateLastDateModal';
 import EditJobModal from '../Modal';
 import JobForm from '../JobForm';
@@ -24,7 +24,7 @@ const tabs = [
 ];
 function JobDetailsContainer() {
   const { jobId } = useParams();
-  console.log('job id is ', jobId);
+
   const { showToast } = useToast();
   const [job, setJob] = useState<JobDetailsDto | null>(null);
   const [tab, setTab] = useState<string>('overview');

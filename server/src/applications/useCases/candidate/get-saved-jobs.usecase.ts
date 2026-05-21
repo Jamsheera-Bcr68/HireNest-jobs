@@ -1,12 +1,12 @@
-import { JobFilter, JobListDto } from '../../Dtos/jobDto';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { ISkillRepository } from '../../../domain/repositoriesInterfaces/ISkillRepository';
-import { SkillStatus } from '../../../domain/enums/skillEnum';
-import { Skill } from '../../../domain/entities/skill';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { AppError } from '../../../domain/errors/AppError';
-import { userMessages } from '../../../shared/constants/messages/userMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { JobFilter, JobListDto } from '../../dtos/job.dto';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { SkillStatus } from '../../../domain/enums/skill.enum';
+import { Skill } from '../../../domain/entities/skill.entity';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { AppError } from '../../../domain/errors/app-error';
+import { userMessages } from '../../../shared/constants/messages/user.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
 
 export interface IGetSavedJobsUseCase {
   execute(

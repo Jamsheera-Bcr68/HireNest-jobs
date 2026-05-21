@@ -1,8 +1,8 @@
 import {
   type IndustryType,
   type CompanySize,
-} from './profileTypes/industryType';
-import { type ISocialLinks } from '../profileTypes';
+} from './profile-types/industry.type';
+import { type ISocialLinks } from '../profile.types';
 export type CompanyDataDto = {
   companyName: string;
   logoUrl?: string;

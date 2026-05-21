@@ -4,7 +4,7 @@ type Props<T> = {
   isOpen: boolean;
   status: T;
   onClose: () => void;
-  action: 'Suspend' | 'Reject' | 'Remove' | 'Cancel';
+  action: 'Suspend' | 'Reject' | 'Remove' | 'Cancel' | 'Request for Reschedule';
   onConfirm: (status: T, reason: string) => Promise<void>;
   item: string;
 };
@@ -60,7 +60,7 @@ export default function AddReasonModal<T>({
             }}
             className="px-3 py-1 text-gray-500 hover:text-gray-700"
           >
-            Cancel
+            Close
           </button>
 
           <button

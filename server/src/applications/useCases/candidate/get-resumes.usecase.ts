@@ -1,8 +1,8 @@
-import { AppError } from '../../../domain/errors/AppError';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { IResume } from '../../../domain/values/profileTypes';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { AppError } from '../../../domain/errors/app-error';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IResume } from '../../../domain/values/profile-types';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
 
 export interface IGetCandidateResumesUsecase {
   execute(id: string): Promise<IResume[]>;

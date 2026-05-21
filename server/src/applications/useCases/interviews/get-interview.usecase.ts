@@ -1,15 +1,15 @@
 import { IGetEntityDetailsUsecase } from '../../interfaces/usecases/get-entity-details.usecase.inerface';
-import { ApplicationDetailsDto } from '../../Dtos/application.dto';
-import { IInterviewRepository } from '../../../domain/repositoriesInterfaces/interview.repository.interface';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { interviewDetailDto } from '../../Dtos/interview.dto';
-import { AppError } from '../../../domain/errors/AppError';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
+import { ApplicationDetailsDto } from '../../dtos/application.dto';
+import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { interviewDetailDto } from '../../dtos/interview.dto';
+import { AppError } from '../../../domain/errors/app-error';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { InterviewMapper } from '../../mappers/interview.mapper';
 
 export class GetInterviewDetailsUsecase implements IGetEntityDetailsUsecase<interviewDetailDto> {
@@ -31,15 +31,20 @@ export class GetInterviewDetailsUsecase implements IGetEntityDetailsUsecase<inte
         generalMessages.errors.NOT_FOUND('Interview'),
         statusCodes.NOTFOUND
       );
+    const company = await this._companyRepository.findById(interview.companyId);
 
+    if (!company)
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Company'),
+        statusCodes.NOTFOUND
+      );
     if (role == UserRole.COMPANY) {
-      const company = await this._companyRepository.findByUserId(userId);
-
-      if (!company)
+      if (company.userId !== userId)
         throw new AppError(
-          generalMessages.errors.NOT_FOUND('Company'),
-          statusCodes.NOTFOUND
+          authMessages.error.UNAUTHORIZED,
+          statusCodes.UNAUTHERIZED
         );
+
       if (interview.companyId !== company.id) {
         throw new AppError(
           authMessages.error.UNAUTHORIZED,
@@ -62,6 +67,11 @@ export class GetInterviewDetailsUsecase implements IGetEntityDetailsUsecase<inte
         statusCodes.NOTFOUND
       );
 
-    return InterviewMapper.toInterviewDetailDto(interview, job, candidate);
+    return InterviewMapper.toInterviewDetailDto(
+      interview,
+      job,
+      candidate,
+      company
+    );
   }
 }

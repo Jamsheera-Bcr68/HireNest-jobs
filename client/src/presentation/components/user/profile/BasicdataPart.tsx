@@ -5,7 +5,7 @@ import ProfileEditModal from '../../../modals/EditProfileModal';
 import { Twitter } from 'lucide-react';
 import { useSelector } from 'react-redux';
 
-import { type BasicDataProps } from '../../../../types/propTypes/profileProps';
+import { type BasicDataProps } from '../../../../types/prop-types/profileProps';
 import type { StateType } from '../../../../constants/types/user';
 
 const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {

@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
-import { type typeOfToast } from '../../../types/toastTypes';
-import axiosInstance from '../../../libraries/axios';
-import type { UserProfileType } from '../../../types/dtos/userTypes';
-import { skillService } from '../../../services/apiServices/skillServices';
-import { type SkillType } from '../../../types/dtos/skillTypes';
-import { profileService } from '../../../services/apiServices/candidateService';
+import { type typeOfToast } from '../../../types/toast.types';
+
+import type { UserProfileType } from '../../../types/dtos/user.types';
+
+import { type SkillType } from '../../../types/dtos/skill.types';
+import { profileService } from '../../../services/api-services/candidateService';
 
 export const useEditProfileDetails = (
   showToast: (data: typeOfToast) => void,
@@ -19,20 +19,24 @@ export const useEditProfileDetails = (
     setIsEditing(true);
     setValue(e.target.value);
   };
+
   const onEdit = () => {
     setIsEditing(true);
     setValue(user?.about || '');
   };
+
   const onBlur = () => {
     if (!user?.about && !value.trim()) {
       setIsEditing(false);
       setValue('');
     }
   };
+
   const cancelEdit = () => {
     setIsEditing(false);
     setValue('');
   };
+
   const addAbout = async () => {
     console.log('from add about');
     setIsEditing(false);
@@ -43,14 +47,12 @@ export const useEditProfileDetails = (
     //submit
     try {
       console.log('value is ', value);
-      const res = await axiosInstance.patch('/candidate/profile/about', {
-        value: value,
-      });
+      const data = await profileService.addAvbout(value);
 
-      console.log('user is ', res.data.user);
+      console.log('user is ', data.user);
 
-      showToast({ msg: res.data.message, type: 'success' });
-      onUserUpdate(res.data.user);
+      showToast({ msg: data.message, type: 'success' });
+      onUserUpdate(data.user);
     } catch (error: any) {
       showToast({
         msg: error.response?.data.message || error.message,
@@ -83,12 +85,10 @@ export const useEditProfileDetails = (
       try {
         console.log('validateion success skill name is ', skillName);
 
-        const res = await axiosInstance.patch('/candidate/profile/skills/add', {
-          skillName,
-        });
-        console.log('after adding skill ', res);
-        onUserUpdate(res.data.user);
-        showToast({ msg: res.data.message, type: 'success' });
+        const data = await profileService.addSkilltoProfile(skillName);
+
+        onUserUpdate(data.user);
+        showToast({ msg: data.message, type: 'success' });
         setSkillName('');
         setIsAddSkill(false);
       } catch (error: any) {

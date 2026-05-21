@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { forgotPasswordSchema } from '../../../libraries/validations/auth/forgotPasswordValidation';
-import axiosInstance from '../../../libraries/axios';
-import type { UserRole } from '../../../constants/types/user';
+import { forgotPasswordSchema } from '../../../libraries/validations/auth/forgot-password.validation';
 
-import { useToast } from '../../../shared/toast/useToast';
+import type { UserRole } from '../../../constants/types/user';
+import { authService } from '../../../services/api-services/authServices';
+
+import { useToast } from '../../../shared/toast/use-toast';
 
 export const useForgotPassword = (role: UserRole) => {
   const { showToast } = useToast();
@@ -16,31 +17,23 @@ export const useForgotPassword = (role: UserRole) => {
   };
   const submitHandle = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('forgot form submitted');
-    console.log('email is ', email);
 
     const result = forgotPasswordSchema.safeParse({ email });
-    console.log('result', result);
 
     if (!result.success) {
       const error = result.error.flatten().fieldErrors;
 
-      console.log('forrmatted errors ', { error });
       setError(error.email?.[0] as string);
       setEmail('');
       return;
     }
-    console.log('front end validation successfule');
 
     setError('');
     localStorage.setItem('reset_email', email);
     try {
-      const response = await axiosInstance.post('/auth/forgot-password', {
-        email: email,
-        role: role,
-      });
-      console.log('response from the backend', response);
-      showToast({ msg: response.data.message, type: 'success' });
+      const data = await authService.formgotPasword(email, role);
+
+      showToast({ msg: data.message, type: 'success' });
     } catch (error: any) {
       setError(error.response?.data.message || error.message);
       showToast({

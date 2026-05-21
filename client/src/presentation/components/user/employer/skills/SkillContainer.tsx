@@ -1,19 +1,25 @@
 import StatusCards from '../../../admin/StatusCards';
 import HeroSection from '../../../admin/HeroSection';
 import { type StatusCardType } from '../../../../pages/admin/Companies';
-import { skillService } from '../../../../../services/apiServices/skillServices';
+import { skillService } from '../../../../../services/api-services/skillServices';
 import { useEffect, useState } from 'react';
-import { useToast } from '../../../../../shared/toast/useToast';
-import { type SkillType } from '../../../../../types/dtos/skillTypes';
+import { useToast } from '../../../../../shared/toast/use-toast';
+import { type SkillType } from '../../../../../types/dtos/skill.types';
 import { type ColumnType } from '../../../admin/Candidates/ReusableTable';
 import ReusableTable from '../../../admin/Candidates/ReusableTable';
 import { statusStyles } from '../../../../pages/admin/Candidates';
 import { useSelector } from 'react-redux';
 import { Eye, Trash, SquarePenIcon } from 'lucide-react';
 
-const tabs = ['All', 'Approved', 'Rejected', 'Removed', 'Pending'];
+const tabs = [
+  { label: 'All', value: '' },
+  { label: 'Approved', value: 'approved' },
+  { label: 'Rejected', value: 'rejected' },
+  { label: 'Removed', value: 'removed' },
+  { label: 'Pending', value: 'pending' },
+];
 
-import { type SkillStatusType } from '../../../../../types/dtos/skillTypes';
+import { type SkillStatusType } from '../../../../../types/dtos/skill.types';
 import Pagination from '../../../common/Pagination';
 import ViewSkillModal from '../../../admin/skills/ViewModal';
 import ConfirmationModal from '../../../../modals/ConfirmationModal';
@@ -25,7 +31,12 @@ import type { StateType } from '../../../../../constants/types/user';
 const sortOption = {
   key: 'sortBy',
   label: 'Sort',
-  options: ['Newest', 'Oldest', 'Count of Post', 'Count of Users'],
+  options: [
+    { label: 'Newest', value: 'newest' },
+    { label: 'Oldest', value: 'oldest' },
+    { label: 'Count of Post', value: 'countOfPost' },
+    { label: 'Count of Users', value: 'countOfUsers' },
+  ],
 };
 function SkillsContainer() {
   const { showToast } = useToast();
@@ -253,6 +264,7 @@ function SkillsContainer() {
       setLoading(false);
     }
   };
+
   const updateSkill = async () => {
     console.log('skill is');
 
@@ -291,11 +303,13 @@ function SkillsContainer() {
       setLoading(false);
     }
   };
+
   const handleUpdateStatus = async (status: SkillStatusType) => {
     console.log('from skill update status', status);
 
     await updateStatus(status);
   };
+
   const updateStatus = async (status: SkillStatusType) => {
     if (!skill) return;
 

@@ -47,6 +47,7 @@ type SidebarProps = {
 export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
   const [activeNav, setActiveNav] = useState(nav);
   const navigate = useNavigate();
+
   return (
     <div
       style={{ fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}

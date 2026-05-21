@@ -10,12 +10,12 @@ import { useInterviews } from '../../../../hooks/user/useInterview';
 import { type InterviewMode } from '../../../../../types/dtos/interview.dto';
 
 import InterviewFeedbackModal from './UpdateModal';
-import { useToast } from '../../../../../shared/toast/useToast';
+import { useToast } from '../../../../../shared/toast/use-toast';
 
 import {
   formatDateForInput,
   formatTimeForInput,
-} from '../../../../../utils/dateConversion';
+} from '../../../../../utils/date-conversion';
 import { interviewService } from '../../../../../services/interview.service';
 
 type Props = {
@@ -362,6 +362,32 @@ export default function InterviewDetailsModal({
                 </span>
               </div>
             </div>
+
+            {!isEditing && (
+              <div className="px-6 pt-4">
+                {interview.isRescheduleRequested &&
+                  interview.status === 'scheduled' && (
+                    <div className="flex items-start justify-between gap-4 rounded-lg border border-amber-200 bg-amber-50 p-3">
+                      <div className="flex-1">
+                        <p className="text-xs text-amber-700 font-medium">
+                          ⚠️ Candidate requested reschedule
+                        </p>
+
+                        <p className="text-xs text-black-700 font-medium mt-1">
+                          Reason: {interview.reasonForRescheduleRequest}
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={handleReschedule}
+                        className="text-xs text-blue-600 hover:underline whitespace-nowrap"
+                      >
+                        Reschedule
+                      </button>
+                    </div>
+                  )}
+              </div>
+            )}
 
             {!isEditing && (
               <div className="px-6 pt-4 flex flex-col gap-2">

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../../redux/authSlice';
-import axiosInstance from '../../../libraries/axios';
-import { useToast } from '../../../shared/toast/useToast';
+import { logout } from '../../../redux/auth-slice';
+
+import { useToast } from '../../../shared/toast/use-toast';
 import { useSelector } from 'react-redux';
 import type { StateType } from '../../../constants/types/user';
+import { authService } from '../../../services/api-services/authServices';
 
 export const useHeader = () => {
   const { showToast } = useToast();
@@ -16,14 +17,9 @@ export const useHeader = () => {
   const HandleLogout = async () => {
     console.log('form logout function');
     try {
-      const response = await axiosInstance.post(
-        '/auth/logout',
-        {},
-        { withCredentials: true }
-      );
-      console.log(response);
+      const data = await authService.logout();
 
-      showToast({ msg: response.data.message, type: 'success' });
+      showToast({ msg: data.message, type: 'success' });
       dispatch(logout());
 
       navigate('/login');

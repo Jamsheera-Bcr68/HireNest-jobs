@@ -1,9 +1,9 @@
-import { type ResumeType } from '../../../../types/dtos/profileTypes/ResumeType';
+import { type ResumeType } from '../../../../types/dtos/profile-types/resume.type';
 import { useLockBodyScroll } from '../../../hooks/useBodyLock';
 import { useState } from 'react';
 import { Upload, X } from 'lucide-react';
-import { profileService } from '../../../../services/apiServices/candidateService';
-import { useToast } from '../../../../shared/toast/useToast';
+import { profileService } from '../../../../services/api-services/candidateService';
+import { useToast } from '../../../../shared/toast/use-toast';
 
 type Props = {
   resumes: ResumeType[];

@@ -3,16 +3,16 @@ import { X } from 'lucide-react';
 import {
   Company_Size,
   Industry_Type,
-} from '../../types/dtos/profileTypes/industryType';
-import type { AddressType } from '../../types/profileTypes';
-import { useToast } from '../../shared/toast/useToast';
+} from '../../types/dtos/profile-types/industry.type';
+import type { AddressType } from '../../types/profile.types';
+import { useToast } from '../../shared/toast/use-toast';
 import { Github, Twitter, Globe, Youtube } from 'lucide-react';
-import { type CompanyProfileType } from '../../types/dtos/profileTypes/userTypes';
-import { type ISocialLinks } from '../../types/profileTypes';
+import { type CompanyProfileType } from '../../types/dtos/profile-types/user.types';
+import { type ISocialLinks } from '../../types/profile.types';
 import { useEffect, useState } from 'react';
-import { YEARS } from '../../types/dtos/profileTypes/educationTypes';
-import { companyProfileEditSchema } from '../../libraries/validations/company/companyEditFormValidation';
-import { companyService } from '../../services/apiServices/companyService';
+import { YEARS } from '../../types/dtos/profile-types/education.types';
+import { companyProfileEditSchema } from '../../libraries/validations/company/company-editForm.validation';
+import { companyService } from '../../services/api-services/companyService';
 
 type FormData = {
   companyName: string;

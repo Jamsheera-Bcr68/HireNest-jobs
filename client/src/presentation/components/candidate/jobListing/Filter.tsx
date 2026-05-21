@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import FilterSection from './FilterSection';
-import { JOB_TYPES } from '../../../../types/dtos/jobDto';
-import { Experience_Types } from '../../../../types/dtos/profileTypes/experienceType';
-import { Industry_Type } from '../../../../types/dtos/profileTypes/industryType';
-import { SalaryType } from '../../../../types/dtos/profileTypes/experienceType';
+import { JOB_TYPES } from '../../../../types/dtos/job.dto';
+import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
+import { Industry_Type } from '../../../../types/dtos/profile-types/industry.type';
+import { SalaryType } from '../../../../types/dtos/profile-types/experience.type';
 import type { JobFilterType } from '../../../pages/user/JobListing';
 
 type Props = {

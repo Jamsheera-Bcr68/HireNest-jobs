@@ -1,25 +1,25 @@
 import ReusableTable from '../../../admin/Candidates/ReusableTable';
 import JobModal from '../Modal';
-import { useToast } from '../../../../../shared/toast/useToast';
+import { useToast } from '../../../../../shared/toast/use-toast';
 import HeroSection from '../../../admin/HeroSection';
 import StatusCards from '../../../admin/StatusCards';
 
 import { useEffect, useState } from 'react';
-import { jobService } from '../../../../../services/apiServices/jobService';
+import { jobService } from '../../../../../services/api-services/jobService';
 import { type StatusCardType } from '../../../../pages/admin/Companies';
-import { type JobCardDto } from '../../../../../types/dtos/jobDto';
+import { type JobCardDto } from '../../../../../types/dtos/job.dto';
 import { statusStyles } from '../../../../pages/admin/Candidates';
 import { useNavigate } from 'react-router-dom';
 import { Eye, SquarePenIcon, Trash, LockOpen } from 'lucide-react';
 import { type ColumnType } from '../../../admin/Candidates/ReusableTable';
-import { Experience_Types } from '../../../../../types/dtos/profileTypes/experienceType';
-import { formatSalary } from '../../../../../utils/salaryFormat';
+import { Experience_Types } from '../../../../../types/dtos/profile-types/experience.type';
+import { formatSalary } from '../../../../../utils/salary-format';
 import { useSelector } from 'react-redux';
 import type { StateType } from '../../../../../constants/types/user';
 import Pagination from '../../../common/Pagination';
 import { type JobFilterType } from '../../../candidate/jobListing/ListingContainter';
 import ConfirmationModal from '../../../../modals/ConfirmationModal';
-import { type StatusType } from '../../../../../types/dtos/profileTypes/userTypes';
+import { type StatusType } from '../../../../../types/dtos/profile-types/user.types';
 import UpdateLastDateModal from '../job-details/UpdateLastDateModal';
 import JobForm from '../JobForm';
 

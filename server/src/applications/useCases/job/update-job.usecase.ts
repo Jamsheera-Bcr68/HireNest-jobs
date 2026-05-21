@@ -1,13 +1,13 @@
-import { AppError } from '../../../domain/errors/AppError';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { jobMessages } from '../../../shared/constants/messages/jobMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { JobDetailsDto, JobDto, JobUpdateDto } from '../../Dtos/jobDto';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { SkillStatus } from '../../../domain/enums/skillEnum';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { userMessages } from '../../../shared/constants/messages/userMessages';
-import { ISkillRepository } from '../../../domain/repositoriesInterfaces/ISkillRepository';
+import { AppError } from '../../../domain/errors/app-error';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { jobMessages } from '../../../shared/constants/messages/job.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { JobDetailsDto, JobDto, JobUpdateDto } from '../../dtos/job.dto';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { SkillStatus } from '../../../domain/enums/skill.enum';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { userMessages } from '../../../shared/constants/messages/user.messages';
+import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
 
 export interface IUpdateJobUseCase {
   execute(

@@ -2,9 +2,9 @@ import { X } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import Cropper from 'react-easy-crop';
-import { getCroppedImage } from '../../utils/cropImage';
-import { useToast } from '../../shared/toast/useToast';
-import { companyService } from '../../services/apiServices/companyService';
+import { getCroppedImage } from '../../utils/crop-image';
+import { useToast } from '../../shared/toast/use-toast';
+import { companyService } from '../../services/api-services/companyService';
 
 type ModalProps = {
   preview: string | null;

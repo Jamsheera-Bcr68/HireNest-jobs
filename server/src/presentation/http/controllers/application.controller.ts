@@ -1,23 +1,23 @@
 import { asyncHandler } from '../middleweres/async-handler';
 import { Request, Response } from 'express';
 import { IApplyJobUseCase } from '../../../applications/useCases/candidate/apply-job.usecase';
-import { AppError } from '../../../domain/errors/AppError';
-import { jobMessages } from '../../../shared/constants/messages/jobMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { Application } from '../../../domain/entities/application';
+import { AppError } from '../../../domain/errors/app-error';
+import { jobMessages } from '../../../shared/constants/messages/job.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { Application } from '../../../domain/entities/application.entity';
 import { applicationMessage } from '../../../shared/constants/messages/application.messages';
-import { IGetEntityStatusUseCase } from '../../../applications/interfaces/admin/IGetEntityStatusUseCase';
+import { IGetEntityStatusUseCase } from '../../../applications/interfaces/admin/get-admin-entity-status.usecase';
 import { IGetAllEntitiesUsecase } from '../../../applications/interfaces/usecases/get-all-entities.usecase.interface';
 import {
   ApplicationListDto,
   ApplicationFilterDto,
   ApplicationStatsCardType,
-} from '../../../applications/Dtos/application.dto';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { ApplicationStatusEnum } from '../../../domain/enums/statusEnum';
-import { JobType } from '../../../domain/types/jobTypes';
-import { ApplicationDetailsDto } from '../../../applications/Dtos/application.dto';
+} from '../../../applications/dtos/application.dto';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { ApplicationStatusEnum } from '../../../domain/enums/status.enum';
+import { JobType } from '../../../domain/types/job.types';
+import { ApplicationDetailsDto } from '../../../applications/dtos/application.dto';
 import { IGetEntityDetailsUsecase } from '../../../applications/interfaces/usecases/get-entity-details.usecase.inerface';
 import { IUpdateEntityStatusUseCase } from '../../../applications/interfaces/usecases/update-entity-status.usecase.interface';
 import { ApplicationMapper } from '../../../applications/mappers/application.mapper';

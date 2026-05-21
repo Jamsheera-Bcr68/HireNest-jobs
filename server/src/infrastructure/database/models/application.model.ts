@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ApplicationStatusEnum } from '../../../domain/enums/statusEnum';
+import { ApplicationStatusEnum } from '../../../domain/enums/status.enum';
 
 export interface IApplicationDocument {
   _id: mongoose.Types.ObjectId;

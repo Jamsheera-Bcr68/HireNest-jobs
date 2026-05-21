@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react';
 import HeroSection from '../HeroSection';
 import StatusCards from '../StatusCards';
 import { type StatusCardType } from '../../../pages/admin/Companies';
-import { adminService } from '../../../../services/apiServices/adminService';
-import { useToast } from '../../../../shared/toast/useToast';
+import { adminService } from '../../../../services/api-services/adminService';
+import { useToast } from '../../../../shared/toast/use-toast';
 import ReusableTable from '../Candidates/ReusableTable';
-import { type JobCardDto } from '../../../../types/dtos/jobDto';
+import { type JobCardDto } from '../../../../types/dtos/job.dto';
 import { statusStyles } from '../../../pages/admin/Candidates';
 import { useNavigate } from 'react-router-dom';
 import { Eye, Trash, Ban, ThumbsUp } from 'lucide-react';
 import { type ColumnType } from '../Candidates/ReusableTable';
-import { Experience_Types } from '../../../../types/dtos/profileTypes/experienceType';
+import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
 import { type JobFilterType } from '../../candidate/jobListing/ListingContainter';
 import Pagination from '../../common/Pagination';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { type UpdateStatusType } from '../../user/employer/company-joblisting/CompanyJobListingContainer';
-import type { StatusType } from '../../../../types/dtos/profileTypes/userTypes';
+import type { StatusType } from '../../../../types/dtos/profile-types/user.types';
 
 import AddReasonModal from './AddReasonModal';
 

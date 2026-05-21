@@ -1,9 +1,9 @@
-import { AppError } from '../../../domain/errors/AppError';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { IUserRepository } from '../../../domain/repositoriesInterfaces/IUserRepositories';
-import { jobMessages } from '../../../shared/constants/messages/jobMessages';
-import { userMessages } from '../../../shared/constants/messages/userMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { AppError } from '../../../domain/errors/app-error';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { jobMessages } from '../../../shared/constants/messages/job.messages';
+import { userMessages } from '../../../shared/constants/messages/user.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
 
 export interface IRemoveSavedJobUseCase {
   execute(jobId: string, userId: string): Promise<void>;

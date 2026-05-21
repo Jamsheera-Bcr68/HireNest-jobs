@@ -6,9 +6,9 @@ import {
   EDUCATION_LEVELS,
   YEARS,
   type EducationType,
-} from '../../types/dtos/profileTypes/educationTypes';
+} from '../../types/dtos/profile-types/education.types';
 import { useEducation } from '../hooks/user/candidate/profile/useEducation';
-import type { UserProfileType } from '../../types/dtos/profileTypes/userTypes';
+import type { UserProfileType } from '../../types/dtos/profile-types/user.types';
 
 interface AddEducationModalProps {
   isOpen: boolean;

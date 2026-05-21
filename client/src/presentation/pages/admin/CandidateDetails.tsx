@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import type { UserProfileType } from '../../../types/dtos/profileTypes/userTypes';
-import { adminService } from '../../../services/apiServices/adminService';
+import type { UserProfileType } from '../../../types/dtos/profile-types/user.types';
+import { adminService } from '../../../services/api-services/adminService';
 import ImageAndName from '../../components/admin/CandidateDetails/ImageAndName';
 import Tabs from '../../components/admin/CandidateDetails/Tabs';
 import OverView from '../../components/admin/CandidateDetails/OverView';
-import { useToast } from '../../../shared/toast/useToast';
+
 import { type ContactDataType } from '../../components/admin/CandidateDetails/RightSideBar';
 import {
   Github,
@@ -19,13 +19,13 @@ import {
 } from 'lucide-react';
 
 function CandidateDetails() {
-  const { showToast } = useToast();
   const { candidateId } = useParams();
   console.log('candidate id is', candidateId);
   if (!candidateId) return;
   const [candidate, setCandidate] = useState<UserProfileType | null>(null);
   const [activeTab, setActiveTab] = useState('Overview');
   const [contactLinks, setContactLinks] = useState<ContactDataType[]>([]);
+
   useEffect(() => {
     async function getCandidate(candidateId: string) {
       try {
@@ -86,10 +86,7 @@ function CandidateDetails() {
         setContactLinks(links);
         console.log('candidate phone', candidate?.phone);
       } catch (error: any) {
-        showToast({
-          msg: error.response?.data.message || error.message,
-          type: 'error',
-        });
+        setCandidate(null);
       }
     }
     getCandidate(candidateId);

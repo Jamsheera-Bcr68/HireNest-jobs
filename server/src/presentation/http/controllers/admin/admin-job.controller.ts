@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { IUpdateJobStatusUseCase } from '../../../../applications/useCases/job/update-job-status.usecase';
 import { asyncHandler } from '../../middleweres/async-handler';
-import { AppError } from '../../../../domain/errors/AppError';
-import { authMessages } from '../../../../shared/constants/messages/authMesages';
-import { statusCodes } from '../../../../shared/enums/statusCodes';
-import { jobMessages } from '../../../../shared/constants/messages/jobMessages';
+import { AppError } from '../../../../domain/errors/app-error';
+import { authMessages } from '../../../../shared/constants/messages/auth.mesages';
+import { statusCodes } from '../../../../shared/enums/statuscodes';
+import { jobMessages } from '../../../../shared/constants/messages/job.messages';
 import { IGetPostSatusUseCase } from '../../../../applications/useCases/company/company-post-status.usecase';
-import { IGetAllJobsUseCase } from '../../../../applications/useCases/candidate/GetAllJobsUseCase';
-import { IGetJobDetailsUseCase } from '../../../../applications/useCases/candidate/GetJobDetailsUseCase';
+import { IGetAllJobsUseCase } from '../../../../applications/useCases/candidate/get-jobs.usecase';
+import { IGetJobDetailsUseCase } from '../../../../applications/useCases/candidate/get-job.usecase';
 
 export class AdminJobController {
   constructor(

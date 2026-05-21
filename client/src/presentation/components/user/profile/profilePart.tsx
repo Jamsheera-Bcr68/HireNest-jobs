@@ -1,6 +1,6 @@
 import BasicDataPart from './BasicdataPart';
 import { useProfile } from '../../../hooks/user/candidate/profile/useProfile';
-import { useToast } from '../../../../shared/toast/useToast';
+import { useToast } from '../../../../shared/toast/use-toast';
 
 import Resume from './Resume';
 

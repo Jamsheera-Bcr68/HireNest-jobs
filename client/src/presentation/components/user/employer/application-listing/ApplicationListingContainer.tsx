@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye } from 'lucide-react';
 import type { StatusCardType } from '../../../../pages/admin/Companies';
-import { applicationService } from '../../../../../services/apiServices/application.service';
-import { useToast } from '../../../../../shared/toast/useToast';
+import { applicationService } from '../../../../../services/api-services/application.service';
+import { useToast } from '../../../../../shared/toast/use-toast';
 import { appStatusStyles } from '../../../candidate/applications/ApplicationCard';
 import { type ApplicationDto } from '../../../../../types/dtos/application.dto';
 import type { ColumnType } from '../../../admin/Candidates/ReusableTable';
@@ -61,7 +61,6 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
     }
   });
 
-  const [activeApp, setActiveApp] = useState<ApplicationDto | null>(null);
   const handleUpdate = async (id: string) => {
     try {
       const data = await applicationService.updateAppStatus(id, 'reviewed');

@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { resetPasswordSchema } from '../../../libraries/validations/auth/resetPasswordValidation';
-import axiosInstance from '../../../libraries/axios';
+import { resetPasswordSchema } from '../../../libraries/validations/auth/reset-password.validation';
+
 import { useParams, useNavigate } from 'react-router-dom';
-import { useToast } from '../../../shared/toast/useToast';
+import { useToast } from '../../../shared/toast/use-toast';
 import { useSearchParams } from 'react-router-dom';
+import { authService } from '../../../services/api-services/authServices';
 
 type Errors = {
   password?: string;
@@ -31,9 +32,9 @@ export const useResetPassword = () => {
     const { value, name } = e.currentTarget;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   const submitHandle = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('form data ', formData);
 
     const email = localStorage.getItem('reset_email');
 
@@ -42,7 +43,9 @@ export const useResetPassword = () => {
 
       return;
     }
+
     const result = resetPasswordSchema.safeParse(formData);
+
     if (!result.success) {
       const error = result.error.flatten().fieldErrors;
       const formError: Errors = {
@@ -53,7 +56,6 @@ export const useResetPassword = () => {
       setError(formError);
       return;
     }
-    console.log('front end validation is success full');
 
     setError({});
     try {
@@ -63,20 +65,16 @@ export const useResetPassword = () => {
       }
       formData.resetToken = resetToken;
       formData.email = email;
-      const resposnse = await axiosInstance.post(
-        '/auth/reset-password',
-        formData
-      );
-      console.log(resposnse);
-      showToast({ msg: resposnse.data.message, type: 'success' });
+
+      const data = await authService.resetPassword(formData);
+
+      showToast({ msg: data.message, type: 'success' });
       setError({});
       navigate('/login');
     } catch (error: any) {
-      console.log(error);
-
       let msg = error?.response?.data.message || error.message;
       setError({ server: msg });
-      showToast({ msg: msg, type: 'error' });
+
       return;
     }
   };

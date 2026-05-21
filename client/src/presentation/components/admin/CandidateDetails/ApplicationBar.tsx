@@ -1,15 +1,13 @@
-import React from 'react';
 import { Section } from './Section';
-import type { UserProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 
 type Props = {
   candidate: UserProfileType;
 };
 function ApplicationBar({ candidate }: Props) {
+  const applications = [];
   return (
     <div>
-      {/* Applications Tab */}
-
       <Section title="All Applications" icon="📋">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -28,7 +26,7 @@ function ApplicationBar({ candidate }: Props) {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {candidate.applications.map((app, i) => (
+              {applications.map((app, i) => (
                 <tr
                   key={app.id}
                   className="hover:bg-slate-50/60 transition-colors"

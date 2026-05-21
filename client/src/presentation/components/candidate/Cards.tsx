@@ -1,5 +1,5 @@
-import type { JobCardDto } from '../../../types/dtos/jobDto';
-import { formatSalary } from '../../../utils/salaryFormat';
+import type { JobCardDto } from '../../../types/dtos/job.dto';
+import { formatSalary } from '../../../utils/salary-format';
 
 import {
   Users,

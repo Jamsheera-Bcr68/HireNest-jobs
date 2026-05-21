@@ -3,8 +3,9 @@ import {
   InterviewMode,
   InterviewResult,
 } from '../../../domain/enums/interview.enum';
-import { InterviewStatusEnum } from '../../../domain/enums/statusEnum';
+import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
 import { boolean } from 'zod';
+import { UserRole } from '../../../domain/enums/user.enums';
 
 export interface IInterviewDocument {
   _id: mongoose.Types.ObjectId;
@@ -26,8 +27,10 @@ export interface IInterviewDocument {
   meetLink: string;
   isAddlinkLater: boolean;
   isRescheduleRequested: boolean;
+  reasonForRescheduleRequest: string;
   isConfirmed: boolean;
   reasonForCancel?: string;
+  cancelledBy: UserRole;
 }
 
 export const InterviewSchema = new mongoose.Schema<IInterviewDocument>({
@@ -47,6 +50,7 @@ export const InterviewSchema = new mongoose.Schema<IInterviewDocument>({
     enum: Object.values(InterviewStatusEnum),
     default: InterviewStatusEnum.SCHEDULED,
   },
+  cancelledBy: { type: String, enum: Object.values(UserRole) },
   feedback: { type: String },
   createdAt: { date: Date },
   notes: { type: String },
@@ -58,6 +62,7 @@ export const InterviewSchema = new mongoose.Schema<IInterviewDocument>({
   isConfirmed: { type: Boolean, default: false },
   isRescheduleRequested: { type: Boolean, default: false },
   reasonForCancel: { type: String },
+  reasonForRescheduleRequest: { type: String },
 });
 
 export const interviewModel = mongoose.model<IInterviewDocument>(

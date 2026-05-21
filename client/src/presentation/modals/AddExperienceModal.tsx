@@ -3,8 +3,8 @@ import { X } from 'lucide-react';
 import { useState } from 'react';
 import { useExperience } from '../hooks/user/candidate/profile/useEditExperience';
 
-import type { UserProfileType } from '../../types/dtos/profileTypes/userTypes';
-import type { ExperienceType } from '../../types/dtos/profileTypes/experienceType';
+import type { UserProfileType } from '../../types/dtos/profile-types/user.types';
+import type { ExperienceType } from '../../types/dtos/profile-types/experience.type';
 
 type ExperienceModalProps = {
   open: boolean;

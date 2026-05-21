@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { profileDataSchema } from '../../../../../libraries/validations/auth/candidate/profileValidation';
-import axiosInstance from '../../../../../libraries/axios';
-import type { typeOfToast } from '../../../../../types/toastTypes';
-import type { ISocialLinks } from '../../../../../types/profileTypes';
-import { type UserProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import { profileDataSchema } from '../../../../../libraries/validations/auth/candidate/profile.validation';
+
+import type { typeOfToast } from '../../../../../types/toast.types';
+import type { ISocialLinks } from '../../../../../types/profile.types';
+import { type UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
+import { profileService } from '../../../../../services/api-services/candidateService';
 
 type FormData = {
   name?: string;
@@ -98,10 +99,10 @@ export const useProfileEdit = (
 
     setError({});
     try {
-      const response = await axiosInstance.post('/candidate/profile', formData);
-      console.log('response from backend after updating user ', response);
-      const updated: UserProfileType = response.data.user;
-      showToast({ msg: response.data.message, type: 'success' });
+      const data = await profileService.updateProfile(formData);
+
+      const updated: UserProfileType = data.user;
+      showToast({ msg: data.message, type: 'success' });
       onUserUpdate(updated);
       onClose();
       setFormData({});

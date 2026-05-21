@@ -1,5 +1,6 @@
 import { InterviewMode, InterviewResult } from '../enums/interview.enum';
-import { InterviewStatusEnum } from '../enums/statusEnum';
+import { InterviewStatusEnum } from '../enums/status.enum';
+import { UserRole } from '../enums/user.enums';
 
 export interface Interview {
   id: string;
@@ -22,4 +23,6 @@ export interface Interview {
   isConfirmed: boolean;
   isRescheduleRequested: boolean;
   reasonForCancel?: string;
+  reasonForRescheduleRequest: string;
+  cancelledBy: UserRole;
 }

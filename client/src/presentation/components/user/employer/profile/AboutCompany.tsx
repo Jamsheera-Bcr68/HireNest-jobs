@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { useToast } from '../../../../../shared/toast/useToast';
-import { type CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
-import { companyService } from '../../../../../services/apiServices/companyService';
-import { updateCompanyFieldSchema } from '../../../../../libraries/validations/company/companyUpdateFieldsValidation';
+import { useToast } from '../../../../../shared/toast/use-toast';
+import { type CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
+import { companyService } from '../../../../../services/api-services/companyService';
+import { updateCompanyFieldSchema } from '../../../../../libraries/validations/company/company-update-fields.validation';
 
 export const AboutCompany = ({
   company,
@@ -16,6 +16,7 @@ export const AboutCompany = ({
   const [error, setError] = useState<string>('');
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const { showToast } = useToast();
+
   const autoResize = () => {
     const textarea = textareaRef.current;
     if (!textarea) return;
@@ -23,12 +24,15 @@ export const AboutCompany = ({
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
   };
+
   useEffect(() => {
     autoResize();
   }, [about]);
+
   useEffect(() => {
     if (company && company.about) setAbout(company.about);
   }, [company]);
+
   const addAbout = async () => {
     console.log('from add about');
 
@@ -57,14 +61,17 @@ export const AboutCompany = ({
       });
     }
   };
+
   const cancelEdit = () => {
     setIsEditing(false);
     setAbout('');
   };
+
   const onEdit = () => {
     setIsEditing(true);
     setAbout(company?.about || '');
   };
+
   const onBlur = () => {
     if (!company?.about && !about.trim()) {
       setIsEditing(false);
@@ -76,6 +83,7 @@ export const AboutCompany = ({
     setIsEditing(true);
     setAbout(e.target.value);
   };
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-4">

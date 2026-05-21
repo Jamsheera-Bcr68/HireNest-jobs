@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useJobs } from '../../../hooks/user/employer/useJobs';
 import { X, PlusIcon } from 'lucide-react';
-import { useToast } from '../../../../shared/toast/useToast';
-import { skillService } from '../../../../services/apiServices/skillServices';
-import { type SkillType } from '../../../../types/dtos/skillTypes';
+import { useToast } from '../../../../shared/toast/use-toast';
+import { skillService } from '../../../../services/api-services/skillServices';
+import { type SkillType } from '../../../../types/dtos/skill.types';
 import PermissionModal from '../../../modals/PermissionModal';
 import { useNavigate } from 'react-router-dom';
-import { Experience_Types } from '../../../../types/dtos/profileTypes/experienceType';
+import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
 
 const workMode = ['hybrid', 'remote', 'onsite'];
 
@@ -32,7 +32,6 @@ const CreateJobPost = () => {
   const selectSkill = (skill: SkillType) => {
     const skill_exist = formData.skills.find((s) => s.id == skill.id);
     if (skill_exist) {
-      // setError((prev) => ({ ...prev, skills: 'Skill already exist' }));
       showToast({ msg: 'Already existing ', type: 'error' });
       setFilteredSkills([]);
       setAddSkill(false);
@@ -48,6 +47,7 @@ const CreateJobPost = () => {
     setSkill('');
     setFilteredSkills([]);
   };
+
   useEffect(() => {
     async function fetchskill() {
       try {
@@ -64,6 +64,7 @@ const CreateJobPost = () => {
     }
     fetchskill();
   }, []);
+
   const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError((prev) => ({ ...prev, skills: '' }));
     const value = e.currentTarget.value;
@@ -81,6 +82,7 @@ const CreateJobPost = () => {
 
     setFilteredSkills(filtered);
   };
+
   const removeSkill = (id: string | undefined) => {
     if (!id) return;
     setFormData((prev) => ({
@@ -88,6 +90,7 @@ const CreateJobPost = () => {
       skills: prev.skills.filter((s) => s.id !== id),
     }));
   };
+
   const handleAddResponsibility = () => {
     if (!res.trim()) {
       setError((prev) => ({ ...prev, responsibilities: 'Nothing to add' }));
@@ -124,16 +127,19 @@ const CreateJobPost = () => {
     setAddRes(false);
     setRes('');
   };
+
   const removeResponsibility = (res: string) => {
     setFormData((prev) => ({
       ...prev,
       responsibilities: prev.responsibilities.filter((r) => r !== res),
     }));
   };
+
   const handleAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value, name } = e.currentTarget;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleAddSkill = () => {
     if (!skill.trim()) {
       showToast({ msg: 'Nothing to add', type: 'error' });
@@ -191,6 +197,7 @@ const CreateJobPost = () => {
       });
     }
   };
+
   return (
     <div className="max-h-[80vh] overflow-y-auto px-2">
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-8">

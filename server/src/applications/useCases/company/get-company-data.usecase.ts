@@ -1,9 +1,9 @@
-import { CompanyDataDto } from '../../Dtos/companyDto';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { AppError } from '../../../domain/errors/AppError';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { userMessages } from '../../../shared/constants/messages/userMessages';
-import { CompanyMapper } from '../../mappers/companyMapper';
+import { CompanyDataDto } from '../../dtos/company.dto';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { AppError } from '../../../domain/errors/app-error';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { userMessages } from '../../../shared/constants/messages/user.messages';
+import { CompanyMapper } from '../../mappers/company.mapper';
 
 export interface IGetCompanyDataUseCase {
   execute(companyId: string): Promise<CompanyDataDto>;

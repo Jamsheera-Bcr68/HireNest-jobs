@@ -1,13 +1,13 @@
 import { Bookmark, MapPinIcon, Check, CheckIcon } from 'lucide-react';
 
-import { jobService } from '../../../../services/apiServices/jobService';
-import { useToast } from '../../../../shared/toast/useToast';
+import { jobService } from '../../../../services/api-services/jobService';
+import { useToast } from '../../../../shared/toast/use-toast';
 import { useSelector } from 'react-redux';
 import type { StateType } from '../../../../constants/types/user';
-import { formatSalary } from '../../../../utils/salaryFormat';
+import { formatSalary } from '../../../../utils/salary-format';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../../../../redux/authSlice';
-import type { JobDetailsDto } from '../../../../types/dtos/jobDto';
+import { updateUser } from '../../../../redux/auth-slice';
+import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 

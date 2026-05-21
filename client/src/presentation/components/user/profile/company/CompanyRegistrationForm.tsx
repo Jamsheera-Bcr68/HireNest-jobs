@@ -1,6 +1,6 @@
 import { Twitter, Globe, Youtube } from 'lucide-react';
 import { useRegisterCompany } from '../../../../hooks/user/company/useRegisterCompany';
-import { YEARS } from '../../../../../types/dtos/profileTypes/educationTypes';
+import { YEARS } from '../../../../../types/dtos/profile-types/education.types';
 import SuccessModal from '../../../../modals/SuccessModal';
 import React, {
   useRef,
@@ -14,10 +14,8 @@ import {
   Country_Name,
   Company_Size,
   Document_Types,
-} from '../../../../../types/dtos/profileTypes/industryType';
+} from '../../../../../types/dtos/profile-types/industry.type';
 import { useNavigate } from 'react-router-dom';
-
-/* ─── tiny icon helpers (inline SVG as React components) ─── */
 
 const IconCamera = () => (
   <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
@@ -29,6 +27,7 @@ const IconCamera = () => (
     <circle cx="12" cy="13" r="4" stroke="#a5b4fc" strokeWidth="1.6" />
   </svg>
 );
+
 const IconChevron = () => (
   <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
     <path

@@ -15,9 +15,9 @@ import AddReasonModal from '../../../admin/jobs/AddReasonModal';
 import ConfirmationModal from '../../../../modals/ConfirmationModal';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { JobDetailsDto } from '../../../../../types/dtos/jobDto';
-import { useToast } from '../../../../../shared/toast/useToast';
-import type { StatusType } from '../../../../../types/dtos/profileTypes/userTypes';
+import type { JobDetailsDto } from '../../../../../types/dtos/job.dto';
+import { useToast } from '../../../../../shared/toast/use-toast';
+import type { StatusType } from '../../../../../types/dtos/profile-types/user.types';
 import type { UserRole } from '../../../../../constants/types/user';
 
 type Props = {

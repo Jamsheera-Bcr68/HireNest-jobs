@@ -1,8 +1,8 @@
-import { AppError } from '../../../domain/errors/AppError';
-import { IJobRepository } from '../../../domain/repositoriesInterfaces/IJobRepository';
-import { jobMessages } from '../../../shared/constants/messages/jobMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { type ReportJobInputDto } from '../../Dtos/jobDto';
+import { AppError } from '../../../domain/errors/app-error';
+import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { jobMessages } from '../../../shared/constants/messages/job.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { type ReportJobInputDto } from '../../dtos/job.dto';
 
 export interface IReportJobUseCase {
   execute(id: string, data: ReportJobInputDto, userId: string): Promise<void>;

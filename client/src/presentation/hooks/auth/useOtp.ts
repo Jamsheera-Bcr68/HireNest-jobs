@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../../libraries/axios';
-import { type typeOfToast } from '../../../types/toastTypes';
-import { authService } from '../../../services/apiServices/authServices';
+import { type typeOfToast } from '../../../types/toast.types';
+import { authService } from '../../../services/api-services/authServices';
 
 export function useOtp(showToast: (toast: typeOfToast) => void) {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));

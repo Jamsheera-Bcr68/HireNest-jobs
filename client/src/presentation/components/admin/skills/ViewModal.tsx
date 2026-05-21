@@ -1,5 +1,5 @@
-import { type SkillType } from '../../../../types/dtos/skillTypes';
-import { type SkillStatusType } from '../../../../types/dtos/skillTypes';
+import { type SkillType } from '../../../../types/dtos/skill.types';
+
 import { useEffect } from 'react';
 type Props = {
   isOpen: boolean;

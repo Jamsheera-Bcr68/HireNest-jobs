@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { type UserProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import { type UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
 
-import { type typeOfToast } from '../../../../../types/toastTypes';
+import { type typeOfToast } from '../../../../../types/toast.types';
 import { useNavigate } from 'react-router-dom';
-import { type SkillType } from '../../../../../types/dtos/profileTypes/skillTypes';
-import { skillService } from '../../../../../services/apiServices/skillServices';
-import { profileService } from '../../../../../services/apiServices/candidateService';
+import { type SkillType } from '../../../../../types/dtos/profile-types/skill.types';
+import { skillService } from '../../../../../services/api-services/skillServices';
+import { profileService } from '../../../../../services/api-services/candidateService';
 
 export const useProfile = (showToast: (toast: typeOfToast) => void) => {
   const [user, setUser] = useState<UserProfileType>();
@@ -17,7 +17,6 @@ export const useProfile = (showToast: (toast: typeOfToast) => void) => {
     async function getUser() {
       try {
         const data = await profileService.getProfile();
-        //console.log('response ', response);
 
         let user = data.user;
         console.log('user', user);

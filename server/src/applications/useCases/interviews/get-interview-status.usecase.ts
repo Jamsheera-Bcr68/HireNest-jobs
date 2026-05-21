@@ -1,13 +1,14 @@
-import { InterviewStatsCardType } from '../../Dtos/interview.dto';
-import { IGetEntityStatusUseCase } from '../../interfaces/admin/IGetEntityStatusUseCase';
+import { InterviewStatsCardType } from '../../dtos/interview.dto';
+import { IGetEntityStatusUseCase } from '../../interfaces/admin/get-admin-entity-status.usecase';
 import { Interview } from '../../../domain/entities/interview.entity';
-import { IInterviewRepository } from '../../../domain/repositoriesInterfaces/interview.repository.interface';
-import { InterviewStatusEnum } from '../../../domain/enums/statusEnum';
-import { UserRole } from '../../../domain/enums/userEnums';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { AppError } from '../../../domain/errors/AppError';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
+import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
+import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { AppError } from '../../../domain/errors/app-error';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { InterviewResult } from '../../../domain/enums/interview.enum';
 
 export class GetInterviewStatusUseCase implements IGetEntityStatusUseCase<InterviewStatsCardType> {
   constructor(
@@ -45,12 +46,17 @@ export class GetInterviewStatusUseCase implements IGetEntityStatusUseCase<Interv
 
       isRescheduleRequested: true,
     });
+    const passed = await this._interviewRepository.count({
+      ...filter,
+      result: InterviewResult.PASSED,
+    });
 
     return {
       total: total,
       completed: completed,
       action_required: action_needed,
       upcoming: upcoming,
+      passed: passed,
     };
   }
 }

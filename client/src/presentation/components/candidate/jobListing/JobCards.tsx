@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { JobCardDto } from '../../../../types/dtos/jobDto';
+import type { JobCardDto } from '../../../../types/dtos/job.dto';
 import JobCard from '../Cards';
 import Pagination from '../../common/Pagination';
 import { useNavigate } from 'react-router-dom';

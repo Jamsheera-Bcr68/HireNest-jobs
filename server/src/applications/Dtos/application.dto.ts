@@ -1,13 +1,13 @@
 import { Application } from 'express';
-import { ApplicationStatusEnum } from '../../domain/enums/statusEnum';
-import { Job } from '../../domain/entities/Job';
-import { Company } from '../../domain/entities/company';
-import { JobType } from '../../domain/types/jobTypes';
-import { WorkMode } from '../../domain/enums/WorkMode';
-import { IndustryType } from '../../domain/types/companyProfileTypes';
-import { UserSkillDto } from './skillDto';
-import { IResume } from '../../domain/values/profileTypes';
-import { EducationStatus } from '../../domain/enums/EducationEnum';
+import { ApplicationStatusEnum } from '../../domain/enums/status.enum';
+import { Job } from '../../domain/entities/job.entity';
+import { Company } from '../../domain/entities/company.entity';
+import { JobType } from '../../domain/types/job.types';
+import { WorkMode } from '../../domain/enums/work-mode.enum';
+import { IndustryType } from '../../domain/types/company-profile.types';
+import { UserSkillDto } from './skill.dto';
+import { IResume } from '../../domain/values/profile-types';
+import { EducationStatus } from '../../domain/enums/education.enum';
 
 export interface ApplicationDto {
   id: string;

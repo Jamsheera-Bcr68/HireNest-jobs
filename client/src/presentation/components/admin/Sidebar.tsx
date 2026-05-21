@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lightbulb } from 'lucide-react';
 
 const navItems = [
   'Dashboard',
@@ -8,6 +7,7 @@ const navItems = [
   'Candidates',
   'Job Listings',
   'Applications',
+  'Interviews',
   'Pendings',
   'Skills',
 ];
@@ -18,9 +18,11 @@ const navLinks: Record<string, string> = {
   Companies: '/admin/companies',
   'Job Listings': '/admin/jobs',
   Applications: '/admin/applications',
+  Interviews: '/admin/interviews',
   Skills: '/admin/skills',
   Pendings: '/admin/reports',
 };
+
 function Sidebar({
   setTitle,
   nav = 'Dashboard',

@@ -1,4 +1,4 @@
-import type { CompanyProfileType } from '../../../../types/dtos/profileTypes/userTypes';
+import type { CompanyProfileType } from '../../../../types/dtos/profile-types/user.types';
 
 function ContactDetails({ company }: { company: CompanyProfileType | null }) {
   if (!company) return null;

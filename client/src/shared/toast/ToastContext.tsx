@@ -1,16 +1,18 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import * as Toast from '@radix-ui/react-toast';
-import { ToastStyle } from '../../types/toastTypes';
+import { ToastStyle } from '../../types/toast.types';
 import './toast.css';
+import { setToastHandler } from '../../utils/toast.service';
 
 import {
   type typeOfToast,
   type TypeOfToastContext,
-} from '../../types/toastTypes';
+} from '../../types/toast.types';
 
 export const ToastContext = createContext<TypeOfToastContext | undefined>(
   undefined
 );
+
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toast, setToast] = useState<typeOfToast>({
     msg: '',
@@ -22,6 +24,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     setToast(payload);
     setOpen(true);
   };
+
+  useEffect(() => {
+    setToastHandler(showToast);
+  }, []);
+
   return (
     <ToastContext.Provider value={{ showToast }}>
       {' '}

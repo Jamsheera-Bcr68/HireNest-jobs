@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import LogoAndName from '../../components/admin/companyDetails/LogoAndName';
-import type { CompanyProfileType } from '../../../types/dtos/profileTypes/userTypes';
+import type { CompanyProfileType } from '../../../types/dtos/profile-types/user.types';
 
 import AboutAndDocuments from '../../components/admin/companyDetails/AboutAndDocuments';
 import ContactDetails from '../../components/admin/companyDetails/ContactDetails';
-import { adminService } from '../../../services/apiServices/adminService';
+import { adminService } from '../../../services/api-services/adminService';
 import Activity from '../../components/admin/companyDetails/Activity';
 
 export default function CompanyDetails() {
@@ -14,10 +14,12 @@ export default function CompanyDetails() {
   const [company, setCompany] = useState<CompanyProfileType | null>(null);
   useEffect(() => {
     async function getCompany() {
-      const data = await adminService.getCompany(companyId!!);
-      console.log('data after fetching compant', data);
+      try {
+        const data = await adminService.getCompany(companyId!!);
+        console.log('data after fetching compant', data);
 
-      setCompany(data.company);
+        setCompany(data.company);
+      } catch (error) {}
     }
     getCompany();
   }, []);

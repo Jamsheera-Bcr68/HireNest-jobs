@@ -1,9 +1,9 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import { useProfileEdit } from '../hooks/user/candidate/profile/useProfileEdit';
-import { useToast } from '../../shared/toast/useToast';
+import { useToast } from '../../shared/toast/use-toast';
 import { Github, Twitter, Globe, Youtube } from 'lucide-react';
-import { type UserProfileType } from '../../types/dtos/profileTypes/userTypes';
+import { type UserProfileType } from '../../types/dtos/profile-types/user.types';
 
 export default function ProfileEditModal({
   open,

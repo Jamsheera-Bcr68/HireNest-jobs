@@ -1,15 +1,15 @@
-import { UserRole } from '../../../domain/enums/userEnums';
-import { ISkillRepository } from '../../../domain/repositoriesInterfaces/ISkillRepository';
-import { SkillStatusCardDto } from '../../Dtos/skillDto';
-import { IAdminRepository } from '../../../domain/repositoriesInterfaces/IAdminRepository';
-import { ICompanyRepository } from '../../../domain/repositoriesInterfaces/company/IComapnyRepository';
-import { AppError } from '../../../domain/errors/AppError';
+import { UserRole } from '../../../domain/enums/user.enums';
+import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { SkillStatusCardDto } from '../../dtos/skill.dto';
+import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
+import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { AppError } from '../../../domain/errors/app-error';
 import { IGetEntitySatusUseCase } from '../../interfaces/usecases/get-entity-status.usecase.interface';
-import { userMessages } from '../../../shared/constants/messages/userMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { authMessages } from '../../../shared/constants/messages/authMesages';
-import { SkillStatus } from '../../../domain/enums/skillEnum';
-import { Skill } from '../../../domain/entities/skill';
+import { userMessages } from '../../../shared/constants/messages/user.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
+import { SkillStatus } from '../../../domain/enums/skill.enum';
+import { Skill } from '../../../domain/entities/skill.entity';
 
 export class GetSkillSatusUseCase implements IGetEntitySatusUseCase<SkillStatusCardDto> {
   constructor(

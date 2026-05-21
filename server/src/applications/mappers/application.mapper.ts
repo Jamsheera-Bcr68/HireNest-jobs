@@ -1,18 +1,18 @@
-import { Application } from '../../domain/entities/application';
-import { Company } from '../../domain/entities/company';
-import { Job } from '../../domain/entities/Job';
-import { Skill } from '../../domain/entities/skill';
-import { User } from '../../domain/entities/User';
-import { UserRole } from '../../domain/enums/userEnums';
-import { IResume } from '../../domain/values/profileTypes';
-import { ApplicationTimelineItemDTO } from '../Dtos/application.dto';
+import { Application } from '../../domain/entities/application.entity';
+import { Company } from '../../domain/entities/company.entity';
+import { Job } from '../../domain/entities/job.entity';
+import { Skill } from '../../domain/entities/skill.entity';
+import { User } from '../../domain/entities/user.entity';
+import { UserRole } from '../../domain/enums/user.enums';
+import { IResume } from '../../domain/values/profile-types';
+import { ApplicationTimelineItemDTO } from '../dtos/application.dto';
 import { getMonthAndYear } from '../../shared/utils';
 import {
   ApplicationDto,
   AggregatedApplication,
   ApplicationDetailsDto,
-} from '../Dtos/application.dto';
-import { buildApplicationTimeline } from '../utils/buildApplicationTimeline';
+} from '../dtos/application.dto';
+import { buildApplicationTimeline } from '../utils/build-application-timeline';
 
 export class ApplicationMapper {
   static toApplicationDto(entity: AggregatedApplication): ApplicationDto {

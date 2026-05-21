@@ -1,5 +1,5 @@
 import { useOtp } from '../../hooks/auth/useOtp';
-import { useToast } from '../../../shared/toast/useToast';
+import { useToast } from '../../../shared/toast/use-toast';
 
 const Otp: React.FC = () => {
   const { showToast, ToastElement } = useToast();

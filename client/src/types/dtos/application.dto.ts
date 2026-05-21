@@ -1,7 +1,7 @@
-import type { JobType } from './jobDto';
-import type { WorkMode } from './profileTypes/experienceType';
-import type { IndustryType } from './profileTypes/industryType';
-import type { ResumeType } from './profileTypes/ResumeType';
+import type { JobType } from './job.dto';
+import type { WorkMode } from './profile-types/experience.type';
+import type { IndustryType } from './profile-types/industry.type';
+import type { ResumeType } from './profile-types/resume.type';
 
 export type ApplicationStatusType =
   | 'pending'

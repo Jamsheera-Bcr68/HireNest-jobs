@@ -1,8 +1,8 @@
-import type { CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
+import type { CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import ContactInputForm from './ContactInputForm';
-import { type ISocialLinks } from '../../../../../types/profileTypes';
-import { socialLinksSchema } from '../../../../../libraries/validations/company/companyUpdateFieldsValidation';
-import { useToast } from '../../../../../shared/toast/useToast';
+import { type ISocialLinks } from '../../../../../types/profile.types';
+import { socialLinksSchema } from '../../../../../libraries/validations/company/company-update-fields.validation';
+import { useToast } from '../../../../../shared/toast/use-toast';
 import {
   Linkedin,
   TwitterIcon,
@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import ModalLayout from '../../../../Layoutes/ModalLayout';
 import { useEffect, useState } from 'react';
-import { companyService } from '../../../../../services/apiServices/companyService';
+import { companyService } from '../../../../../services/api-services/companyService';
 export function ContactLinks({
   company,
   onUpdate,

@@ -1,17 +1,17 @@
-import { GenericRepository } from './genericRepository';
-import { IApplicationRepository } from '../../domain/repositoriesInterfaces/application.repository.interface';
+import { GenericRepository } from './generic.repository';
+import { IApplicationRepository } from '../../domain/repository-iInterfaces/application.repository.interface';
 import {
   applicationModel,
   IApplicationDocument,
 } from '../database/models/application.model';
-import { Application } from '../../domain/entities/application';
+import { Application } from '../../domain/entities/application.entity';
 import mongoose from 'mongoose';
 import {
   AggregatedApplication,
   ApplicationDto,
   ApplicationListDto,
   type ApplicationFilterDto,
-} from '../../applications/Dtos/application.dto';
+} from '../../applications/dtos/application.dto';
 import { PipelineStage } from 'mongoose';
 import { number } from 'zod';
 

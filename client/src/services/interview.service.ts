@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from '../constants/apiEndPoints/general';
+import { API_ENDPOINTS } from '../constants/api-end-points/general';
 import axiosInstance from '../libraries/axios';
 import type { interviewFormType } from '../libraries/validations/company/interview.form.validation';
 import type { InterviewFilter } from '../presentation/hooks/user/useInterview';
@@ -43,7 +43,7 @@ export const interviewService = {
   },
 
   async updateStaus(id: string, status: InterviewStatusType, reason?: string) {
-    console.log('status from service', status);
+    console.log('status from service', status, reason);
 
     const res = await axiosInstance.patch(API_ENDPOINTS.INTERVIEW_STATUS(id), {
       status,
@@ -76,5 +76,26 @@ export const interviewService = {
   async getInterview(id: string) {
     const res = await axiosInstance.get(API_ENDPOINTS.INTERVIEW(id));
     return res.data;
+  },
+
+  async confirmInterview(id: string, isConfirmed: boolean, action: string) {
+    const response = await axiosInstance.patch(
+      API_ENDPOINTS.CONFIRM_INTERVIEW(id),
+      {
+        isConfirmed,
+        action,
+      }
+    );
+    return response.data;
+  },
+
+  async requestForReschdule(id: string, reason: string) {
+    console.log('from reschedule requwst,reason ', reason);
+
+    const response = await axiosInstance.patch(
+      API_ENDPOINTS.RESCHEDULE_REQUEST(id),
+      { reason }
+    );
+    return response.data;
   },
 };

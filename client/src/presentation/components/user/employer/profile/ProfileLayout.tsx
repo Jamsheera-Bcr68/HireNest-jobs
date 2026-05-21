@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import BasicPart from './BasicPart';
-import { type CompanyProfileType } from '../../../../../types/dtos/profileTypes/userTypes';
-import { companyService } from '../../../../../services/apiServices/companyService';
-import { useToast } from '../../../../../shared/toast/useToast';
+import { type CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
+import { companyService } from '../../../../../services/api-services/companyService';
+import { useToast } from '../../../../../shared/toast/use-toast';
 import { AboutCompany } from './AboutCompany';
 import { MissionVision } from './MissionAndVision';
 import { CompanyStatistics } from './Statistics';

@@ -1,6 +1,6 @@
 import { statusStyles } from '../../../../pages/admin/Candidates';
-import { formatSalary } from '../../../../../utils/salaryFormat';
-import type { JobDetailsDto } from '../../../../../types/dtos/jobDto';
+import { formatSalary } from '../../../../../utils/salary-format';
+import type { JobDetailsDto } from '../../../../../types/dtos/job.dto';
 import { useNavigate } from 'react-router-dom';
 import {
   MapPin,

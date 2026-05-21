@@ -1,18 +1,3 @@
-// import { useNavigate } from 'react-router-dom';
-// export const Button = () => {
-//   const navigate = useNavigate();
-//   return (
-//     <div className="flex justify-center mt-4">
-//       <button
-//         onClick={() => navigate('/')}
-//         className=
-//       >
-//         Back To home
-//       </button>
-//     </div>
-//   );
-// };
-
 type ButtonProps = {
   children: React.ReactNode;
   onClick?: () => void;

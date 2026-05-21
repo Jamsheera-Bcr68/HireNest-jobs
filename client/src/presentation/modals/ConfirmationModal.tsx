@@ -3,6 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 type ModalType = 'delete' | 'info';
 type ModalProps = {
   isOpen: boolean;
+  //update
 
   onClose: () => void;
   onConfirm: () => Promise<void>;
@@ -24,21 +25,22 @@ export default function ConfirmationModal({
     <Dialog.Root
       open={isOpen}
       onOpenChange={(open) => {
-        if (open) {
+        if (!open) {
           onClose();
         }
       }}
     >
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/40" />
+        <Dialog.Overlay className="fixed inset-0 bg-black/40  z-[9998]" />
 
         <Dialog.Content
           className="
-          fixed left-1/2 top-1/2 w-full max-w-md
-          -translate-x-1/2 -translate-y-1/2
-          rounded-xl bg-white p-6 shadow-lg
-          focus:outline-none
-        "
+        fixed left-1/2 top-1/2 z-[9999]
+        w-full max-w-md
+        -translate-x-1/2 -translate-y-1/2
+        rounded-xl bg-white p-6 shadow-lg
+        focus:outline-none
+      "
         >
           {/* Title */}
           <Dialog.Title

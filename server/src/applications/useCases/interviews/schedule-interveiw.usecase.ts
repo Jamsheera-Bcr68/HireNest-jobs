@@ -1,12 +1,12 @@
 import { partial } from 'zod/v4/core/util.cjs';
-import { AppError } from '../../../domain/errors/AppError';
-import { IApplicationRepository } from '../../../domain/repositoriesInterfaces/application.repository.interface';
-import { IInterviewRepository } from '../../../domain/repositoriesInterfaces/interview.repository.interface';
-import { generalMessages } from '../../../shared/constants/messages/generalMessages';
-import { statusCodes } from '../../../shared/enums/statusCodes';
-import { interviewInputDto, interviewDto } from '../../Dtos/interview.dto';
+import { AppError } from '../../../domain/errors/app-error';
+import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { statusCodes } from '../../../shared/enums/statuscodes';
+import { interviewInputDto, interviewDto } from '../../dtos/interview.dto';
 import { Interview } from '../../../domain/entities/interview.entity';
-import { InterviewStatusEnum } from '../../../domain/enums/statusEnum';
+import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
 
 export interface IScheduleInterviewUsecase {
   execute(data: interviewInputDto): Promise<string>;
