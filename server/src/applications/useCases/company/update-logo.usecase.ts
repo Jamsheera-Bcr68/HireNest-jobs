@@ -1,6 +1,6 @@
 import { Company } from '../../../domain/entities/company.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { UploadFileDto } from '../../dtos/upload-file.dto';
 import { IFileStorageService } from '../../interfaces/services/file-storage.service';
 import { AppError } from '../../../domain/errors/app-error';

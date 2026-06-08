@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 import { Education } from '../../domain/entities/education.entity';
-import { IEducationRepository } from '../../domain/repository-iInterfaces/education-repository.interface';
+import { IEducationRepository } from '../../domain/repository-interfaces/education-repository.interface';
 import {
   educationModel,
   IEducationDocument,

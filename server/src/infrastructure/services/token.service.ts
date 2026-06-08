@@ -9,7 +9,7 @@ export const getToken = (userId: string, email: string, role: UserRole) => {
   const jwt_secret = process.env.JWT_ACCESS_SECRET;
   if (!jwt_secret) throw new Error(authMessages.error.ACCESS_SECRET_NOT_FOUND);
 
-  const verifie = jwt.sign({ userId, email, role }, jwt_secret, {
+  const verify = jwt.sign({ userId, email, role }, jwt_secret, {
     expiresIn: '30m',
   });
 

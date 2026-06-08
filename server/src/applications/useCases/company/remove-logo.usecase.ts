@@ -1,6 +1,6 @@
 import { Company } from '../../../domain/entities/company.entity';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { IFileStorageService } from '../../interfaces/services/file-storage.service';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

@@ -1,7 +1,11 @@
 import { adminService } from '../../../../services/api-services/adminService';
-import type { CompanyProfileType } from '../../../../types/dtos/profile-types/user.types';
+import type {
+  CompanyProfileType,
+  StatusType,
+} from '../../../../types/dtos/profile-types/user.types';
 import { useToast } from '../../../../shared/toast/use-toast';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
+import AddReasonModal from '../jobs/AddReasonModal';
 import { useState } from 'react';
 
 const statusStyles = {
@@ -9,6 +13,10 @@ const statusStyles = {
   suspended: 'bg-red-50 text-red-600 border border-red-200',
   pending: 'bg-amber-50 text-amber-700 border border-amber-200',
   rejected: 'bg-red-50 text-red-600 border border-red-200',
+  paused: 'bg-red-50 text-red-600 border border-red-200',
+  expired: 'bg-red-50 text-red-600 border border-red-200',
+  removed: 'bg-red-50 text-red-600 border border-red-200',
+  closed: 'bg-amber-50 text-amber-600 border border-amber-200',
 };
 
 function LogoAndName({
@@ -21,14 +29,15 @@ function LogoAndName({
   if (!company) return null;
 
   const [open, setOpen] = useState(false);
-  const [rejectOpen, setRejectOpen] = useState(false);
+  const [rejectReasonOpen, setRejectReasonOpen] = useState(false);
   const [suspendOpen, setSuspendOpen] = useState(false);
   const [reactivateOpen, setReactivateOpen] = useState(false);
 
   const { showToast } = useToast();
-  console.log(statusStyles[company.status]);
+
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
   console.log('logo url', `${baseUrl}${company.logoUrl}`);
+
   const approveCompany = async () => {
     console.log('approve company');
     try {
@@ -49,18 +58,23 @@ function LogoAndName({
       });
     }
   };
-  const rejectCompany = async () => {
+
+  const rejectCompany = async (status: StatusType, reason: string) => {
     console.log('reject company');
     try {
-      const data = await adminService.updateCompany(company.id, {
-        isVerified: false,
-        status: 'rejected',
-      });
+      const data = await adminService.updateCompany(
+        company.id,
+        {
+          isVerified: false,
+          status: status,
+        },
+        reason
+      );
       const rejected = data.company;
       console.log('after rejecting', data);
 
       onUpdate(rejected);
-      setRejectOpen(false);
+      setRejectReasonOpen(false);
       showToast({ msg: data.message, type: 'success' });
     } catch (error: any) {
       showToast({
@@ -172,7 +186,7 @@ function LogoAndName({
           </button>
 
           <button
-            onClick={() => setRejectOpen(true)}
+            onClick={() => setRejectReasonOpen(true)}
             className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600"
           >
             Reject
@@ -197,11 +211,11 @@ function LogoAndName({
         item="company"
         onConfirm={approveCompany}
       />
-      <ConfirmationModal
+      <AddReasonModal
         action="Reject"
-        type="delete"
-        onClose={() => setRejectOpen(false)}
-        isOpen={rejectOpen}
+        status={'rejected'}
+        onClose={() => setRejectReasonOpen(false)}
+        isOpen={rejectReasonOpen}
         item="company"
         onConfirm={rejectCompany}
       />

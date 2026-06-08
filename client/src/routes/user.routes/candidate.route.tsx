@@ -5,16 +5,17 @@ import SavedJobs from '../../presentation/pages/user/candidate/SavedJobs';
 import ApplicationsPage from '../../presentation/pages/user/candidate/ApplicationsPage';
 import ApplicationDetailsPage from '../../presentation/pages/user/candidate/ApplicationDetailsPage';
 import InterviewsPage from '../../presentation/pages/user/candidate/InterviewsPage';
+import { CANDIDATE_ROUTES } from '../routes';
 export const CandidateRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<CandidateLayout />}>
-        <Route path="/profile" element={<CandidateProfile />} />
-        <Route path="/dashboard" element={<CandidateProfile />} />
-        <Route path="/jobs" element={<SavedJobs />} />
-        <Route path="/interviews" element={<InterviewsPage />} />
-        <Route path="/applications/:id" element={<ApplicationDetailsPage />} />
-        <Route path="/applications" element={<ApplicationsPage />} />
+        <Route path={CANDIDATE_ROUTES.PROFILE} element={<CandidateProfile />} />
+        <Route path={CANDIDATE_ROUTES.DASHBOARD} element={<CandidateProfile />} />
+        <Route path={CANDIDATE_ROUTES.JOBS} element={<SavedJobs />} />
+        <Route path={CANDIDATE_ROUTES.INTERVIEWS} element={<InterviewsPage />} />
+        <Route path={CANDIDATE_ROUTES.APPLICATION_DETAILS} element={<ApplicationDetailsPage />} />
+        <Route path={CANDIDATE_ROUTES.APPLICATIONS} element={<ApplicationsPage />} />
       </Route>
     </Routes>
   );

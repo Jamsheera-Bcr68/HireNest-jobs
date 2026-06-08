@@ -1,7 +1,7 @@
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { skillMessages } from '../../../shared/constants/messages/skill.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

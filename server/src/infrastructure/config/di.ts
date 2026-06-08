@@ -83,6 +83,12 @@ import { UpdateInterviewUsecase } from '../../applications/useCases/interviews/u
 import { UpdateInterviewResultUsecase } from '../../applications/useCases/interviews/update-result.usecase';
 import { ConfirmInterviewUsecase } from '../../applications/useCases/interviews/confirm-interview.usecase';
 import { RescheduleRequestUsecase } from '../../applications/useCases/interviews/reschedule-request.usecase';
+import { GetNewNotificationCountUsecase } from '../../applications/useCases/notifications/get-count.usecase';
+import { GetNotificationsUsecase } from '../../applications/useCases/notifications/get-notifications.usecase';
+import { MarkAsReadUsecase } from '../../applications/useCases/notifications/mark-as-read.usecase';
+import { MarkAllNotificationsAsReadUsecase } from '../../applications/useCases/notifications/mark-all-as-read.usecase';
+import { DeleteNotificationUsecase } from '../../applications/useCases/notifications/delete-notification.usecase';
+import { ReApplyCompanyUsecase } from '../../applications/useCases/company/reapply-company.usecase';
 //==Controllers
 //auth
 
@@ -94,7 +100,7 @@ import { ResetPasswordController } from '../../presentation/http/controllers/aut
 import { GoogleLoginController } from '../../presentation/http/controllers/auth/google-login.controller';
 import { AdminGoogleAuthController } from '../../presentation/http/controllers/auth/admin-google-login.controller';
 import { ChangePasswordController } from '../../presentation/http/controllers/auth/change-password.controller';
-
+import { NotificationControlller } from '../../presentation/http/controllers/notification.controller';
 //candidate
 import { CandidateProfileController } from '../../presentation/http/controllers/candidate-profile.controller';
 import { SkillsController } from '../../presentation/http/controllers/skills.controller';
@@ -117,6 +123,7 @@ import { CompanyRepository } from '../repositories/company.repository';
 import { JobRepository } from '../repositories/job.repository';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { InterviewRepository } from '../repositories/interview.repository';
+import { NotificationRepository } from '../repositories/notification.repository';
 //services
 
 import { OtpGenerator } from '../services/otp-generator.service';
@@ -127,6 +134,7 @@ import { VerifyOtpService } from '../../applications/services/verify-otp.service
 import { GoogleAuthService } from '../../applications/services/google-auth.service';
 import { ImageStorageService } from '../services/image-storage.service';
 import { FileStorageService } from '../services/file-storage.service';
+import { NotificationService } from '../../applications/services/notification.service';
 
 //repositories
 const userRepository = new UserRepository();
@@ -140,6 +148,7 @@ const companyRepository = new CompanyRepository();
 const jobRepository = new JobRepository();
 const applicationRepository = new ApplicationRepository();
 const interviewRepository = new InterviewRepository();
+const notificationRepository = new NotificationRepository();
 
 const emailService = new EmailService();
 const verifyOtpService = new VerifyOtpService(otpRepository, userRepository);
@@ -147,6 +156,7 @@ export const tokenService = new TokenService();
 const googleAuthService = new GoogleAuthService();
 const imageStorageService = new ImageStorageService();
 const fileStorageServices = new FileStorageService();
+const notificatinService = new NotificationService(notificationRepository);
 
 const registerUseCase = new RegisterUseCase(userRepository);
 const sendOtpService = new SendOtpService(
@@ -209,7 +219,7 @@ const editExperienceUseCase = new EditExperienceUseCase(
   experienceRepository
 );
 //user
-const getUserUserCase = new GetUserUseCase(userRepository);
+const getUserUserCase = new GetUserUseCase(userRepository,companyRepository);
 const editProfileImageUseCase = new EditProfileImageUseCase(
   userRepository,
   imageStorageService
@@ -250,14 +260,15 @@ const getAllSkillsUseCase = new GetAllSkillsUseCase(
 );
 const companyRegisterUseCase = new CompanyRegisterUseCase(
   companyRepository,
-  userRepository
+  userRepository,adminRepository,notificatinService
 );
 const addLogoUseCase = new AddLogoUseCase(imageStorageService);
 const addDocumentUseCase = new AddDocumentUseCase(fileStorageServices);
 const addSkillUsecase = new AddSkillUseCase(
   skillRepository,
   adminRepository,
-  companyRepository
+  companyRepository,
+  notificatinService
 );
 //job
 const createJobUseCase = new CrateJobUseCase(
@@ -284,8 +295,7 @@ const getCompaniesUseCase = new GetCompaniesUseCase(companyRepository);
 const adminGetCompanyUseCase = new AdminGetCompanyUseCase(companyRepository);
 const adminUpdateCompanyUseCase = new AdminUpdateCompanyUseCase(
   companyRepository,
-  userRepository
-);
+  userRepository,notificatinService)
 const getCompnayStatusUseCase = new GetCompanyStatusUseCase(companyRepository);
 const getCandidateStatusUseCase = new GetCandidateStatusUseCase(userRepository);
 const adminGetCandidatesUseCase = new AdminGetCandidateUseCase(
@@ -342,7 +352,8 @@ const updateJobUseCase = new UpdateJobUseCase(
 const applyJobUseCase = new ApplyJobUseCase(
   applicationRepository,
   userRepository,
-  jobRepository
+  jobRepository,
+  notificatinService
 );
 
 const getApplicationDetailsUsecase = new GetApplicationDetailUsecase(
@@ -358,7 +369,10 @@ const getCandidateResumesUsecase = new GetCandidateResumesUsecase(
 );
 const scheduleInterviewUsecase = new ScheduleInterviewUsecase(
   applicationRepository,
-  interviewRepository
+  interviewRepository,
+  notificatinService,
+  companyRepository,
+  jobRepository
 );
 const getInterviewStatusUsecase = new GetInterviewStatusUseCase(
   interviewRepository,
@@ -406,7 +420,10 @@ const getAllApplications = new GetAllApplicationsUsecase(
   companyRepository
 );
 const updateApplicationStatusUsecase = new UpdateApplicationStatusUseCase(
-  applicationRepository
+  applicationRepository,
+  companyRepository,
+  jobRepository,
+  notificatinService
 );
 const getInterviewsUsecase = new GetInterviewsUsecase(
   interviewRepository,
@@ -422,6 +439,7 @@ const getInterviewDetailsUsecase = new GetInterviewDetailsUsecase(
 const updateInterviewUsecase = new UpdateInterviewUsecase(
   interviewRepository,
   companyRepository,
+
   jobRepository,
   userRepository
 );
@@ -431,11 +449,35 @@ const upateInterviewResultUsecase = new UpdateInterviewResultUsecase(
 );
 
 const confirmInterviewUsecase = new ConfirmInterviewUsecase(
-  interviewRepository
+  interviewRepository,
+  notificatinService,
+  jobRepository,
+  userRepository
 );
 const rescheduleInterviewUsecase = new RescheduleRequestUsecase(
   interviewRepository
 );
+
+const getNewNotificationCountUsecase = new GetNewNotificationCountUsecase(
+  notificationRepository,
+  companyRepository
+);
+const getNotificationsUsecase = new GetNotificationsUsecase(
+  notificationRepository,
+  companyRepository
+);
+const markAsReadUsecase = new MarkAsReadUsecase(
+  notificationRepository,
+  companyRepository
+);
+const markAllAsReadUsecase = new MarkAllNotificationsAsReadUsecase(
+  notificationRepository
+);
+const deleteNotificationUsecase = new DeleteNotificationUsecase(
+  notificationRepository,
+  companyRepository
+);
+const reapplyUsecase=new ReApplyCompanyUsecase(companyRepository,adminRepository,notificatinService)
 
 export const refreshController = new RefreshTokenController(tokenService);
 export const adminAuthController = new AdminAuthController(adminLoginUsecase);
@@ -524,7 +566,7 @@ export const adminJobcontroller = new AdminJobController(
 );
 export const userControlller = new UserController(
   getHomeDataUseCase,
-  getCompanyDataUsecase
+  getCompanyDataUsecase, reapplyUsecase
 );
 
 export const applicationController = new ApplicationController(
@@ -545,4 +587,12 @@ export const interviewcontroller = new InterviewController(
   upateInterviewResultUsecase,
   confirmInterviewUsecase,
   rescheduleInterviewUsecase
+);
+
+export const notificationController = new NotificationControlller(
+  getNewNotificationCountUsecase,
+  getNotificationsUsecase,
+  markAsReadUsecase,
+  markAllAsReadUsecase,
+  deleteNotificationUsecase
 );

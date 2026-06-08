@@ -1,13 +1,13 @@
 import { AppError } from '../../../domain/errors/app-error';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { JobDetailsDto, JobDto, JobUpdateDto } from '../../dtos/job.dto';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 
 export interface IUpdateJobUseCase {
   execute(

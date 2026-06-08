@@ -1,6 +1,6 @@
 import { IVerifyOtpService } from '../interfaces/services/verify-otp.service';
-import { IOtpRepository } from '../../domain/repository-iInterfaces/otp-repository.interface';
-import { IUserRepository } from '../../domain/repository-iInterfaces/user-repository.interface';
+import { IOtpRepository } from '../../domain/repository-interfaces/otp-repository.interface';
+import { IUserRepository } from '../../domain/repository-interfaces/user-repository.interface';
 import { AppError } from '../../domain/errors/app-error';
 
 export class VerifyOtpService implements IVerifyOtpService {

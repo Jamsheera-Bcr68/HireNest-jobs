@@ -1,5 +1,5 @@
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { JobListDto, JobFilter } from '../../dtos/job.dto';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
 import { Skill } from '../../../domain/entities/skill.entity';
@@ -28,8 +28,9 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
     sortBy?: string
   ): Promise<JobListDto> {
     console.log('filter from usecase', filter);
-    if (sortBy) {
-    }
+
+    await this.jobRepository.handleExpiredJobs()
+
     const { jobs, totalDocs } = await this.jobRepository.getJobs(
       filter ?? {},
 

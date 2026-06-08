@@ -6,8 +6,8 @@ import {
 } from '../../../domain/enums/education.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { IEducationRepository } from '../../../domain/repository-iInterfaces/education-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IEducationRepository } from '../../../domain/repository-interfaces/education-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { EducationDto } from '../../dtos/education.dto';

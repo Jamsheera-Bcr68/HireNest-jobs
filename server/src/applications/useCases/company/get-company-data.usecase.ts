@@ -1,5 +1,5 @@
 import { CompanyDataDto } from '../../dtos/company.dto';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { AppError } from '../../../domain/errors/app-error';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { userMessages } from '../../../shared/constants/messages/user.messages';

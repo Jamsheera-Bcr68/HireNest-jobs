@@ -25,4 +25,8 @@ export const API_ENDPOINTS = {
   UPDATE_RESULT: (id: string) => `/interviews/${id}/result`,
   CONFIRM_INTERVIEW: (id: string) => `/interviews/${id}/confirm`,
   RESCHEDULE_REQUEST: (id: string) => `/interviews/${id}/request-reschedule`,
+
+  NOTIFICATIONS: `/notifications`,
+  NOTIFICATIONS_COUNT: `/notifications/not-read-count`,
+  NOTIFICATION:(id:string)=>`/notifications/${id}`,
 };

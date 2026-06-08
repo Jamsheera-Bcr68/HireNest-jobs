@@ -11,7 +11,8 @@ export interface ICompanyRepository extends IBaseRepository<Company> {
     filter: Partial<Company>,
     page: number,
     search: string,
-    limit: number
+    limit: number,
+    sortBy?:string
   ): Promise<PaginatedCompanies>;
 
   getStatus(): Promise<CompanyStatus>;

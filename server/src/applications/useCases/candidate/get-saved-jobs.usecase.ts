@@ -1,9 +1,9 @@
 import { JobFilter, JobListDto } from '../../dtos/job.dto';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
 import { Skill } from '../../../domain/entities/skill.entity';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { AppError } from '../../../domain/errors/app-error';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

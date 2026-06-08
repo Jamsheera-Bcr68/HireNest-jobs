@@ -5,7 +5,7 @@ import {
   userModel,
   ResumeDocument,
 } from '../database/models/user.model';
-import { IUserRepository } from '../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../domain/repository-interfaces/user-repository.interface';
 import mongoose, { Types } from 'mongoose';
 import { UserSkillDto } from '../../applications/dtos/skill.dto';
 import { ISkillDocument } from '../database/models/skill.model';
@@ -16,13 +16,10 @@ import { IEducationDocument } from '../database/models/education.model';
 import { CandidateStatus } from '../../applications/dtos/candidate.dto';
 import { UserMapper } from '../../applications/mappers/user.mapper';
 import {
-  CandidateFilterType,
-  PaginatedCandidates,
+  
   PaginatedEntities,
 } from '../../applications/types/candidate.type';
-import { IEducationRepository } from '../../domain/repository-iInterfaces/education-repository.interface';
-import { userProfileDto } from '../../applications/dtos/user.dto';
-import { date } from 'zod';
+
 
 type CandidateQuery = Partial<User> & {
   $or?: {

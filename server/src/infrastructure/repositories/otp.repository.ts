@@ -1,5 +1,5 @@
 import { otpModel, IOtpDocument } from '../database/models/otp.model';
-import { IOtpRepository } from '../../domain/repository-iInterfaces/otp-repository.interface';
+import { IOtpRepository } from '../../domain/repository-interfaces/otp-repository.interface';
 import { Error, Model } from 'mongoose';
 //import { GenericRepository } from "../genericRepository";
 import { AppError } from '../../domain/errors/app-error';

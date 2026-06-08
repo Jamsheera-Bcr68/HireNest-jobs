@@ -1,12 +1,16 @@
 import { Company } from '../../../domain/entities/company.entity';
+import { NotificationType } from '../../../domain/enums/notification-enums';
 import { StatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { adminMessages } from '../../../shared/constants/messages/admin.messages';
-import { userMessages } from '../../../shared/constants/messages/user.messages';
+import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
+
 import { statusCodes } from '../../../shared/enums/statuscodes';
+import { NotificationInputDto } from '../../dtos/notification.dto';
+import { INotificationService } from '../../services/notification.service';
 
 export interface IAdminUpdateCompanyUseCase {
   execute(
@@ -18,15 +22,16 @@ export interface IAdminUpdateCompanyUseCase {
 
 export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
   constructor(
-    private companyRepository: ICompanyRepository,
-    private userRepository: IUserRepository
+    private _companyRepository: ICompanyRepository,
+    private _userRepository: IUserRepository,
+    private _notificationService: INotificationService
   ) {}
   async execute(
     id: string,
     data: Partial<Company>,
     reason?: string
   ): Promise<Company> {
-    const company = await this.companyRepository.findById(id);
+    const company = await this._companyRepository.findById(id);
     console.log('reason', reason);
 
     if (!company) {
@@ -37,13 +42,14 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     }
 
     const { status } = data;
+    if (!status) return company;
     if (status == 'rejected') {
       data.reasonForReject = reason;
     }
     if (status == 'suspended') {
       data.reasonForSuspend = reason;
     }
-    const updated = await this.companyRepository.save(id, {
+    const updated = await this._companyRepository.save(id, {
       ...company,
       ...data,
     });
@@ -55,7 +61,7 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     }
 
     const userId = company.userId;
-    const user = await this.userRepository.findById(userId);
+    const user = await this._userRepository.findById(userId);
     if (!user) {
       throw new AppError(
         adminMessages.error.CANDIDATE_NOTFOUND,
@@ -72,9 +78,8 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
           : { ...req, status: StatusEnum.REJECTED, reasonForReject: reason }
       );
 
-      await this.userRepository.save(userId, {
+      await this._userRepository.save(userId, {
         companyRequests: requests,
-        isRequested: false,
       });
     } else if (
       status === 'active' &&
@@ -86,12 +91,41 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
           ? req
           : { ...req, status: StatusEnum.ACTIVE }
       );
-      await this.userRepository.save(userId, {
+      await this._userRepository.save(userId, {
         role: UserRole.COMPANY,
         companyRequests: requests,
-        isRequested: false,
       });
     }
+    let not_type: NotificationType | null = null;
+
+    switch (status) {
+      case StatusEnum.ACTIVE:
+        not_type = NotificationType.COMPANY_REVIEW_COMPLETED;
+        break;
+      case StatusEnum.REJECTED:
+        not_type = NotificationType.COMPANY_REVIEW_COMPLETED;
+        break;
+      case StatusEnum.SUSPENDED:
+        not_type = NotificationType.COMPANY_SUSPENDED;
+        break;
+    }
+
+    if (!not_type) return updated;
+
+    const notificationData: NotificationInputDto = {
+      title:
+        status == StatusEnum.SUSPENDED
+          ? 'Company Suspended'
+          : 'Company Registration Review Completed',
+      message: notificationMessages[NotificationType.COMPANY_REVIEW_COMPLETED]({
+        status,
+        reason,
+      }),
+      type: not_type,
+      userId: company.userId,
+    };
+
+    await this._notificationService.create(notificationData);
 
     return updated;
   }

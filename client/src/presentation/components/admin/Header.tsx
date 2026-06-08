@@ -1,12 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '../../../shared/toast/use-toast';
-
+import NotificationModal from '../common/Notifications';
+import { useNotifications } from '../../hooks/notifications';
 import { logout } from '../../../redux/auth-slice';
 import type { StateType } from '../../../constants/types/user';
 import { authService } from '../../../services/api-services/authServices';
+import { useEffect, useState } from 'react';
+import { type NotificationType } from '../../../types/notification.type';
+import { useToast } from '../../../shared/toast/use-toast';
 
 function Header({
+  setTitle,
   title,
   sidebarOpen,
   setSidebarOpen,
@@ -14,13 +18,24 @@ function Header({
   title: string;
   sidebarOpen: boolean;
   setSidebarOpen: (state: boolean) => void;
+  setTitle:(title:string)=>void
 }) {
   const { user } = useSelector((state: StateType) => state.auth);
-  console.log('admin headr ', user);
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { showToast } = useToast();
+  const dispatch = useDispatch();
+
+  const [newCount, setNewCount] = useState<number>(0);
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [notificationOpen, setNotificationOpen] = useState<boolean>(false);
+
+  const {
+    getNotificationCount,
+    getNotifications,
+    deleteNotification,
+    markAsRead,
+    markAllAsRead,
+  } = useNotifications();
+
   const HandleLogout = async () => {
     console.log('form logout function');
     try {
@@ -37,6 +52,61 @@ function Header({
         type: 'error',
       });
     }
+  };
+
+  useEffect(() => {
+    console.log(user?.role, 'from header');
+
+    const getCount = async () => {
+      console.log('from useeffect');
+
+      const data = await getNotificationCount();
+      console.log('count is ', data.count);
+      setNewCount(data.count);
+    };
+    getCount();
+  }, [notifications]);
+
+  const fetchNotifications = async (tab: 'new' | 'all') => {
+    const not = await getNotifications(tab);
+    console.log('notifications', not);
+
+    setNotifications(not);
+  };
+
+  const handleNotificationClick = async () => {
+    console.log('from notification click');
+    setNotificationOpen(true);
+    await fetchNotifications('new');
+  };
+
+  const tabChange = async (tab: 'new' | 'all') => {
+    console.log('from tabChange', tab);
+    await fetchNotifications(tab);
+  };
+
+  const deleteHandle = async (id: string) => {
+    console.log('from delete notifivation', id);
+
+    await deleteNotification(id);
+    const updated = notifications.filter((n) => n.id !== id);
+    setNotifications(updated);
+  };
+
+  const navigate = useNavigate();
+
+  const onMarkRead = async (id: string) => {
+    console.log('form mark as read', id);
+    await markAsRead(id);
+    const updated = notifications.filter((n) => n.id !== id);
+    setNotifications(updated);
+  };
+
+  const onMarkAll = async () => {
+    console.log('form mark as read');
+    await markAllAsRead();
+
+    setNotifications([]);
   };
   return (
     <header className="bg-white sticky top-0 w-full flex-1 border-b border-slate-200 px-6 py-4 flex items-center justify-between ">
@@ -63,19 +133,39 @@ function Header({
             Logout
           </button>
         </div>
-        <div className="relative">
+         <button
+              onClick={() =>{
+                setTitle('Dashbord')
+                navigate('/admin')}}
+              className="text-gray-700 bg-blue-50 hover:bg-blue-100 rounded-xl hover:text-blue-600 px-4 py-2 text-sm font-medium transition-colors"
+            >
+              Go To Dashboard
+            </button>
+        <div onClick={handleNotificationClick} className="relative">
           <button className="w-9 h-9 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
             🔔
           </button>
 
-          {/* <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
-            7
-          </span> */}
+          {newCount > 0 && (
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
+              {newCount}
+            </span>
+          )}
         </div>
         <div className="w-9 h-9 bg-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
           SA
         </div>
       </div>
+      {notificationOpen && (
+        <NotificationModal
+          notifications={notifications}
+          onClose={() => setNotificationOpen(false)}
+          onMarkRead={onMarkRead}
+          onMarkAll={onMarkAll}
+          onTabChange={tabChange}
+          onDelete={deleteHandle}
+        />
+      )}
     </header>
   );
 }

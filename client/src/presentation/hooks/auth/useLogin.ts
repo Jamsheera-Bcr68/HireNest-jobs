@@ -31,7 +31,7 @@ export const useLogin = (role: UserRole) => {
       try {
         let resData = await authService.googleSignIn(token, role);
         const data = resData.data;
-        console.log('data', data);
+      //  console.log('data', data);
 
         if (role == 'admin') {
           localStorage.setItem('user', data.admin);
@@ -52,7 +52,7 @@ export const useLogin = (role: UserRole) => {
       } catch (error: any) {}
     },
     onError: () => {
-      console.log('google login failed');
+    //  console.log('google login failed');
     },
   });
 
@@ -78,7 +78,7 @@ export const useLogin = (role: UserRole) => {
       return;
     }
     setErrors({});
-    console.log('frontend validation success');
+  //  console.log('frontend validation success');
 
     try {
       const data = await authService.googleSingnupSubmit(formData, role);
@@ -106,7 +106,7 @@ export const useLogin = (role: UserRole) => {
   };
 
   const handleForgotPassword = () => {
-    console.log('from forgot password');
+    //console.log('from forgot password');
     navigate(`/forgot-password?role=${role}`);
   };
 

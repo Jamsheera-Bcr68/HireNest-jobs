@@ -1,8 +1,8 @@
 import { StatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { type JobStatusCardDto } from '../../dtos/job.dto';

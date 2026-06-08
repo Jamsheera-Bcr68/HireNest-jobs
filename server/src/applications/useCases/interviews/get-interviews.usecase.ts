@@ -1,14 +1,14 @@
 import { Interview } from '../../../domain/entities/interview.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { InterviewFilterDto, InterviewListDto } from '../../dtos/interview.dto';
 import { IGetAllEntitiesUsecase } from '../../interfaces/usecases/get-all-entities.usecase.interface';
 import { AppError } from '../../../domain/errors/app-error';
 import { InterviewMapper } from '../../mappers/interview.mapper';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 
 export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
   InterviewListDto,

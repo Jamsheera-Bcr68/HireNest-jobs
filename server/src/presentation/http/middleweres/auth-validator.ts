@@ -14,14 +14,14 @@ export function authValidator(tokenService: ITokenService) {
   //console.log('from auth validator ');
   return async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
-    // console.log('from auth validator authHeader is ', authHeader);
+   // console.log('from auth validator authHeader is ', authHeader);
 
     if (!authHeader)
       return next(
         new AppError(authMessages.error.UNAUTHORIZED, statusCodes.UNAUTHERIZED)
       );
     const token = authHeader.split(' ')[1];
-    // console.log('token is ', token);
+   
 
     if (!token)
       throw new AppError(
@@ -29,7 +29,7 @@ export function authValidator(tokenService: ITokenService) {
         statusCodes.UNAUTHERIZED
       );
     try {
-      // console.log('token is ', token);
+       console.log('token is ', token);
 
       const user: TokenPayload = tokenService.verifyAccessToken(token);
       // console.log('user from validator', user);

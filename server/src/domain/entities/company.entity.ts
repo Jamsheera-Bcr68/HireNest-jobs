@@ -5,6 +5,7 @@ import {
   VerificationDocType,
 } from '../types/company-profile.types';
 import { IAddress, ISocialMediaLinks } from '../values/profile-types';
+import { IReapplyDetail } from '../types/company-profile.types';
 
 export interface Company {
   id?: string;
@@ -36,4 +37,6 @@ export interface Company {
   size: CompanySize;
   address: IAddress;
   document: VerificationDocType;
+  reapplyCount: number;
+  reapplyDetails: IReapplyDetail[];
 }

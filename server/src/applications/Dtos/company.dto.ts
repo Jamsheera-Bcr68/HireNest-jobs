@@ -4,6 +4,7 @@ import {
 } from '../../domain/types/company-profile.types';
 import { ISocialMediaLinks, IAddress } from '../../domain/values/profile-types';
 import { VerificationDocType } from '../../domain/types/company-profile.types';
+import { StatusEnum } from '../../domain/enums/status.enum';
 
 export interface companyDto {
   userId: string;
@@ -26,6 +27,16 @@ export interface companyDto {
   size: CompanySize;
   address: IAddress;
   document: VerificationDocType;
+  // reapplyCount?: number;
+  // reapplyDetails?: [
+  //   {
+  //     status: {
+  //       type: string;
+  //       enum: StatusEnum;
+  //     };
+  //     rejectedReason: string;
+  //   },
+  // ];
 }
 export interface CompanyUpdateDto {
   companyName: string;
@@ -42,6 +53,7 @@ export type RegisterFormType = {
   document: {
     type: DocumentType | '';
     file: File | string;
+    name: string;
   };
 };
 export interface CompanyListDTO {
@@ -89,4 +101,8 @@ export type CompanyDataDto = {
   address: string;
 
   socialMediaLinks: ISocialMediaLinks;
+};
+
+export type CompanyFilterDto = {
+  userId?: string;
 };

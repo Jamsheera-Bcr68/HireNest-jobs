@@ -1,6 +1,6 @@
 import { Company } from '../../../domain/entities/company.entity';
 import { AppError } from '../../../domain/errors/app-error';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { companyDto, CompanyUpdateDto } from '../../dtos/company.dto';

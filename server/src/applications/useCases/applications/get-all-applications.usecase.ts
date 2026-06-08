@@ -1,8 +1,8 @@
 import { Application } from '../../../domain/entities/application.entity';
 import { AppError } from '../../../domain/errors/app-error';
-import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

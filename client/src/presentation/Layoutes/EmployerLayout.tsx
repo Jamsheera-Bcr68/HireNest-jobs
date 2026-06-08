@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { SideBar } from '../components/user/employer/SideBar';
 import { Outlet, useLocation } from 'react-router-dom';
-
-import { Header } from '../components/user/employer/home/Header';
+import Header from '../components/common/Header';
+//import { Header } from '../components/user/employer/home/Header';
 
 const menuItems = [
   { label: 'Dashboard', path: '/company/dashboard' },

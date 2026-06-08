@@ -2,12 +2,12 @@ import axiosInstance from '../../libraries/axios';
 import { type CompanyRegisterType } from '../../libraries/validations/company/company-register.validator';
 import { type CompanyProfileEditType } from '../../libraries/validations/company/company-editForm.validation';
 import type { ISocialLinks } from '../../types/profile.types';
-import { COMPANY_API_ENDPOINTS } from '../../constants/api-end-points/company';
+
 import { API_ENDPOINTS } from '../../constants/api-end-points/general';
 
 export const companyService = {
   async getCompany() {
-    const res = await axiosInstance.get(COMPANY_API_ENDPOINTS.GET_COMPANY);
+    const res = await axiosInstance.get(API_ENDPOINTS.COMPANY);
     return res.data;
   },
 
@@ -87,10 +87,18 @@ export const companyService = {
     });
     return res.data;
   },
+
   async getCompanyDetails(id: string) {
     console.log('company id', id);
 
     const res = await axiosInstance.get(API_ENDPOINTS.COMPANY_DATA(id));
+    return res.data;
+  },
+
+  async updateCompany(data: CompanyRegisterType) {
+    console.log('from update services', data);
+
+    const res = await axiosInstance.put(API_ENDPOINTS.COMPANY, data);
     return res.data;
   },
 };

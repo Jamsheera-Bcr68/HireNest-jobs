@@ -1,9 +1,9 @@
 import { StatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 import { JobMapper } from '../../../presentation/http/mappers/job.mapper';
 import { HomeResponseDto } from '../../dtos/response.dto';
 import { SkillStatus } from '../../../domain/enums/skill.enum';

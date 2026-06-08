@@ -2,13 +2,13 @@ import { Skill } from '../../../domain/entities/skill.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { AppError } from '../../../domain/errors/app-error';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { skillMessages } from '../../../shared/constants/messages/skill.messages';
 import { IUpdateEntityStatusUseCase } from '../../interfaces/usecases/update-entity-status.usecase.interface';
 
-import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
+import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
 
 import { SkillStatus } from '../../../domain/enums/skill.enum';
 

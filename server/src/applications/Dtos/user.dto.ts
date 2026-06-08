@@ -1,6 +1,9 @@
+import { Education } from '../../domain/entities/education.entity';
 import { Experience } from '../../domain/entities/experience.entity';
+import { StatusEnum } from '../../domain/enums/status.enum';
 import { UserRole } from '../../domain/enums/user.enums';
-import { IAddress, ISocialMediaLinks } from '../../domain/values/profile-types';
+import { IAddress, IResume, ISocialMediaLinks } from '../../domain/values/profile-types';
+import { EducationDto } from './education.dto';
 
 export interface userDto {
   id: string;
@@ -21,8 +24,13 @@ export interface userProfileDto {
   title?: string;
   skills: Array<string>;
   address?: IAddress;
+  isRequested: boolean;
+  company: { status: StatusEnum;id:string, reason?: string }|null;
   socialLinks?: ISocialMediaLinks;
   createdAt: string;
   isBlocked: boolean;
   experience: Array<Experience>;
+  education:Array<EducationDto>
+  about:string
+  resumes:Array<IResume>
 }

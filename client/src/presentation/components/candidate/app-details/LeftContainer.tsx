@@ -116,7 +116,7 @@ function LeftContainer({ application, updateApplication }: Props) {
   return (
     <div className="lg:col-span-2 flex flex-col gap-5">
       {/* Timeline */}
-      <Card className="p-6">
+      {/* <Card className="p-6">
         <SectionTitle>Application Progress</SectionTitle>
         <div className="flex flex-col">
           {application.timeline
@@ -148,7 +148,7 @@ function LeftContainer({ application, updateApplication }: Props) {
               </div>
             ))}
         </div>
-      </Card>
+      </Card> */}
 
       {/* Application Details */}
       <Card className="p-6">

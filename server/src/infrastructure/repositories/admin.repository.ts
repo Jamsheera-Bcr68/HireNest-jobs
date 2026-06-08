@@ -1,6 +1,6 @@
 import { Admin } from '../../domain/entities/admin.entity';
 import { Types } from 'mongoose';
-import { IAdminRepository } from '../../domain/repository-iInterfaces/admin.reporitory.interface';
+import { IAdminRepository } from '../../domain/repository-interfaces/admin.reporitory.interface';
 import { adminModel, IAdminDocument } from '../database/models/admin.model';
 import { GenericRepository } from './generic.repository';
 

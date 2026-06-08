@@ -57,6 +57,7 @@ export const companyRegisterSchema = z.object({
   documents: z.object({
     type: selectVal('Verification document ', Document_Types),
     file: z.string().min(1, 'Please select upload a document'),
+    name:z.string()
   }),
 
   startedIn: z.string().min(1, 'Please Select Started Year'),

@@ -1,10 +1,10 @@
 import { Interview } from '../../../domain/entities/interview.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
-import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

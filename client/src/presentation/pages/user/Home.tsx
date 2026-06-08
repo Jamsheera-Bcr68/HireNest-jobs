@@ -27,14 +27,14 @@ const Home = () => {
   });
   const user = useSelector((state: any) => state.auth.user);
   const { showToast } = useToast();
-  console.log('from home page', user);
+ // console.log('from home page', user);
   const [homeData, setHomeData] = useState<HomeResponseDto | null>(null);
   useEffect(() => {
     async function getHomeData() {
       try {
         const data = await candidateService.getHomeData();
         setHomeData(data.data);
-        console.log('after gettinhg home data', data);
+        //console.log('after gettinhg home data', data);
       } catch (error: any) {
         showToast({
           msg: error?.response?.data.message || error.message,
@@ -46,7 +46,7 @@ const Home = () => {
   }, []);
 
   const stats = homeData?.industries.map((item) => {
-    console.log('items', item);
+    //console.log('items', item);
     return {
       icon: industryIcons[item.industry],
       label: item.industry,
@@ -55,7 +55,7 @@ const Home = () => {
   });
 
   const handleFilterChange = async (value: Partial<JobFilterType>) => {
-    console.log('value:', value);
+   // console.log('value:', value);
 
     const updatedFilter = {
       ...filter,
@@ -67,8 +67,8 @@ const Home = () => {
     };
 
     setFilter(updatedFilter);
-    console.log('updated filter', updatedFilter);
-    console.log('industry', updatedFilter.industry);
+    //console.log('updated filter', updatedFilter);
+   // console.log('industry', updatedFilter.industry);
 
     navigate(
       `/jobs?job=${updatedFilter.search.job}&location=${updatedFilter.search.location}&industry=${updatedFilter.industry}`

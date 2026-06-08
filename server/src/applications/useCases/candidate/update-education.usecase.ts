@@ -1,6 +1,6 @@
 import { IEditEducationUseCase } from '../../interfaces/candidate/update-education.usecase';
-import { IEducationRepository } from '../../../domain/repository-iInterfaces/education-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IEducationRepository } from '../../../domain/repository-interfaces/education-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { EducationDto } from '../../dtos/education.dto';
 import { Education } from '../../../domain/entities/education.entity';
 import { User } from '../../../domain/entities/user.entity';

@@ -1,6 +1,6 @@
 import { IProfileEditUsecase } from '../../interfaces/candidate/update-profile.usecase';
 import { CandidateProfileUpdateDto } from '../../dtos/candidate.dto';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 
 import { AppError } from '../../../domain/errors/app-error';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';

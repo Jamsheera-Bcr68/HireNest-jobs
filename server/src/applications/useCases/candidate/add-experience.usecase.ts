@@ -2,13 +2,13 @@ import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { WorkMode } from '../../../domain/enums/work-mode.enum';
 import { AppError } from '../../../domain/errors/app-error';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { IExperience } from '../../../domain/values/profile-types';
 import { ExperienceDto } from '../../../presentation/http/validators/profile.validation';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { IAddExperienceUseCase } from '../../interfaces/candidate/add-experience.usecase';
-import { IExperienseRepository } from '../../../domain/repository-iInterfaces/experience-repository.interface';
+import { IExperienseRepository } from '../../../domain/repository-interfaces/experience-repository.interface';
 import { Experience } from '../../../domain/entities/experience.entity';
 
 export class AddExperienceUseCase implements IAddExperienceUseCase {

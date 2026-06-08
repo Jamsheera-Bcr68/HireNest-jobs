@@ -2,15 +2,20 @@ import { Skill } from '../../../domain/entities/skill.entity';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { skillMessages } from '../../../shared/constants/messages/skill.messages';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { UserSkillDto } from '../../dtos/skill.dto';
+import { INotificationService } from '../../services/notification.service';
+import { NotificationType } from '../../../domain/enums/notification-enums';
+import { Notification } from '../../../domain/entities/notification.entity';
+import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
 
 export interface IAddSkillUseCase {
   execute(skill: string, userId: string, role: UserRole): Promise<UserSkillDto>;
@@ -18,9 +23,10 @@ export interface IAddSkillUseCase {
 
 export class AddSkillUseCase implements IAddSkillUseCase {
   constructor(
-    private skillRepository: ISkillRepository,
-    private adminRepository: IAdminRepository,
-    private companyRepository: ICompanyRepository
+    private _skillRepository: ISkillRepository,
+    private _adminRepository: IAdminRepository,
+    private _companyRepository: ICompanyRepository,
+    private _notificationService: INotificationService
   ) {}
   async execute(
     skill: string,
@@ -28,21 +34,21 @@ export class AddSkillUseCase implements IAddSkillUseCase {
     role: UserRole
   ): Promise<UserSkillDto> {
     if (role == UserRole.ADMIN) {
-      const admin = await this.adminRepository.findById(userId);
+      const admin = await this._adminRepository.findById(userId);
       if (!admin)
         throw new AppError(
           authMessages.error.ADMIN_NOT_FOUND,
           statusCodes.NOTFOUND
         );
     } else if (role == UserRole.COMPANY) {
-      const company = await this.companyRepository.findByUserId(userId);
+      const company = await this._companyRepository.findByUserId(userId);
       if (!company)
         throw new AppError(
           userMessages.error.COMPANY_NOT_FOUND,
           statusCodes.NOTFOUND
         );
     }
-    const skillExist = await this.skillRepository.findBySkillName(
+    const skillExist = await this._skillRepository.findBySkillName(
       skill.trim().toLowerCase()
     );
 
@@ -81,9 +87,31 @@ export class AddSkillUseCase implements IAddSkillUseCase {
       userId: userId,
       createdAt: new Date(),
     };
-    console.log('new skill form usrcase', newSkill);
+    console.log('new skill form usecase', newSkill);
 
-    const addedSkill = await this.skillRepository.create(newSkill);
+    if (role === UserRole.COMPANY) {
+      const admin = await this._adminRepository.findOne({
+        role: UserRole.ADMIN,
+      });
+      if (!admin)
+        throw new AppError(
+          generalMessages.errors.NOT_FOUND('Admin'),
+          statusCodes.NOTFOUND
+        );
+      const notificationData: Partial<Notification> = {
+        userId: admin.id,
+        type: NotificationType.SKILL_APPROVAL_REQUEST,
+        message: notificationMessages[NotificationType.SKILL_APPROVAL_REQUEST]({
+          skillName: skill,
+        }),
+        title: 'New Skill Reques Recieved',
+      };
+
+      await this._notificationService.create(notificationData);
+    }
+
+    const addedSkill = await this._skillRepository.create(newSkill);
+
     return addedSkill;
   }
 }

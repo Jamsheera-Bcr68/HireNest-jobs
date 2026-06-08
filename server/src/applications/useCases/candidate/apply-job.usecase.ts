@@ -2,15 +2,19 @@ import { Application } from '../../../domain/entities/application.entity';
 import { ApplicationStatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { applicationMessage } from '../../../shared/constants/messages/application.messages';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
+import { Notification } from '../../../domain/entities/notification.entity';
+import { NotificationType } from '../../../domain/enums/notification-enums';
+import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
 
 import { statusCodes } from '../../../shared/enums/statuscodes';
+import { INotificationService } from '../../services/notification.service';
 
 export interface IApplyJobUseCase {
   execute(
@@ -20,11 +24,13 @@ export interface IApplyJobUseCase {
     role: UserRole
   ): Promise<String>;
 }
+
 export class ApplyJobUseCase implements IApplyJobUseCase {
   constructor(
     private applicationRepository: IApplicationRepository,
     private userRepository: IUserRepository,
-    private jobRepository: IJobRepository
+    private jobRepository: IJobRepository,
+    private _notificationService: INotificationService
   ) {}
 
   async execute(
@@ -73,7 +79,21 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
       );
     }
 
+   
+
     const application = await this.applicationRepository.create(newDoc);
+
+    const notificationData: Partial<Notification> = {
+      userId: application.companyId,
+      type: NotificationType.JOB_APPLIED,
+      message: notificationMessages[NotificationType.JOB_APPLIED]({
+        jobTitle: job.title,
+      }),
+      title: 'New Job Application Recieved',
+    };
+
+    await this._notificationService.create(notificationData);
+
     return application.id;
   }
 }

@@ -24,7 +24,8 @@ const navLinks: Record<string, string> = {
 };
 
 function Sidebar({
-  setTitle,
+
+    setTitle,
   nav = 'Dashboard',
   sidebarOpen,
 }: {

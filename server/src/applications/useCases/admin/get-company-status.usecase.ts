@@ -1,4 +1,4 @@
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { CompanyStatus } from '../../dtos/company.dto';
 export interface IGetCompanyStatusUseCase {
   execute(): Promise<CompanyStatus>;

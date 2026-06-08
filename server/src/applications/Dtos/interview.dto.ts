@@ -97,3 +97,7 @@ export type interviewDetailDto = {
   note?: string;
   cancelledBy: UserRole;
 };
+
+export type interviewCountFilterDto={
+
+}

@@ -19,7 +19,7 @@ import { API_END_POINTS } from './api-end-points/api-end.points';
 const router = express.Router();
 
 router.post(
-  '/',
+  API_END_POINTS.COMPANY,
   authValidator(tokenService),
   companyRegisterValidator,
   companyProfileController.companyRegister
@@ -87,6 +87,12 @@ router.get(
   API_END_POINTS.COMPANY_DATA,
   authValidator(tokenService),
   userControlller.getCompany
+);
+router.put(
+  API_END_POINTS.COMPANY,
+  companyRegisterValidator,
+  authValidator(tokenService),
+  userControlller.updateCompany
 );
 
 export default router;

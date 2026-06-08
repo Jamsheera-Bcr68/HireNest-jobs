@@ -17,4 +17,6 @@ export interface IApplicationRepository extends IBaseRepository<Application> {
   getAllApplications(
     filter: Partial<ApplicationFilterDto>
   ): Promise<{ applications: AggregatedApplication[]; totalDocs: number }>;
+
+  getAppCount(candidateId:string,companyId:string):Promise<number>
 }

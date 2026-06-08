@@ -1,17 +1,17 @@
 import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { ApplicationDetailsDto } from '../../dtos/application.dto';
 import { IGetEntityDetailsUsecase } from '../../interfaces/usecases/get-entity-details.usecase.inerface';
 import { ApplicationMapper } from '../../mappers/application.mapper';
-import { IExperienseRepository } from '../../../domain/repository-iInterfaces/experience-repository.interface';
+import { IExperienseRepository } from '../../../domain/repository-interfaces/experience-repository.interface';
 
 export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<ApplicationDetailsDto> {
   constructor(

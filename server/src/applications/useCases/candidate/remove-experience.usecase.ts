@@ -1,8 +1,8 @@
 import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { IExperienseRepository } from '../../../domain/repository-iInterfaces/experience-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IExperienseRepository } from '../../../domain/repository-interfaces/experience-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { IRemoveExperienceUseCase } from '../../interfaces/candidate/remove-experience.usecase';

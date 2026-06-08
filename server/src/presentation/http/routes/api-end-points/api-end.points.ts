@@ -15,4 +15,8 @@ export const API_END_POINTS = {
   INTERVIEW_RESULT: '/:id/result',
   INTERVIEWS_STATUS: '/interviews-status',
   RESCHEDULE_REQUEST: '/:id/request-reschedule',
+  GET_NOT_READ_COUNT: '/not-read-count',
+  NOTIFICATIONS: '/',
+  NOTIFICATION: '/:id',
+  COMPANY: '/',
 };

@@ -1,5 +1,5 @@
 import { AppError } from '../../../domain/errors/app-error';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { type ReportJobInputDto } from '../../dtos/job.dto';

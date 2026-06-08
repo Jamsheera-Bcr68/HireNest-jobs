@@ -14,6 +14,8 @@ import {
   ISocialMediaLinks,
 } from '../../../domain/values/profile-types';
 
+import { IReapplyDetail } from '../../../domain/types/company-profile.types';
+
 export interface ICompanyDocument {
   _id: mongoose.Types.ObjectId;
   companyName: string;
@@ -34,6 +36,9 @@ export interface ICompanyDocument {
   isAgreed: boolean;
   isConsent: boolean;
   logoUrl: string;
+
+  reapplyCount: number;
+  reapplyDetails: IReapplyDetail[];
 
   requestedSkills: Types.ObjectId[] | [];
   industry: IndustryType;
@@ -97,7 +102,23 @@ const companySchema = new Schema<ICompanyDocument>(
         enum: Object.values(Document_Types),
       },
       file: String,
+      name:String
     },
+
+    reapplyCount: { type: Number, default: 0 },
+    reapplyDetails: [
+      {
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+        status: {
+          type: String,
+          enum: Object.values(StatusEnum),
+        },
+        rejectedReason: String,
+      },
+    ],
   },
   { timestamps: true }
 );

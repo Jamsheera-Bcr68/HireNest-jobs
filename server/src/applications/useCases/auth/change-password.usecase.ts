@@ -1,5 +1,5 @@
 import { AppError } from '../../../domain/errors/app-error';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { IChangePasswordUsecase } from '../../interfaces/auth/change-password.usecase';

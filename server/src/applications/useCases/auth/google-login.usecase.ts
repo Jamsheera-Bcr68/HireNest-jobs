@@ -1,14 +1,14 @@
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { IGoogleLoginUsecase } from '../../interfaces/auth/google-login.usecase';
 import { IGoogleAuthServices } from '../../interfaces/services/google-auth.service';
 import { ITokenService } from '../../interfaces/services/token.service';
 import { loginOutPutDto } from '../../dtos/login.dto';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 //import {AdminLoginOutPutDto} from'../../Dtos/adminDto'
 
 export class GoogleLoginUsecase implements IGoogleLoginUsecase {

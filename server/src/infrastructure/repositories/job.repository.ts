@@ -1,6 +1,6 @@
 import { Job } from '../../domain/entities/job.entity';
 import { StatusEnum } from '../../domain/enums/status.enum';
-import { IJobRepository } from '../../domain/repository-iInterfaces/job-repository.interface';
+import { IJobRepository } from '../../domain/repository-interfaces/job-repository.interface';
 import { IJobDocument, jobModel } from '../database/models/job.model';
 import { GenericRepository } from './generic.repository';
 import mongoose, { Types } from 'mongoose';
@@ -170,7 +170,6 @@ export class JobRepository
       },
     ]);
 
-    console.log('data', datas);
     return datas;
   }
 
@@ -182,7 +181,6 @@ export class JobRepository
     search?: { job?: string; location?: string },
     sortBy?: string
   ): Promise<JobListDto> {
-    console.log('filter from rep', filter);
     let sortStage: any = { createdAt: -1 };
     switch (sortBy) {
       case 'salary-high-low':
@@ -210,7 +208,6 @@ export class JobRepository
     const salaryLookup = Object.fromEntries(
       SalaryRange.map((range) => [range.label, range])
     );
-    console.log('salartlookup', salaryLookup);
 
     const matchStage: any = {
       ...rest,
@@ -357,6 +354,8 @@ export class JobRepository
 
     const jobs = result[0]?.data || [];
     const totalDocs = result[0]?.totalCount[0]?.count || 0;
+    console.log('jobs', jobs);
+
     return {
       jobs: jobs.map(({ _id, id, ...job }) => ({
         id: _id.toString(),
@@ -365,6 +364,7 @@ export class JobRepository
       totalDocs,
     };
   }
+
   async getSavedJobs(
     savedJobIds: string[],
     filter: JobFilter,
@@ -374,7 +374,7 @@ export class JobRepository
     search?: { job?: string; location?: string },
     sortBy?: string
   ): Promise<JobCardDto[]> {
-    console.log('filte from rep', filter);
+    // console.log('filte from rep', filter);
 
     if (!savedJobIds.length) return [];
     const objectIds = savedJobIds.map((id: string) => new Types.ObjectId(id));
@@ -406,9 +406,8 @@ export class JobRepository
       SalaryRange.map((range) => [range.label, range])
     );
     console.log('salartlookup', salaryLookup);
-
+    // status: StatusEnum.ACTIVE,
     const matchStage: any = {
-      status: StatusEnum.ACTIVE,
       _id: { $in: objectIds },
       ...rest,
     };
@@ -545,10 +544,23 @@ export class JobRepository
       ...job,
     }));
   }
+
   async getCountBySkill(skillId: string): Promise<number> {
     const count = await this._model.countDocuments({
       skills: new mongoose.Types.ObjectId(skillId),
     });
     return count ? count : 0;
+  }
+
+  async handleExpiredJobs(): Promise<void> {
+    await this._model.updateMany(
+      {
+        lastDate: { $lt: new Date() },
+        status: { $eq: StatusEnum.ACTIVE },
+      },
+      {
+        $set: { status: StatusEnum.EXPIRED },
+      }
+    );
   }
 }

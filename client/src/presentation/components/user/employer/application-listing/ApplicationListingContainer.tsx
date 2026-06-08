@@ -17,24 +17,28 @@ const statusFilter = {
   key: 'status',
   label: ' Status',
   options: [
-    'pending',
-    'viewed',
-    'shortListed',
-    'rejected',
-    'interviewSheduled',
+    { label: 'Pending', value: 'pending' },
+    { label: 'Reviewed', value: 'viewed' },
+    
+    { label: 'ShortListed', value: 'shortListed' },
+    { label: 'Rejected', value: 'rejected' },
+    { label: 'Scheduled', value: 'interviewSheduled' },
   ],
 };
 
 const typeFilter = {
-  key: 'Type',
+  key: 'jobType',
   label: ' Types',
-  options: ['fullTime', 'partTime'],
+  options: [
+    { label: 'Full Time', value: 'fullTime' },
+    { label: 'Part Time', value: 'partTime' },
+  ],
 };
 
 const sortOrder = {
-  key: 'Sort',
+  key: 'sortBy',
   label: 'Sort ',
-  options: ['newest', 'oldest'],
+  options: [{label:'Newest',value: 'newest'},{label:'Oldest',value: 'oldest'}],
 };
 
 const tabs = [

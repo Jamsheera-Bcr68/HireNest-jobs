@@ -10,25 +10,26 @@ import JobDetails from '../../presentation/pages/user/company/JobDetails';
 import SkillPage from '../../presentation/pages/user/company/Skills';
 import ApplicationsPage from '../../presentation/pages/user/company/ApplicationsPage';
 import ApplicationDetailsPage from '../../presentation/pages/user/company/ApplicationDetails';
+import { COMPANY_ROUTES } from '../routes';
 
 import InterviewsPage from '../../presentation/pages/user/company/InterviewsPage';
 export const CompanyRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<EmployerHome />} />
+      <Route path={COMPANY_ROUTES.HOME} element={<EmployerHome />} />
 
       <Route path="/" element={<EmployerLayout />}>
-        <Route path="/register" element={<CompanyRegistration />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="jobs" element={<CompanyJobListing />} />
-        <Route path="jobs/create" element={<JobCreate />} />
-        <Route path="skills" element={<SkillPage />} />
-        <Route path="applications" element={<ApplicationsPage />} />
+        <Route path={COMPANY_ROUTES.REGISTER} element={<CompanyRegistration />} />
+        <Route path={COMPANY_ROUTES.DASHBOARD}element={<Dashboard />} />
+        <Route path={COMPANY_ROUTES.JOBS}element={<CompanyJobListing />} />
+        <Route path={COMPANY_ROUTES.CREATE_JOB} element={<JobCreate />} />
+        <Route path={COMPANY_ROUTES.SKILLS}element={<SkillPage />} />
+        <Route path={COMPANY_ROUTES.APPLICATIONS} element={<ApplicationsPage />} />
 
-        <Route path="applications/:id" element={<ApplicationDetailsPage />} />
-        <Route path="jobs/:jobId" element={<JobDetails />} />
-        <Route path="interviews" element={<InterviewsPage />} />
-        <Route path="profile" element={<CompanyProfile />} />
+        <Route path={COMPANY_ROUTES.APPLICATION_DETAILS} element={<ApplicationDetailsPage />} />
+        <Route path={COMPANY_ROUTES.JOB_DETAILS}element={<JobDetails />} />
+        <Route path={COMPANY_ROUTES.INTERVIEWS} element={<InterviewsPage />} />
+        <Route path={COMPANY_ROUTES.PROFILE}element={<CompanyProfile />} />
       </Route>
     </Routes>
   );

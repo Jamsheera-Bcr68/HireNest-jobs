@@ -1,6 +1,6 @@
 import { IRegisterUseCase } from '../../interfaces/auth/user-register.usecase';
 import { IRegisterInput, IRegisterOutput } from '../../dtos/register.types';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { hashedPassword } from '../../../infrastructure/services/password-hasher.service';

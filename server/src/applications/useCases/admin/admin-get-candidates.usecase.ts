@@ -1,13 +1,13 @@
 import { IAdminGetEntitiesUseCase } from '../../interfaces/admin/get-admin-entities.usecase';
 import { User } from '../../../domain/entities/user.entity';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { UserRole } from '../../../domain/enums/user.enums';
 import {
   CandidateFilterType,
   PaginatedCandidates,
   PaginatedEntities,
 } from '../../types/candidate.type';
-import { IEducationRepository } from '../../../domain/repository-iInterfaces/education-repository.interface';
+import { IEducationRepository } from '../../../domain/repository-interfaces/education-repository.interface';
 import { EducationLevel } from '../../../domain/enums/education.enum';
 import { AppError } from '../../../domain/errors/app-error';
 import { userMessages } from '../../../shared/constants/messages/user.messages';

@@ -1,5 +1,5 @@
 import { GenericRepository } from './generic.repository';
-import { IApplicationRepository } from '../../domain/repository-iInterfaces/application.repository.interface';
+import { IApplicationRepository } from '../../domain/repository-interfaces/application.repository.interface';
 import {
   applicationModel,
   IApplicationDocument,
@@ -238,5 +238,11 @@ export class ApplicationRepository
     const count = await this._model.countDocuments(q);
 
     return count;
+  }
+
+  async getAppCount(candidateId: string, companyId: string): Promise<number> {
+    const count=await this._model.countDocuments({candidateId:new mongoose.Types.ObjectId(candidateId),companyId:new mongoose.Types.ObjectId(companyId)})
+
+    return count
   }
 }

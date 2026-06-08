@@ -1,7 +1,7 @@
 import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { IEducationRepository } from '../../../domain/repository-iInterfaces/education-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IEducationRepository } from '../../../domain/repository-interfaces/education-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { IRemoveEducationUseCase } from '../../interfaces/candidate/remove-education.usecase';
 import { AppError } from '../../../domain/errors/app-error';
 import { userMessages } from '../../../shared/constants/messages/user.messages';

@@ -31,6 +31,7 @@ export interface UserProfileType {
   id: string;
   name: string;
   email: string;
+  isRequested: boolean;
   phone?: string;
   avatar?: string;
   title?: string;
@@ -39,9 +40,10 @@ export interface UserProfileType {
   socialLinks?: ISocialLinks;
   imageUrl?: string;
   about?: string;
-  experience: ExperienceType[] | [];
-  education: EducationType[] | [];
-  resumes: ResumeType[] | [];
+  company?: { status: StatusType;id:string, reason?: string };
+  experience: ExperienceType[] ;
+  education: EducationType[] ;
+  resumes: ResumeType[] ;
   isBlocked: boolean;
   createdAt: string;
 }

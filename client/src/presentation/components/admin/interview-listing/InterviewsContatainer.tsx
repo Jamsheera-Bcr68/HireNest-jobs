@@ -50,16 +50,16 @@ function InterviewsContatainer() {
   const [cancelModal, setCancelModal] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [interview, setInterview] = useState<interviewDetailDto | null>(null);
-  const [selected, setSelected] = useState<InterviewDto | null>(null);
-  const [rescheduleModal, setRescheduleModal] = useState<boolean>(false);
-  const [completedModal, setCompltedModal] = useState<boolean>(false);
+ 
+
+
 
   const {
     filter,
     updateFilter,
     filterOptions,
     sortFilter,
-    upsateStatus,
+   
     getInterviewDetails,
   } = useInterviews(setPage);
 

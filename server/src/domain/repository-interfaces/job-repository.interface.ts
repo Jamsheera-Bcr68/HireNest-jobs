@@ -26,4 +26,6 @@ export interface IJobRepository extends IBaseRepository<Job> {
     sortBy?: string
   ): Promise<JobCardDto[]>;
   getCountBySkill(skillId: string): Promise<number>;
+
+  handleExpiredJobs():Promise<void>
 }

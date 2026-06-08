@@ -1,6 +1,6 @@
 import { AdminLoginOutPutDto, AdminloginInput } from '../../dtos/admin.dto';
 import { IAdminLoginUsecase } from '../../interfaces/auth/admin-login.usecase';
-import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
+import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
 import { AppError } from '../../../domain/errors/app-error';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

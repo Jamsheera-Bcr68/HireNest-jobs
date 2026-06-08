@@ -2,11 +2,11 @@ import { IForgotPasswordUsecase } from '../../interfaces/auth/forgot-password.us
 import { AppError } from '../../../domain/errors/app-error';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { passwordResetToken } from '../../../infrastructure/services/reset-token.service';
 import { IEmailService } from '../../interfaces/services/email.service';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
+import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
 
 export class ForgotPassWordUsecase implements IForgotPasswordUsecase {
   private _userRepository: IUserRepository;

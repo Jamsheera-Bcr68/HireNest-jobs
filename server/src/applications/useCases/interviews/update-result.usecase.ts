@@ -1,11 +1,11 @@
 import { Interview } from '../../../domain/entities/interview.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 import { IUpdateEntityUseCase } from '../../interfaces/usecases/update-entity.usecase.interface';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { AppError } from '../../../domain/errors/app-error';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 
 export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<

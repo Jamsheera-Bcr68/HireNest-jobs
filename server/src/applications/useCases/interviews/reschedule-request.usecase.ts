@@ -1,4 +1,4 @@
-import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 import { AppError } from '../../../domain/errors/app-error';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

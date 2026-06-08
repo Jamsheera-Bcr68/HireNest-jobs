@@ -1,9 +1,9 @@
 import { Skill } from '../../../domain/entities/skill.entity';
 import { IGetAllSkillsUseCase } from '../../interfaces/user/get-skills.usecase';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { SkillListDto, UserSkillDto } from '../../dtos/skill.dto';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { UserRole } from '../../../domain/enums/user.enums';
 
 export class GetAllSkillsUseCase implements IGetAllSkillsUseCase {

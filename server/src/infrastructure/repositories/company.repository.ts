@@ -1,8 +1,9 @@
-import { ICompanyRepository } from '../../domain/repository-iInterfaces/company-repository.interface';
+import { ICompanyRepository } from '../../domain/repository-interfaces/company-repository.interface';
 import {
   companyModel,
   ICompanyDocument,
 } from '../database/models/company.model';
+import { PipelineStage } from 'mongoose';
 
 import { GenericRepository } from './generic.repository';
 import { Company } from '../../domain/entities/company.entity';
@@ -12,7 +13,7 @@ import {
   CompanyStatus,
 } from '../../applications/dtos/company.dto';
 
-import mongoose, { Types } from 'mongoose';
+import mongoose, { AggregateOptions, Types } from 'mongoose';
 
 type CompanyQuery = Partial<Company> & {
   $or?: {
@@ -28,6 +29,7 @@ export class CompanyRepository
   constructor() {
     super(companyModel);
   }
+
   async findByUserId(userId: string): Promise<Company | null> {
     const company = await this._model.findOne({
       userId: new Types.ObjectId(userId),
@@ -41,8 +43,9 @@ export class CompanyRepository
   async getCompanyList(
     filter: Partial<Company>,
     page: number,
-    search: string,
-    limit: number
+    search: string = 'newest',
+    limit: number,
+    sortBy?: string
   ): Promise<PaginatedCompanies> {
     const query: CompanyQuery = { ...filter };
 
@@ -54,6 +57,14 @@ export class CompanyRepository
       ];
     }
     const skip = (page - 1) * limit;
+    let sortStage: PipelineStage.Sort['$sort'] = {};
+    if (sortBy == 'oldest') {
+      sortStage = { createdAt: 1 };
+    } else if (sortBy == 'newest') {
+      sortStage = { createdAt: -1 };
+    } else sortStage = { createdAt: -1 };
+    console.log('sortstage', sortStage);
+
     const companies = await this._model
       .aggregate([
         { $match: query },
@@ -78,6 +89,7 @@ export class CompanyRepository
           },
         },
       ])
+      .sort(sortStage)
       .skip(skip)
       .limit(limit);
 
@@ -120,6 +132,10 @@ export class CompanyRepository
       requestedSkills: doc.requestedSkills.map((id: mongoose.Types.ObjectId) =>
         id.toString()
       ),
+      reapplyCount: doc.reapplyCount,
+      reapplyDetails: doc.reapplyDetails,
+      reasonForSuspend: doc.reasonForSuspend,
+      reasonForReject: doc.reasonForReject,
     };
   }
 
@@ -138,6 +154,10 @@ export class CompanyRepository
     if (entity.email !== undefined) data.email = entity.email;
     if (entity.phone !== undefined) data.phone = entity.phone;
     if (entity.about !== undefined) data.about = entity.about;
+    if (entity.reapplyCount !== undefined)
+      data.reapplyCount = entity.reapplyCount;
+    if (entity.reapplyDetails !== undefined)
+      data.reapplyDetails = entity.reapplyDetails;
 
     if (entity.startedIn !== undefined)
       data.startedIn = Number(entity.startedIn);
@@ -164,7 +184,7 @@ export class CompanyRepository
     if (entity.size !== undefined) data.size = entity.size;
     if (entity.address !== undefined) data.address = entity.address;
     if (entity.document !== undefined) data.document = entity.document;
-    //  console.log('data after persisatnce', data);
+    console.log('data after persisatnce', data);
 
     return data;
   }

@@ -4,6 +4,8 @@ import { type ApplicationStatusType } from '../../types/dtos/application.dto';
 import { type ApplicationFilterType } from '../../presentation/hooks/user/candidate/profile/useApplication';
 
 export const applicationService = {
+
+  
   async applyJob(jobId: string, resumeId: string) {
     // console.log('job id from service,rsume id', jobId,resumeId);
 

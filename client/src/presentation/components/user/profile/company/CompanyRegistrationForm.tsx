@@ -3,6 +3,7 @@ import { useRegisterCompany } from '../../../../hooks/user/company/useRegisterCo
 import { YEARS } from '../../../../../types/dtos/profile-types/education.types';
 import SuccessModal from '../../../../modals/SuccessModal';
 import React, {
+  useEffect,
   useRef,
   useState,
   type ChangeEvent,
@@ -200,7 +201,10 @@ const Checkbox = ({ children, checked, handleChange, name }: CheckboxProps) => (
   </label>
 );
 
-export default function CompanyRegistration() {
+type Props = {
+  isReapply?: boolean;
+};
+export default function CompanyRegistration({ isReapply }: Props) {
   const {
     formData,
     handleChange,
@@ -208,10 +212,13 @@ export default function CompanyRegistration() {
     handleAreaChange,
     handleSubmit,
     error,
+    verify_file,
     setVerify_file,
     isSuccessOpen,
     setIsSuccessOpen,
-  } = useRegisterCompany();
+  } = useRegisterCompany(isReapply);
+
+  console.log('form data', formData);
 
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [isCropping, setIsCropping] = useState(false);
@@ -223,6 +230,12 @@ export default function CompanyRegistration() {
   const handleCameraClick = () => {
     inputRef.current?.click();
   };
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  useEffect(() => {
+    if (formData.logoUrl.trim() && isReapply) {
+      setPreview(baseUrl + formData.logoUrl);
+    }
+  }, [formData.logoUrl]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0] || null;
@@ -238,6 +251,7 @@ export default function CompanyRegistration() {
     reader.readAsDataURL(file);
     setPreview(URL.createObjectURL(file));
   };
+
   return (
     <>
       <div className="w-full">
@@ -294,6 +308,7 @@ export default function CompanyRegistration() {
                 your company profile below.
               </p>
             </div>
+           
           </div>
           {/* ─── CARD 1 · Company Identity ─── */}
           <Card title="Company Identity">
@@ -656,18 +671,55 @@ export default function CompanyRegistration() {
 
               {/* File Input */}
               <div className="w-1/2">
-                <input
+                {/* <input
                   type="file"
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setVerify_file(e.target?.files?.[0] || null)
                   }
                   className={`${inputCls} cursor-pointer file:mr-1 file:px-1 file:py-.5 file:rounded-md file:border-0 file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100`}
-                />
-                {error && error.documents?.file && (
+                /> */}
+
+                {/* Display file name */}
+                {/* <p className="text-sm text-gray-600 mt-1">
+                  {verify_file
+                    ? `Selected: ${verify_file.name}`
+                    : formData.documents.name
+                      ? `Current: ${formData.documents.name}`
+                      : 'No file selected'}
+                </p> */}
+
+                {/* {error && error.documents?.file && (
                   <p className="text-red-600 text-sm">
                     * {error.documents.file}
                   </p>
-                )}
+                )} */}
+                 <label
+    className={`${inputCls} flex items-center justify-between cursor-pointer`}
+  >
+    <span className="truncate">
+      {verify_file?.name ||
+        formData.documents.name ||
+        'Choose file'}
+    </span>
+
+    <span className="px-2 py-1 rounded-md bg-indigo-50 text-indigo-600">
+      Browse
+    </span>
+
+    <input
+      type="file"
+      className="hidden"
+      onChange={(e: ChangeEvent<HTMLInputElement>) =>
+        setVerify_file(e.target.files?.[0] || null)
+      }
+    />
+  </label>
+
+  {error?.documents?.file && (
+    <p className="text-red-600 text-sm">
+      * {error.documents.file}
+    </p>
+  )}
               </div>
             </div>
           </Card>

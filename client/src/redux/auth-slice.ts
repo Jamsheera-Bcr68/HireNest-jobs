@@ -24,8 +24,8 @@ export const authSlice = createSlice({
       state,
       action: PayloadAction<{ user: userDto; accessToken: string }>
     ) {
-      console.log('from login success');
-      console.log('action  is ', action);
+    //  console.log('from login success');
+      //console.log('action  is ', action);
 
       state.accessToken = action.payload.accessToken;
       ((state.user = action.payload.user), (state.isAuthenticated = true));
@@ -34,23 +34,23 @@ export const authSlice = createSlice({
     },
 
     logout(state) {
-      ((state.accessToken = ''),
-        (state.user = null),
-        (state.isAuthenticated = false));
+      state.accessToken = ''
+        state.user = null
+        state.isAuthenticated = false;
       localStorage.removeItem('user');
       localStorage.removeItem('accessToken');
     },
 
     setAccessToken(state, action: PayloadAction<{ accessToken: string }>) {
       localStorage.setItem('accessToken', action.payload.accessToken);
-      console.log('payload token ', action.payload.accessToken);
+     // console.log('payload token ', action.payload.accessToken);
 
       state.accessToken = action.payload.accessToken;
       //console.log('new access tokes set',state.accessToken);
     },
 
     updateUser(state, action) {
-      console.log('action update user', action);
+     // console.log('action update user', action);
       if (state.user) {
         state.user = { ...state.user, ...action.payload };
       }

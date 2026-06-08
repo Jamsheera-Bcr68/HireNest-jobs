@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 import { Experience } from '../../domain/entities/experience.entity';
-import { IExperienseRepository } from '../../domain/repository-iInterfaces/experience-repository.interface';
+import { IExperienseRepository } from '../../domain/repository-interfaces/experience-repository.interface';
 import {
   IExperienceDocument,
   ExperienceModel,

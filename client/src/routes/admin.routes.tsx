@@ -12,6 +12,7 @@ import SkillsPage from '../presentation/pages/admin/Skills.tsx';
 import ApplicationsPage from '../presentation/pages/admin/ApplicationsPage.tsx';
 import AppDetailsPage from '../presentation/pages/admin/AppDetailsPage.tsx';
 import InterviewsPage from '../presentation/pages/admin/InterviewsPage.tsx';
+import  { ADMIN_ROUTES } from './routes.ts';
 export const AdminRoutes = () => {
   console.log('from amin route');
 
@@ -19,17 +20,17 @@ export const AdminRoutes = () => {
     <Routes>
       <Route path="/" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
-        <Route path="/companies" element={<Companies />} />
-        <Route path="/companies/:companyId" element={<CompanyDetails />} />
-        <Route path="/candidates" element={<Candidates />} />
-        <Route path="/jobs" element={<Jobs />} />
+        <Route path={ADMIN_ROUTES.COMPANIES} element={<Companies />} />
+        <Route path={ADMIN_ROUTES.COMPANY_DETAILS}element={<CompanyDetails />} />
+        <Route path={ADMIN_ROUTES.CANDIDATES} element={<Candidates />} />
+        <Route path={ADMIN_ROUTES.JOBS} element={<Jobs />} />
         <Route path="/pendings" element={<Pendings />} />
-        <Route path="/candidates/:candidateId" element={<CandidateDetails />} />
-        <Route path="/jobs/:id" element={<AdminJobDetails />} />
-        <Route path="/skills" element={<SkillsPage />} />
-        <Route path="/applications" element={<ApplicationsPage />} />
-        <Route path="/applications/:id" element={<AppDetailsPage />} />
-        <Route path="/interviews" element={<InterviewsPage />} />
+        <Route path={ADMIN_ROUTES.CANDIDATE_DETAILS} element={<CandidateDetails />} />
+        <Route path={ADMIN_ROUTES.JOB_DETAILS}element={<AdminJobDetails />} />
+        <Route path={ADMIN_ROUTES.SKILLS}element={<SkillsPage />} />
+        <Route path={ADMIN_ROUTES.APPLICATIONS}element={<ApplicationsPage />} />
+        <Route path={ADMIN_ROUTES.APPLICATION_DETAILS} element={<AppDetailsPage />} />
+        <Route path={ADMIN_ROUTES.INTERVIEWS} element={<InterviewsPage />} />
       </Route>
     </Routes>
   );

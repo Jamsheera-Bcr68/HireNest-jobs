@@ -1,6 +1,6 @@
 import { AppError } from '../../../domain/errors/app-error';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

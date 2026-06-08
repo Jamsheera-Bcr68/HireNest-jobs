@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useHeader } from '../../../../hooks/user/useHeader';
 
+
 export const Header = () => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
   console.log(user?.role, 'from header');

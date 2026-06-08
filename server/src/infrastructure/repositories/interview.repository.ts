@@ -1,5 +1,5 @@
 import { GenericRepository } from './generic.repository';
-import { IInterviewRepository } from '../../domain/repository-iInterfaces/interview.repository.interface';
+import { IInterviewRepository } from '../../domain/repository-interfaces/interview.repository.interface';
 import { Interview } from '../../domain/entities/interview.entity';
 import { AggregatedInterviewDto } from '../../applications/dtos/interview.dto';
 
@@ -9,10 +9,8 @@ import {
 } from '../database/models/interview.model';
 import mongoose, { PipelineStage } from 'mongoose';
 import { duration } from 'zod/v4/classic/iso.cjs';
-import {
-  InterviewFilterDto,
-  InterviewListDto,
-} from '../../applications/dtos/interview.dto';
+import { InterviewFilterDto } from '../../applications/dtos/interview.dto';
+
 import { id } from 'zod/v4/locales';
 
 export class InterviewRepository
@@ -243,4 +241,6 @@ export class InterviewRepository
       totalDocs,
     };
   }
+
+  
 }

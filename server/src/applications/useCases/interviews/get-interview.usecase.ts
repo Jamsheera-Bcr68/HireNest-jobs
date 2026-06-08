@@ -1,9 +1,9 @@
 import { IGetEntityDetailsUsecase } from '../../interfaces/usecases/get-entity-details.usecase.inerface';
 import { ApplicationDetailsDto } from '../../dtos/application.dto';
-import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { interviewDetailDto } from '../../dtos/interview.dto';
 import { AppError } from '../../../domain/errors/app-error';
 import { statusCodes } from '../../../shared/enums/statuscodes';

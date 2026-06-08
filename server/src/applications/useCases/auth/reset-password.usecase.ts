@@ -1,11 +1,11 @@
 import { IResetPasswordUsecase } from '../../interfaces/auth/reset-password.usecase';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { hashedPassword } from '../../../infrastructure/services/password-hasher.service';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { AppError } from '../../../domain/errors/app-error';
 import { hashedToken } from '../../../infrastructure/services/reset-token.service';
-import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
+import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
 
 //import { passwordResetToken } from "../../../infrastructure/services/resetTokenService";
 

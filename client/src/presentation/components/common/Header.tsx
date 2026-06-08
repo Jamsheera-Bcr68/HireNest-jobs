@@ -1,12 +1,80 @@
 import { useNavigate } from 'react-router-dom';
 import './header.css';
 import { useHeader } from '../../hooks/user/useHeader';
+import { BellRing } from 'lucide-react';
+import { type NotificationType } from '../../../types/notification.type';
+import { useNotifications } from '../../hooks/notifications';
+import { useEffect, useState } from 'react';
+import NotificationModal from './Notifications';
 
 const Header = () => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
-  console.log(user?.role, 'from header');
+  const {
+    getNotificationCount,
+    getNotifications,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+  } = useNotifications();
+  const [notificationOpen, setNotificationOpen] = useState(false);
+
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [count, setCount] = useState<number>(0);
+
+  useEffect(() => {
+    console.log(user?.role, 'from header');
+
+    const getCount = async () => {
+      console.log('from useeffect');
+
+      const data = await getNotificationCount();
+      console.log('count is ', data.count);
+      setCount(data.count);
+    };
+    getCount();
+  }, [notifications]);
+
+  const fetchNotifications = async (tab: 'new' | 'all') => {
+    const not = await getNotifications(tab);
+    console.log('notifications', not);
+
+    setNotifications(not);
+  };
+
+  const handleNotificationClick = async () => {
+    console.log('from notification click');
+    setNotificationOpen(true);
+    await fetchNotifications('new');
+  };
+
+  const tabChange = async (tab: 'new' | 'all') => {
+    console.log('from tabChange', tab);
+    await fetchNotifications(tab);
+  };
+
+  const deleteHandle = async (id: string) => {
+    console.log('from delete notifivation', id);
+
+    await deleteNotification(id);
+    const updated = notifications.filter((n) => n.id !== id);
+    setNotifications(updated);
+  };
 
   const navigate = useNavigate();
+
+  const onMarkRead = async (id: string) => {
+    console.log('form mark as read', id);
+    await markAsRead(id);
+    const updated = notifications.filter((n) => n.id !== id);
+    setNotifications(updated);
+  };
+
+  const onMarkAll = async () => {
+    console.log('form mark as read');
+    await markAllAsRead();
+
+    setNotifications([]);
+  };
   return (
     <header className="sticky top-0 z-50  shadow-md">
       <nav className="container header  mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,23 +89,18 @@ const Header = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex space-x-8">
             <a
-              href="/"
+              href={
+                user?.role == 'candidate'
+                  ? '/'
+                  : user?.role == 'company'
+                    ? '/company'
+                    : '/'
+              }
               className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
             >
               Home
             </a>
-            {/* <a
-              href="#"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-            >
-              About
-            </a>
-            <a
-              href="#"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-            >
-              Services
-            </a> */}
+
             <a
               href="/jobs"
               className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
@@ -59,13 +122,41 @@ const Header = () => {
               </a>
             )}
           </div>
+          {user && user.role === 'company' && (
+            <button
+              onClick={() => navigate('/company/dashboard')}
+              className="text-gray-700 bg-blue-50 hover:bg-blue-100 rounded-xl hover:text-blue-600 px-4 py-2 text-sm font-medium transition-colors"
+            >
+              Go To Dashboard
+            </button>
+          )}
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <div className="relative inline-flex items-center">
+              {user && (
+                <div className="text-yellow-600 transition-colors duration-200 cursor-pointer">
+                  <BellRing
+                    onClick={handleNotificationClick}
+                    size={20}
+                    className="transition-transform duration-200 hover:scale-110"
+                  />
+                </div>
+              )}
+
+              {/* Notification Badge */}
+              {count !== 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-semibold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                  {count}
+                </span>
+              )}
+            </div>
             {!user && (
               <button
-                onClick={() => navigate('/login')}
-                className="text-gray-700 hover:text-blue-600 px-4 py-2 text-sm font-medium transition-colors"
+                onClick={() => {
+                  navigate('/login');
+                }}
+                className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Login
               </button>
@@ -87,7 +178,7 @@ const Header = () => {
               </button>
             )}
 
-            {user && (user.role === 'candidate' || 'company') && (
+            {user && (user.role === 'candidate' || user.role === 'company') && (
               <button
                 onClick={() => navigate('/company')}
                 className="bg-green-600 text-white hover:bg-green-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors"
@@ -165,6 +256,16 @@ const Header = () => {
           </div>
         )}
       </nav>
+      {notificationOpen && (
+        <NotificationModal
+          notifications={notifications}
+          onClose={() => setNotificationOpen(false)}
+          onMarkRead={onMarkRead}
+          onMarkAll={onMarkAll}
+          onTabChange={tabChange}
+          onDelete={deleteHandle}
+        />
+      )}
     </header>
   );
 };

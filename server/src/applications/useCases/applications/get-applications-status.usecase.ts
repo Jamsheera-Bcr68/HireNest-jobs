@@ -1,10 +1,10 @@
 import { ApplicationStatsCardType } from '../../dtos/application.dto';
 import { IGetEntityStatusUseCase } from '../../interfaces/admin/get-admin-entity-status.usecase';
 import { Application } from '../../../domain/entities/application.entity';
-import { IApplicationRepository } from '../../../domain/repository-iInterfaces/application.repository.interface';
+import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 import { ApplicationStatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { AppError } from '../../../domain/errors/app-error';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

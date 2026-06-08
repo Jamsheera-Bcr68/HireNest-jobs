@@ -1,4 +1,4 @@
-import { IEducationRepository } from '../../../domain/repository-iInterfaces/education-repository.interface';
+import { IEducationRepository } from '../../../domain/repository-interfaces/education-repository.interface';
 import { EducationDto } from '../../dtos/education.dto';
 import { IGetAllEducationUseCase } from '../../interfaces/candidate/get-educations.usecase';
 

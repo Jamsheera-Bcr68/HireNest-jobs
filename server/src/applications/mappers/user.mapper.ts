@@ -1,5 +1,8 @@
 import { email } from 'zod';
 import { User } from '../../domain/entities/user.entity';
+import { Company } from '../../domain/entities/company.entity';
+import { StatusEnum } from '../../domain/enums/status.enum';
+import { userProfileDto } from '../dtos/user.dto';
 
 export class UserMapper {
   static toDto(user: User) {
@@ -16,25 +19,30 @@ export class UserMapper {
 
     return returnData;
   }
-  static toUserProfileDto(user: User) {
+  static toUserProfileDto(user: User, company: Company | null): userProfileDto {
     console.log('user befor converting user.isBlocked', user.isBlocked);
-
+    let companyData: { status: StatusEnum;id:string, reason?: string } | null = null;
+    if (company&&company.id) {
+      companyData = { status: company.status,id:company.id, reason: company.reasonForReject };
+    }
     return {
-      id: user.id,
+      id: user.id ?? '',
       email: user.email,
       phone: user.phone,
-      skills: user.skills,
-      name: user.name,
+      skills: user.skills?.map((s) => s.skillName) ?? [],
+      name: user.name ?? '',
       experience: user.experience,
       imageUrl: user.imageUrl,
       title: user.title,
       education: user.education,
       address: user.address,
       socialLinks: user.socialMediaLinks,
-      about: user.about,
+      isRequested: user.isRequested,
+      company: companyData,
+      about: user.about ?? '',
       resumes: user.resumes,
-      createdAt: user.createdAt,
-      isBlocked: user.isBlocked,
+      createdAt: user.createdAt.toDateString(),
+      isBlocked: user.isBlocked ?? false,
     };
   }
 }

@@ -1,5 +1,5 @@
 import mongoose, { Model, Types, UpdateQuery } from 'mongoose';
-import { IBaseRepository } from '../../domain/repository-iInterfaces/base-repository.interface';
+import { IBaseRepository } from '../../domain/repository-interfaces/base-repository.interface';
 
 export abstract class GenericRepository<
   T extends { id?: string },
@@ -16,6 +16,8 @@ export abstract class GenericRepository<
     console.log('after maptperistance ', this.mapToPersistance(data));
 
     const doc = await this._model.create(this.mapToPersistance(data));
+    console.log('company doc',doc);
+    
     return this.mapToEntity(doc);
   }
 
@@ -56,9 +58,9 @@ export abstract class GenericRepository<
   }
 
   async getAll(filter: Partial<T>): Promise<T[] | []> {
-    console.log('filter', filter);
+    console.log('persistant filter filter', this.mapToPersistance(filter));
 
-    const docs = await this._model.find(filter);
+    const docs = await this._model.find(this.mapToPersistance(filter));
     if (!docs.length) return [];
     return docs.map((doc) => this.mapToEntity(doc));
   }
@@ -78,10 +80,13 @@ export abstract class GenericRepository<
 
     return this.mapToEntity(doc);
   }
+
+
   async getCount(filter?: Partial<T>): Promise<number> {
     const count = await this._model.countDocuments(filter);
     return count;
   }
+
   protected abstract mapToEntity(doc: D): T;
   protected abstract mapToPersistance(entity: Partial<T>): Partial<D>;
 

@@ -1,10 +1,10 @@
 import { InterviewStatsCardType } from '../../dtos/interview.dto';
 import { IGetEntityStatusUseCase } from '../../interfaces/admin/get-admin-entity-status.usecase';
 import { Interview } from '../../../domain/entities/interview.entity';
-import { IInterviewRepository } from '../../../domain/repository-iInterfaces/interview.repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { AppError } from '../../../domain/errors/app-error';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

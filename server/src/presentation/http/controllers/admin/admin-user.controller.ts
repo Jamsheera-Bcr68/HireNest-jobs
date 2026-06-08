@@ -43,13 +43,14 @@ export class AdminUserController {
     if (!status || status == 'all') delete query.status;
     if (!industry || industry == 'all') delete query.industry;
 
+
     if (!user || user.role !== UserRole.ADMIN) {
       throw new AppError(
         adminMessages.error.ADMIN_NOT_FOUND,
         statusCodes.UNAUTHERIZED
       );
     }
-    let { page, limit, search = '', ...rest } = query;
+    let { page, limit, search = '',sortBy='', ...rest } = query;
     // console.log('page,rest,limit,search', page, rest, limit, search);
     const pagenumber = Number(page);
 
@@ -57,7 +58,7 @@ export class AdminUserController {
       rest,
       pagenumber,
       String(search),
-      Number(limit)
+      Number(limit),sortBy as string
     );
     const { totalDocs, companies } = paginated;
     const totalPages = Math.ceil(totalDocs / Number(limit));
@@ -72,7 +73,7 @@ export class AdminUserController {
   });
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id ,sortBy} = req.params;
     const user = req.user;
     //  console.log('user,company id', user, id);
 
@@ -192,7 +193,7 @@ export class AdminUserController {
       success: true,
       message: adminMessages.success.CANDIDATES_FETCHED,
       totalDocs,
-      candidates: entities.map((entity) => UserMapper.toUserProfileDto(entity)),
+      candidates: entities.map((entity) => UserMapper.toUserProfileDto(entity,null)),
     });
   });
 
@@ -219,7 +220,7 @@ export class AdminUserController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: message,
-      candidate: UserMapper.toUserProfileDto(updated),
+      candidate: UserMapper.toUserProfileDto(updated,null),
     });
   });
 
@@ -243,7 +244,7 @@ export class AdminUserController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.COMPANY_FETCHED,
-      candidate: UserMapper.toUserProfileDto(candidate),
+      candidate: UserMapper.toUserProfileDto(candidate,null),
     });
   });
 

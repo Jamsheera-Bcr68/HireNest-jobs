@@ -1,11 +1,11 @@
 import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { IAddSkillToProfileUseCase } from '../../interfaces/candidate/add-skill-profile.usecase';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 
 export class AddSkillsToProfieUseCase implements IAddSkillToProfileUseCase {
   private _userRepository: IUserRepository;

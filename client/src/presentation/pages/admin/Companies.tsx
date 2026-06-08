@@ -1,7 +1,7 @@
 import HeroSection from '../../components/admin/HeroSection';
 import { useState, useEffect } from 'react';
 import StatusCards from '../../components/admin/StatusCards';
-import { useToast } from '../../../shared/toast/use-toast';
+
 import { type CompanyProfileType } from '../../../types/dtos/profile-types/user.types';
 import Table from '../../components/admin/companyDetails/Table';
 import Pagination from '../../components/common/Pagination';
@@ -19,7 +19,7 @@ export type CompanyFilter = {
 };
 
 function Companies() {
-  const { showToast } = useToast();
+
   const [companies, setCompanies] = useState<CompanyProfileType[]>([]);
   const [page, setPage] = useState(1);
   const [totalDocs, setTotalDocs] = useState(0);

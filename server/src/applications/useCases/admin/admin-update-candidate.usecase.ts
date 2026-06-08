@@ -1,6 +1,6 @@
 import { User } from '../../../domain/entities/user.entity';
 import { AppError } from '../../../domain/errors/app-error';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { adminMessages } from '../../../shared/constants/messages/admin.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 

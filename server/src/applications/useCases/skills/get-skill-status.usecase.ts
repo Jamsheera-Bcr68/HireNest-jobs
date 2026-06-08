@@ -1,8 +1,8 @@
 import { UserRole } from '../../../domain/enums/user.enums';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 import { SkillStatusCardDto } from '../../dtos/skill.dto';
-import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { AppError } from '../../../domain/errors/app-error';
 import { IGetEntitySatusUseCase } from '../../interfaces/usecases/get-entity-status.usecase.interface';
 import { userMessages } from '../../../shared/constants/messages/user.messages';

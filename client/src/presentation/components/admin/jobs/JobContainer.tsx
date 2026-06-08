@@ -10,7 +10,10 @@ import { statusStyles } from '../../../pages/admin/Candidates';
 import { useNavigate } from 'react-router-dom';
 import { Eye, Trash, Ban, ThumbsUp } from 'lucide-react';
 import { type ColumnType } from '../Candidates/ReusableTable';
-import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
+import {
+  Experience_Types,
+
+} from '../../../../types/dtos/profile-types/experience.type';
 import { type JobFilterType } from '../../candidate/jobListing/ListingContainter';
 import Pagination from '../../common/Pagination';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
@@ -27,16 +30,26 @@ const tabs = [
   { label: 'Closed', value: 'closed' },
   { label: 'Removed', value: 'removed' },
 ];
+const experience_filterOption = Experience_Types.map((t) => {
+  return {
+    label: t,
+    value: t,
+  };
+});
 const filterOptions = [
   {
     key: 'experience',
     label: 'Experience',
-    options: Experience_Types,
+    options: experience_filterOption,
   },
   {
     key: 'mode',
     label: 'Work Mode',
-    options: ['onsite', 'remote', 'hybrid'],
+    options: [
+      { label: 'Online', value: 'onsite' },
+      { label: 'Remote', value: 'remote' },
+      { label: 'Hybrid', value: 'hybrid' },
+    ],
   },
 ];
 
@@ -124,7 +137,7 @@ function JobContainer() {
         <>
           {' '}
           <div
-            className={`w-9 h-9 flex items-center justify-center font-bold text-xs flex-shrink-0`}
+            className={` font-semibold text-slate-800 whitespace-nowrap"`}
           >
             <span className="font-semibold text-slate-800">{j.title}</span>
           </div>
@@ -138,7 +151,7 @@ function JobContainer() {
         <>
           {' '}
           <div
-            className={`w-9 h-9 flex items-center justify-center font-bold text-xs flex-shrink-0`}
+            className={`font-semibold text-slate-800 whitespace-nowrap"`}
           >
             <span className="font-semibold text-slate-800">
               {j.companyName}
@@ -154,7 +167,7 @@ function JobContainer() {
         <>
           {' '}
           <div className="flex items-center gap-1.5">
-            <span className="font-semibold text-slate-800">
+            <span className="font-semibold text-slate-800 whitespace-nowrap">
               {j.jobType == 'partTime' ? 'Part Time' : 'Full Time'}
             </span>
           </div>

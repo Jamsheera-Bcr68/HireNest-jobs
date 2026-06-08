@@ -1,6 +1,6 @@
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { IAdminRepository } from '../../../domain/repository-iInterfaces/admin.reporitory.interface';
+import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { AdminLoginOutPutDto } from '../../dtos/admin.dto';

@@ -63,6 +63,8 @@ export class CompanyProfileController {
       user.userId,
       user.role
     );
+    console.log('new company',company);
+    
 
     return res.status(statusCodes.CREATED).json({
       success: true,

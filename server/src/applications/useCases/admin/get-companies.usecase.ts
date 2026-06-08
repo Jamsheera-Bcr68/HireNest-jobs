@@ -1,13 +1,13 @@
 import { CompanyListDTO, PaginatedCompanies } from '../../dtos/company.dto';
 import { Company } from '../../../domain/entities/company.entity';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 
 export interface IGetCompaniesUseCase {
   execute(
     filter: Partial<Company>,
     page: number,
     search: string | '',
-    limit: number
+    limit: number,sortBy:string
   ): Promise<PaginatedCompanies>;
 }
 export class GetCompaniesUseCase implements IGetCompaniesUseCase {
@@ -16,7 +16,7 @@ export class GetCompaniesUseCase implements IGetCompaniesUseCase {
     filter: Partial<Company>,
     page: number,
     search: string,
-    limit: number
+    limit: number,sortBy:string
   ): Promise<PaginatedCompanies> {
     const data = await this.companyRepository.getCompanyList(
       filter,

@@ -1,3 +1,5 @@
+import { StatusEnum } from "../enums/status.enum";
+
 export const Industry_Type = [
   'Information Technology',
   'Finance And Banking',
@@ -42,6 +44,7 @@ export type FileType = {
 export type VerificationDocType = {
   type: DocumentType;
   file: string;
+  name:string
 };
 
 export type DocumentType = (typeof Document_Types)[number] | '';
@@ -53,3 +56,10 @@ export type AddressType = {
   state: string;
   country: CountryName | '';
 };
+
+export interface IReapplyDetail {
+  date: Date;
+  status: StatusEnum;
+  rejectedReason?: string;
+}
+

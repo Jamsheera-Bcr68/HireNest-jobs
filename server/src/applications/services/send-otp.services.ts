@@ -1,7 +1,7 @@
 import { ISendOtpService } from '../interfaces/services/send-otp-service';
 import { IGenerateOtpService } from '../interfaces/services/otp-generator.service';
 import { IEmailService } from '../interfaces/services/email.service';
-import { IOtpRepository } from '../../domain/repository-iInterfaces/otp-repository.interface';
+import { IOtpRepository } from '../../domain/repository-interfaces/otp-repository.interface';
 
 export class SendOtpService implements ISendOtpService {
   private readonly _otpGenerator: IGenerateOtpService;

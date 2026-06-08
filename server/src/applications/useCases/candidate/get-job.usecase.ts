@@ -2,16 +2,16 @@ import { Company } from '../../../domain/entities/company.entity';
 import { Job } from '../../../domain/entities/job.entity';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
 import { AppError } from '../../../domain/errors/app-error';
-import { ICompanyRepository } from '../../../domain/repository-iInterfaces/company-repository.interface';
-import { IJobRepository } from '../../../domain/repository-iInterfaces/job-repository.interface';
-import { ISkillRepository } from '../../../domain/repository-iInterfaces/skill-repository.interface';
+import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { JobDetailsDto } from '../../dtos/job.dto';
 import { UserSkillDto } from '../../dtos/skill.dto';
 import { JobReportType } from '../../dtos/job.dto';
-import { IUserRepository } from '../../../domain/repository-iInterfaces/user-repository.interface';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 
 export interface IGetJobDetailsUseCase {
   execute(id: string): Promise<JobDetailsDto>;

@@ -1,5 +1,5 @@
 import { Skill } from '../../domain/entities/skill.entity';
-import { ISkillRepository } from '../../domain/repository-iInterfaces/skill-repository.interface';
+import { ISkillRepository } from '../../domain/repository-interfaces/skill-repository.interface';
 import { GenericRepository } from './generic.repository';
 
 import { skillModel, ISkillDocument } from '../database/models/skill.model';

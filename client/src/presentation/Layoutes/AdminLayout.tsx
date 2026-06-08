@@ -5,7 +5,7 @@ import AdminSidebar from '../components/admin/Sidebar';
 import { useLocation } from 'react-router-dom';
 
 const menuItems = [
-  { label: 'Dashboard', path: '/admin/dashboard' },
+  { label: 'Dashboard', path: '/admin' },
   { label: 'Candidates', path: '/admin/candidates' },
   { label: 'Companies', path: '/admin/companies' },
   { label: 'Job Listings', path: '/admin/jobs' },
@@ -40,6 +40,7 @@ export const AdminLayout = () => {
     <>
       <div className="flex min-h-screen">
         <AdminSidebar
+     
           setTitle={setTitle}
           sidebarOpen={sidebarOpen}
           nav={`${activeItem?.label || 'Dashboard'}`}
@@ -47,6 +48,7 @@ export const AdminLayout = () => {
 
         <div className="flex-1">
           <Header
+            setTitle={setTitle}
             title={title}
             sidebarOpen={sidebarOpen}
             setSidebarOpen={setSidebarOpen}
