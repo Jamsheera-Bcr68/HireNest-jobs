@@ -10,7 +10,7 @@ export class GetAllSkillsUseCase implements IGetAllSkillsUseCase {
   constructor(
     private skillRepository: ISkillRepository,
     private jobReposistory: IJobRepository,
-    private userRepository: IUserRepository
+    private _userRepository: IUserRepository
   ) {}
   async execute(
     userId: string,
@@ -39,7 +39,7 @@ export class GetAllSkillsUseCase implements IGetAllSkillsUseCase {
             : 0;
         const candidateCount =
           skill.status === 'approved'
-            ? await this.userRepository.getCountBySkill(skill.id)
+            ? await this._userRepository.getCountBySkill(skill.id,UserRole.CANDIDATE)
             : 0;
 
         return this.maptToUserSkillDto(skill, postCount, candidateCount);

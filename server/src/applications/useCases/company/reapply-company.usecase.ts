@@ -11,6 +11,7 @@ import { companyDto } from '../../dtos/company.dto';
 import { NotificationInputDto } from '../../dtos/notification.dto';
 import { INotificationService } from '../../services/notification.service';
 import { Company } from '../../../domain/entities/company.entity';
+import { getIO } from '../../../infrastructure/socket';
 
 export interface IReApplyCompanyUsecase {
   execute(payload: Partial<companyDto>, userId: string): Promise<void>;
@@ -68,5 +69,6 @@ export class ReApplyCompanyUsecase implements IReApplyCompanyUsecase {
       userId: admin.id,
     };
     await this._notificationService.create(notificationData);
+    getIO().to(admin.id).emit('notification', notificationData);
   }
 }

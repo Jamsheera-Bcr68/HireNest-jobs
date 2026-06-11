@@ -16,6 +16,7 @@ import { notificationMessages } from '../../../shared/constants/messages/notific
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { INotificationService } from '../../services/notification.service';
+import { getIO } from '../../../infrastructure/socket';
 
 export class UpdateApplicationStatusUseCase implements IUpdateEntityStatusUseCase<
   Application,
@@ -95,8 +96,10 @@ export class UpdateApplicationStatusUseCase implements IUpdateEntityStatusUseCas
       title: 'Application Shortlisted',
     };
     await this._notifictionService.create(notificationData);
-    console.log('updated', updated);
+  //  console.log('updated', updated);
 
+
+    getIO().to(application.candidateId).emit('notification', notificationData);
     return updated;
   }
 }

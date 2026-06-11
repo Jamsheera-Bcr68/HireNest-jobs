@@ -73,11 +73,11 @@ export class AdminUserController {
   });
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
-    const { id ,sortBy} = req.params;
+    const { companyId ,sortBy} = req.params;
     const user = req.user;
     //  console.log('user,company id', user, id);
 
-    if (!id)
+    if (!companyId)
       throw new AppError(
         adminMessages.error.COMPANYID_NOTFOUND,
         statusCodes.NOTFOUND
@@ -88,7 +88,7 @@ export class AdminUserController {
         statusCodes.UNAUTHERIZED
       );
     }
-    const company = await this.getCompanyUseCase.execute(id);
+    const company = await this.getCompanyUseCase.execute(companyId);
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.COMPANY_FETCHED,
@@ -99,7 +99,7 @@ export class AdminUserController {
   updateCompany = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
     console.log(user);
-    const { id } = req.params;
+    const { companyId } = req.params;
 
     const { reason, ...data } = req.body;
     console.log('reason,data', reason, data);
@@ -112,7 +112,7 @@ export class AdminUserController {
     }
     //console.log('data ', data);
     const updated = await this.adminUpdateCompanyUseCase.execute(
-      id,
+      companyId,
       data,
       reason
     );
@@ -200,7 +200,7 @@ export class AdminUserController {
   updateCandidates = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
     //  console.log(user);
-    const { id } = req.params;
+    const { candidateId } = req.params;
 
     const data = req.body;
 
@@ -211,7 +211,7 @@ export class AdminUserController {
       );
     }
 
-    const updated = await this.adminUpdateCandidateUseCase.execute(id, data);
+    const updated = await this.adminUpdateCandidateUseCase.execute(candidateId, data);
 
     const message = data.isBlocked
       ? adminMessages.success.CANDIDATE_BLOCKED
@@ -225,11 +225,11 @@ export class AdminUserController {
   });
 
   getCandidate = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { candidateId } = req.params;
     const user = req.user;
-    console.log('user,company id', user, id);
+    console.log('user,company id', user, candidateId);
 
-    if (!id)
+    if (!candidateId)
       throw new AppError(
         adminMessages.error.COMPANYID_NOTFOUND,
         statusCodes.NOTFOUND
@@ -240,7 +240,7 @@ export class AdminUserController {
         statusCodes.UNAUTHERIZED
       );
     }
-    const candidate = await this.adminGetEntityUseCase.execute(id);
+    const candidate = await this.adminGetEntityUseCase.execute(candidateId);
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.COMPANY_FETCHED,

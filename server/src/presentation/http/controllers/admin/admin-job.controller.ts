@@ -56,7 +56,7 @@ export class AdminJobController {
 
   updateJobStatus = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
-    const { id } = req.params;
+    const { jobId } = req.params;
     const data = req.body;
     console.log('form controller', data);
 
@@ -67,8 +67,8 @@ export class AdminJobController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    console.log('from update status', id, data);
-    await this.updateJobStatusUseCase.execute(id, user.userId, user.role, data);
+    console.log('from update status', jobId, data);
+    await this.updateJobStatusUseCase.execute(jobId, user.userId, user.role, data);
     return res.status(statusCodes.OK).json({
       success: true,
       message: jobMessages.success.JOB_STATUS_UPDATED(data.status),

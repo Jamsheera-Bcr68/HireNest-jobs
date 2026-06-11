@@ -1,6 +1,13 @@
 export const ADMIN_API_ENDPOINTS = {
   GET_POST_STATUS: '/job-status',
-  UPDATE_JOBSTATUS: '/jobs/:id',
+  JOB: '/jobs/:jobId',
   JOBS: '/jobs',
-  JOB_DETAILS: '/jobs/:id',
+
+  COMPANY: '/companies/:companyId',
+  COMPANIES: '/companies',
+  CANDIDATES: '/candidates',
+  CANDIDATE: '/candidates/:candidateId',
+  COMPANY_STATUS: '/company-status',
+  CANDIDATE_STATUS: '/candidates-status',
+  CHECK_FILE_EXIST: '/check-fileExist',
 };

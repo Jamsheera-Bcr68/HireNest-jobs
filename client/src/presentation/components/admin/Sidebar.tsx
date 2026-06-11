@@ -62,7 +62,7 @@ function Sidebar({
             key={item}
             onClick={() => {
               setTitle(item);
-              console.log('item,navLinks[item]', item, navLinks[item]);
+              //console.log('item,navLinks[item]', item, navLinks[item]);
 
               navigate(navLinks[item]);
               setActiveNav(item);

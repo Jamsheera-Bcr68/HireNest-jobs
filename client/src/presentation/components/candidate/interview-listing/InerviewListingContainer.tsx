@@ -6,7 +6,7 @@ import {
   type interviewDetailDto,
   type InterviewDto,
 } from '../../../../types/dtos/interview.dto';
-import { interviewService } from '../../../../services/interview.service';
+import { interviewService } from '../../../../services/api-services/interview.service';
 import { CandidateInterviewList } from './InterviewList';
 import { useInterviews } from '../../../hooks/user/useInterview';
 import { Filters } from '../ReusableComponents';

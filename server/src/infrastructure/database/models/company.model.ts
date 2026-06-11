@@ -102,7 +102,7 @@ const companySchema = new Schema<ICompanyDocument>(
         enum: Object.values(Document_Types),
       },
       file: String,
-      name:String
+      name: String,
     },
 
     reapplyCount: { type: Number, default: 0 },
@@ -110,7 +110,7 @@ const companySchema = new Schema<ICompanyDocument>(
       {
         date: {
           type: Date,
-          default: Date.now,
+          default: new Date(),
         },
         status: {
           type: String,

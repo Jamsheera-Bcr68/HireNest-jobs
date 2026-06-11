@@ -4,7 +4,8 @@ import {
   ICompanyDocument,
 } from '../database/models/company.model';
 import { PipelineStage } from 'mongoose';
-
+import { StatusEnum } from '../../domain/enums/status.enum';
+import { IndustryType } from '../../domain/types/company-profile.types';
 import { GenericRepository } from './generic.repository';
 import { Company } from '../../domain/entities/company.entity';
 import {
@@ -12,16 +13,26 @@ import {
   CompanyListDTO,
   CompanyStatus,
 } from '../../applications/dtos/company.dto';
-
+import { CompanyFilterDto } from '../../applications/dtos/company.dto';
 import mongoose, { AggregateOptions, Types } from 'mongoose';
 
-type CompanyQuery = Partial<Company> & {
+
+type CompanyQuery = {
+  status?: StatusEnum;
+  industry?: IndustryType;
   $or?: {
     companyName?: { $regex: string; $options: string };
     email?: { $regex: string; $options: string };
     industry?: { $regex: string; $options: string };
   }[];
 };
+// type CompanyQuery = Partial<Company> & {
+//   $or?: {
+//     companyName?: { $regex: string; $options: string };
+//     email?: { $regex: string; $options: string };
+//     industry?: { $regex: string; $options: string };
+//   }[];
+// };
 export class CompanyRepository
   extends GenericRepository<Company, ICompanyDocument>
   implements ICompanyRepository
@@ -41,13 +52,13 @@ export class CompanyRepository
   }
 
   async getCompanyList(
-    filter: Partial<Company>,
+    filter: CompanyFilterDto,
     page: number,
     search: string = 'newest',
     limit: number,
     sortBy?: string
   ): Promise<PaginatedCompanies> {
-    const query: CompanyQuery = { ...filter };
+   const query: CompanyQuery = { ...filter };
 
     if (search) {
       query.$or = [
@@ -133,7 +144,11 @@ export class CompanyRepository
         id.toString()
       ),
       reapplyCount: doc.reapplyCount,
-      reapplyDetails: doc.reapplyDetails,
+      reapplyDetails: doc.reapplyDetails.map((app) => ({
+        date: app.date,
+        status: app.status,
+        rejectedReason: app.rejectedReason,
+      })),
       reasonForSuspend: doc.reasonForSuspend,
       reasonForReject: doc.reasonForReject,
     };

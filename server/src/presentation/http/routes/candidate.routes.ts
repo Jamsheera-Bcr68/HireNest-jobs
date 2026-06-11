@@ -24,90 +24,90 @@ router.post(
   candidateProfileController.editProfile
 );
 router.get(
-  '/profile',
+  API_END_POINTS.PROFILE,
   authValidator(tokenService),
   candidateProfileController.getUser
 );
 router.patch(
-  '/profile/image',
+  API_END_POINTS.PROFILE_IMAGE,
   authValidator(tokenService),
   upload.single('image'),
   candidateProfileController.editProfileImage
 );
 router.delete(
-  '/profile/image',
+  API_END_POINTS.PROFILE_IMAGE,
   authValidator(tokenService),
   candidateProfileController.removeProfileImage
 );
 router.patch(
-  '/profile/about',
+  API_END_POINTS.ABOUT,
   authValidator(tokenService),
   candidateProfileController.addAbout
 );
 
 router.post(
-  '/profile/skills/:skillId',
+  API_END_POINTS.PROFILE_SKILLS,
   authValidator(tokenService),
   candidateProfileController.addSkill
 );
 
 router.patch(
-  '/profile/skills/:skillId',
+  API_END_POINTS.PROFILE_SKILLS,
   authValidator(tokenService),
   candidateProfileController.removeSkill
 );
 
 router.post(
-  '/profile/experience',
+  API_END_POINTS.EXPERIENCES,
   authValidator(tokenService),
   experienceFormValidator,
   candidateProfileController.addExperience
 );
 
 router.put(
-  '/profile/experience/:expId',
+  API_END_POINTS.EXPERIENCE,
   authValidator(tokenService),
   experienceFormValidator,
   candidateProfileController.editExperience
 );
 
 router.patch(
-  '/profile/experience/:expId',
+ API_END_POINTS.EXPERIENCE,
   authValidator(tokenService),
 
   candidateProfileController.removeExperience
 );
 
 router.post(
-  '/profile/education',
+ API_END_POINTS.EDUCATIONS,
   authValidator(tokenService),
   educationValidator,
   candidateProfileController.addEducation
 );
 
 router.put(
-  '/profile/education/:eduId',
+  API_END_POINTS.EDUCATION,
   authValidator(tokenService),
   educationValidator,
   candidateProfileController.editEducation
 );
 
 router.patch(
-  '/profile/education/:eduId',
+ API_END_POINTS.EDUCATION,
   authValidator(tokenService),
   educationValidator,
   candidateProfileController.deleteEducation
 );
 
 router.post(
-  '/profile/resume',
+API_END_POINTS.RESUMES,
   authValidator(tokenService),
   fileUpload.single('resume'),
   candidateProfileController.addResume
 );
 
 router.delete(
-  '/profile/resume/:id',
+  API_END_POINTS.RESUME,
   authValidator(tokenService),
   candidateProfileController.removeResume
 );
@@ -118,5 +118,5 @@ router.get(
   candidateProfileController.getResume
 );
 
-router.get('/home', userControlller.getHomeData);
+router.get(API_END_POINTS.HOME, userControlller.getHomeData);
 export default router;

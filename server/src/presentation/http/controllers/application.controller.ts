@@ -118,20 +118,20 @@ export class ApplicationController {
   });
 
   getApplicationDetails = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { applicationId } = req.params;
 
     const user = req.user;
     if (!user || !user.userId) {
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
     }
-    if (!id)
+    if (!applicationId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Application'),
         statusCodes.NOTFOUND
       );
 
     const application = await this._getApplicationDetailsUsecase.execute(
-      id,
+      applicationId,
       user.userId,
       user.role
     );
@@ -145,13 +145,13 @@ export class ApplicationController {
   });
 
   updateAppStatus = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { applicationId } = req.params;
 
     const user = req.user;
     if (!user || !user.userId) {
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
     }
-    if (!id)
+    if (!applicationId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Application'),
         statusCodes.NOTFOUND
@@ -160,7 +160,7 @@ export class ApplicationController {
     console.log('status,reason', status, reason);
 
     const app = await this._updateEntityStatusUsecase.execute(
-      id,
+      applicationId,
       user.userId,
       user.role,
       status,

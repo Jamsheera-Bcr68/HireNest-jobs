@@ -5,7 +5,7 @@ import type {
 } from '../../../types/dtos/interview.dto';
 import { interviewSchema } from '../../../libraries/validations/company/interview.form.validation';
 import { useToast } from '../../../shared/toast/use-toast';
-import { interviewService } from '../../../services/interview.service';
+import { interviewService } from '../../../services/api-services/interview.service';
 import { type InterviewResult } from '../../../types/dtos/interview.dto';
 import type { SortOption } from '../../components/admin/Candidates/ReusableTable';
 import { type FilterOption } from './candidate/profile/useApplication';

@@ -12,6 +12,11 @@ import { interviewDto } from '../../dtos/interview.dto';
 import { IUpdateEntityUseCase } from '../../interfaces/usecases/update-entity.usecase.interface';
 import { InterviewMapper } from '../../mappers/interview.mapper';
 import { interviewInputDto } from '../../dtos/interview.dto';
+import { INotificationService } from '../../services/notification.service';
+import { NotificationInputDto } from '../../dtos/notification.dto';
+import { NotificationType } from '../../../domain/enums/notification-enums';
+import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
+import { getIO } from '../../../infrastructure/socket';
 
 export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
   interviewInputDto,
@@ -21,7 +26,8 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
     private _interviewRepository: IInterviewRepository,
     private _companyRepository: ICompanyRepository,
     private _jobRepository: IJobRepository,
-    private _userRepository: IUserRepository
+    private _userRepository: IUserRepository,
+    private _notificationService: INotificationService
   ) {}
 
   async execute(
@@ -79,6 +85,20 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
         generalMessages.errors.NOT_FOUND('Candidate'),
         statusCodes.NOTFOUND
       );
+
+    const notificationData: NotificationInputDto = {
+      type: NotificationType.INTERVIEW_STATUS_UPDATED,
+      title: `Interview ${status}`,
+      message: notificationMessages[NotificationType.INTERVIEW_UPDATED]({
+        title: job.title,
+      }),
+      userId: interview.candidateId,
+    };
+
+    await this._notificationService.create(notificationData);
+
+    getIO().to(notificationData.userId).emit('notification', notificationData);
+
     return InterviewMapper.entityToInterviewDto(
       updated,
       job,

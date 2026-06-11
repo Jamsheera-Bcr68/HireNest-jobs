@@ -16,7 +16,7 @@ import {
   formatDateForInput,
   formatTimeForInput,
 } from '../../../../../utils/date-conversion';
-import { interviewService } from '../../../../../services/interview.service';
+import { interviewService } from '../../../../../services/api-services/interview.service';
 
 type Props = {
   isOpen: boolean;

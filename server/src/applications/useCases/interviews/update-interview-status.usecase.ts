@@ -1,13 +1,19 @@
 import { Interview } from '../../../domain/entities/interview.entity';
+import { NotificationType } from '../../../domain/enums/notification-enums';
 import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { getIO } from '../../../infrastructure/socket';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
+import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
+import { NotificationInputDto } from '../../dtos/notification.dto';
 import { IUpdateEntityStatusUseCase } from '../../interfaces/usecases/update-entity-status.usecase.interface';
+import { INotificationService } from '../../services/notification.service';
 
 export class UpdateInterviewStatusUsecase implements IUpdateEntityStatusUseCase<
   Interview,
@@ -15,7 +21,9 @@ export class UpdateInterviewStatusUsecase implements IUpdateEntityStatusUseCase<
 > {
   constructor(
     private _interviewRepository: IInterviewRepository,
-    private _companyRepository: ICompanyRepository
+    private _companyRepository: ICompanyRepository,
+    private _notificationService: INotificationService,
+    private _jobRepository: IJobRepository
   ) {}
 
   async execute(
@@ -60,6 +68,26 @@ export class UpdateInterviewStatusUsecase implements IUpdateEntityStatusUseCase<
       data.reasonForCancel = reason;
       data.cancelledBy = role;
     }
-    const updated = this._interviewRepository.update(id, data);
+    const updated = await this._interviewRepository.update(id, data);
+
+    const job = await this._jobRepository.findById(interview.jobId);
+    if (!job)
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Job'),
+        statusCodes.NOTFOUND
+      );
+    const notificationData: NotificationInputDto = {
+      type: NotificationType.INTERVIEW_UPDATED,
+      title: `Interview ${status}`,
+      message: notificationMessages[NotificationType.INTERVIEW_STATUS_UPDATED]({
+        title: job.title,
+        status,
+      }),
+      userId: interview.candidateId,
+    };
+
+    await this._notificationService.create(notificationData);
+
+    getIO().to(notificationData.userId).emit('notification', notificationData);
   }
 }

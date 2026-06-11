@@ -19,14 +19,14 @@ function RightSideBar({
   contactLinkes: ContactDataType[];
   resumes: ResumeType[];
 }) {
-  console.log('from side bar', contactLinkes);
+ // console.log('from side bar', contactLinkes);
   const { showToast } = useToast();
   const checkResumeExist = async (url: string) => {
     try {
-      console.log('resume url', url);
+     // console.log('resume url', url);
 
       const data = await adminService.checkExist(url);
-      console.log(data);
+     // console.log(data);
       if (data.isExist) {
         window.open(`${baseUrl}${url}`, '_blank');
       } else {
@@ -44,8 +44,8 @@ function RightSideBar({
     }
   };
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
-  console.log('backend', baseUrl);
-  console.log(resumes);
+ // console.log('backend', baseUrl);
+ // console.log(resumes);
 
   return (
     <div className="space-y-6 mt-4">

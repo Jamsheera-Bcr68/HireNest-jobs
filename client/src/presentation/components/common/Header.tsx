@@ -1,55 +1,58 @@
 import { useNavigate } from 'react-router-dom';
 import './header.css';
+
 import { useHeader } from '../../hooks/user/useHeader';
 import { BellRing } from 'lucide-react';
 import { type NotificationType } from '../../../types/notification.type';
 import { useNotifications } from '../../hooks/notifications';
 import { useEffect, useState } from 'react';
 import NotificationModal from './Notifications';
+import { useSelector, useDispatch } from 'react-redux';
+import { type RootState } from '../../../redux/store';
+
+import { setNotifications } from '../../../redux/slices/notification.slice';
 
 const Header = () => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
-  const {
-    getNotificationCount,
-    getNotifications,
-    markAsRead,
-    markAllAsRead,
-    deleteNotification,
-  } = useNotifications();
+  const notifications = useSelector(
+    (state: RootState) => state.notification.notifications
+  );
+  const { getNotifications, markAsRead, markAllAsRead, deleteNotification } =
+    useNotifications();
   const [notificationOpen, setNotificationOpen] = useState(false);
-
-  const [notifications, setNotifications] = useState<NotificationType[]>([]);
-  const [count, setCount] = useState<number>(0);
+  const [notes, setNots] = useState<NotificationType[]>([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log(user?.role, 'from header');
 
-    const getCount = async () => {
+    const loadNotifications = async () => {
       console.log('from useeffect');
 
-      const data = await getNotificationCount();
-      console.log('count is ', data.count);
-      setCount(data.count);
+      const nots = await getNotifications('all');
+      dispatch(setNotifications(nots));
     };
-    getCount();
-  }, [notifications]);
+    loadNotifications();
+  }, []);
 
-  const fetchNotifications = async (tab: 'new' | 'all') => {
-    const not = await getNotifications(tab);
-    console.log('notifications', not);
+  const count = notifications.filter((n) => n.isRead === false).length;
 
-    setNotifications(not);
-  };
+  // const fetchNotifications = async (tab: 'new' | 'all') => {
+  //   const not = await getNotifications(tab);
+  //   console.log('notifications', not);
 
-  const handleNotificationClick = async () => {
-    console.log('from notification click');
+  //   setNotifications(not);
+  // };
+
+  const handleNotificationClick = () => {
     setNotificationOpen(true);
-    await fetchNotifications('new');
+    setNots(notifications.filter((n) => n.isRead === false));
   };
 
-  const tabChange = async (tab: 'new' | 'all') => {
+  const tabChange = (tab: 'new' | 'all') => {
     console.log('from tabChange', tab);
-    await fetchNotifications(tab);
+    if (tab == 'all') setNots(notifications);
+    else setNots(notifications.filter((n) => n.isRead === false));
   };
 
   const deleteHandle = async (id: string) => {
@@ -57,7 +60,7 @@ const Header = () => {
 
     await deleteNotification(id);
     const updated = notifications.filter((n) => n.id !== id);
-    setNotifications(updated);
+    dispatch(setNotifications(updated));
   };
 
   const navigate = useNavigate();
@@ -65,16 +68,18 @@ const Header = () => {
   const onMarkRead = async (id: string) => {
     console.log('form mark as read', id);
     await markAsRead(id);
-    const updated = notifications.filter((n) => n.id !== id);
-    setNotifications(updated);
+    const updated = notifications.map((n) => n.id !== id?n:{...n,isRead:true});
+    dispatch(setNotifications(updated));
   };
 
   const onMarkAll = async () => {
     console.log('form mark as read');
     await markAllAsRead();
-
-    setNotifications([]);
+    dispatch(
+      setNotifications(notifications.map((n) => ({ ...n, isRead: true })))
+    );
   };
+
   return (
     <header className="sticky top-0 z-50  shadow-md">
       <nav className="container header  mx-auto px-4 sm:px-6 lg:px-8">
@@ -134,7 +139,7 @@ const Header = () => {
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <div className="relative inline-flex items-center">
-              {user && (
+              {user && user.role !== 'admin' && (
                 <div className="text-yellow-600 transition-colors duration-200 cursor-pointer">
                   <BellRing
                     onClick={handleNotificationClick}
@@ -258,7 +263,7 @@ const Header = () => {
       </nav>
       {notificationOpen && (
         <NotificationModal
-          notifications={notifications}
+          notifications={notes}
           onClose={() => setNotificationOpen(false)}
           onMarkRead={onMarkRead}
           onMarkAll={onMarkAll}

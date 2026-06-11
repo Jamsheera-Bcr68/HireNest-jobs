@@ -21,7 +21,7 @@ import type {
   interviewDetailDto,
   InterviewStatusType,
 } from '../../../../../types/dtos/interview.dto';
-import { interviewService } from '../../../../../services/interview.service';
+import { interviewService } from '../../../../../services/api-services/interview.service';
 import InterviewDetailsModal from './InterviewViewModal';
 import { to12Hour } from '../../../../../utils/date-conversion';
 

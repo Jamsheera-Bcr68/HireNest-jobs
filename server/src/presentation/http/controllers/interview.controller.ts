@@ -93,11 +93,11 @@ export class InterviewController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    const { id } = req.params;
+    const { interviewId } = req.params;
     const { action = 'Updated', ...data } = req.body;
 
     const interview = await this._updateInterviewUsecase.execute(
-      id,
+      interviewId,
       user.role,
       user.userId,
       data
@@ -214,8 +214,8 @@ export class InterviewController {
       );
     }
 
-    const { id } = req.params;
-    if (!id)
+    const { interviewId } = req.params;
+    if (!interviewId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Interviw'),
         statusCodes.BADREQUEST
@@ -224,7 +224,7 @@ export class InterviewController {
     console.log(' req.body', req.body);
 
     await this._updateInterviewStatusUsecase.execute(
-      id,
+      interviewId,
       user.userId,
       user.role,
       status,
@@ -245,15 +245,15 @@ export class InterviewController {
       );
     }
 
-    const { id } = req.params;
-    if (!id)
+    const { interviewId } = req.params;
+    if (!interviewId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Interviw'),
         statusCodes.BADREQUEST
       );
 
     const interview = await this._getInterviewDetailsUsecase.execute(
-      id,
+      interviewId,
       user.userId,
       user.role
     );
@@ -275,8 +275,8 @@ export class InterviewController {
       );
     }
 
-    const { id } = req.params;
-    if (!id)
+    const { interviewId } = req.params;
+    if (!interviewId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Interviw'),
         statusCodes.BADREQUEST
@@ -287,7 +287,7 @@ export class InterviewController {
     const { data } = req.body;
 
     await this._updateInterviewResultUsecase.execute(
-      id,
+      interviewId,
 
       user.role,
       user.userId,
@@ -308,14 +308,14 @@ export class InterviewController {
       );
     }
 
-    const { id } = req.params;
-    if (!id)
+    const { interviewId } = req.params;
+    if (!interviewId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Interviw'),
         statusCodes.BADREQUEST
       );
 
-    await this._confirmInterviewUsecase.execute(user.userId, id);
+    await this._confirmInterviewUsecase.execute(user.userId, interviewId);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -332,10 +332,10 @@ export class InterviewController {
       );
     }
 
-    const { id } = req.params;
+    const { interviewId } = req.params;
     const { reason } = req.body;
 
-    if (!id)
+    if (!interviewId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Interviw'),
         statusCodes.BADREQUEST
@@ -346,7 +346,11 @@ export class InterviewController {
         statusCodes.BADREQUEST
       );
 
-    await this._requestForRescheduleUsecase.execute(user.userId, id, reason);
+    await this._requestForRescheduleUsecase.execute(
+      user.userId,
+      interviewId,
+      reason
+    );
 
     return res.status(statusCodes.OK).json({
       success: true,

@@ -12,9 +12,8 @@ import { NotificationType } from '../../../domain/enums/notification-enums';
 import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
- import { NotificationInputDto } from '../../dtos/notification.dto';
-
-
+import { NotificationInputDto } from '../../dtos/notification.dto';
+import { getIO } from '../../../infrastructure/socket';
 
 export interface IScheduleInterviewUsecase {
   execute(data: interviewInputDto): Promise<string>;
@@ -101,7 +100,9 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
 
     // console.log('notification data',notificationData);
 
-    await this._notificationService.create(notificationData);
+    const notification =
+      await this._notificationService.create(notificationData);
+    getIO().to(newInterview.candidateId).emit('notification', notification);
     return newInterview.id;
   }
 }

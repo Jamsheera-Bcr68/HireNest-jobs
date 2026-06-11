@@ -48,7 +48,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
   }, [searchInput]);
 
   const approveCompany = async () => {
-    console.log('approve company');
+    //console.log('approve company');
     if (!companyId) return;
     try {
       const data = await adminService.updateCompany(companyId, {
@@ -56,7 +56,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         status: 'active',
       });
       const approved = data.company;
-      console.log('approved', approved);
+      //console.log('approved', approved);
 
       onUpdate(approved);
       setOpen(false);
@@ -71,13 +71,13 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
   };
 
   const rejectCompany = async (status: StatusType, reason: string) => {
-    console.log('reject company');
-    console.log('company id', companyId);
+   // console.log('reject company');
+  //  console.log('company id', companyId);
 
     if (!companyId) return;
 
     setShowReasonModal(true);
-    console.log('from reject company');
+    //console.log('from reject company');
 
     try {
       const data = await adminService.updateCompany(
@@ -89,7 +89,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         reason
       );
       const rejected = data.company;
-      console.log('after rejecting', data);
+      //console.log('after rejecting', data);
 
       onUpdate(rejected);
       setShowReasonModal(false);
@@ -105,7 +105,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
   };
 
   const suspendCompany = async (status: StatusType, reason: string) => {
-    console.log('suspend company', companyId);
+  //  console.log('suspend company', companyId);
 
     if (!companyId) return;
     try {
@@ -118,7 +118,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         reason
       );
       const suspended = data.company;
-      console.log('after suspending', data);
+    //  console.log('after suspending', data);
 
       onUpdate(suspended);
       setSuspendOpen(false);
@@ -133,7 +133,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
   };
 
   const reactivateCompany = async () => {
-    console.log('reactivate company');
+  //  console.log('reactivate company');
     if (!companyId) return;
     try {
       const data = await adminService.updateCompany(companyId, {
@@ -141,7 +141,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         status: 'active',
       });
       const activated = data.company;
-      console.log('after activated', data);
+     // console.log('after activated', data);
       onUpdate(activated);
       setCompanyId(activated);
       setReactivateOpen(false);

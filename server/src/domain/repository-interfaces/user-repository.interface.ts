@@ -5,6 +5,7 @@ import {
   PaginatedEntities,
 } from '../../applications/types/candidate.type';
 import { User } from '../entities/user.entity';
+import { UserRole } from '../enums/user.enums';
 import { IExperience, IResume } from '../values/profile-types';
 import { IBaseRepository } from './base-repository.interface';
 export interface IUserRepository extends IBaseRepository<User> {
@@ -62,5 +63,5 @@ export interface IUserRepository extends IBaseRepository<User> {
 
   saveJob(userId: string, jobId: string): Promise<User | null>;
 
-  getCountBySkill(skillId: string, filter?: Partial<User>): Promise<number>;
+  getCountBySkill(skillId: string, role:UserRole): Promise<number>;
 }

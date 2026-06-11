@@ -7,7 +7,7 @@ import { ICompanyRepository } from '../../../domain/repository-interfaces/compan
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { adminMessages } from '../../../shared/constants/messages/admin.messages';
 import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
-
+import { getIO } from '../../../infrastructure/socket';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { NotificationInputDto } from '../../dtos/notification.dto';
 import { INotificationService } from '../../services/notification.service';
@@ -34,7 +34,7 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     const company = await this._companyRepository.findById(id);
     console.log('reason', reason);
 
-    if (!company) {
+    if (!company || !company.id) {
       throw new AppError(
         adminMessages.error.COMPANY_NOTFOUND,
         statusCodes.NOTFOUND
@@ -48,6 +48,24 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     }
     if (status == 'suspended') {
       data.reasonForSuspend = reason;
+    }
+    if (company.reapplyCount && status == 'rejected') {
+      console.log('reapply details', company.reapplyDetails);
+
+      data.reapplyDetails = company.reapplyDetails.map((app) =>
+        app.status == StatusEnum.PENDING
+          ? { ...app, status: StatusEnum.REJECTED, rejectedReason: reason }
+          : app
+      );
+    }
+    if (company.reapplyCount && status == 'active') {
+      console.log('reapply details', company.reapplyDetails);
+
+      data.reapplyDetails = company.reapplyDetails.map((app) =>
+        app.status == StatusEnum.PENDING
+          ? { ...app, status: StatusEnum.ACTIVE }
+          : app
+      );
     }
     const updated = await this._companyRepository.save(id, {
       ...company,
@@ -125,8 +143,9 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
       userId: company.userId,
     };
 
-    await this._notificationService.create(notificationData);
-
+    const notification =
+      await this._notificationService.create(notificationData);
+    getIO().to(company.userId).emit('notification', notification);
     return updated;
   }
 }

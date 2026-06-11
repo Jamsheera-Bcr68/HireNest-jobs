@@ -175,7 +175,7 @@ export class SkillsController {
   });
 
   updateSkillStatus = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { skillId } = req.params;
     const user = req.user;
 
     if (!user) {
@@ -184,7 +184,7 @@ export class SkillsController {
         statusCodes.UNAUTHERIZED
       );
     }
-    if (!id)
+    if (!skillId)
       throw new AppError(
         jobMessages.error.SKILLID_NOT_FOUND,
         statusCodes.BADREQUEST
@@ -192,7 +192,7 @@ export class SkillsController {
     const { status, reason } = req.body;
     console.log('from skill status updata,staus,reason', status, reason);
     await this._updateSkillStatusUsecase.execute(
-      id,
+      skillId,
       user.userId,
       user.role,
       status,
@@ -207,22 +207,22 @@ export class SkillsController {
   updateSkill = asyncHandler(async (req: Request, res: Response) => {
     console.log('from update skill');
     const user = req.user;
-    const { id } = req.params;
+    const { skillId } = req.params;
 
     if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    if (!id)
+    if (skillId)
       throw new AppError(
         skillMessages.error.SKILL_ID_NOTfOUND,
         statusCodes.NOTFOUND
       );
     const { skill } = req.body;
-    console.log('from update job', id, skill);
+    console.log('from update job', skillId, skill);
     await this._updateSkillUsecase.execute(
-      id,
+      skillId,
 
       user.role,
       user.userId,

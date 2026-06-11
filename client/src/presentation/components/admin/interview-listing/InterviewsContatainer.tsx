@@ -21,7 +21,7 @@ import type {
 } from '../../../../types/dtos/interview.dto';
 import InterviewDetailsModal from './InterviewModal';
 import { to12Hour } from '../../../../utils/date-conversion';
-import { interviewService } from '../../../../services/interview.service';
+import { interviewService } from '../../../../services/api-services/interview.service';
 
 const tabs: TabType[] = [
   { label: 'All', value: '' },

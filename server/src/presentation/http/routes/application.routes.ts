@@ -7,7 +7,7 @@ import { API_END_POINTS } from './api-end-points/api-end.points';
 const router = express.Router();
 
 router.post(
-  CANDIDATE_API_END_POINTS.APPLY_JOB,
+ API_END_POINTS.JOB,
   authValidator(tokenService),
   applicationController.applyJob
 );

@@ -11,14 +11,20 @@ import { IUpdateEntityStatusUseCase } from '../../interfaces/usecases/update-ent
 import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
 
 import { SkillStatus } from '../../../domain/enums/skill.enum';
+import { INotificationService } from '../../services/notification.service';
+import { NotificationInputDto } from '../../dtos/notification.dto';
+import { NotificationType } from '../../../domain/enums/notification-enums';
+import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
+import { getIO } from '../../../infrastructure/socket';
 
 export class UpdateSkillStatusUseCase implements IUpdateEntityStatusUseCase<
   Skill,
   SkillStatus
 > {
   constructor(
-    private skillRepository: ISkillRepository,
-    private adminRepository: IAdminRepository
+    private _skillRepository: ISkillRepository,
+    private _adminRepository: IAdminRepository,
+    private _notificationService: INotificationService
   ) {}
   async execute(
     id: string,
@@ -29,7 +35,7 @@ export class UpdateSkillStatusUseCase implements IUpdateEntityStatusUseCase<
   ): Promise<void> {
     console.log('from usecase', id, userId, role, status, reason);
 
-    const skill = await this.skillRepository.findById(id);
+    const skill = await this._skillRepository.findById(id);
     if (!skill || !skill.id)
       throw new AppError(
         jobMessages.error.SKILL_NOT_FOUND,
@@ -56,12 +62,28 @@ export class UpdateSkillStatusUseCase implements IUpdateEntityStatusUseCase<
         );
       }
     } else if (role == UserRole.ADMIN) {
-      const admin = await this.adminRepository.findById(userId);
+      const admin = await this._adminRepository.findById(userId);
       if (!admin)
         throw new AppError(
           authMessages.error.ADMIN_NOT_FOUND,
           statusCodes.NOTFOUND
         );
+
+      if (skill.createdBy === UserRole.COMPANY) {
+        const notificationData: NotificationInputDto = {
+          userId: userId,
+          type: NotificationType.SKILL_STATUS_UPDATED,
+          message: notificationMessages[NotificationType.SKILL_STATUS_UPDATED]({
+            skillName: skill.skillName,
+            status,
+            reason,
+          }),
+          title: 'Skill updated',
+        };
+
+        await this._notificationService.create(notificationData);
+        getIO().to(userId).emit('notification', notificationData);
+      }
     } else {
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -79,6 +101,6 @@ export class UpdateSkillStatusUseCase implements IUpdateEntityStatusUseCase<
     if (status === SkillStatus.APPROVED) {
       data.reviewedAt = new Date();
     }
-    await this.skillRepository.update(id, data);
+    await this._skillRepository.update(id, data);
   }
 }

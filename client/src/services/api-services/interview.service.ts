@@ -1,12 +1,12 @@
-import { API_ENDPOINTS } from '../constants/api-end-points/general';
-import axiosInstance from '../libraries/axios';
-import type { interviewFormType } from '../libraries/validations/company/interview.form.validation';
-import type { InterviewFilter } from '../presentation/hooks/user/useInterview';
+import { API_ENDPOINTS } from '../../constants/api-end-points/general';
+import axiosInstance from '../../libraries/axios';
+import type { interviewFormType } from '../../libraries/validations/company/interview.form.validation';
+import type { InterviewFilter } from '../../presentation/hooks/user/useInterview';
 import type {
   interviewDetailDto,
   InterviewDto,
   InterviewStatusType,
-} from '../types/dtos/interview.dto';
+} from '../../types/dtos/interview.dto';
 
 export const interviewService = {
   async scheduleInterview(data: interviewFormType, applicationId: string) {

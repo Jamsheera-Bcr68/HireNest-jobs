@@ -3,11 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import NotificationModal from '../common/Notifications';
 import { useNotifications } from '../../hooks/notifications';
 import { logout } from '../../../redux/auth-slice';
-import type { StateType } from '../../../constants/types/user';
+
 import { authService } from '../../../services/api-services/authServices';
 import { useEffect, useState } from 'react';
+import {
+  setNotifications,
+  addNotification,
+} from '../../../redux/slices/notification.slice';
 import { type NotificationType } from '../../../types/notification.type';
 import { useToast } from '../../../shared/toast/use-toast';
+import { type RootState } from '../../../redux/store';
 
 function Header({
   setTitle,
@@ -18,29 +23,25 @@ function Header({
   title: string;
   sidebarOpen: boolean;
   setSidebarOpen: (state: boolean) => void;
-  setTitle:(title:string)=>void
+  setTitle: (title: string) => void;
 }) {
-  const { user } = useSelector((state: StateType) => state.auth);
   const { showToast } = useToast();
   const dispatch = useDispatch();
+  const notifications = useSelector(
+    (state: RootState) => state.notification.notifications
+  );
 
-  const [newCount, setNewCount] = useState<number>(0);
-  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [nots, setNots] = useState<NotificationType[]>([]);
   const [notificationOpen, setNotificationOpen] = useState<boolean>(false);
 
-  const {
-    getNotificationCount,
-    getNotifications,
-    deleteNotification,
-    markAsRead,
-    markAllAsRead,
-  } = useNotifications();
+  const { getNotifications, deleteNotification, markAsRead, markAllAsRead } =
+    useNotifications();
 
   const HandleLogout = async () => {
-    console.log('form logout function');
+    //   console.log('form logout function');
     try {
       const data = await authService.logout();
-      console.log(data);
+      //  console.log(data);
       showToast({ msg: data.message, type: 'success' });
 
       dispatch(logout());
@@ -55,17 +56,20 @@ function Header({
   };
 
   useEffect(() => {
-    console.log(user?.role, 'from header');
+    //console.log(user?.role, 'from header');
 
-    const getCount = async () => {
-      console.log('from useeffect');
+    const loadNotifications = async () => {
+      // console.log('from useeffect');
 
-      const data = await getNotificationCount();
-      console.log('count is ', data.count);
-      setNewCount(data.count);
+      const nots = await getNotifications('all');
+      // console.log('count is ', data.count)
+      // ;
+      dispatch(setNotifications(nots));
     };
-    getCount();
-  }, [notifications]);
+    loadNotifications();
+  }, []);
+
+  const newCount = notifications.filter((n) => n.isRead == false).length;
 
   const fetchNotifications = async (tab: 'new' | 'all') => {
     const not = await getNotifications(tab);
@@ -75,38 +79,43 @@ function Header({
   };
 
   const handleNotificationClick = async () => {
-    console.log('from notification click');
+    // console.log('from notification click');
     setNotificationOpen(true);
-    await fetchNotifications('new');
+    setNots(notifications.filter((n) => n.isRead == false));
   };
 
   const tabChange = async (tab: 'new' | 'all') => {
-    console.log('from tabChange', tab);
-    await fetchNotifications(tab);
+    // console.log('from tabChange', tab);
+    if (tab == 'all') setNots(notifications);
+    else setNots(notifications.filter((n) => n.isRead === false));
   };
 
   const deleteHandle = async (id: string) => {
-    console.log('from delete notifivation', id);
+    //  console.log('from delete notifivation', id);
 
     await deleteNotification(id);
     const updated = notifications.filter((n) => n.id !== id);
-    setNotifications(updated);
+    dispatch(setNotifications(updated));
   };
 
   const navigate = useNavigate();
 
   const onMarkRead = async (id: string) => {
-    console.log('form mark as read', id);
+    // console.log('form mark as read', id);
     await markAsRead(id);
-    const updated = notifications.filter((n) => n.id !== id);
-    setNotifications(updated);
+    const updated = notifications.map((n) =>
+      n.id !== id ? n : { ...n, isRead: true }
+    );
+    dispatch(setNotifications(updated));
   };
 
   const onMarkAll = async () => {
-    console.log('form mark as read');
+    // console.log('form mark as read');
     await markAllAsRead();
 
-    setNotifications([]);
+    dispatch(
+      setNotifications(notifications.map((n) => ({ ...n, isRead: true })))
+    );
   };
   return (
     <header className="bg-white sticky top-0 w-full flex-1 border-b border-slate-200 px-6 py-4 flex items-center justify-between ">
@@ -133,14 +142,15 @@ function Header({
             Logout
           </button>
         </div>
-         <button
-              onClick={() =>{
-                setTitle('Dashbord')
-                navigate('/admin')}}
-              className="text-gray-700 bg-blue-50 hover:bg-blue-100 rounded-xl hover:text-blue-600 px-4 py-2 text-sm font-medium transition-colors"
-            >
-              Go To Dashboard
-            </button>
+        <button
+          onClick={() => {
+            setTitle('Dashbord');
+            navigate('/admin');
+          }}
+          className="text-gray-700 bg-blue-50 hover:bg-blue-100 rounded-xl hover:text-blue-600 px-4 py-2 text-sm font-medium transition-colors"
+        >
+          Go To Dashboard
+        </button>
         <div onClick={handleNotificationClick} className="relative">
           <button className="w-9 h-9 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
             🔔
@@ -158,7 +168,7 @@ function Header({
       </div>
       {notificationOpen && (
         <NotificationModal
-          notifications={notifications}
+          notifications={nots}
           onClose={() => setNotificationOpen(false)}
           onMarkRead={onMarkRead}
           onMarkAll={onMarkAll}

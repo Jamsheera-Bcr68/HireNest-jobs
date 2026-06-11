@@ -15,11 +15,8 @@ import { Experience } from '../../domain/entities/experience.entity';
 import { IEducationDocument } from '../database/models/education.model';
 import { CandidateStatus } from '../../applications/dtos/candidate.dto';
 import { UserMapper } from '../../applications/mappers/user.mapper';
-import {
-  
-  PaginatedEntities,
-} from '../../applications/types/candidate.type';
-
+import { PaginatedEntities } from '../../applications/types/candidate.type';
+import { UserRole } from '../../domain/enums/user.enums';
 
 type CandidateQuery = Partial<User> & {
   $or?: {
@@ -406,7 +403,7 @@ export class UserRepository
     ) as CandidateStatus;
     const newDocCount = await this._model.countDocuments({
       createdAt: { $gte: startOfMonth },
-      role: 'candidate',
+      role: UserRole.CANDIDATE,
     });
     console.log(status);
     status.new = newDocCount;
@@ -509,12 +506,9 @@ export class UserRepository
     return this.mapToEntity(updated);
   }
 
-  async getCountBySkill(
-    skillId: string,
-    filter: Partial<User>
-  ): Promise<number> {
+  async getCountBySkill(skillId: string, role: UserRole): Promise<number> {
     const count = await this._model.countDocuments({
-      ...filter,
+      role,
       skills: new mongoose.Types.ObjectId(skillId),
     });
     return count ? count : 0;

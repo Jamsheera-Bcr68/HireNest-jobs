@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../redux/auth-slice';
-
+import {type RootState } from '../../../redux/store';
 import { useToast } from '../../../shared/toast/use-toast';
 import { useSelector } from 'react-redux';
-import type { StateType } from '../../../constants/types/user';
+
 import { authService } from '../../../services/api-services/authServices';
 
 export const useHeader = () => {
   const { showToast } = useToast();
-  const { user ,accessToken} = useSelector((state: StateType) => state.auth);
+  const { user ,accessToken} = useSelector((state: RootState) => state.auth);
   console.log('accesstoken',accessToken);
   
   const [isMenuOpen, setIsMenuOpen] = useState(false);

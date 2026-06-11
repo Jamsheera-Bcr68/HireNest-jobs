@@ -9,47 +9,47 @@ import {
 const router = express.Router();
 
 router.get(
-  '/companies',
+  ADMIN_API_ENDPOINTS.COMPANIES,
   authValidator(tokenService),
   adminUserController.getAllCompanies
 );
 router.get(
-  '/companies/:id',
+  ADMIN_API_ENDPOINTS.COMPANY,
   authValidator(tokenService),
   adminUserController.getCompany
 );
 router.patch(
-  '/companies/:id',
+  ADMIN_API_ENDPOINTS.COMPANY,
   authValidator(tokenService),
   adminUserController.updateCompany
 );
 router.get(
-  '/company-status',
+  ADMIN_API_ENDPOINTS.COMPANY_STATUS,
   authValidator(tokenService),
   adminUserController.getCompanyStatus
 );
 router.get(
-  '/candidates-status',
+  ADMIN_API_ENDPOINTS.CANDIDATE_STATUS,
   authValidator(tokenService),
   adminUserController.getCandidateStatus
 );
 router.get(
-  '/candidates',
+  ADMIN_API_ENDPOINTS.CANDIDATES,
   authValidator(tokenService),
   adminUserController.getCandidates
 );
 router.patch(
-  '/candidates/:id',
+  ADMIN_API_ENDPOINTS.CANDIDATE,
   authValidator(tokenService),
   adminUserController.updateCandidates
 );
 router.get(
-  '/candidates/:id',
+  ADMIN_API_ENDPOINTS.CANDIDATE,
   authValidator(tokenService),
   adminUserController.getCandidate
 );
 router.get(
-  '/check-fileExist',
+  ADMIN_API_ENDPOINTS.CHECK_FILE_EXIST,
   authValidator(tokenService),
   adminUserController.checkFileExist
 );
@@ -64,12 +64,12 @@ router.get(
   adminJobcontroller.getJobs
 );
 router.patch(
-  ADMIN_API_ENDPOINTS.UPDATE_JOBSTATUS,
+  ADMIN_API_ENDPOINTS.JOB,
   authValidator(tokenService),
   adminJobcontroller.updateJobStatus
 );
 router.get(
-  ADMIN_API_ENDPOINTS.JOB_DETAILS,
+  ADMIN_API_ENDPOINTS.JOB,
   authValidator(tokenService),
   adminJobcontroller.getJobDetails
 );

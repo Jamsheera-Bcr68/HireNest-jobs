@@ -29,16 +29,16 @@ export class UserController {
   });
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
-    console.log('from usercontroller,compnay id is', id);
+    const { companyId } = req.params;
+    console.log('from usercontroller,compnay id is', companyId);
 
-    if (!id)
+    if (!companyId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Company'),
         statusCodes.BADREQUEST
       );
 
-    const companyData = await this._getCompanyDataUseCase.execute(id);
+    const companyData = await this._getCompanyDataUseCase.execute(companyId);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.HOME_DATA_FETCHED,

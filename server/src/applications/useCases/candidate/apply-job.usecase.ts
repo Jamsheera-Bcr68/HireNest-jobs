@@ -15,6 +15,7 @@ import { notificationMessages } from '../../../shared/constants/messages/notific
 
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { INotificationService } from '../../services/notification.service';
+import { getIO } from '../../../infrastructure/socket';
 
 export interface IApplyJobUseCase {
   execute(
@@ -79,8 +80,6 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
       );
     }
 
-   
-
     const application = await this.applicationRepository.create(newDoc);
 
     const notificationData: Partial<Notification> = {
@@ -93,7 +92,7 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
     };
 
     await this._notificationService.create(notificationData);
-
+    getIO().to(application.companyId).emit('notification', notificationData);
     return application.id;
   }
 }

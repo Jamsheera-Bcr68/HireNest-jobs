@@ -7,7 +7,7 @@ type Props = {
   contactLinkes: ContactDataType[];
 };
 function OverView({ candidate, contactLinkes }: Props) {
-  console.log('from overvire', contactLinkes);
+ // console.log('from overvire', contactLinkes);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

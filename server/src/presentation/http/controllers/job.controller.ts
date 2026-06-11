@@ -104,7 +104,7 @@ export class JobController {
   });
 
   getJobDetails = asyncHandler(async (req: Request, res: Response) => {
-    const jobId = req.params.id;
+    const {jobId} = req.params;
     //console.log('job id id ', jobId);
 
     const jobDetails = await this.getJobDetailsUseCase.execute(jobId);
@@ -121,7 +121,7 @@ export class JobController {
     const user = req.user;
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
-    const jobId = req.params.id;
+    const {jobId} = req.params;
     // console.log('job id ', jobId);
 
     if (!jobId)
@@ -139,7 +139,7 @@ export class JobController {
     const user = req.user;
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
-    const jobId = req.params.id;
+    const {jobId} = req.params;
     //console.log('job id ', jobId);
 
     if (!jobId)
@@ -159,7 +159,7 @@ export class JobController {
     const user = req.user;
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
-    const jobId = req.params.id;
+    const {jobId} = req.params;
     // console.log('job id ', jobId);
 
     if (!jobId)
@@ -196,7 +196,7 @@ export class JobController {
 
   updateStatus = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
-    const { id } = req.params;
+    const { jobId } = req.params;
     const data = req.body;
     console.log('data[status]', data.status);
 
@@ -205,8 +205,8 @@ export class JobController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    console.log('from update status', id, data);
-    await this.updateJobStatusUseCase.execute(id, user.userId, user.role, data);
+    console.log('from update status', jobId, data);
+    await this.updateJobStatusUseCase.execute(jobId, user.userId, user.role, data);
     return res.status(statusCodes.OK).json({
       success: true,
       message: jobMessages.success.JOB_STATUS_UPDATED(data.status),
@@ -216,22 +216,22 @@ export class JobController {
   updateJob = asyncHandler(async (req: Request, res: Response) => {
     // console.log('from update job');
     const user = req.user;
-    const { id } = req.params;
+    const { jobId } = req.params;
 
     if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    if (!id)
+    if (!jobId)
       throw new AppError(
         jobMessages.error.JOBID_NOT_FOUND,
         statusCodes.NOTFOUND
       );
     const payload = req.body;
-    console.log('from update job', id, payload);
+    console.log('from update job', jobId, payload);
     const updated = await this.updateJobUseCase.execute(
-      id,
+      jobId,
 
       user.role,
       user.userId,

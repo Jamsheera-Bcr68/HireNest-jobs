@@ -15,10 +15,10 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
   const { showToast } = useToast();
 
   const handleSuspend = async () => {
-    console.log('id', id);
+   // console.log('id', id);
 
     if (!id) return;
-    console.log('from handle suspend,suspend id', id);
+   // console.log('from handle suspend,suspend id', id);
     try {
       const data = await adminService.updateCandidate(id, { isBlocked: true });
       const updated = data.candidate;
@@ -36,7 +36,7 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
 
   const handleActivate = async () => {
     if (!id) return;
-    console.log('from handle activate, id', id);
+   // console.log('from handle activate, id', id);
     try {
       const data = await adminService.updateCandidate(id, { isBlocked: false });
       const updated = data.candidate;

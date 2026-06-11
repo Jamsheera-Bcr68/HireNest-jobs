@@ -36,17 +36,17 @@ function LogoAndName({
   const { showToast } = useToast();
 
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
-  console.log('logo url', `${baseUrl}${company.logoUrl}`);
+ // console.log('logo url', `${baseUrl}${company.logoUrl}`);
 
   const approveCompany = async () => {
-    console.log('approve company');
+ //   console.log('approve company');
     try {
       const data = await adminService.updateCompany(company.id, {
         isVerified: true,
         status: 'active',
       });
       const approved = data.company;
-      console.log('approved', approved);
+    //  console.log('approved', approved);
 
       onUpdate(approved);
       setOpen(false);
@@ -60,7 +60,7 @@ function LogoAndName({
   };
 
   const rejectCompany = async (status: StatusType, reason: string) => {
-    console.log('reject company');
+  //  console.log('reject company');
     try {
       const data = await adminService.updateCompany(
         company.id,
@@ -71,7 +71,7 @@ function LogoAndName({
         reason
       );
       const rejected = data.company;
-      console.log('after rejecting', data);
+     // console.log('after rejecting', data);
 
       onUpdate(rejected);
       setRejectReasonOpen(false);
@@ -85,14 +85,14 @@ function LogoAndName({
   };
 
   const suspendCompany = async () => {
-    console.log('suspend company');
+    //console.log('suspend company');
     try {
       const data = await adminService.updateCompany(company.id, {
         isVerified: true,
         status: 'suspended',
       });
       const suspended = data.company;
-      console.log('after suspending', data);
+     // console.log('after suspending', data);
 
       onUpdate(suspended);
       setSuspendOpen(false);
@@ -106,14 +106,14 @@ function LogoAndName({
   };
 
   const reactivateCompany = async () => {
-    console.log('reactivate company');
+   // console.log('reactivate company');
     try {
       const data = await adminService.updateCompany(company.id, {
         isVerified: true,
         status: 'active',
       });
       const activated = data.company;
-      console.log('after activated', data);
+      //console.log('after activated', data);
 
       onUpdate(activated);
       setReactivateOpen(false);

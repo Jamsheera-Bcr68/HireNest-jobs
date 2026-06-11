@@ -16,6 +16,8 @@ import { NotificationType } from '../../../domain/enums/notification-enums';
 import { Notification } from '../../../domain/entities/notification.entity';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
+import { getIO } from '../../../infrastructure/socket';
+import { NotificationInputDto } from '../../dtos/notification.dto';
 
 export interface IAddSkillUseCase {
   execute(skill: string, userId: string, role: UserRole): Promise<UserSkillDto>;
@@ -98,16 +100,17 @@ export class AddSkillUseCase implements IAddSkillUseCase {
           generalMessages.errors.NOT_FOUND('Admin'),
           statusCodes.NOTFOUND
         );
-      const notificationData: Partial<Notification> = {
+      const notificationData: NotificationInputDto = {
         userId: admin.id,
         type: NotificationType.SKILL_APPROVAL_REQUEST,
         message: notificationMessages[NotificationType.SKILL_APPROVAL_REQUEST]({
           skillName: skill,
         }),
-        title: 'New Skill Reques Recieved',
+        title: 'New Skill Request Recieved',
       };
 
       await this._notificationService.create(notificationData);
+      getIO().to(admin.id).emit('notification',notificationData)
     }
 
     const addedSkill = await this._skillRepository.create(newSkill);

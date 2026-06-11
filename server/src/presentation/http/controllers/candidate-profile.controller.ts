@@ -317,15 +317,15 @@ export class CandidateProfileController {
       );
 
     const payload: ExperienceDto = req.body;
-    const { expId } = req.params;
-    if (!expId)
+    const { experienceId } = req.params;
+    if (!experienceId)
       throw new AppError(
         userMessages.error.EXPEIENCE_ID_NOT_FOUND,
         statusCodes.BADREQUEST
       );
     const updated = await this._editExperienceUseCase.execute(
       user.userId,
-      expId,
+      experienceId,
       user.role,
 
       payload
@@ -349,9 +349,9 @@ export class CandidateProfileController {
         statusCodes.UNAUTHERIZED
       );
 
-    const { expId } = req.params;
+    const { experienceId } = req.params;
 
-    if (!expId)
+    if (!experienceId)
       throw new AppError(
         userMessages.error.EXPEIENCE_ID_NOT_FOUND,
         statusCodes.BADREQUEST
@@ -359,7 +359,7 @@ export class CandidateProfileController {
     const updated = await this._removeExperienceUseCase.execute(
       user.userId,
       user.role,
-      expId
+      experienceId
     );
 
     console.log('remove experience form controller', updated);
@@ -491,14 +491,14 @@ export class CandidateProfileController {
 
   removeResume = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
-    const { id } = req.params;
+    const { resumeId } = req.params;
 
     if (!user || !user.userId || !user.role)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    if (!id)
+    if (resumeId)
       throw new AppError(
         userMessages.error.RESUMEID_NOT_FOUND,
         statusCodes.BADREQUEST
@@ -506,7 +506,7 @@ export class CandidateProfileController {
 
     const updatedUser = await this.removeResumeUseCase.execute(
       user.userId,
-      id,
+      resumeId,
       user.role
     );
     return res.status(statusCodes.OK).json({
@@ -518,14 +518,14 @@ export class CandidateProfileController {
 
   getResume = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
-    const { id } = req.params;
+    const { resumeId } = req.params;
 
     if (!user || !user.userId || !user.role)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    if (!id)
+    if (!resumeId)
       throw new AppError(
         userMessages.error.RESUMEID_NOT_FOUND,
         statusCodes.BADREQUEST

@@ -11,11 +11,14 @@ try {
 } catch {
   parsedUser = null;
 }
+
 const initialState: AuthState = {
   user: parsedUser,
   accessToken: token ? token : '',
   isAuthenticated: !!token,
 };
+
+
 export const authSlice = createSlice({
   initialState,
   name: 'auth',

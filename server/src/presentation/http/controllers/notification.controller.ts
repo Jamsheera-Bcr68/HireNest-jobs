@@ -87,17 +87,22 @@ export class NotificationControlller {
         statusCodes.UNAUTHERIZED
       );
 
-    const { id } = req.params;
 
-    if (!id)
+    const { notificationId } = req.params;
+
+    if (!notificationId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Notification'),
         statusCodes.BADREQUEST
       );
 
-    console.log(id);
+    console.log(notificationId);
 
-    await this._markAsReadUsecase.execute(id, user.userId, user.role);
+    await this._markAsReadUsecase.execute(
+      notificationId,
+      user.userId,
+      user.role
+    );
 
     return res
       .status(statusCodes.OK)
@@ -133,23 +138,25 @@ export class NotificationControlller {
         statusCodes.UNAUTHERIZED
       );
 
-    const { id } = req.params;
+    const { notificationId } = req.params;
 
-    if (!id)
+    if (!notificationId)
       throw new AppError(
         generalMessages.errors.ID_NOT_FOUND('Notification'),
         statusCodes.BADREQUEST
       );
 
-    console.log(id);
+    console.log(notificationId);
 
-    await this._deleteNotificationUsecase.execute(id, user.userId, user.role);
+    await this._deleteNotificationUsecase.execute(
+      notificationId,
+      user.userId,
+      user.role
+    );
 
-    return res
-      .status(statusCodes.OK)
-      .json({
-        success: true,
-        message: generalMessages.success.NOTIFICATION_DELETED,
-      });
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: generalMessages.success.NOTIFICATION_DELETED,
+    });
   });
 }

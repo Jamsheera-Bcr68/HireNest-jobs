@@ -578,7 +578,7 @@ type Props = {
   onMarkRead: (id: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
   onMarkAll: () => void;
-  onTabChange: (tab: 'new' | 'all') => Promise<void>;
+  onTabChange: (tab: 'new' | 'all') =>void;
 };
 
 // const TYPE_CONFIG = {

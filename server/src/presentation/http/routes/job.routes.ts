@@ -6,37 +6,38 @@ import {
   reportJobValidator,
 } from '../middleweres/validatores/company/job-validator';
 import { jobController } from '../../../infrastructure/config/di';
+import { API_END_POINTS } from './api-end-points/api-end.points';
 const router = express.Router();
 
 router.post(
-  '/',
+  API_END_POINTS.JOBS,
   authValidator(tokenService),
   jobValidator,
   jobController.create
 );
-router.get('/', jobController.getJobs);
-router.get('/saved', authValidator(tokenService), jobController.getSavedJobs);
-router.get('/:id', jobController.getJobDetails);
+router.get(API_END_POINTS.JOBS, jobController.getJobs);
+router.get(API_END_POINTS.SAVED_JOBS, authValidator(tokenService), jobController.getSavedJobs);
+router.get(API_END_POINTS.JOB, jobController.getJobDetails);
 router.post(
-  '/:id/reports',
+  API_END_POINTS.REPORT_JOB,
   authValidator(tokenService),
   reportJobValidator,
   jobController.reportJob
 );
 router.post(
-  '/:id/save',
+  API_END_POINTS.SAVE_JOB,
   authValidator(tokenService),
 
   jobController.saveJob
 );
 router.delete(
-  '/:id/unsave',
+ API_END_POINTS.UNSAVE_JOB,
   authValidator(tokenService),
 
   jobController.unSaveJob
 );
 router.put(
-  '/:id/unsave',
+  API_END_POINTS.UNSAVE_JOB,
   authValidator(tokenService),
 
   jobController.unSaveJob

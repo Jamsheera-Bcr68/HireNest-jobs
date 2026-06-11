@@ -4,6 +4,13 @@ import { generalMessages } from '../../../shared/constants/messages/general.mess
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
+import { INotificationService } from '../../services/notification.service';
+import { NotificationInputDto } from '../../dtos/notification.dto';
+import { NotificationType } from '../../../domain/enums/notification-enums';
+import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
+import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
+import { getIO } from '../../../infrastructure/socket';
 
 export interface IRescheduleRequestUsecase {
   execute(
@@ -14,7 +21,12 @@ export interface IRescheduleRequestUsecase {
 }
 
 export class RescheduleRequestUsecase implements IRescheduleRequestUsecase {
-  constructor(private _interviewRepository: IInterviewRepository) {}
+  constructor(
+    private _interviewRepository: IInterviewRepository,
+    private _notificationService: INotificationService,
+    private _userRepository: IUserRepository,
+    private _jobRepository: IJobRepository
+  ) {}
 
   async execute(
     candidateId: string,
@@ -58,5 +70,34 @@ export class RescheduleRequestUsecase implements IRescheduleRequestUsecase {
       isRescheduleRequested: true,
       reasonForRescheduleRequest: reason,
     });
+
+    const candidate = await this._userRepository.findById(
+      interview.candidateId
+    );
+
+    if (!candidate)
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Candidate'),
+        statusCodes.NOTFOUND
+      );
+    const job = await this._jobRepository.findById(interview.jobId);
+
+    if (!job)
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Job'),
+        statusCodes.NOTFOUND
+      );
+    const notificationData: NotificationInputDto = {
+      type: NotificationType.RESCHEDULE_REQUESTED,
+      title: NotificationType.RESCHEDULE_REQUESTED,
+      userId: interview.companyId,
+      message: notificationMessages['Reschedule Request Recieved']({
+        candidateName: candidate.name ? candidate.name : 'Candidate',
+        jobTitle: job.title,
+      }),
+    };
+
+    await this._notificationService.create(notificationData);
+    getIO().to(interview.companyId).emit('notification', notificationData);
   }
 }

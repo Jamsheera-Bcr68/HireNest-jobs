@@ -380,7 +380,7 @@ const getInterviewStatusUsecase = new GetInterviewStatusUseCase(
 );
 const updateInterviewStatusUsecase = new UpdateInterviewStatusUsecase(
   interviewRepository,
-  companyRepository
+  companyRepository,notificatinService,jobRepository
 );
 
 export const authController = new AuthController(
@@ -398,7 +398,7 @@ export const getSkillStatusUseCase = new GetSkillSatusUseCase(
 
 export const updateSkillStatusUsecase = new UpdateSkillStatusUseCase(
   skillRepository,
-  adminRepository
+  adminRepository,notificatinService
 );
 const updateSkillUseCase = new UpdateSkillUsecase(
   skillRepository,
@@ -441,7 +441,7 @@ const updateInterviewUsecase = new UpdateInterviewUsecase(
   companyRepository,
 
   jobRepository,
-  userRepository
+  userRepository,notificatinService
 );
 const upateInterviewResultUsecase = new UpdateInterviewResultUsecase(
   interviewRepository,
@@ -455,7 +455,7 @@ const confirmInterviewUsecase = new ConfirmInterviewUsecase(
   userRepository
 );
 const rescheduleInterviewUsecase = new RescheduleRequestUsecase(
-  interviewRepository
+  interviewRepository,notificatinService,userRepository,jobRepository
 );
 
 const getNewNotificationCountUsecase = new GetNewNotificationCountUsecase(

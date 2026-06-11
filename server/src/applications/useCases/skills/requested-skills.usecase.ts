@@ -56,7 +56,7 @@ export class GetRequestedSkillsUseCase implements IGetAllSkillsUseCase {
             : 0;
         const candidateCount =
           skill.status === SkillStatus.APPROVED
-            ? await this.userRepository.getCountBySkill(skill.id)
+            ? await this.userRepository.getCountBySkill(skill.id,UserRole.CANDIDATE)
             : 0;
 
         return this.maptToUserSkillDto(skill, postCount, candidateCount);

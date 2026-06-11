@@ -104,5 +104,10 @@ export type CompanyDataDto = {
 };
 
 export type CompanyFilterDto = {
-  userId?: string;
+
+ 
+ 
+  status?:StatusEnum,
+  industry?:IndustryType
 };
+

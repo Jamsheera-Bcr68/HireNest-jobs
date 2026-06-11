@@ -10,6 +10,7 @@ import { NotificationType } from '../../../domain/enums/notification-enums';
 import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
+import { getIO } from '../../../infrastructure/socket';
 
 export interface IConfirmInterviewUsecase {
   execute(candidateId: string, interviewId: string): Promise<void>;
@@ -77,6 +78,7 @@ export class ConfirmInterviewUsecase implements IConfirmInterviewUsecase {
     };
 
     console.log(updated);
-    await this._notificationService.create(notificationData)
+    await this._notificationService.create(notificationData);
+    getIO().to(interview.companyId).emit('notification', notificationData);
   }
 }

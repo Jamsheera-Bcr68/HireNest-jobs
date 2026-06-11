@@ -8,6 +8,7 @@ import { IAdminRepository } from '../../../domain/repository-interfaces/admin.re
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { CompanyRequestType } from '../../../domain/values/profile-types';
+import { getIO } from '../../../infrastructure/socket';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
@@ -86,7 +87,7 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
     };
 
     await this._notificationService.create(notificationData);
-
+    getIO().to(admin.id).emit('notification', notificationData);
     return company;
   }
 }

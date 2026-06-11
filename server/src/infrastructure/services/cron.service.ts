@@ -1,5 +1,6 @@
 import cron from 'node-cron';
 import { jobModel } from '../database/models/job.model';
+import { StatusEnum } from '../../domain/enums/status.enum';
 
 cron.schedule('0 0 * * *', async () => {
   console.log('Running job expiry checker...');
@@ -7,7 +8,7 @@ cron.schedule('0 0 * * *', async () => {
   try {
     await jobModel.updateMany(
       {
-        status: 'active',
+        status: StatusEnum.ACTIVE,
         lastDate: { $lt: new Date() },
       },
       {

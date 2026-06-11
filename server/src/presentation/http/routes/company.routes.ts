@@ -19,50 +19,50 @@ import { API_END_POINTS } from './api-end-points/api-end.points';
 const router = express.Router();
 
 router.post(
-  API_END_POINTS.COMPANY,
+  API_END_POINTS.COMPANIES,
   authValidator(tokenService),
   companyRegisterValidator,
   companyProfileController.companyRegister
 );
 
 router.patch(
-  '/logo',
+API_END_POINTS.LOGO,
   authValidator(tokenService),
   upload.single('logo'),
   companyProfileController.logoUpdate
 );
 router.patch(
-  '/profile/logo',
+ API_END_POINTS.PROFILE_LOGO,
   authValidator(tokenService),
   upload.single('logo'),
   companyProfileController.changeLogo
 );
 router.patch(
-  '/profle/document',
+  API_END_POINTS.DOCUMENT,
   authValidator(tokenService),
   fileUpload.single('verification_document'),
   companyProfileController.addDocument
 );
 router.delete(
-  '/profile/logo',
+API_END_POINTS.PROFILE_LOGO,
   authValidator(tokenService),
 
   companyProfileController.removeLogo
 );
 router.get(
-  '/',
+  API_END_POINTS.COMPANIES,
   authValidator(tokenService),
   companyProfileController.getCompany
 );
 router.patch(
-  '/profile',
+  API_END_POINTS.PROFILE,
   authValidator(tokenService),
   companyProfileEditValidator,
   companyProfileController.updateProfile
 );
 
 router.patch(
-  '/profile/fields',
+  API_END_POINTS.UPDATE_PROFILE,
   authValidator(tokenService),
   companyProfileUpdateFieldsValidator,
   companyProfileController.updateFields
@@ -73,12 +73,12 @@ router.get(
   jobController.getJobStatus
 );
 router.patch(
-  COMPANY_API_ENDPOINTS.UPDATE_JOBSTATUS,
+  API_END_POINTS.JOB,
   authValidator(tokenService),
   jobController.updateStatus
 );
 router.put(
-  COMPANY_API_ENDPOINTS.UPDATE_JOB,
+  API_END_POINTS.JOB,
   authValidator(tokenService),
   jobValidator,
   jobController.updateJob
@@ -89,7 +89,7 @@ router.get(
   userControlller.getCompany
 );
 router.put(
-  API_END_POINTS.COMPANY,
+  API_END_POINTS.COMPANIES,
   companyRegisterValidator,
   authValidator(tokenService),
   userControlller.updateCompany

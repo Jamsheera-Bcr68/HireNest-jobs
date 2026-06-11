@@ -1,4 +1,5 @@
 import { NotificationType } from '../../../domain/enums/notification-enums';
+import { SkillStatus } from '../../../domain/enums/skill.enum';
 import { StatusEnum } from '../../../domain/enums/status.enum';
 
 export const notificationMessages = {
@@ -71,4 +72,37 @@ has been confirmed by ${data.name}.`,
   [NotificationType.COMPANY_REAPPLY_RECIEVED]: (data: {
     companyName: string;
   }) => `Company ${data.companyName} reapplied`,
+
+  [NotificationType.RESCHEDULE_REQUESTED]: (data: {
+    candidateName: string;
+    jobTitle: string;
+
+    requestedTime?: string;
+  }) =>
+    `${data.candidateName} has requested to reschedule the interview for ${data.jobTitle}
+     `,
+
+  [NotificationType.INTERVIEW_STATUS_UPDATED]: (data: {
+    title: string;
+    status: string;
+  }) =>
+    `Your Interview for the role ${data.title} is ${data.status} 
+     `,
+
+  [NotificationType.INTERVIEW_UPDATED]: (data: { title: string }) =>
+    `Your Interview for the role ${data.title} is Updated  `,
+
+  [NotificationType.SKILL_STATUS_UPDATED]: (data: {
+    skillName: string;
+    status: SkillStatus;
+    reason?: string;
+  }) => {
+    let msg: string;
+    if (status == SkillStatus.APPROVED) {
+      msg = `Your requested skill ${data.skillName} is ${data.status} by the admin`;
+    } else
+      msg = `Your requested skill ${data.skillName} is ${data.status} by the admin for the reason ${data.reason}`;
+
+      return msg
+  },
 };
