@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import NavPart from '../../user/employer/job-details/NavPart';
 import { useEffect, useState } from 'react';
 import { adminService } from '../../../../services/api-services/adminService';
@@ -15,6 +15,7 @@ import Benefits from '../../user/employer/job-details/Benefits';
 import RightSideBar from '../../user/employer/job-details/RightSideBar';
 import Company from '../../user/employer/job-details/Company';
 import { Reports } from './ReporData';
+import type { RootState } from '../../../../redux/store';
 
 const tabs = [
   { id: 'overview', label: 'Overview' },
@@ -23,10 +24,10 @@ const tabs = [
   { id: 'company', label: 'Company' },
   { id: 'reports', label: 'Reports' },
 ];
-function AdminJobDetailscontainer() {
+function AdminJobDetailscontainer({ jobId }: { jobId: string }) {
   const { showToast } = useToast();
-  const { id } = useParams();
-  console.log('job id is ', id);
+  const user = useSelector((state: RootState) => state.auth.user);
+  console.log('job id from details is role is admin', jobId);
 
   const [job, setJob] = useState<JobDetailsDto | null>(null);
   const [showReasonModal, setShowReasonModal] = useState<boolean>(false);
@@ -35,10 +36,9 @@ function AdminJobDetailscontainer() {
 
   const [tab, setTab] = useState<string>('overview');
   useEffect(() => {
-    if (!id) return;
     const getJobDetails = async () => {
       try {
-        const data = await adminService.getDetails(id);
+        const data = await adminService.getJobDetails(jobId);
         console.log('data after fetching jobdetaisl', data);
 
         setJob(data.jobDetails);
@@ -127,7 +127,7 @@ function AdminJobDetailscontainer() {
             <RightSideBar
               updateStatus={handleUpdateStatus}
               job={job}
-              role="admin"
+              role={user.role}
             />
           </div>
         </div>

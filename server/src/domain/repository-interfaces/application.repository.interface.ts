@@ -13,10 +13,10 @@ export interface IApplicationRepository extends IBaseRepository<Application> {
   ): Promise<Application | null>;
   getDocsByUserId(userId: string): Promise<Application[]>;
   getDocsByJobId(jobId: string): Promise<Application[]>;
-  count(filter?: Partial<Application>): Promise<number>;
+  count(filter?: Partial<ApplicationFilterDto>): Promise<number>;
   getAllApplications(
-    filter: Partial<ApplicationFilterDto>
+    filter: ApplicationFilterDto
   ): Promise<{ applications: AggregatedApplication[]; totalDocs: number }>;
 
-  getAppCount(candidateId:string,companyId:string):Promise<number>
+   count(filter:ApplicationFilterDto):Promise<number>
 }

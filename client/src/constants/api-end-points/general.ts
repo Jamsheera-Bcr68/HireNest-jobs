@@ -7,8 +7,9 @@ export const API_ENDPOINTS = {
   SKILL: (id: string) => `/skills/${id}`,
 
   APPLY_JOB: (id: string) => `/applications/${id}`,
-  CANDIDATE_APPLICATON_STATUS: '/applications/applications-status',
+  CANDIDATE_APPLICATON_STATUS: (jobId:string)=>`/applications/applications-status/${jobId}`,
   APPLICATIONS: '/applications',
+  JOB_APPLICATIONS: (jobId:string)=>`/jobs/${jobId}/applications`,
   APPLICATION: (id: string) => `/applications/${id}`,
   COMPANY_DATA: (id: string) => `/company/${id}`,
   COMPANY_LOGO: '/company/logo',

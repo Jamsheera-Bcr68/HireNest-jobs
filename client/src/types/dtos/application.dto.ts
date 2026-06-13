@@ -23,6 +23,11 @@ export type ApplicationDto = {
   status: ApplicationStatusType;
   appliedDate: string;
   logo: string;
+  applicant?: {
+    name: string;
+    email: string;
+    location: string;
+  };
 };
 
 export type ExpType = {};

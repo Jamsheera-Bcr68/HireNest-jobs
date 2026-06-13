@@ -6,7 +6,7 @@ import { JobType } from '../../domain/types/job.types';
 import { WorkMode } from '../../domain/enums/work-mode.enum';
 import { IndustryType } from '../../domain/types/company-profile.types';
 import { UserSkillDto } from './skill.dto';
-import { IResume } from '../../domain/values/profile-types';
+import { IAddress, IResume } from '../../domain/values/profile-types';
 import { EducationStatus } from '../../domain/enums/education.enum';
 
 export interface ApplicationDto {
@@ -21,6 +21,11 @@ export interface ApplicationDto {
   status: ApplicationStatusEnum;
   appliedDate: string;
   logo: string;
+  applicant?: {
+    name?: string;
+    email?: string;
+    location?: string;
+  };
 }
 
 export type ApplicationListDto = {
@@ -40,6 +45,12 @@ export type AggregatedApplication = {
   category: IndustryType;
   status: ApplicationStatusEnum;
   logo: string;
+
+  applicant:{
+    name:string,
+    email:string,
+    address:IAddress
+  }
 };
 
 export type ApplicationStatsCardType = {
@@ -51,7 +62,9 @@ export type ApplicationStatsCardType = {
 };
 
 export type ApplicationFilterDto = {
-  candidateId: string;
+  candidateId?: string;
+  companyId?: string;
+  jobId?: string;
   search?: string;
   status?: ApplicationStatusEnum;
   page?: number;

@@ -4,7 +4,7 @@ import { Job } from '../../domain/entities/job.entity';
 import { Skill } from '../../domain/entities/skill.entity';
 import { User } from '../../domain/entities/user.entity';
 import { UserRole } from '../../domain/enums/user.enums';
-import { IResume } from '../../domain/values/profile-types';
+import { IAddress, IResume } from '../../domain/values/profile-types';
 import { ApplicationTimelineItemDTO } from '../dtos/application.dto';
 import { getMonthAndYear } from '../../shared/utils';
 import {
@@ -13,9 +13,23 @@ import {
   ApplicationDetailsDto,
 } from '../dtos/application.dto';
 import { buildApplicationTimeline } from '../utils/build-application-timeline';
+import { email, string } from 'zod';
 
 export class ApplicationMapper {
-  static toApplicationDto(entity: AggregatedApplication): ApplicationDto {
+  static toApplicationDto(
+    entity: AggregatedApplication,
+  
+  ): ApplicationDto {
+    type applicantType = { name?: string; email?: string; location?: string };
+    let address:string=''
+
+    if (entity.applicant) {
+      
+    
+      address = [entity.applicant.address?.place, entity.applicant.address?.state]
+        .filter(Boolean)
+        .join(', ');
+    }
     return {
       id: entity.id,
       jobTitle: entity.jobTitle,
@@ -27,6 +41,7 @@ export class ApplicationMapper {
       logo: entity.logo,
       status: entity.status,
       appliedDate: new Date(entity.appliedAt).toDateString(),
+      applicant: {...entity.applicant,location:address},
     };
   }
 

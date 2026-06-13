@@ -14,16 +14,21 @@ import type { JobDetailsDto } from '../../../../../types/dtos/job.dto';
 import ConfirmationModal from '../../../../modals/ConfirmationModal';
 import type { StatusType } from '../../../../../types/dtos/profile-types/user.types';
 import type { UserRole } from '../../../../../constants/types/user';
+import { useNavigate } from 'react-router-dom';
+
 
 type Props = {
   job: JobDetailsDto;
   updateStatus: (status: StatusType) => Promise<void>;
-  role?: UserRole;
+  role: UserRole;
 };
 
 function RightSideBar({ job, updateStatus, role }: Props) {
-  if (!job) return null;
+  console.log('role',role);
+  
+  if (!job||!role) return null;
 
+  const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const snapshot = [
     {
@@ -74,15 +79,19 @@ function RightSideBar({ job, updateStatus, role }: Props) {
             {job.totalApplicants}
           </p>
 
-          <p className="text-sm text-gray-400 mb-1.5">total applicants</p>
+          <p className="text-sm text-gray-600 text-bold mb-1.5">Total Applicants</p>
         </div>
 
         <button
+          onClick={() =>{
+            if(role==='company') navigate(`/company/jobs/${job.id}/applications`)
+              else  navigate(`/admin/jobs/${job.id}/applications`)
+          }}
           className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 transition
           text-sm font-semibold text-white flex items-center justify-center gap-2"
         >
           <Users size={15} />
-          Manage Applicants
+          {role=='admin'?'Show':'Manage'}  Applications
         </button>
       </div>
 

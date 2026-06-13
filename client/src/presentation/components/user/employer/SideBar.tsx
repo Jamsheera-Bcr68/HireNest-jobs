@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 const navItems = [
   'Dashboard',
   'Create Job',
-  'Applications',
+
   'Interviews',
   'My Jobs',
   'Profile',
@@ -21,7 +21,7 @@ const navItems = [
 const navRoutes: Record<string, string> = {
   Dashboard: '/company/dashboard',
   'Create Job': '/company/jobs/create',
-  Applications: '/company/applications',
+
   Interviews: '/company/interviews',
   'My Jobs': '/company/jobs',
   Profile: '/company/profile',
@@ -30,7 +30,7 @@ const navRoutes: Record<string, string> = {
 const navIcons = [
   '⊞',
   <PlusIcon />,
-  '📋',
+
   '📅',
   '🔖',
   '👤',

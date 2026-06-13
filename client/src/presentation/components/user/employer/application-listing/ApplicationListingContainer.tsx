@@ -18,8 +18,8 @@ const statusFilter = {
   label: ' Status',
   options: [
     { label: 'Pending', value: 'pending' },
-    { label: 'Reviewed', value: 'viewed' },
-    
+    { label: 'Reviewed', value: 'reviewed' },
+
     { label: 'ShortListed', value: 'shortListed' },
     { label: 'Rejected', value: 'rejected' },
     { label: 'Scheduled', value: 'interviewSheduled' },
@@ -38,20 +38,26 @@ const typeFilter = {
 const sortOrder = {
   key: 'sortBy',
   label: 'Sort ',
-  options: [{label:'Newest',value: 'newest'},{label:'Oldest',value: 'oldest'}],
+  options: [
+    { label: 'Newest', value: 'newest' },
+    { label: 'Oldest', value: 'oldest' },
+  ],
 };
 
 const tabs = [
   { label: 'All', value: '' },
   { label: 'Pending', value: 'pending' },
-  { label: 'Viewed', value: 'viewed' },
+  { label: 'Reviewed', value: 'reviewed' },
   { label: 'Short Listed', value: 'shortListed' },
   { label: 'Interview Scheduled', value: 'interviewScheduled' },
   { label: 'Rejected', value: 'rejected' },
 ];
 
 const filterOptions = [statusFilter, typeFilter, sortOrder];
-function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
+
+type Props = { role: 'company' | 'admin'; jobId?: string };
+
+function ApplicationListingContainer({ role, jobId }: Props) {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const [applications, setApplications] = useState<ApplicationDto[]>([]);
@@ -59,6 +65,10 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
   const [limit] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
   const [stats, setSats] = useState<StatusCardType[]>([]);
+  if (role == 'company' && !jobId) return;
+
+  const [title, setTitle] = useState<string | null>(null);
+
   const { filter, updateFilter } = useApplications((page?: number) => {
     if (page) {
       setPage(page);
@@ -82,30 +92,30 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
 
   const applicationColumns = [
     {
-      key: 'jobTitle',
-      label: 'Job Title',
+      key: 'name',
+      label: 'Name',
       render: (a: ApplicationDto) => (
         <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
-          <span className="font-semibold text-slate-800">{a.jobTitle}</span>
+          <span className="font-semibold text-slate-800">{a.applicant?.name}</span>
         </div>
       ),
     },
-
+{
+      key: 'email',
+      label: 'Email',
+      render: (a: ApplicationDto) => (
+        <span className="text-slate-700">{a.applicant?.email}</span>
+      ),
+    },
     {
       key: 'location',
       label: 'Location',
       render: (a: ApplicationDto) => (
-        <span className="text-slate-700">{a.location}</span>
+        <span className="text-slate-700">{a.applicant?.location}</span>
       ),
     },
 
-    {
-      key: 'workMode',
-      label: 'Mode',
-      render: (a: ApplicationDto) => (
-        <span className="text-slate-700">{a.workMode}</span>
-      ),
-    },
+    
 
     {
       key: 'jobType',
@@ -143,7 +153,8 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
         <div className="flex items-center gap-2">
           <button
             onClick={() => {
-              if (a.status == 'pending') handleUpdate(a.id);
+              if (a.status == 'pending'&&role=='company'
+              ) handleUpdate(a.id);
               const url =
                 role === 'admin'
                   ? `/admin/applications/${a.id}`
@@ -159,10 +170,12 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
       ),
     },
   ];
+
   useEffect(() => {
     async function getStatusData() {
+      if (!jobId) return null;
       try {
-        const data = await applicationService.getApplicationStatus();
+        const data = await applicationService.getApplicationStatus(jobId);
         console.log(data);
 
         const statusData = data.appStatus;
@@ -196,19 +209,22 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
       }
     }
 
-    getStatusData();
-  }, [applications]);
+    if (jobId) getStatusData();
+  }, [applications, jobId]);
 
   useEffect(() => {
     const getApplications = async () => {
+      if (!jobId) return [];
       try {
-        const data = await applicationService.getApplications(
+        const data = await applicationService.getJobApplications(
+          jobId,
           filter,
           page,
           limit
         );
         console.log('applications', data.applications);
 
+        setTitle(applications[0]?.jobTitle);
         setApplications(data.applications);
         setTotalDocs(data.totalDocs);
       } catch (error: any) {
@@ -228,7 +244,7 @@ function ApplicationListingContainer({ role }: { role: 'company' | 'admin' }) {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <HeroSection
               title="Application Management"
-              tagline=" Manage all Applications of your Company"
+              tagline={` Manage all Applications for Job ${title??''}`}
             />
             <StatusCards stats={stats} />
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">

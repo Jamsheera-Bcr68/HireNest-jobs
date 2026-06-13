@@ -1,4 +1,7 @@
-import { ApplicationStatsCardType } from '../../dtos/application.dto';
+import {
+  ApplicationFilterDto,
+  ApplicationStatsCardType,
+} from '../../dtos/application.dto';
 import { IGetEntityStatusUseCase } from '../../interfaces/admin/get-admin-entity-status.usecase';
 import { Application } from '../../../domain/entities/application.entity';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
@@ -9,29 +12,43 @@ import { AppError } from '../../../domain/errors/app-error';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 
-export class GetApplicationStatusUseCase implements IGetEntityStatusUseCase<ApplicationStatsCardType> {
+export interface IGetApplicationStatusUsecase {
+  execute(
+    filter: ApplicationFilterDto,
+    role: UserRole
+  ): Promise<ApplicationStatsCardType>;
+}
+
+export class GetApplicationStatusUseCase implements IGetApplicationStatusUsecase {
   constructor(
     private _applicationRepository: IApplicationRepository,
     private _companyRepository: ICompanyRepository
   ) {}
 
   async execute(
-    userId: string,
+    query: ApplicationFilterDto,
     role: string
   ): Promise<ApplicationStatsCardType> {
     const filter = {} as Partial<Application>;
+    const { candidateId, companyId, jobId } = query;
     if (role == UserRole.CANDIDATE) {
-      filter.candidateId = userId;
-    }
-    if (role == UserRole.COMPANY) {
-      const company = await this._companyRepository.findByUserId(userId);
-      if (!company)
+      if (!candidateId)
         throw new AppError(
-          generalMessages.errors.NOT_FOUND('Company'),
-          statusCodes.NOTFOUND
+          generalMessages.errors.ID_NOT_FOUND('Candidate'),
+          statusCodes.BADREQUEST
         );
-      filter.companyId = company.id;
-    }
+      filter.candidateId = candidateId;
+    } else if (jobId) {
+
+      filter.jobId=jobId
+      // const company = await this._companyRepository.findById(companyId);
+      // if (!company)
+      //   throw new AppError(
+      //     generalMessages.errors.NOT_FOUND('Company'),
+      //     statusCodes.NOTFOUND
+      //   );
+      // filter.companyId = company.id;
+    }else throw new AppError(generalMessages.errors.ID_NOT_FOUND('Job'),statusCodes.BADREQUEST)
     const total = await this._applicationRepository.count(filter);
 
     const rejected = await this._applicationRepository.count({

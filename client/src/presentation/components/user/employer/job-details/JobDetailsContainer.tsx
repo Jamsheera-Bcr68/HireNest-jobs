@@ -117,7 +117,7 @@ function JobDetailsContainer() {
             </div>
           </div>
           <div className="space-y-4">
-            <RightSideBar updateStatus={handleUpdateStatus} job={job} />
+            <RightSideBar updateStatus={handleUpdateStatus} job={job} role='company' />
           </div>
         </div>
       </div>

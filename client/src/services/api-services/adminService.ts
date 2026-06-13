@@ -123,10 +123,10 @@ export const adminService = {
     );
     return res.data;
   },
-  async getDetails(id: string) {
-    console.log('from getdetaild admin');
+  async getJobDetails(jobId:string) {
+    console.log('from getdetaild admin service',jobId);
 
-    const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.JOB_DETAILS(id));
+    const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.JOB_DETAILS(jobId));
     return res.data;
   },
 };

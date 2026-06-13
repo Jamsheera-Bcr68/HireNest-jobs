@@ -22,11 +22,12 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
     private _skillRepository: ISkillRepository
   ) {}
   async execute(
-    id: string,
+    applicationId: string,
     userId: string,
-    role: string
+    role: UserRole
   ): Promise<ApplicationDetailsDto> {
-    const application = await this._applicationRepository.findById(id);
+    const application =
+      await this._applicationRepository.findById(applicationId);
     if (!application)
       throw new AppError(
         generalMessages.errors.NOT_FOUND('Application'),

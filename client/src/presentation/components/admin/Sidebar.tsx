@@ -8,7 +8,7 @@ const navItems = [
   'Job Listings',
   'Applications',
   'Interviews',
-  'Pendings',
+  // 'Pendings',
   'Skills',
 ];
 const navIcons = ['⊞', '🏢', '👥', '💼', '📋', '📊', '🛠️'];
@@ -20,7 +20,7 @@ const navLinks: Record<string, string> = {
   Applications: '/admin/applications',
   Interviews: '/admin/interviews',
   Skills: '/admin/skills',
-  Pendings: '/admin/reports',
+  // Pendings: '/admin/reports',
 };
 
 function Sidebar({

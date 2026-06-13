@@ -3,7 +3,7 @@ export const API_END_POINTS = {
   SKILL: '/:skillId',
   SKILL_STATUS: '/skill-status',
   REQUESTED_SKILLS: '/requested',
-  APPLICATION_STATUS: '/applications-status',
+  APPLICATION_STATUS: '/applications-status/:jobId',
   APPLICATIONS: '/',
   APPLICATION: '/:applicationId',
   COMPANY_DATA: '/:companyId',
@@ -40,6 +40,7 @@ export const API_END_POINTS = {
   REPORT_JOB: '/:jobId/reports',
   SAVE_JOB: '/:jobId/save',
   UNSAVE_JOB: '/:jobId/unsave',
+  JOB_APPLICATIONS:'/:jobId/applications'
 };
 
 export const AUTH_END_POINTS = {

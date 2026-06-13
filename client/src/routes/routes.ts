@@ -14,7 +14,7 @@ export const COMPANY_ROUTES = {
   JOBS: 'jobs',
   CREATE_JOB: 'jobs/create',
   SKILLS: 'skills',
-  APPLICATIONS: 'applications',
+  APPLICATIONS: 'jobs/:jobId/applications',
   APPLICATION_DETAILS: 'applications/:id',
   JOB_DETAILS: 'jobs/:jobId',
   INTERVIEWS: 'interviews',
@@ -30,13 +30,13 @@ export const ADMIN_ROUTES = {
   CANDIDATE_DETAILS: '/candidates/:candidateId',
 
   JOBS: '/jobs',
-  JOB_DETAILS: '/jobs/:id',
+  JOB_DETAILS: '/jobs/:jobId',
 
   PENDINGS: '/pendings',
 
   SKILLS: '/skills',
 
-  APPLICATIONS: '/applications',
+  APPLICATIONS: '/jobs/:jobId/applications',
   APPLICATION_DETAILS: '/applications/:id',
 
   INTERVIEWS: '/interviews',

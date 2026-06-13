@@ -8,6 +8,7 @@ import { jobMessages } from '../../../../shared/constants/messages/job.messages'
 import { IGetPostSatusUseCase } from '../../../../applications/useCases/company/company-post-status.usecase';
 import { IGetAllJobsUseCase } from '../../../../applications/useCases/candidate/get-jobs.usecase';
 import { IGetJobDetailsUseCase } from '../../../../applications/useCases/candidate/get-job.usecase';
+import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 
 export class AdminJobController {
   constructor(
@@ -68,7 +69,12 @@ export class AdminJobController {
         statusCodes.UNAUTHERIZED
       );
     console.log('from update status', jobId, data);
-    await this.updateJobStatusUseCase.execute(jobId, user.userId, user.role, data);
+    await this.updateJobStatusUseCase.execute(
+      jobId,
+      user.userId,
+      user.role,
+      data
+    );
     return res.status(statusCodes.OK).json({
       success: true,
       message: jobMessages.success.JOB_STATUS_UPDATED(data.status),
@@ -76,9 +82,13 @@ export class AdminJobController {
   });
 
   getJobDetails = asyncHandler(async (req: Request, res: Response) => {
-    const jobId = req.params.id;
-    //console.log('job id id ', jobId);
-
+    const { jobId } = req.params;
+    console.log('job id id ', jobId);
+    if (!jobId)
+      throw new AppError(
+        generalMessages.errors.ID_NOT_FOUND('Job'),
+        statusCodes.BADREQUEST
+      );
     const jobDetails = await this.getJobDetailsUseCase.execute(jobId);
     return res.status(statusCodes.OK).json({
       success: true,

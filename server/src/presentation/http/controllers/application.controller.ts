@@ -21,11 +21,12 @@ import { ApplicationDetailsDto } from '../../../applications/dtos/application.dt
 import { IGetEntityDetailsUsecase } from '../../../applications/interfaces/usecases/get-entity-details.usecase.inerface';
 import { IUpdateEntityStatusUseCase } from '../../../applications/interfaces/usecases/update-entity-status.usecase.interface';
 import { ApplicationMapper } from '../../../applications/mappers/application.mapper';
+import { IGetApplicationStatusUsecase } from '../../../applications/useCases/applications/get-applications-status.usecase';
 
 export class ApplicationController {
   constructor(
     private _applyJobUseCase: IApplyJobUseCase,
-    private _getAppStatusUseCase: IGetEntityStatusUseCase<ApplicationStatsCardType>,
+    private _getAppStatusUseCase: IGetApplicationStatusUsecase,
     private _getAllApplications: IGetAllEntitiesUsecase<
       ApplicationListDto,
       ApplicationFilterDto
@@ -64,8 +65,15 @@ export class ApplicationController {
     if (!user || !user.userId) {
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
     }
+
+    const { jobId } = req.params;
+    if (!jobId)
+      throw new AppError(
+        generalMessages.errors.ID_NOT_FOUND('Job'),
+        statusCodes.BADREQUEST
+      );
     const appStatus = await this._getAppStatusUseCase.execute(
-      user.userId,
+      { jobId: jobId, companyId: user.userId },
       user.role
     );
 
@@ -85,6 +93,53 @@ export class ApplicationController {
     }
 
     let q = {} as Partial<ApplicationFilterDto>;
+    if (user.role == UserRole.CANDIDATE) {
+      q.candidateId = user.userId;
+    }
+    if (search) {
+      q.search = search as string;
+    }
+    if (sortBy) {
+      q.sortBy = sortBy as string;
+    }
+    if (jobType) {
+      q.jobType = jobType as JobType;
+    }
+    if (status) {
+      q.status = status as ApplicationStatusEnum;
+    }
+    if (page) {
+      q.page = Number(page);
+    }
+    if (limit) {
+      q.limit = Number(limit);
+    }
+    const { applications, totalDocs } =
+      await this._getAllApplications.execute(q);
+
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: generalMessages.success.STATUS_FETCHED('Application'),
+      applications,
+      totalDocs,
+    });
+  });
+  getJobApplications = asyncHandler(async (req: Request, res: Response) => {
+    const { search, status, page, limit, jobType, sortBy } = req.query;
+
+    const user = req.user;
+    if (!user || !user.userId) {
+      throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
+    }
+
+    const { jobId } = req.params;
+    if (!jobId)
+      throw new AppError(
+        generalMessages.errors.ID_NOT_FOUND('Job '),
+        statusCodes.BADREQUEST
+      );
+
+    let q = {jobId} as Partial<ApplicationFilterDto>;
     if (user.role == UserRole.CANDIDATE) {
       q.candidateId = user.userId;
     }

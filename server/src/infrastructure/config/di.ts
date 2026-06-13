@@ -320,7 +320,7 @@ const getJobDetailsUseCase = new GetJobDetailsUseCase(
   jobRepository,
   companyRepository,
   skillRepository,
-  userRepository
+  userRepository,applicationRepository
 );
 const reportJobUseCase = new ReportJobUseCase(jobRepository);
 const saveJobUseCase = new SaveJobUseCase(jobRepository, userRepository);
@@ -417,7 +417,7 @@ const getApplicationStatusUseCase = new GetApplicationStatusUseCase(
 const getAllApplications = new GetAllApplicationsUsecase(
   applicationRepository,
   jobRepository,
-  companyRepository
+  companyRepository,userRepository
 );
 const updateApplicationStatusUsecase = new UpdateApplicationStatusUseCase(
   applicationRepository,

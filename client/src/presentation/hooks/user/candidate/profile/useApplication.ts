@@ -43,6 +43,7 @@ export type ApplicationFilterType = {
   status?: ApplicationStatusType;
   jobType?: string;
   sortBy?: string;
+  
 };
 
 export const useApplications = (setPage?: (page?: number) => void) => {

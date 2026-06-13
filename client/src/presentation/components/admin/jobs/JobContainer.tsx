@@ -129,6 +129,7 @@ function JobContainer() {
     };
     getJobs();
   }, [filter, page]);
+
   const postColumns = [
     {
       key: 'title',
@@ -212,7 +213,11 @@ function JobContainer() {
       render: (j: JobCardDto) => (
         <div className="flex items-center  gap-2">
           <button
-            onClick={() => navigate(`/admin/jobs/${j.id}`)}
+            onClick={() => {
+              console.log(`job`,j);
+              navigate(`/admin/jobs/${j.id}`)
+              
+            }}
             className="text-indigo-600 hover:text_indigo-800 "
             title="view"
           >

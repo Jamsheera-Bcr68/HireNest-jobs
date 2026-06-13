@@ -5,7 +5,7 @@ import {
   IApplicationDocument,
 } from '../database/models/application.model';
 import { Application } from '../../domain/entities/application.entity';
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import {
   AggregatedApplication,
   ApplicationDto,
@@ -94,11 +94,12 @@ export class ApplicationRepository
   }
 
   async getAllApplications(
-    filter: Partial<ApplicationFilterDto>
+    filter: ApplicationFilterDto
   ): Promise<{ applications: AggregatedApplication[]; totalDocs: number }> {
     console.log('filter', filter);
 
     const {
+      jobId,
       candidateId,
       status,
       search,
@@ -118,6 +119,7 @@ export class ApplicationRepository
 
     if (candidateId)
       matchStage.candidateId = new mongoose.Types.ObjectId(candidateId);
+    if (jobId) matchStage.jobId = new mongoose.Types.ObjectId(jobId);
 
     if (status) {
       matchStage.status = status;
@@ -125,6 +127,15 @@ export class ApplicationRepository
     const skip = (page - 1) * limit;
     const pipeline: PipelineStage[] = [
       { $match: matchStage },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'candidateId',
+          foreignField: '_id',
+          as: 'applicant',
+        },
+      },
+      { $unwind: '$applicant' },
       {
         $lookup: {
           from: 'jobs',
@@ -158,7 +169,13 @@ export class ApplicationRepository
               },
             },
             {
-              'company.name': {
+              'applicant.name': {
+                $regex: search,
+                $options: 'i',
+              },
+            },
+            {
+              'company.companyName': {
                 $regex: search,
                 $options: 'i',
               },
@@ -195,6 +212,12 @@ export class ApplicationRepository
               category: '$company.industry',
               status: '$status',
               logo: '$company.logoUrl',
+              applicant: {
+                name: '$applicant.name',
+                email: '$applicant.email',
+                address: '$applicant.address',
+              },
+              candidateId: { $toString: '$candidateId' },
             },
           },
           { $sort: sortStage },
@@ -207,6 +230,7 @@ export class ApplicationRepository
     });
     const result = await this._model.aggregate(pipeline);
     const applications = result[0]?.applications ?? [];
+    console.log(`applications from repositry:`, applications);
 
     const totalDocs = result[0]?.totalDocs[0]?.count ?? 0;
 
@@ -218,9 +242,10 @@ export class ApplicationRepository
       totalDocs,
     };
   }
+ 
 
-  async count(filter: Partial<Application>): Promise<number> {
-    const { candidateId, companyId } = filter;
+  async count(filter: ApplicationFilterDto): Promise<number> {
+    const { candidateId, companyId, jobId } = filter;
     // console.log('filter', filter);
 
     const q = {} as IApplicationDocument;
@@ -230,19 +255,27 @@ export class ApplicationRepository
     if (companyId) {
       q.companyId = new mongoose.Types.ObjectId(companyId);
     }
+    if (jobId) {
+      q.jobId = new mongoose.Types.ObjectId(jobId);
+    }
     if (filter.status) {
       q.status = filter.status;
     }
-    // console.log('q is ', q);
+    console.log('q is ', q);
 
     const count = await this._model.countDocuments(q);
+
+    console.log(`app count per job`, count);
 
     return count;
   }
 
   async getAppCount(candidateId: string, companyId: string): Promise<number> {
-    const count=await this._model.countDocuments({candidateId:new mongoose.Types.ObjectId(candidateId),companyId:new mongoose.Types.ObjectId(companyId)})
+    const count = await this._model.countDocuments({
+      candidateId: new mongoose.Types.ObjectId(candidateId),
+      companyId: new mongoose.Types.ObjectId(companyId),
+    });
 
-    return count
+    return count;
   }
 }

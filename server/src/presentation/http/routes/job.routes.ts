@@ -1,6 +1,6 @@
 import express from 'express';
 import { authValidator } from '../middleweres/auth-validator';
-import { tokenService } from '../../../infrastructure/config/di';
+import { applicationController, tokenService } from '../../../infrastructure/config/di';
 import {
   jobValidator,
   reportJobValidator,
@@ -42,4 +42,5 @@ router.put(
 
   jobController.unSaveJob
 );
+router.get(API_END_POINTS.JOB_APPLICATIONS,authValidator(tokenService),applicationController.getJobApplications)
 export default router;

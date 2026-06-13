@@ -12,7 +12,7 @@ import { type RootState } from '../../../redux/store';
 
 import { setNotifications } from '../../../redux/slices/notification.slice';
 
-const Header = () => {
+const Header = ({ title }: { title?: string }) => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
   const notifications = useSelector(
     (state: RootState) => state.notification.notifications
@@ -49,6 +49,12 @@ const Header = () => {
     setNots(notifications.filter((n) => n.isRead === false));
   };
 
+  useEffect(() => {
+    if (notificationOpen) {
+      setNots(notifications.filter((n) => n.isRead === false));
+    }
+  }, [notifications, notificationOpen]);
+
   const tabChange = (tab: 'new' | 'all') => {
     console.log('from tabChange', tab);
     if (tab == 'all') setNots(notifications);
@@ -68,7 +74,9 @@ const Header = () => {
   const onMarkRead = async (id: string) => {
     console.log('form mark as read', id);
     await markAsRead(id);
-    const updated = notifications.map((n) => n.id !== id?n:{...n,isRead:true});
+    const updated = notifications.map((n) =>
+      n.id !== id ? n : { ...n, isRead: true }
+    );
     dispatch(setNotifications(updated));
   };
 
@@ -106,12 +114,14 @@ const Header = () => {
               Home
             </a>
 
-            <a
-              href="/jobs"
-              className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
-            >
-              Find Jobs
-            </a>
+            {user && (
+              <a
+                href="/jobs"
+                className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors"
+              >
+                Find Jobs
+              </a>
+            )}
             {user && (
               <a
                 href={

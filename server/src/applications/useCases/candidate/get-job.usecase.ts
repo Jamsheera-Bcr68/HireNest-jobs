@@ -12,6 +12,7 @@ import { JobDetailsDto } from '../../dtos/job.dto';
 import { UserSkillDto } from '../../dtos/skill.dto';
 import { JobReportType } from '../../dtos/job.dto';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
+import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 
 export interface IGetJobDetailsUseCase {
   execute(id: string): Promise<JobDetailsDto>;
@@ -19,16 +20,17 @@ export interface IGetJobDetailsUseCase {
 
 export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
   constructor(
-    private jobRepository: IJobRepository,
-    private companyRepository: ICompanyRepository,
-    private skillRepository: ISkillRepository,
-    private userRepository: IUserRepository
+    private _jobRepository: IJobRepository,
+    private _companyRepository: ICompanyRepository,
+    private _skillRepository: ISkillRepository,
+    private _userRepository: IUserRepository,
+    private _applicationRepository: IApplicationRepository
   ) {}
   private mapToJobDetailsDto(
     job: Job,
     company: Company,
     skillNames: UserSkillDto[],
-    reports: JobReportType[]
+    reports: JobReportType[],count:number
   ): JobDetailsDto {
     return {
       id: job.id.toString(),
@@ -41,7 +43,7 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
       experience: job.experience,
       min_salary: job.min_salary,
       max_salary: job.max_salary,
-      totalApplicants: 0,
+      totalApplicants: count,
       isReported: job.isReported,
       reportDetails: reports ?? job.reportDetails,
       companyId: job.companyId,
@@ -62,17 +64,17 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
     };
   }
   async execute(id: string): Promise<JobDetailsDto> {
-    const job = await this.jobRepository.findById(id);
+    const job = await this._jobRepository.findById(id);
     if (!job || !job.companyId)
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
-    const company = await this.companyRepository.findById(job.companyId);
+    const company = await this._companyRepository.findById(job.companyId);
     if (!company) {
       throw new AppError(
         userMessages.error.COMPANY_NOT_FOUND,
         statusCodes.NOTFOUND
       );
     }
-    const skills = await this.skillRepository.getAll({
+    const skills = await this._skillRepository.getAll({
       status: SkillStatus.APPROVED,
     });
     if (!skills.length)
@@ -87,7 +89,7 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
     const reports = job.reportDetails
       ? await Promise.all(
           job.reportDetails.map(async (report) => {
-            const user = await this.userRepository.findById(report.reportedBy);
+            const user = await this._userRepository.findById(report.reportedBy);
 
             if (user) {
               return {
@@ -100,6 +102,10 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
           })
         )
       : [];
-    return this.mapToJobDetailsDto(job, company, skillnames, reports);
+
+    const applicationCount: number = await this._applicationRepository.count({
+      jobId: job.id,
+    });
+    return this.mapToJobDetailsDto(job, company, skillnames, reports,applicationCount);
   }
 }

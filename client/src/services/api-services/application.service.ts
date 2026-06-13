@@ -4,8 +4,6 @@ import { type ApplicationStatusType } from '../../types/dtos/application.dto';
 import { type ApplicationFilterType } from '../../presentation/hooks/user/candidate/profile/useApplication';
 
 export const applicationService = {
-
-  
   async applyJob(jobId: string, resumeId: string) {
     // console.log('job id from service,rsume id', jobId,resumeId);
 
@@ -16,9 +14,9 @@ export const applicationService = {
     return res.data;
   },
 
-  async getApplicationStatus() {
+  async getApplicationStatus(jobId: string) {
     const res = await axiosInstance.get(
-      API_ENDPOINTS.CANDIDATE_APPLICATON_STATUS
+      API_ENDPOINTS.CANDIDATE_APPLICATON_STATUS(jobId)
     );
     return res.data;
   },
@@ -31,6 +29,19 @@ export const applicationService = {
     console.log('application filter form sercice', filter);
 
     const res = await axiosInstance.get(API_ENDPOINTS.APPLICATIONS, {
+      params: { ...filter, page, limit },
+    });
+    return res.data;
+  },
+  async getJobApplications(
+    jobId: string,
+    filter?: Partial<ApplicationFilterType>,
+    page = 1,
+    limit = 5
+  ) {
+    console.log('application filter form sercice', filter);
+
+    const res = await axiosInstance.get(API_ENDPOINTS.JOB_APPLICATIONS(jobId), {
       params: { ...filter, page, limit },
     });
     return res.data;

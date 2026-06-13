@@ -8,7 +8,7 @@ import { authService } from '../../../services/api-services/authServices';
 import { useEffect, useState } from 'react';
 import {
   setNotifications,
-  addNotification,
+ 
 } from '../../../redux/slices/notification.slice';
 import { type NotificationType } from '../../../types/notification.type';
 import { useToast } from '../../../shared/toast/use-toast';
@@ -54,6 +54,13 @@ function Header({
       });
     }
   };
+
+   useEffect(() => {
+    if (notificationOpen) {
+      setNots(notifications.filter((n) => n.isRead === false));
+    }
+  }, [notifications, notificationOpen]);
+
 
   useEffect(() => {
     //console.log(user?.role, 'from header');

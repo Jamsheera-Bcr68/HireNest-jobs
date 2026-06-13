@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { SideBar } from '../components/user/employer/SideBar';
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../components/common/Header';
-//import { Header } from '../components/user/employer/home/Header';
 
 const menuItems = [
   { label: 'Dashboard', path: '/company/dashboard' },
@@ -10,16 +9,21 @@ const menuItems = [
   { label: 'My Jobs', path: '/company/jobs' },
   { label: 'Profile', path: '/company/profile' },
   { label: 'Skill Requests', path: '/company/skills' },
-  { label: 'Applications', path: '/company/applications' },
-  { label: 'Interviews', path: '/company/interviews' },
-];
+{ label: 'Interviews', path: '/company/interviews' },
+]
+
 export const EmployerLayout = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  const activeItem = menuItems.find((item) =>
+  let activeItem = menuItems.find((item) =>
     currentPath.startsWith(item.path)
   );
   console.log('currentPath,activeItem', currentPath, activeItem);
+
+
+if (!activeItem && currentPath.startsWith('/company/applications')) {
+  activeItem = menuItems.find((item) => item.path === '/company/jobs');
+}
 
   const [isSidebarOpen, setsidebarOpen] = useState(true);
   const [title, seTitle] = useState(activeItem || 'Dashboard');
