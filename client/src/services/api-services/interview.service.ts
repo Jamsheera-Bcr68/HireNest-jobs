@@ -2,6 +2,7 @@ import { API_ENDPOINTS } from '../../constants/api-end-points/general';
 import axiosInstance from '../../libraries/axios';
 import type { interviewFormType } from '../../libraries/validations/company/interview.form.validation';
 import type { InterviewFilter } from '../../presentation/hooks/user/useInterview';
+import { type interviewFeedbackDto } from '../../types/dtos/interview.dto';
 import type {
   interviewDetailDto,
   InterviewDto,
@@ -64,7 +65,7 @@ export const interviewService = {
     return res.data;
   },
 
-  async updateResult(id: string, data: Partial<interviewDetailDto>) {
+  async updateResult(id: string, data: interviewFeedbackDto) {
     console.log('date from update service', data);
 
     const res = await axiosInstance.patch(API_ENDPOINTS.UPDATE_RESULT(id), {

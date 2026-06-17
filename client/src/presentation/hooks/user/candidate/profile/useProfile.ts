@@ -1,29 +1,30 @@
 import { useState, useEffect } from 'react';
 import { type UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
+import { useToast } from '../../../../../shared/toast/use-toast';
 
-import { type typeOfToast } from '../../../../../types/toast.types';
 import { useNavigate } from 'react-router-dom';
 import { type SkillType } from '../../../../../types/dtos/profile-types/skill.types';
 import { skillService } from '../../../../../services/api-services/skillServices';
 import { profileService } from '../../../../../services/api-services/candidateService';
 
-export const useProfile = (showToast: (toast: typeOfToast) => void) => {
+export const useProfile = () => {
   const [user, setUser] = useState<UserProfileType>();
   const [allSkills, setAllSkills] = useState<SkillType[]>([]);
-
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function getUser() {
       try {
         const data = await profileService.getProfile();
+        console.log(`data candidate`, data);
 
         let user = data.user;
         console.log('user', user);
 
         setUser(user);
       } catch (error: any) {
-        // console.log(error.response);
+        console.log(error.response);
         showToast({
           msg: error?.response?.data?.message || error.message,
           type: 'error',

@@ -179,9 +179,10 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     key: 'sortBy',
     label: 'Sort',
     options: [
-      { label: 'Upcoming', value: 'newest' },
+   
       { label: 'Newest', value: 'newest' },
       { label: 'Role A-Z', value: 'a-z' },
+         { label: 'Upcoming', value: 'upcoming' },
     ],
   };
   const filterOptions = [modeFilter, resultsFilter];

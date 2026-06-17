@@ -149,39 +149,38 @@ const JobCard = ({ job, handleSave, handleUnSave, onApply }: JobCardProps) => {
                   })
                 : ''}
             </span>
-           <button
-  onClick={(e) => {
-    e.stopPropagation();
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
 
-    if (job.status !== 'expired') {
-      onApply(job.id);
-    }
-  }}
-  disabled={
-    user?.appliedJobs?.includes(job.id) ||
-    job.status === 'expired'
-  }
-  className={`px-4 py-1.5 text-white text-[13px] font-medium rounded-lg transition-colors
+                if (job.status !== 'expired') {
+                  onApply(job.id);
+                }
+              }}
+              disabled={
+                user?.appliedJobs?.includes(job.id) || job.status === 'expired'
+              }
+              className={`px-4 py-1.5 text-white text-[13px] font-medium rounded-lg transition-colors
     ${
       job.status === 'expired'
         ? 'bg-gray-400 cursor-not-allowed'
         : user?.appliedJobs?.includes(job.id)
-        ? 'bg-slate-400 cursor-not-allowed'
-        : 'bg-indigo-600 hover:bg-indigo-700'
+          ? 'bg-slate-400 cursor-not-allowed'
+          : 'bg-indigo-600 hover:bg-indigo-700'
     }
   `}
->
-  {job.status === 'expired' ? (
-    'Expired'
-  ) : user?.appliedJobs?.includes(job.id) ? (
-    <span className="inline-flex items-center gap-1">
-      <Check size={16} className="text-white" />
-      Applied
-    </span>
-  ) : (
-    'Apply Now'
-  )}
-</button>
+            >
+              {job.status === 'expired' ? (
+                'Expired'
+              ) : user?.appliedJobs?.includes(job.id) ? (
+                <span className="inline-flex items-center gap-1">
+                  <Check size={16} className="text-white" />
+                  Applied
+                </span>
+              ) : (
+                'Apply Now'
+              )}
+            </button>
           </div>
         </div>
       </>

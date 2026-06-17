@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useInterviews } from '../../../../hooks/user/useInterview';
 import AddReasonModal from '../../../admin/jobs/AddReasonModal';
-import ConfirmationModal from '../../../../modals/ConfirmationModal';
+
 import { Eye, XCircle, Calendar, CheckCircle, PlusCircle } from 'lucide-react';
 import { interviewStatusStyles } from '../../../../hooks/user/useInterview';
 import HeroSection from '../../../admin/HeroSection';
@@ -11,6 +11,7 @@ import ReusableTable from '../../../admin/Candidates/ReusableTable';
 import Pagination from '../../../common/Pagination';
 import RescheduleModal from './RescheduleModal';
 import { useToast } from '../../../../../shared/toast/use-toast';
+
 import { type TabType } from '../../../admin/Candidates/ReusableTable';
 import { type StatusCardType } from '../../../../pages/admin/Companies';
 import { type ColumnType } from '../../../admin/Candidates/ReusableTable';
@@ -54,7 +55,7 @@ function InterviewListingContainer() {
   const [interview, setInterview] = useState<interviewDetailDto | null>(null);
   const [selected, setSelected] = useState<InterviewDto | null>(null);
   const [rescheduleModal, setRescheduleModal] = useState<boolean>(false);
-  const [completedModal, setCompltedModal] = useState<boolean>(false);
+  //const [feedbackModalOpen, setFeedbackModalOpen] = useState<boolean>(false);
   const [resultModal, setResultModal] = useState<boolean>(false);
 
   const {
@@ -157,9 +158,18 @@ function InterviewListingContainer() {
         </span>
       ),
     },
+    {
+      key: 'createdAt',
+      label: 'Scheduled',
+      render: (i: InterviewDto) => (
+        <span className="text-slate-700 capitalize whitespace-nowrap">
+          {i.createdAt}
+        </span>
+      ),
+    },
 
     {
-      key: 'date',
+      key: 'scheduledAt',
       label: 'Date',
       render: (i: InterviewDto) => (
         <span className="text-slate-700 whitespace-nowrap">
@@ -247,8 +257,8 @@ function InterviewListingContainer() {
           {i.status === 'scheduled' && (
             <button
               onClick={() => {
-                setSelectedId(i.id);
-                setCompltedModal(true);
+                setSelected(i);
+                setResultModal(true);
               }}
               className="text-green-600 hover:text-green-800"
               title="Mark Completed"
@@ -346,8 +356,8 @@ function InterviewListingContainer() {
   };
 
   const handleAddResult = async (values: {
-    result: InterviewResult;
-    feedback?: string;
+    result: InterviewResult;score:number
+    feedback?: string
   }) => {
     console.log('from add result,', selected);
 
@@ -436,7 +446,7 @@ function InterviewListingContainer() {
           initialDate={selected?.scheduledAt.date ?? null}
           initialTime={selected?.scheduledAt.time ?? null}
         />
-        <ConfirmationModal
+        {/* <ConfirmationModal
           isOpen={completedModal}
           onClose={() => {
             setSelectedId(null);
@@ -446,7 +456,7 @@ function InterviewListingContainer() {
           action="Mark as Completed"
           type="info"
           onConfirm={() => handleStatusChange('completed')}
-        />
+        /> */}
         <InterviewFeedbackModal
           isOpen={resultModal}
           onClose={() => {

@@ -24,10 +24,10 @@ import {
   InterviewMode,
   InterviewResult,
 } from '../../../domain/enums/interview.enum';
-import { interviewInputDto } from '../../../applications/dtos/interview.dto';
+
 import { IGetAllEntitiesUsecase } from '../../../applications/interfaces/usecases/get-all-entities.usecase.interface';
 import { Interview } from '../../../domain/entities/interview.entity';
-import { success } from 'zod';
+
 import { IGetEntityDetailsUsecase } from '../../../applications/interfaces/usecases/get-entity-details.usecase.inerface';
 import { IUpdateEntityUseCase } from '../../../applications/interfaces/usecases/update-entity.usecase.interface';
 import { IConfirmInterviewUsecase } from '../../../applications/useCases/interviews/confirm-interview.usecase';

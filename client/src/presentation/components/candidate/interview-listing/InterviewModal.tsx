@@ -84,7 +84,8 @@ export default function InterviewDetailsModal({
         </div>
         {activeTab == 'details' && <InterviewDetails interview={interview} />}
         {activeTab == 'feedback' && (
-          <Feedback result={interview.result} feedback={interview.feedback} />
+
+          <Feedback result={interview.result} feedback={interview.feedback} score={interview.score}/>
         )}
 
         {/* Footer */}

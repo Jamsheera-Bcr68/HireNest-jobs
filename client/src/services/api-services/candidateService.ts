@@ -6,6 +6,8 @@ import type { ProfileFormType } from '../../libraries/validations/auth/candidate
 
 export const profileService = {
   async getProfile() {
+    console.log('from candidate servie');
+    
     const res = await axiosInstance.get(CANDIDATE_API_ENDPOINTS.PROFILE);
     return res.data;
   },

@@ -42,6 +42,7 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
         statusCodes.UNAUTHERIZED
       );
     }
+   
     console.log('from usecaser,filter', id, data);
 
     const interview = await this._interviewRepository.findById(id);
@@ -88,7 +89,7 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
 
     const notificationData: NotificationInputDto = {
       type: NotificationType.INTERVIEW_STATUS_UPDATED,
-      title: `Interview ${status}`,
+      title: `Interview Rescheduled`,
       message: notificationMessages[NotificationType.INTERVIEW_UPDATED]({
         title: job.title,
       }),

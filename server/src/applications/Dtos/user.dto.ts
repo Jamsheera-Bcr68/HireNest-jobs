@@ -4,6 +4,7 @@ import { StatusEnum } from '../../domain/enums/status.enum';
 import { UserRole } from '../../domain/enums/user.enums';
 import { IAddress, IResume, ISocialMediaLinks } from '../../domain/values/profile-types';
 import { EducationDto } from './education.dto';
+import { CandidateSkillDto, UserSkillDto } from './skill.dto';
 
 export interface userDto {
   id: string;
@@ -22,7 +23,7 @@ export interface userProfileDto {
   phone?: string;
   imageUrl?: string;
   title?: string;
-  skills: Array<string>;
+  skills: Array<CandidateSkillDto>;
   address?: IAddress;
   isRequested: boolean;
   company: { status: StatusEnum;id:string, reason?: string }|null;

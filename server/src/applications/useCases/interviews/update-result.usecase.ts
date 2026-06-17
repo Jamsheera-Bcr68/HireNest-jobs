@@ -7,6 +7,7 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { AppError } from '../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
+import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
 
 export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<
   Interview,
@@ -46,6 +47,9 @@ export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<
         statusCodes.UNAUTHERIZED
       );
 
-    await this._interviewRepository.update(id, data);
+    await this._interviewRepository.update(id, {
+      ...data,
+      status: InterviewStatusEnum.COMPLETED,
+    });
   }
 }

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import './header.css';
-
+import { MessageCircle, MessageSquare, MessageSquareText } from 'lucide-react';
 import { useHeader } from '../../hooks/user/useHeader';
 import { BellRing } from 'lucide-react';
 import { type NotificationType } from '../../../types/notification.type';
@@ -152,6 +152,24 @@ const Header = ({ title }: { title?: string }) => {
               {user && user.role !== 'admin' && (
                 <div className="text-yellow-600 transition-colors duration-200 cursor-pointer">
                   <BellRing
+                    onClick={handleNotificationClick}
+                    size={20}
+                    className="transition-transform duration-200 hover:scale-110"
+                  />
+                </div>
+              )}
+
+              {/* Notification Badge */}
+              {count !== 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-semibold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                  {count}
+                </span>
+              )}
+            </div>
+            <div className="relative inline-flex items-center">
+              {user && user.role !== 'admin' && (
+                <div className="text-yellow-600 transition-colors duration-200 cursor-pointer">
+                  <MessageSquareText
                     onClick={handleNotificationClick}
                     size={20}
                     className="transition-transform duration-200 hover:scale-110"

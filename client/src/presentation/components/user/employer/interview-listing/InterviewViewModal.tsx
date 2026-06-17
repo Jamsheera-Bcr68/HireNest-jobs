@@ -144,12 +144,12 @@ const XIcon = () => (
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 const SectionLabel = ({ children }: { children: ReactNode }) => (
-  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-2">
+  <p className="text-[10px] font-semibold text-gray-800 uppercase tracking-widest mb-2">
     {children}
   </p>
 );
 
-// ── Component ──────────────────────────────────────────────────────────────
+
 export default function InterviewDetailsModal({
   isOpen,
   onClose,
@@ -221,6 +221,7 @@ export default function InterviewDetailsModal({
 
   const handleAddResult = async (values: {
     result: InterviewResult;
+    score:number
     feedback?: string;
   }) => {
     if (!interview) return;
@@ -245,7 +246,8 @@ export default function InterviewDetailsModal({
 
   const handleComplete = async () => {
     if (!interview) return;
-    await upsateStatus(interview.id, 'completed');
+    setFeedbackModal(true)
+   
     onUpdate({ status: 'completed' });
   };
 
@@ -297,34 +299,8 @@ export default function InterviewDetailsModal({
             </div>
           </div>
           <div className="flex-1 overflow-y-auto">
-            {/* ── Candidate ── */}
-            {/* <div className="px-6 py-4 border-b border-gray-100">
-              <SectionLabel>Candidate</SectionLabel>
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 font-semibold text-sm flex-shrink-0">
-                  {interview?.name.charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">
-                    {interview?.name}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    Applied for: {interview?.jobTitle}
-                  </p>
-                </div>
-              </div>
-              <span
-  className={`text-sm text-white rounded-2xl px-2 py-0.5 ${
-    interview.result === 'passed'
-      ? 'bg-green-500'
-      : interview.result === 'failed'
-      ? 'bg-red-500'
-      : 'bg-yellow-500'
-  }`}
->
-  {interview.result}
-</span>
-            </div> */}
+
+            
             <div className="px-6 py-4 border-b border-gray-100">
               <SectionLabel>Candidate</SectionLabel>
 
@@ -674,12 +650,18 @@ export default function InterviewDetailsModal({
               )}
             </div>
 
-            {/* ── Result ── */}
-            {/* ── Result ── */}
+        
 
             {/* ── Feedback ── */}
             {interview.status === 'completed' && (
-              <div className="px-6 py-4 border-b border-gray-100">
+              <> <div className="px-6 py-4 border-b border-gray-100">
+                 <SectionLabel>Score</SectionLabel>
+                 <p className="text-xs text-gray-500 leading-relaxed">
+                  {interview.score??'Score not added'}
+                 </p>
+              </div>
+
+                 <div className="px-6 py-4 border-b border-gray-100">
                 <SectionLabel>FeedBack</SectionLabel>
 
                 <p className="text-xs text-gray-500 leading-relaxed">
@@ -692,6 +674,8 @@ export default function InterviewDetailsModal({
                   )}
                 </p>
               </div>
+              </>
+             
             )}
           </div>
 

@@ -11,8 +11,6 @@ import mongoose, { PipelineStage } from 'mongoose';
 import { duration } from 'zod/v4/classic/iso.cjs';
 import { InterviewFilterDto } from '../../applications/dtos/interview.dto';
 
-import { id } from 'zod/v4/locales';
-
 export class InterviewRepository
   extends GenericRepository<Interview, IInterviewDocument>
   implements IInterviewRepository
@@ -45,6 +43,7 @@ export class InterviewRepository
       reasonForCancel: doc.reasonForCancel,
       reasonForRescheduleRequest: doc.reasonForRescheduleRequest,
       cancelledBy: doc.cancelledBy,
+      score:doc.score
     };
   }
 
@@ -79,6 +78,7 @@ export class InterviewRepository
     if (entity.reasonForRescheduleRequest)
       data.reasonForRescheduleRequest = entity.reasonForRescheduleRequest;
     if (entity.cancelledBy) data.cancelledBy = entity.cancelledBy;
+    if(entity.score)data.score=entity.score
     return data;
   }
 
@@ -123,7 +123,7 @@ export class InterviewRepository
       result,
       page = 1,
       limit = 5,
-      sortBy = 'upcoming',
+      sortBy = 'newest',
       mode,
     } = filter;
     const skip = (page - 1) * limit;
@@ -193,16 +193,16 @@ export class InterviewRepository
     });
     let sortStage: PipelineStage.Sort['$sort'] = {};
 
-    if (sortBy === 'upcoming' || sortBy === '') {
-      sortStage = { scheduledAt: 1, createdAt: -1 };
-    } else if (sortBy === 'newest') {
+    if (sortBy === 'newest') {
       sortStage = { createdAt: -1 };
+    } else if (sortBy === 'upcoming') {
+      sortStage = { scheduledAt: 1, createdAt: -1 };
     } else if (sortBy === 'a-z') {
       sortStage = { jobTitleLower: 1 };
-    }
+    } else sortStage = { createdAt: -1 };
 
     pipeline.push({ $sort: sortStage });
-    pipeline.push({ $sort: sortStage });
+   
     pipeline.push({
       $facet: {
         interviews: [
@@ -235,12 +235,12 @@ export class InterviewRepository
     const resultDatas = await this._model.aggregate(pipeline);
     const interviews = resultDatas[0]?.interviews ?? [];
     const totalDocs = resultDatas[0]?.totalDocs[0]?.count ?? 0;
+    console.log(interviews);
+    
 
     return {
       interviews,
       totalDocs,
     };
   }
-
-  
 }

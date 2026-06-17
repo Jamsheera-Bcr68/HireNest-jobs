@@ -51,7 +51,7 @@ function ReusableTable<T extends { id: string }>({
 
   return (
     <>
-      <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center gap-4">
+      <div className="p-5 border-b mt-3 border-slate-100 flex flex-col sm:flex-row sm:items-center gap-4">
         {/* Search */}
         <div className="relative flex-1 max-w-sm">
           <svg
@@ -149,13 +149,13 @@ function ReusableTable<T extends { id: string }>({
       </div>
       {/* TABLE */}
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full mt-6 text-sm">
           <thead>
             <tr className="bg-slate-50 text-left">
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase"
+                  className="px-4 py-3 text-xs font-semibold text-slate-800 uppercase"
                 >
                   {column.label}
                 </th>
@@ -163,9 +163,9 @@ function ReusableTable<T extends { id: string }>({
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y mt-3 divide-slate-100">
             {entities.map((entity) => (
-              <tr key={entity.id} className="hover:bg-slate-50">
+              <tr key={entity.id} className="hover:bg-slate-50 border">
                 {columns.map((column) => (
                   <td key={column.key} className="px-4 py-4 ">
                     {column.render(entity)}

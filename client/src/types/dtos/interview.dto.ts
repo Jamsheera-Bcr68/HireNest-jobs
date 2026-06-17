@@ -24,6 +24,8 @@ export type InterviewDto = {
   company: string;
   companyLogo: string;
   isConfirmed: boolean;
+  createdAt:string
+  score?:number
 };
 
 export type interviewDetailDto = {
@@ -44,6 +46,13 @@ export type interviewDetailDto = {
   reasonForRescheduleRequest: string;
   note?: string;
   feedback?: string;
+  score?:number
   result?: InterviewResult;
   cancelledBy: UserRole;
 };
+
+export type interviewFeedbackDto={
+  result:InterviewResult
+  score:number
+  feedback?:string
+}

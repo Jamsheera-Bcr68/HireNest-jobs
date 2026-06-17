@@ -31,6 +31,7 @@ export interface IInterviewDocument {
   isConfirmed: boolean;
   reasonForCancel?: string;
   cancelledBy: UserRole;
+  score: number;
 }
 
 export const InterviewSchema = new mongoose.Schema<IInterviewDocument>({
@@ -51,8 +52,9 @@ export const InterviewSchema = new mongoose.Schema<IInterviewDocument>({
     default: InterviewStatusEnum.SCHEDULED,
   },
   cancelledBy: { type: String, enum: Object.values(UserRole) },
+  score: { type: Number },
   feedback: { type: String },
-  createdAt: { date: Date },
+  createdAt: { type: Date },
   notes: { type: String },
   applicationId: { type: mongoose.Types.ObjectId },
   result: { type: String, enum: Object.values(InterviewResult) },

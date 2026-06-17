@@ -12,8 +12,8 @@ import Education from './Education';
 const ProfilePart = () => {
   const navigate = useNavigate();
   console.log('from candidate profiel');
-  const { showToast } = useToast();
-  const { user, setUser, allSkills } = useProfile(showToast);
+
+  const { user, setUser, allSkills } = useProfile();
   console.log('user', user);
 
   if (!user) return null;

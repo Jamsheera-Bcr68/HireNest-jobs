@@ -15,6 +15,7 @@ export type interviewInputDto = {
   meetLink: string;
   duration: string;
   isAddlinkLater: boolean;
+  status?:InterviewStatusEnum
 };
 
 export type AggregatedInterviewDto = {

@@ -10,6 +10,7 @@ import { updateUser } from '../../../../redux/auth-slice';
 import {
   type JobCardDto,
   type JobDetailsDto,
+  type JobDto,
 } from '../../../../types/dtos/job.dto';
 
 import { useToast } from '../../../../shared/toast/use-toast';
@@ -87,7 +88,7 @@ function JobListingContainer({ mode }: Props) {
 
   const user = useSelector((state: StateType) => state.auth.user);
   const dispatch = useDispatch();
-
+const appliedJobs=user.appliedJobs
   const [reportForm, setReportForm] =
     useState<ReportFormType>(initialReportForm);
 
@@ -112,8 +113,9 @@ function JobListingContainer({ mode }: Props) {
         }
 
         console.log('after fetching jobs', data);
+       
         setJobs(data.jobs);
-        setTotalDocs(data.totalDocs);
+        setTotalDocs(jobs.length);
         if (data.jobs.length > 0 && !activeJobId) {
           setActiveJobId(data.jobs[0].id);
         }

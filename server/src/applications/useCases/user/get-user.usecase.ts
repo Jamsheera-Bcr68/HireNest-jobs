@@ -26,16 +26,18 @@ export class GetUserUseCase implements IGetUserUseCase {
     if (!user || user.role !== role)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     console.log('user from getuser ', user);
-    let company: Company | null=null
+    let company: Company | null = null;
     if (user.isRequested) {
-    console.log('use is requested');
-    
+      console.log('use is requested');
+
       company = await this._companyRepository.findByUserId(userId);
-      console.log('user compnay',company);
       
     }
-    
-console.log('company to client',UserMapper.toUserProfileDto(user, company));
+
+    console.log(
+      'company to client',
+      UserMapper.toUserProfileDto(user, company)
+    );
 
     return UserMapper.toUserProfileDto(user, company);
   }

@@ -162,10 +162,19 @@ function InterviewsContatainer() {
         </span>
       ),
     },
+    {
+      key: 'createdAt',
+      label: 'Scheduled-date',
+      render: (i: InterviewDto) => (
+        <span className="text-slate-700 capitalize whitespace-nowrap">
+          {i.createdAt}
+        </span>
+      ),
+    },
 
     {
       key: 'date',
-      label: 'Date',
+      label: 'Scheculed on',
       render: (i: InterviewDto) => (
         <span className="text-slate-700 whitespace-nowrap">
           {i.scheduledAt.date}

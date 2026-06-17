@@ -21,15 +21,23 @@ export class UserMapper {
   }
   static toUserProfileDto(user: User, company: Company | null): userProfileDto {
     console.log('user befor converting user.isBlocked', user.isBlocked);
-    let companyData: { status: StatusEnum;id:string, reason?: string } | null = null;
-    if (company&&company.id) {
-      companyData = { status: company.status,id:company.id, reason: company.reasonForReject };
+    let companyData: {
+      status: StatusEnum;
+      id: string;
+      reason?: string;
+    } | null = null;
+    if (company && company.id) {
+      companyData = {
+        status: company.status,
+        id: company.id,
+        reason: company.reasonForReject,
+      };
     }
     return {
       id: user.id ?? '',
       email: user.email,
       phone: user.phone,
-      skills: user.skills?.map((s) => s.skillName) ?? [],
+      skills: user.skills?.map((s) => ({id:s.id,skillName:s.skillName})) ?? [],
       name: user.name ?? '',
       experience: user.experience,
       imageUrl: user.imageUrl,
@@ -41,7 +49,7 @@ export class UserMapper {
       company: companyData,
       about: user.about ?? '',
       resumes: user.resumes,
-      createdAt: user.createdAt.toDateString(),
+      createdAt: user.createdAt?.toDateString(),
       isBlocked: user.isBlocked ?? false,
     };
   }

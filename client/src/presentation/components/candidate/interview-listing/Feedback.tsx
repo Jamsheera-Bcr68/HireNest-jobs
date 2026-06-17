@@ -1,9 +1,10 @@
 type Props = {
   feedback?: string;
+  score?:number
   result?: 'passed' | 'failed' | 'pending';
 };
 
-function Feedback({ feedback, result }: Props) {
+function Feedback({ feedback, result,score }: Props) {
   return (
     <div className="p-5">
       <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5">
@@ -34,6 +35,18 @@ function Feedback({ feedback, result }: Props) {
           )}
         </div>
 
+        {/* Score */}
+        <div className="mt-4">
+          { score? (
+            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+              {score}
+            </p>
+          ) : (
+            <div className="text-sm text-amber-600 bg-amber-50 border border-amber-100 rounded-lg p-3">
+              Score has not been added yet.
+            </div>
+          )}
+        </div>
         {/* Feedback */}
         <div className="mt-4">
           {feedback ? (

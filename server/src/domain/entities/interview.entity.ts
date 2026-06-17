@@ -23,6 +23,7 @@ export interface Interview {
   isConfirmed: boolean;
   isRescheduleRequested: boolean;
   reasonForCancel?: string;
+  score?:number
   reasonForRescheduleRequest: string;
   cancelledBy: UserRole;
 }

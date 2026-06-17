@@ -106,7 +106,7 @@ export class CandidateProfileController {
 
     const updated = await this._candidateEditProfileUsecase.execute(data);
     //  console.log('updated user from controller ', updated);
-    const userProfile = UserMapper.toUserProfileDto(updated,null);
+    const userProfile = UserMapper.toUserProfileDto(updated, null);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.PROFILE_UPDATED,
@@ -115,8 +115,10 @@ export class CandidateProfileController {
   });
 
   getUser = asyncHandler(async (req: Request, res: Response) => {
-    //console.log('from get user');
+    console.log('from get user');
     const userData = req.user;
+    console.log(userData);
+
     //console.log('user from token ', userData);
 
     if (!userData || !userData.userId || !userData.role) {
@@ -129,7 +131,7 @@ export class CandidateProfileController {
       userData.userId,
       userData.role
     );
-   
+    console.log('user is ', user);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -168,7 +170,7 @@ export class CandidateProfileController {
       imageFile
     );
     //  console.log('updted user from controlleer image edit ', updatedUser);
-    const userDto = UserMapper.toUserProfileDto(updatedUser,null);
+    const userDto = UserMapper.toUserProfileDto(updatedUser, null);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.USER_PROFILE_IMAGE_UPDATED,
@@ -190,7 +192,7 @@ export class CandidateProfileController {
       user.userId,
       user.role
     );
-    const userDto = UserMapper.toUserProfileDto(updatedUser,null);
+    const userDto = UserMapper.toUserProfileDto(updatedUser, null);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.USER_PROFILE_IMAGE_REMOVED,
@@ -246,7 +248,7 @@ export class CandidateProfileController {
       skillId,
       user.role
     );
-    const updatedUser = UserMapper.toUserProfileDto(updated,null);
+    const updatedUser = UserMapper.toUserProfileDto(updated, null);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.SKILL_ADDED,
@@ -278,7 +280,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.SKILL_REMOVED,
-      user: UserMapper.toUserProfileDto(updatedUser,null),
+      user: UserMapper.toUserProfileDto(updatedUser, null),
     });
   });
 
@@ -302,7 +304,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EXPERIENCE_ADDED,
-      user: UserMapper.toUserProfileDto(updated,null),
+      user: UserMapper.toUserProfileDto(updated, null),
     });
   });
 
@@ -335,7 +337,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EXPERIENCE_UPDATED,
-      user: UserMapper.toUserProfileDto(updated,null),
+      user: UserMapper.toUserProfileDto(updated, null),
     });
   });
 
@@ -366,7 +368,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EXPEIENCE_REMOVED,
-      user: UserMapper.toUserProfileDto(updated,null),
+      user: UserMapper.toUserProfileDto(updated, null),
     });
   });
 
@@ -391,7 +393,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.CREATED).json({
       success: true,
       message: userMessages.success.EDUCATION_ADDED,
-      user: UserMapper.toUserProfileDto(updatedUser,null),
+      user: UserMapper.toUserProfileDto(updatedUser, null),
     });
   });
 
@@ -423,7 +425,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.CREATED).json({
       success: true,
       message: userMessages.success.EDUCATION_UPDATED,
-      user: UserMapper.toUserProfileDto(updatedUser,null),
+      user: UserMapper.toUserProfileDto(updatedUser, null),
     });
   });
 
@@ -450,7 +452,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EDUCATION_REMOVED,
-      user: UserMapper.toUserProfileDto(updatedUser,null),
+      user: UserMapper.toUserProfileDto(updatedUser, null),
     });
   });
 
@@ -512,7 +514,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.RESUME_DELETED,
-      user: UserMapper.toUserProfileDto(updatedUser,null),
+      user: UserMapper.toUserProfileDto(updatedUser, null),
     });
   });
 
