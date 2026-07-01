@@ -30,7 +30,7 @@ export class CompanyProfileUpdate implements ICompanyUpdateProfileUseCase {
         userMessages.error.COMPANY_NOT_FOUND,
         statusCodes.NOTFOUND
       );
-    console.log('company befor update', company);
+ //   console.log('company befor update', company);
 
     const updated = await this.companyRepository.save(company.id, {
       ...data,

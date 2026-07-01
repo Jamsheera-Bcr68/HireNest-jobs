@@ -77,7 +77,7 @@ export class ConfirmInterviewUsecase implements IConfirmInterviewUsecase {
       title: 'Interview Confirmed',
     };
 
-    console.log(updated);
+ //   console.log(updated);
     await this._notificationService.create(notificationData);
     getIO().to(interview.companyId).emit('notification', notificationData);
   }

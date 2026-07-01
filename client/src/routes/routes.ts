@@ -4,6 +4,7 @@ export const CANDIDATE_ROUTES = {
   JOBS: '/jobs',
   INTERVIEWS: '/interviews',
   APPLICATIONS: '/applications',
+  MESSAGES: '/messages',
   APPLICATION_DETAILS: '/applications/:id',
 } as const;
 
@@ -19,6 +20,7 @@ export const COMPANY_ROUTES = {
   JOB_DETAILS: 'jobs/:jobId',
   INTERVIEWS: 'interviews',
   PROFILE: 'profile',
+  MESSAGES: 'messages',
 } as const;
 
 export const ADMIN_ROUTES = {

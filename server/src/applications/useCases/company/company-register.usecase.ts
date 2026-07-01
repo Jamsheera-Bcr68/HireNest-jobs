@@ -32,7 +32,7 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
     userId: string,
     role: UserRole
   ): Promise<Company> {
-    console.log('pay load form usecase', payload);
+   // console.log('pay load form usecase', payload);
 
     const user = await this._userRepository.findById(userId);
     if (!user || !user.id) {

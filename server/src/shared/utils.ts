@@ -30,3 +30,4 @@ export const getTime = (data: Date): string => {
   });
   return formatted;
 };
+

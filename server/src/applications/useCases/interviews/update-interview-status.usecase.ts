@@ -33,14 +33,14 @@ export class UpdateInterviewStatusUsecase implements IUpdateEntityStatusUseCase<
     status: InterviewStatusEnum,
     reason?: string
   ): Promise<void | Interview> {
-    console.log(
-      'id,userId,role,status,reason',
-      id,
-      userId,
-      role,
-      status,
-      reason
-    );
+    // console.log(
+    //   'id,userId,role,status,reason',
+    //   id,
+    //   userId,
+    //   role,
+    //   status,
+    //   reason
+    // );
 
     const interview = await this._interviewRepository.findById(id);
     if (!interview)

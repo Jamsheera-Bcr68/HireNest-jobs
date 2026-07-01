@@ -112,7 +112,7 @@ export class InterviewRepository
   async getAllInterviews(
     filter: Partial<InterviewFilterDto>
   ): Promise<{ interviews: AggregatedInterviewDto[]; totalDocs: number }> {
-    console.log('filter from repository', filter);
+   // console.log('filter from repository', filter);
 
     const {
       companyId,
@@ -215,6 +215,8 @@ export class InterviewRepository
               result: '$result',
               jobTitle: '$job.title',
               company: '$company.companyName',
+              companyId:'$company._id',
+              candidateId:'$candidateId',
               companyLogo: '$company.logoUrl',
               createdAt: '$createdAt',
               status: '$status',
@@ -235,7 +237,7 @@ export class InterviewRepository
     const resultDatas = await this._model.aggregate(pipeline);
     const interviews = resultDatas[0]?.interviews ?? [];
     const totalDocs = resultDatas[0]?.totalDocs[0]?.count ?? 0;
-    console.log(interviews);
+  //  console.log(interviews);
     
 
     return {

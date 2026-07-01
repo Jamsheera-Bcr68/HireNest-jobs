@@ -10,9 +10,9 @@ export class GetFileExistUseCase implements IGetFileExistUseCase {
   constructor(private fileStorageServise: IFileStorageService) {}
   async execute(url: string): Promise<boolean> {
     //const filename = url.split('/').pop();
-    console.log('url', url);
+ //   console.log('url', url);
 
-    console.log('file naem', url);
+  //  console.log('file naem', url);
 
     if (!url)
       throw new AppError(
@@ -20,7 +20,7 @@ export class GetFileExistUseCase implements IGetFileExistUseCase {
         statusCodes.NOTFOUND
       );
     const isExist = await this.fileStorageServise.checkExist(url);
-    console.log('exist file', isExist);
+ //   console.log('exist file', isExist);
     return isExist;
   }
 }

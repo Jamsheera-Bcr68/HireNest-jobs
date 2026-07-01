@@ -32,7 +32,7 @@ export class CompanyProfileController {
   ) {}
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from company controller');
+   // console.log('from company controller');
     const user = req.user;
 
     if (!user || !user.userId) {
@@ -63,7 +63,7 @@ export class CompanyProfileController {
       user.userId,
       user.role
     );
-    console.log('new company',company);
+   // console.log('new company',company);
     
 
     return res.status(statusCodes.CREATED).json({
@@ -192,7 +192,7 @@ export class CompanyProfileController {
       payload,
       user.userId
     );
-    console.log('new updated company', updated);
+  //  console.log('new updated company', updated);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.COMPANY_UPDATED,
@@ -201,7 +201,7 @@ export class CompanyProfileController {
   });
 
   updateFields = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from update field controller', req.body);
+   // console.log('from update field controller', req.body);
 
     const user = req.user;
 
@@ -210,16 +210,16 @@ export class CompanyProfileController {
     }
 
     const payload = CompanyMapper.CompanyUpdateFiedTypeToCompanyDto(req.body);
-    console.log(
-      'after converting to CompanyUpdateFiedTypeToCompanyDto',
-      payload
-    );
+   // console.log(
+     // 'after converting to CompanyUpdateFiedTypeToCompanyDto',
+    //  payload
+    //);
 
     const data = await this.companyAboutUpdateUseCase.execute(
       payload,
       user.userId
     );
-    console.log('new updated company', data);
+   // console.log('new updated company', data);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.COMPANY_UPDATED,

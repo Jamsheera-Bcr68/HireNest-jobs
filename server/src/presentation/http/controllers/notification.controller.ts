@@ -47,7 +47,7 @@ export class NotificationControlller {
 
   getNotifications = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
-    console.log('user', user);
+  //  console.log('user', user);
     if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -55,7 +55,7 @@ export class NotificationControlller {
       );
     const { value } = req.query;
 
-    console.log(value, user.userId);
+   // console.log(value, user.userId);
     const filter: Partial<NotificationFilterType> = {};
     if (value == 'new') {
       filter.isRead = false;
@@ -77,10 +77,10 @@ export class NotificationControlller {
   });
 
   markAsRead = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from notification controller');
+   // console.log('from notification controller');
 
     const user = req.user;
-    console.log('user', user);
+    //console.log('user', user);
     if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -96,7 +96,7 @@ export class NotificationControlller {
         statusCodes.BADREQUEST
       );
 
-    console.log(notificationId);
+   // console.log(notificationId);
 
     await this._markAsReadUsecase.execute(
       notificationId,
@@ -110,10 +110,10 @@ export class NotificationControlller {
   });
 
   markAllAsRead = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from notification controller');
+   // console.log('from notification controller');
 
     const user = req.user;
-    console.log('user', user);
+   // console.log('user', user);
     if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -128,10 +128,10 @@ export class NotificationControlller {
   });
 
   deleteNotification = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from notification controller');
+   // console.log('from notification controller');
 
     const user = req.user;
-    console.log('user', user);
+   // console.log('user', user);
     if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -146,7 +146,7 @@ export class NotificationControlller {
         statusCodes.BADREQUEST
       );
 
-    console.log(notificationId);
+   // console.log(notificationId);
 
     await this._deleteNotificationUsecase.execute(
       notificationId,

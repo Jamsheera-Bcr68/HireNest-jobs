@@ -7,7 +7,7 @@ export default function ProtectedRoutes() {
   const { user, isAuthenticated } = useSelector(
     (state: StateType) => state.auth
   );
-  console.log('isAuthenticated', isAuthenticated);
+  //console.log('isAuthenticated', isAuthenticated);
 
   if (!user || !isAuthenticated)
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;

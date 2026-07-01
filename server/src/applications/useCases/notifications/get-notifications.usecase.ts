@@ -22,7 +22,7 @@ export class GetNotificationsUsecase implements IGetAllEntitiesUsecase<
     filter: Partial<NotificationFilterType>,
     role: UserRole
   ): Promise<NotificationDto[]> {
-    console.log('filter from usecase', filter);
+  //  console.log('filter from usecase', filter);
 let targettedUserId:string
 const {userId,isRead}=filter
 if(!userId)throw new AppError(generalMessages.errors.ID_NOT_FOUND('Candidate'),statusCodes.BADREQUEST)

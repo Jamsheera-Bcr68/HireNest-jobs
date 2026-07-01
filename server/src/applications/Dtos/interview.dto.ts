@@ -15,7 +15,7 @@ export type interviewInputDto = {
   meetLink: string;
   duration: string;
   isAddlinkLater: boolean;
-  status?:InterviewStatusEnum
+  status?: InterviewStatusEnum;
 };
 
 export type AggregatedInterviewDto = {
@@ -29,6 +29,8 @@ export type AggregatedInterviewDto = {
   createdAt: Date;
   appliedAt: string;
   isConfirmed: boolean;
+  companyId: string;
+  candidateId: string;
   isRescheduleRequested: boolean;
   status: InterviewStatusEnum;
   scheduledAt: Date;
@@ -40,10 +42,12 @@ export type interviewDto = {
   name: string;
   jobTitle: string;
   isRescheduleRequested: boolean;
+  companyId: string;
+  candidateId: string;
   company: string;
   companyLogo: string;
   mode: InterviewMode;
-
+  chatroomId?: string;
   scheduledAt: { date: string; time: string };
   status: InterviewStatusEnum;
   createdAt: string;
@@ -99,6 +103,4 @@ export type interviewDetailDto = {
   cancelledBy: UserRole;
 };
 
-export type interviewCountFilterDto={
-
-}
+export type interviewCountFilterDto = {};

@@ -13,7 +13,7 @@ export class AdminRepository
   }
   async findByEmail(email: string): Promise<Admin | null> {
     const admin = await this._model.findOne({ email });
-    console.log('admin', admin);
+  //  console.log('admin', admin);
 
     if (!admin) return null;
     return admin;
@@ -65,7 +65,7 @@ export class AdminRepository
         resetTokenExpiry: '',
       },
     });
-    console.log('new admin', admin);
+   // console.log('new admin', admin);
   }
 
   async clearResetToken(id: string): Promise<void> {

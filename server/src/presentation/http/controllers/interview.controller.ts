@@ -61,6 +61,8 @@ export class InterviewController {
     private _confirmInterviewUsecase: IConfirmInterviewUsecase,
     private _requestForRescheduleUsecase: IRescheduleRequestUsecase
   ) {}
+
+
   scheduleInterview = asyncHandler(async (req: Request, res: Response) => {
     // console.log('from interview controller', req.body);
 
@@ -71,12 +73,7 @@ export class InterviewController {
         statusCodes.UNAUTHERIZED
       );
     const interview = await this._scheduleInterviewUsecase.execute(req.body);
-    await this._updateApplicationStatusUsecase.execute(
-      req.body.applicationId,
-      user.userId,
-      user.role,
-      'interviewScheduled' as ApplicationStatusEnum
-    );
+   
     return res.status(statusCodes.OK).json({
       success: true,
       message: generalMessages.success.ENTITY_CREATED('Interview', 'Scheduled'),
@@ -85,7 +82,7 @@ export class InterviewController {
   });
 
   updateInterview = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from interview controller', req.body);
+ //   console.log('from interview controller', req.body);
 
     const user = req.user;
     if (!user)
@@ -102,7 +99,7 @@ export class InterviewController {
       user.userId,
       data
     );
-    console.log('updated interview', interview);
+//    console.log('updated interview', interview);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -148,7 +145,7 @@ export class InterviewController {
       endDate,
     } = req.query;
 
-    console.log('req.query', req.query);
+   // console.log('req.query', req.query);
     const user = req.user;
     if (!user || !user.userId) {
       throw new AppError(
@@ -189,7 +186,7 @@ export class InterviewController {
     if (limit) {
       q.limit = Number(limit);
     }
-    console.log('q from controller', q);
+   // console.log('q from controller', q);
 
     const { interviews, totalDocs } = await this._getInterviewsUsecase.execute(
       q,
@@ -221,7 +218,7 @@ export class InterviewController {
         statusCodes.BADREQUEST
       );
     const { status, reason } = req.body;
-    console.log(' req.body', req.body);
+   // console.log(' req.body', req.body);
 
     await this._updateInterviewStatusUsecase.execute(
       interviewId,
@@ -257,7 +254,7 @@ export class InterviewController {
       user.userId,
       user.role
     );
-    console.log('interview from controller', interview);
+   // console.log('interview from controller', interview);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -282,7 +279,7 @@ export class InterviewController {
         statusCodes.BADREQUEST
       );
 
-    console.log(' req.body', req.body);
+  //  console.log(' req.body', req.body);
 
     const { data } = req.body;
 

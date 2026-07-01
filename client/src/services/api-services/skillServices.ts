@@ -10,7 +10,7 @@ export const skillService = {
     page: number = 1,
     sortBy: string = 'newest'
   ) {
-    console.log('skill filter,sortby', filter);
+    //console.log('skill filter,sortby', filter);
     sortBy = sortBy.trim();
 
     const res = await axiosInstance.get(API_ENDPOINTS.ALL_SKILLS, {
@@ -24,7 +24,7 @@ export const skillService = {
     page: number = 1,
     sortBy: string = 'newest'
   ) {
-    console.log(' requested skill filter,sortby', filter);
+    //console.log(' requested skill filter,sortby', filter);
     sortBy = sortBy.trim();
 
     const res = await axiosInstance.get(API_ENDPOINTS.REQUESTED_SKILLS, {
@@ -38,7 +38,7 @@ export const skillService = {
     return res.data;
   },
   async updateSkill(id: string, skill: string) {
-    console.log('from update skill', skill, id);
+//    console.log('from update skill', skill, id);
 
     const res = await axiosInstance.put(API_ENDPOINTS.SKILL(id), { skill });
     return res.data;
@@ -54,7 +54,7 @@ export const skillService = {
     status: SkillStatusType,
     reason?: string
   ) {
-    console.log('skillid,status,reason', skillId, status, reason);
+ //   console.log('skillid,status,reason', skillId, status, reason);
 
     const res = await axiosInstance.patch(API_ENDPOINTS.SKILL(skillId), {
       status,

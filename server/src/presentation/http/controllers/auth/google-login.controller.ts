@@ -14,7 +14,7 @@ export class GoogleLoginController {
 
   handle = asyncHandler(async (req: Request, res: Response) => {
     const { token, role } = req.body;
-    console.log('from google login controller, token and role is ', token);
+  //  console.log('from google login controller, token and role is ', token);
 
     const {
       user,

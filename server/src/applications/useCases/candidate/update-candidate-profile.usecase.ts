@@ -17,13 +17,13 @@ export class CandidateProfileEditUsecase implements IProfileEditUsecase {
     this._userRepository = userRepository;
   }
   async execute(data: CandidateProfileUpdateDto): Promise<User> {
-    console.log('from usecase data is', data);
+ //   console.log('from usecase data is', data);
     const user = await this._userRepository.findOne({
       id: data.userId,
       email: data.email,
       role: data.role,
     });
-    console.log('user from usercase ', user);
+   // console.log('user from usercase ', user);
     if (!user || !user.id) {
       throw new AppError(
         authMessages.error.USER_NOT_FOUND,
@@ -52,7 +52,7 @@ export class CandidateProfileEditUsecase implements IProfileEditUsecase {
     user.address = address;
     user.title = data.title ?? user.title;
     user.socialMediaLinks = links;
-    console.log('user before saving ', user);
+    //console.log('user before saving ', user);
 
     const updated = await this._userRepository.addProfileData(user?.id, user);
     if (!updated) {

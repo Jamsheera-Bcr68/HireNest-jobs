@@ -45,7 +45,7 @@ export class ApplicationController {
     }
     const { jobId } = req.params;
     const { resumeId } = req.body;
-    console.log('from application controller', jobId, resumeId);
+    //console.log('from application controller', jobId, resumeId);
     const applicationId = await this._applyJobUseCase.execute(
       jobId,
       resumeId,
@@ -190,7 +190,7 @@ export class ApplicationController {
       user.userId,
       user.role
     );
-    console.log('application', application);
+ //   console.log('application', application);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -222,7 +222,7 @@ export class ApplicationController {
       reason
     );
     const timeline = ApplicationMapper.getTimeline(app!);
-    console.log('timeline', timeline);
+    //console.log('timeline', timeline);
 
     return res.status(statusCodes.OK).json({
       success: true,

@@ -16,6 +16,7 @@ import { notificationMessages } from '../../../shared/constants/messages/notific
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { INotificationService } from '../../services/notification.service';
+import { notificationTitleTypes } from '../../types/notification.type';
 import { getIO } from '../../../infrastructure/socket';
 
 export class UpdateApplicationStatusUseCase implements IUpdateEntityStatusUseCase<
@@ -87,19 +88,20 @@ export class UpdateApplicationStatusUseCase implements IUpdateEntityStatusUseCas
 
     const notificationData: Partial<Notification> = {
       userId: application.candidateId,
-      type: NotificationType.APPLICATION_SHORTLISTED,
-      message: notificationMessages[NotificationType.APPLICATION_SHORTLISTED]({
+      type: NotificationType.APPLICATION_STATUS_UPDATED,
+      message: notificationMessages[NotificationType.APPLICATION_STATUS_UPDATED]({
+        status:status,
         companyName: company.companyName,
 
         jobTitle: job.title,
       }),
-      title: 'Application Shortlisted',
+      title:notificationTitleTypes.APP_STATUS_UPDATED(status) ,
     };
-    await this._notifictionService.create(notificationData);
+  const newNotification= await this._notifictionService.create(notificationData);
   //  console.log('updated', updated);
 
 
-    getIO().to(application.candidateId).emit('notification', notificationData);
+    getIO().to(application.candidateId).emit('notification', newNotification);
     return updated;
   }
 }

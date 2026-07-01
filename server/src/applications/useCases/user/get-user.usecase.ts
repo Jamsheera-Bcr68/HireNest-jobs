@@ -25,19 +25,19 @@ export class GetUserUseCase implements IGetUserUseCase {
     const user = await this._userRepository.findById(userId);
     if (!user || user.role !== role)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    console.log('user from getuser ', user);
+   // console.log('user from getuser ', user);
     let company: Company | null = null;
     if (user.isRequested) {
-      console.log('use is requested');
+   //   console.log('use is requested');
 
       company = await this._companyRepository.findByUserId(userId);
       
     }
 
-    console.log(
-      'company to client',
-      UserMapper.toUserProfileDto(user, company)
-    );
+   // console.log(
+    //   'company to client',
+    //   UserMapper.toUserProfileDto(user, company)
+    // );
 
     return UserMapper.toUserProfileDto(user, company);
   }

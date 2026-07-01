@@ -27,7 +27,7 @@ export class ChangeLogoUseCase implements IChangeLogogUseCase {
     file: UploadFileDto
   ): Promise<Company> {
     const company = await this.companyRepository.findOne({ userId: userId });
-    console.log('company by userId', company);
+  //  console.log('company by userId', company);
 
     if (!company || !company.id)
       throw new AppError(

@@ -18,7 +18,7 @@ export class ImageStorageService implements IFileStorageService {
     await fs.mkdir(uploadDir, { recursive: true });
 
     const fileExtension = 'jpg';
-    console.log('file.original name', file.originalName);
+   // console.log('file.original name', file.originalName);
 
     const fileName = `${randomUUID()}.${fileExtension}`;
     //console.log('file.extension name', fileExtension);
@@ -30,9 +30,9 @@ export class ImageStorageService implements IFileStorageService {
   async removeFile(fileName: string) {
     const filePath = path.join(process.cwd(), 'public', fileName);
     try {
-      console.log('removeing file path');
+    //  console.log('removeing file path');
       fs.unlink(filePath);
-      console.log('file remoeved successfully');
+   //   console.log('file remoeved successfully');
     } catch (error: any) {
       if (error.code === 'ENOENT') {
         throw new AppError(

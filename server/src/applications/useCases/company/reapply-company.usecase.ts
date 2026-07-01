@@ -26,7 +26,7 @@ export class ReApplyCompanyUsecase implements IReApplyCompanyUsecase {
 
   async execute(payload: Partial<Company>, userId: string): Promise<void> {
     const company = await this._comapnyRepository.findByUserId(userId);
- console.log('payload fromupdatae ompay',payload);
+// console.log('payload fromupdatae ompay',payload);
     if (!company || !company.id)
       throw new AppError(
         generalMessages.errors.NOT_FOUND('Company'),
@@ -51,7 +51,7 @@ export class ReApplyCompanyUsecase implements IReApplyCompanyUsecase {
         },
       ],
     };
- console.log('updated fromupdatae usecase',updated);
+ //console.log('updated fromupdatae usecase',updated);
     await this._comapnyRepository.save(company.id, updated);
 
     const admin = await this._adminRepository.findOne({ role: UserRole.ADMIN });

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MessageSquare, MessageSquareDashed } from 'lucide-react';
 import {
   Home,
   PlusIcon,
@@ -16,6 +17,7 @@ const navItems = [
   'My Jobs',
   'Profile',
   'Skill Requests',
+  'Messages',
   'Settings',
 ];
 const navRoutes: Record<string, string> = {
@@ -26,6 +28,7 @@ const navRoutes: Record<string, string> = {
   'My Jobs': '/company/jobs',
   Profile: '/company/profile',
   'Skill Requests': '/company/skills',
+  Messages:'/company/messages'
 };
 const navIcons = [
   '⊞',
@@ -35,6 +38,8 @@ const navIcons = [
   '🔖',
   '👤',
   <LightbulbIcon />,
+  
+<MessageSquare/>,
   '⚙️',
   <Home />,
 ];

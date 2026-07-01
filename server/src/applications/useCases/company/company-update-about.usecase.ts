@@ -20,7 +20,7 @@ export class CompanyAboutUpdateUseCase implements ICompanyAboutUpdateUseCase {
         statusCodes.NOTFOUND
       );
     }
-    console.log('data from UseCase', data);
+  //  console.log('data from UseCase', data);
 
     const entity = await this.companyRepository.save(company.id, {
       ...data,

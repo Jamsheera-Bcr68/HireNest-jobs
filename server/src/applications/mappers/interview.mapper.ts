@@ -9,7 +9,7 @@ import { Job } from '../../domain/entities/job.entity';
 import { User } from '../../domain/entities/user.entity';
 import { Company } from '../../domain/entities/company.entity';
 export class InterviewMapper {
-  static toInterviewDto(data: AggregatedInterviewDto): interviewDto {
+  static toInterviewDto(data: AggregatedInterviewDto,chatroomId?:string): interviewDto {
     return {
       id: data.id,
       name: data.name,
@@ -20,8 +20,11 @@ export class InterviewMapper {
       status: data.status,
       company: data.company,
       isRescheduleRequested: data.isRescheduleRequested,
+      chatroomId:chatroomId,
       companyLogo: data.companyLogo,
       isConfirmed: data.isConfirmed,
+      candidateId:data.candidateId,
+      companyId:data.companyId,
       scheduledAt: getDateAndTime(data.scheduledAt),
     };
   }
@@ -43,6 +46,8 @@ export class InterviewMapper {
       createdAt: new Date(data.createdAt).toDateString(),
       status: data.status,
       isConfirmed: data.isConfirmed,
+      candidateId:data.candidateId,
+      companyId:data.companyId,
       isRescheduleRequested: data.isRescheduleRequested,
       scheduledAt: getDateAndTime(data.scheduledAt),
     };

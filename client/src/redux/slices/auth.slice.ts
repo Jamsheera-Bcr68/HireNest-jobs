@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { AuthState } from '../constants/types/user';
-import { type userDto } from '../types/dtos/profile-types/user.types';
+import type { AuthState } from '../../constants/types/user';
+import { type userDto } from '../../types/dtos/profile-types/user.types';
 
 const savedUser = localStorage.getItem('user');
 const token = localStorage.getItem('accessToken');

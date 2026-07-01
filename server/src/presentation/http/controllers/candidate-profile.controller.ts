@@ -115,9 +115,9 @@ export class CandidateProfileController {
   });
 
   getUser = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from get user');
+   // console.log('from get user');
     const userData = req.user;
-    console.log(userData);
+ //   console.log(userData);
 
     //console.log('user from token ', userData);
 
@@ -131,7 +131,7 @@ export class CandidateProfileController {
       userData.userId,
       userData.role
     );
-    console.log('user is ', user);
+   // console.log('user is ', user);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -285,7 +285,7 @@ export class CandidateProfileController {
   });
 
   addExperience = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from add experience controller');
+   // console.log('from add experience controller');
     const user = req.user;
 
     if (!user || !user.userId || !user.role)
@@ -300,7 +300,7 @@ export class CandidateProfileController {
       user.role,
       payload
     );
-    console.log('added experience form controller', updated);
+   // console.log('added experience form controller', updated);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EXPERIENCE_ADDED,
@@ -309,7 +309,7 @@ export class CandidateProfileController {
   });
 
   editExperience = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from edit experience controller');
+   // console.log('from edit experience controller');
     const user = req.user;
 
     if (!user || !user.userId || !user.role)
@@ -333,7 +333,7 @@ export class CandidateProfileController {
       payload
     );
 
-    console.log('edited experience form controller', updated);
+    //console.log('edited experience form controller', updated);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EXPERIENCE_UPDATED,
@@ -342,7 +342,7 @@ export class CandidateProfileController {
   });
 
   removeExperience = asyncHandler(async (req: Request, res: Response) => {
-    console.log('remove experience');
+   // console.log('remove experience');
     const user = req.user;
 
     if (!user || !user.userId || !user.role)
@@ -364,7 +364,7 @@ export class CandidateProfileController {
       experienceId
     );
 
-    console.log('remove experience form controller', updated);
+   // console.log('remove experience form controller', updated);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EXPEIENCE_REMOVED,
@@ -382,7 +382,7 @@ export class CandidateProfileController {
         statusCodes.UNAUTHERIZED
       );
     const education = ProfileDataMapper.toEducationDto(payload);
-    console.log('education from controller', education);
+   // console.log('education from controller', education);
 
     const updatedUser = await this._addEducationUseCase.excecute(
       education,
@@ -413,7 +413,7 @@ export class CandidateProfileController {
         statusCodes.UNAUTHERIZED
       );
     const education = ProfileDataMapper.toEducationDto(payload);
-    console.log('education from controller', education);
+   // console.log('education from controller', education);
 
     const updatedUser = await this._editEducationUseCase.execute(
       education,
@@ -457,7 +457,7 @@ export class CandidateProfileController {
   });
 
   addResume = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from upload resume controller');
+   // console.log('from upload resume controller');
     const user = req.user;
 
     if (!user || !user.userId || !user.role)

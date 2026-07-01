@@ -30,7 +30,7 @@ export class UserController {
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
     const { companyId } = req.params;
-    console.log('from usercontroller,compnay id is', companyId);
+   // console.log('from usercontroller,compnay id is', companyId);
 
     if (!companyId)
       throw new AppError(

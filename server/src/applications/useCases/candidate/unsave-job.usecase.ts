@@ -37,6 +37,6 @@ export class RemoveSavedJobUseCase implements IRemoveSavedJobUseCase {
     if (!updated) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
-    console.log('updated', updated.savedJobs);
+ //   console.log('updated', updated.savedJobs);
   }
 }

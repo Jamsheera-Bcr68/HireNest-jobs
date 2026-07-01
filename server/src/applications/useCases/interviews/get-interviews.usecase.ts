@@ -9,6 +9,8 @@ import { AppError } from '../../../domain/errors/app-error';
 import { InterviewMapper } from '../../mappers/interview.mapper';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
+import { IChatroomRepository } from '../../../domain/repository-interfaces/chatroom.repository.interface';
+import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
 
 export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
   InterviewListDto,
@@ -17,7 +19,8 @@ export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
   constructor(
     private _interviewRepository: IInterviewRepository,
     private _companyRepository: ICompanyRepository,
-    private _userRepository: IUserRepository
+    private _userRepository: IUserRepository,
+    private _chatReposiory: IChatroomRepository
   ) {}
 
   async execute(
@@ -25,7 +28,7 @@ export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
     role: UserRole,
     userId: string
   ): Promise<InterviewListDto> {
-    console.log('filter from usecase', filter);
+  //  console.log('filter from usecase', filter);
 
     if (role === UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(userId);
@@ -48,8 +51,35 @@ export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
 
     const { interviews, totalDocs } =
       await this._interviewRepository.getAllInterviews(filter);
+    const chatAllowed: Array<InterviewStatusEnum> = [
+      InterviewStatusEnum.SCHEDULED,
+      InterviewStatusEnum.COMPLETED,
+    ];
+ 
+    const updatedInterviews = await Promise.all(
+      interviews.map(async (int) => {
+        if (chatAllowed.includes(int.status)) {
+          const chatroom = await this._chatReposiory.findOne({
+            companyId: int.companyId,
+            candidateId: int.candidateId,
+          });
+
+          if (!chatroom)
+            throw new AppError(
+              generalMessages.errors.NOT_FOUND('Chatroom'),
+              statusCodes.NOTFOUND
+            );
+
+          return InterviewMapper.toInterviewDto(int, chatroom.id);
+        }
+
+        return InterviewMapper.toInterviewDto(int);
+      })
+    );
+
     return {
-      interviews: interviews.map((i) => InterviewMapper.toInterviewDto(i)),
+      interviews: updatedInterviews,
+
       totalDocs,
     };
   }

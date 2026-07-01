@@ -33,7 +33,7 @@ export class UpdateSkillStatusUseCase implements IUpdateEntityStatusUseCase<
     status: SkillStatus,
     reason?: string
   ): Promise<void> {
-    console.log('from usecase', id, userId, role, status, reason);
+ //   console.log('from usecase', id, userId, role, status, reason);
 
     const skill = await this._skillRepository.findById(id);
     if (!skill || !skill.id)

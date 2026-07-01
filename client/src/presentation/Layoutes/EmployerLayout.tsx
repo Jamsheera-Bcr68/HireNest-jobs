@@ -9,21 +9,19 @@ const menuItems = [
   { label: 'My Jobs', path: '/company/jobs' },
   { label: 'Profile', path: '/company/profile' },
   { label: 'Skill Requests', path: '/company/skills' },
-{ label: 'Interviews', path: '/company/interviews' },
-]
+  { label: 'Interviews', path: '/company/interviews' },
+  { label: 'Messages', path: '/company/messages' },
+];
 
 export const EmployerLayout = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-  let activeItem = menuItems.find((item) =>
-    currentPath.startsWith(item.path)
-  );
+  let activeItem = menuItems.find((item) => currentPath.startsWith(item.path));
   console.log('currentPath,activeItem', currentPath, activeItem);
 
-
-if (!activeItem && currentPath.startsWith('/company/applications')) {
-  activeItem = menuItems.find((item) => item.path === '/company/jobs');
-}
+  if (!activeItem && currentPath.startsWith('/company/applications')) {
+    activeItem = menuItems.find((item) => item.path === '/company/jobs');
+  }
 
   const [isSidebarOpen, setsidebarOpen] = useState(true);
   const [title, seTitle] = useState(activeItem || 'Dashboard');

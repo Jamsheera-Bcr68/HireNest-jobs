@@ -32,7 +32,7 @@ export const resetPasswordValidator = (
   next: NextFunction
 ) => {
   const result = resetPasswordSchema.safeParse(req.body);
-  console.log('result from  resetvalidator', result);
+ // console.log('result from  resetvalidator', result);
   if (!result.success) {
     next(result.error);
   } else next();

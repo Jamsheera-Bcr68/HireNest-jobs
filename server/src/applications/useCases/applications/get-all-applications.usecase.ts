@@ -30,7 +30,7 @@ export class GetAllApplicationsUsecase implements IGetAllEntitiesUsecase<
   ): Promise<ApplicationListDto> {
     const { applications, totalDocs } =
       await this._applicationRepository.getAllApplications(filter);
-    console.log('applications from usecase', applications, totalDocs);
+   // console.log('applications from usecase', applications, totalDocs);
 const appDtos=applications.map((a:AggregatedApplication)=>ApplicationMapper.toApplicationDto(a))
    
 //    const appDtos = await Promise.all(

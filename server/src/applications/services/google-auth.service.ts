@@ -7,7 +7,7 @@ import { IGoogleAuthDto } from '../dtos/login.dto';
 export class GoogleAuthService implements IGoogleAuthServices {
   constructor() {}
   async getUserInfo(token: string): Promise<IGoogleAuthDto> {
-    console.log('from google auth service , token ', token);
+   // console.log('from google auth service , token ', token);
     const response = await fetch(
       'https://www.googleapis.com/oauth2/v3/userinfo',
       {

@@ -12,7 +12,7 @@ export class GetCompanyUseCase implements IGetCompanyUseCase {
   constructor(private companyRepository: ICompanyRepository) {}
   async execute(userId: string): Promise<Company> {
     const company = await this.companyRepository.findByUserId(userId);
-    console.log('companyUserId', userId);
+   // console.log('companyUserId', userId);
 
     if (!company)
       throw new AppError(

@@ -320,7 +320,7 @@ export class UserRepository
       _id: new mongoose.Types.ObjectId(),
       ...data,
     };
-    console.log('resume', resume);
+   // console.log('resume', resume);
 
     const doc = await this._model.findByIdAndUpdate(
       userId,
@@ -329,12 +329,12 @@ export class UserRepository
     );
 
     if (!doc) return null;
-    console.log('return rsume', this.mapToRsumeEntity(resume));
+    //console.log('return rsume', this.mapToRsumeEntity(resume));
 
     return this.mapToRsumeEntity(resume);
   }
   private mapToRsumeEntity(doc: ResumeDocument): IResume {
-    console.log('doc', doc);
+ //   console.log('doc', doc);
 
     return {
       id: doc._id.toString(),
@@ -405,10 +405,10 @@ export class UserRepository
       createdAt: { $gte: startOfMonth },
       role: UserRole.CANDIDATE,
     });
-    console.log(status);
+    //console.log(status);
     status.new = newDocCount;
     status.totalCandidate = total;
-    console.log('new dod', newDocCount);
+   // console.log('new dod', newDocCount);
 
     return status;
   }
@@ -420,7 +420,7 @@ export class UserRepository
     search?: string,
     education?: string
   ): Promise<PaginatedEntities<User>> {
-    console.log('filter', filter);
+  //  console.log('filter', filter);
     const skip = limit * (page - 1);
     const query: any = { ...filter };
 
@@ -460,7 +460,7 @@ export class UserRepository
       .skip(skip)
       .limit(Number(limit));
     let totalDocs = (await this._model.aggregate(pipeline)).length;
-    console.log('candidatesss', candidates);
+   // console.log('candidatesss', candidates);
 
     return {
       entities: candidates.map((doc) => this.mapToCandidateList(doc)),

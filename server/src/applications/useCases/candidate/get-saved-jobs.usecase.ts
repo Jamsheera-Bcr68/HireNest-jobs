@@ -35,7 +35,7 @@ export class GetSavedJobUseCase implements IGetSavedJobsUseCase {
     search?: { job: string; location: string },
     sortBy?: string
   ): Promise<JobListDto> {
-    console.log('filter from usecase', filter);
+  //  console.log('filter from usecase', filter);
     const user = await this.userRepository.findById(userId);
     if (!user || !user.id)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);

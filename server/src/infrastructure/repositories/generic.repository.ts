@@ -12,11 +12,11 @@ export abstract class GenericRepository<
   }
 
   async create(data: Partial<T>): Promise<T> {
-    console.log('before maptperistance ', data);
-    console.log('after maptperistance ', this.mapToPersistance(data));
+//    console.log('before maptperistance ', data);
+ //   console.log('after maptperistance ', this.mapToPersistance(data));
 
     const doc = await this._model.create(this.mapToPersistance(data));
-    console.log('company doc', doc);
+ //   console.log('company doc', doc);
 
     return this.mapToEntity(doc);
   }
@@ -37,7 +37,7 @@ export abstract class GenericRepository<
   async save(id: string, data: Partial<T>): Promise<T | null> {
     // console.log('entity from generic  repo ', data);
     const persisted = this.mapToPersistance(data);
-    console.log('persisted ', persisted);
+  //  console.log('persisted ', persisted);
 
     const updated = await this._model.findByIdAndUpdate(
       id,
@@ -58,7 +58,7 @@ export abstract class GenericRepository<
   }
 
   async getAll(filter: Partial<T>): Promise<T[] | []> {
-    console.log('persistant filter filter', this.mapToPersistance(filter));
+   // console.log('persistant filter filter', this.mapToPersistance(filter));
 
     const docs = await this._model
       .find(this.mapToPersistance(filter))

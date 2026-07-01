@@ -8,7 +8,7 @@ import {
 } from '../../../applications/interfaces/services/token.service';
 import { TokenExpiredError } from 'jsonwebtoken';
 
-//import '../../../types/express/index'
+
 
 export function authValidator(tokenService: ITokenService) {
   //console.log('from auth validator ');
@@ -29,7 +29,7 @@ export function authValidator(tokenService: ITokenService) {
         statusCodes.UNAUTHERIZED
       );
     try {
-       console.log('token is ', token);
+    
 
       const user: TokenPayload = tokenService.verifyAccessToken(token);
       // console.log('user from validator', user);

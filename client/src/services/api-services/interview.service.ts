@@ -11,7 +11,7 @@ import type {
 
 export const interviewService = {
   async scheduleInterview(data: interviewFormType, applicationId: string) {
-    console.log('data from service', data, applicationId);
+    //console.log('data from service', data, applicationId);
 
     const res = await axiosInstance.post(API_ENDPOINTS.INTERVIEWS, {
       ...data,
@@ -21,7 +21,7 @@ export const interviewService = {
   },
 
   async updateInterview(data: interviewFormType, interviewId: string) {
-    console.log('data from service', data, interviewId);
+   // console.log('data from service', data, interviewId);
 
     const res = await axiosInstance.put(API_ENDPOINTS.INTERVIEW(interviewId), {
       ...data,
@@ -35,7 +35,7 @@ export const interviewService = {
   },
 
   async getInterviews(filter?: Partial<InterviewFilter>, page = 1, limit = 5) {
-    console.log('intervews filter form sercice', filter);
+   // console.log('intervews filter form sercice', filter);
 
     const res = await axiosInstance.get(API_ENDPOINTS.INTERVIEWS, {
       params: { ...filter, page, limit },
@@ -44,7 +44,7 @@ export const interviewService = {
   },
 
   async updateStaus(id: string, status: InterviewStatusType, reason?: string) {
-    console.log('status from service', status, reason);
+   // console.log('status from service', status, reason);
 
     const res = await axiosInstance.patch(API_ENDPOINTS.INTERVIEW_STATUS(id), {
       status,
@@ -54,7 +54,7 @@ export const interviewService = {
   },
 
   async updateFiled(id: string, data: Partial<InterviewDto>) {
-    console.log('date from service', data);
+  //  console.log('date from service', data);
     const { scheduledAt, ...rest } = data;
 
     const res = await axiosInstance.patch(API_ENDPOINTS.INTERVIEW(id), {
@@ -66,7 +66,7 @@ export const interviewService = {
   },
 
   async updateResult(id: string, data: interviewFeedbackDto) {
-    console.log('date from update service', data);
+  //  console.log('date from update service', data);
 
     const res = await axiosInstance.patch(API_ENDPOINTS.UPDATE_RESULT(id), {
       data,
@@ -91,7 +91,7 @@ export const interviewService = {
   },
 
   async requestForReschdule(id: string, reason: string) {
-    console.log('from reschedule requwst,reason ', reason);
+   // console.log('from reschedule requwst,reason ', reason);
 
     const response = await axiosInstance.patch(
       API_ENDPOINTS.RESCHEDULE_REQUEST(id),

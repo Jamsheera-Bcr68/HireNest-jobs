@@ -40,7 +40,10 @@ export const API_END_POINTS = {
   REPORT_JOB: '/:jobId/reports',
   SAVE_JOB: '/:jobId/save',
   UNSAVE_JOB: '/:jobId/unsave',
-  JOB_APPLICATIONS:'/:jobId/applications'
+  JOB_APPLICATIONS:'/:jobId/applications',
+  CHATROOMS:'/',
+  CHATROOM_MESSAGES:'/:chatroomId/messages',
+  UNREAD_MESSAGE_COUNT:'/unread-count'
 };
 
 export const AUTH_END_POINTS = {

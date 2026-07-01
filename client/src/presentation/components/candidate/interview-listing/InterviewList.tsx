@@ -1,6 +1,8 @@
 import { CheckCheck } from 'lucide-react';
 import { type InterviewDto } from '../../../../types/dtos/interview.dto';
 import { to12Hour } from '../../../../utils/date-conversion';
+import { MessageCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   interviews: InterviewDto[];
@@ -15,6 +17,10 @@ export function CandidateInterviewList({
   onConfirmClick,
   onViewClick,
 }: Props) {
+  const navigate = useNavigate();
+  const onChatClick = (chatroomId?: string) => {
+    navigate('/candidate/messages', { state: { chatroomId } });
+  };
   return (
     <>
       {interviews.length === 0 ? (
@@ -103,7 +109,7 @@ export function CandidateInterviewList({
                   </div>
 
                   {/* ACTIONS */}
-                  <div className="flex items-center gap-2">
+                  {/* <div className="flex items-center gap-2">
                     <button
                       onClick={() => onViewClick(interview.id)}
                       className="text-xs border text-blue-600 border-blue-300 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition"
@@ -129,6 +135,51 @@ export function CandidateInterviewList({
                           Confirm
                         </button>
                       ))}
+                  </div> */}
+                  {/* ACTIONS */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => onViewClick(interview.id)}
+                      className="text-xs border text-blue-600 border-blue-300 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition"
+                    >
+                      View
+                    </button>
+
+                    {interview.status === 'scheduled' && (
+                      <>
+                        {/* Chat Button */}
+                        <button
+                          onClick={() => onChatClick(interview.chatroomId)}
+                          title="Chat with Compnay"
+                          className="relative flex items-center justify-center w-8 h-8 rounded-lg border border-gray-200 text-gray-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition"
+                        >
+                          <MessageCircle
+                            size={15}
+                            className="text-green-500 bold"
+                          />
+                          {/* optional unread dot - remove if not needed */}
+                          {/* <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" /> */}
+                        </button>
+
+                        {interview.isConfirmed ? (
+                          <span className="inline-flex items-center gap-1 text-xs bg-green-600 text-white px-3 py-1.5 rounded-lg">
+                            <CheckCheck size={14} />
+                            Confirmed
+                          </span>
+                        ) : interview.isRescheduleRequested ? (
+                          <span className="text-xs bg-amber-600 text-white px-3 py-1.5 rounded-lg">
+                            Requested for reschedule
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => onConfirmClick(interview.id)}
+                            className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition"
+                          >
+                            Confirm
+                          </button>
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

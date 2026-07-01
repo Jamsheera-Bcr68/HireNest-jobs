@@ -34,7 +34,7 @@ export class GetNewNotificationCountUsecase implements IGetNewNotificationCountU
   
    
     const unReadCount = await this._notificationRepository.count(targetedUserId);
-    console.log('not read count from usecase is ', unReadCount);
+  //  console.log('not read count from usecase is ', unReadCount);
 
     return unReadCount;
   }

@@ -10,6 +10,7 @@ const menuItems = [
   { label: 'Profile', path: '/candidate/profile' },
   { label: 'Applications', path: '/candidate/applications' },
   { label: 'Interviews', path: '/candidate/interviews' },
+  { label: 'Messages', path: '/candidate/messages' },
 ];
 
 export const CandidateLayout = () => {
@@ -50,7 +51,7 @@ export const CandidateLayout = () => {
 
         <div className="flex-1  bg-gray-100">
           <Header />
-          <div className="p-3">
+          <div className="p-3 h-full  'flex-1 overflow-hidden'">
             <Outlet />
           </div>
         </div>

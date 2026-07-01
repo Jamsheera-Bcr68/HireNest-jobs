@@ -6,7 +6,7 @@ import Header from '../../common/Header';
 import SearchBar from './SearchBar';
 import Filter from './Filter';
 import ToolBar from './ToolBar';
-import { updateUser } from '../../../../redux/auth-slice';
+import { updateUser } from '../../../../redux/slices/auth.slice';
 import {
   type JobCardDto,
   type JobDetailsDto,

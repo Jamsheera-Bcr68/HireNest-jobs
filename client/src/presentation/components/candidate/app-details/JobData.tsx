@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import type { StateType } from '../../../../constants/types/user';
 import { formatSalary } from '../../../../utils/salary-format';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../../../../redux/auth-slice';
+import { updateUser } from '../../../../redux/slices/auth.slice';
 import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;

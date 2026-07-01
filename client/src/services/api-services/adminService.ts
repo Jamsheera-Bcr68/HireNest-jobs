@@ -9,7 +9,7 @@ import { type StatusType } from '../../types/dtos/profile-types/user.types';
 
 export const adminService = {
   async getAllCompanies(filter: CompanyFilter, page: number, limit: number) {
-    console.log('filter ', filter);
+   // console.log('filter ', filter);
 
     const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.COMPANIES, {
       params: { ...filter, page, limit },
@@ -28,7 +28,7 @@ export const adminService = {
     data: Partial<CompanyProfileType>,
     reason?: string
   ) {
-    console.log('data', data, reason);
+   // console.log('data', data, reason);
 
     const res = await axiosInstance.patch(ADMIN_API_ENDPOINTS.COMPANY(id), {
       ...data,
@@ -48,7 +48,7 @@ export const adminService = {
   },
 
   async getCandidates(filter: CandidateFilter, page = 1, limit: number = 10) {
-    console.log('candidate filter', filter);
+   // console.log('candidate filter', filter);
 
     const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.CANDIDATES, {
       params: { ...filter, page, limit },
@@ -57,13 +57,13 @@ export const adminService = {
   },
 
   async updateCandidate(id: string, data: Partial<UserProfileType>) {
-    console.log('data', data);
+    //console.log('data', data);
 
     const res = await axiosInstance.patch(
       ADMIN_API_ENDPOINTS.CANDIDATE(id),
       data
     );
-    console.log('res.data', res.data);
+    //console.log('res.data', res.data);
 
     return res.data;
   },
@@ -74,7 +74,7 @@ export const adminService = {
   },
 
   async checkExist(url: string) {
-    console.log('url from admnservice', url);
+   // console.log('url from admnservice', url);
 
     const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.CHECK_EXIST_FILE, {
       params: { url },
@@ -93,7 +93,7 @@ export const adminService = {
     limit?: number,
     page: number = 1
   ) {
-    console.log('filter,', filter);
+   // console.log('filter,', filter);
 
     const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.JOBS, {
       params: { ...filter, sortBy, limit, page },
@@ -105,7 +105,7 @@ export const adminService = {
     payload: { status: StatusType; reason?: string },
     id: string
   ) {
-    console.log('paylodad', payload);
+  //  console.log('paylodad', payload);
     const data: {
       status: StatusType;
       reasonForRemove?: string;
@@ -124,7 +124,7 @@ export const adminService = {
     return res.data;
   },
   async getJobDetails(jobId:string) {
-    console.log('from getdetaild admin service',jobId);
+   /// console.log('from getdetaild admin service',jobId);
 
     const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.JOB_DETAILS(jobId));
     return res.data;

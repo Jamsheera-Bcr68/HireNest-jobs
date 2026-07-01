@@ -13,7 +13,7 @@ export class EmailService implements IEmailService {
     },
   });
   async sendOtp(email: string, otp: string): Promise<void> {
-    console.log('from email servives', email, otp);
+   // console.log('from email servives', email, otp);
 
     const info = await this.transporter.sendMail({
       from: `"HireNest" <${process.env.ADMIN_EMAIL}>`,

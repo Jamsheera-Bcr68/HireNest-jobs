@@ -11,6 +11,8 @@ import SkillPage from '../../presentation/pages/user/company/Skills';
 import ApplicationsPage from '../../presentation/pages/user/company/ApplicationsPage';
 import ApplicationDetailsPage from '../../presentation/pages/user/company/ApplicationDetails';
 import { COMPANY_ROUTES } from '../routes';
+import { ChatPage } from '../../presentation/pages/user/Chatpage';
+import Chat from '../../presentation/pages/user/Chat';
 
 import InterviewsPage from '../../presentation/pages/user/company/InterviewsPage';
 export const CompanyRoutes = () => {
@@ -30,6 +32,7 @@ export const CompanyRoutes = () => {
         <Route path={COMPANY_ROUTES.JOB_DETAILS}element={<JobDetails />} />
         <Route path={COMPANY_ROUTES.INTERVIEWS} element={<InterviewsPage />} />
         <Route path={COMPANY_ROUTES.PROFILE}element={<CompanyProfile />} />
+        <Route path={COMPANY_ROUTES.MESSAGES}element={<ChatPage />} />
       </Route>
     </Routes>
   );

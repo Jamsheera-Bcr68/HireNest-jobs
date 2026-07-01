@@ -18,7 +18,7 @@ export class AddSkillsToProfieUseCase implements IAddSkillToProfileUseCase {
     this._skillRepository = skillRepository;
   }
   async execute(id: string, skillId: string, role: UserRole): Promise<User> {
-    console.log('from add skill to profiel usercase');
+ //   console.log('from add skill to profiel usercase');
 
     const user = await this._userRepository.findById(id);
     if (!user || !user.id || user.role !== role)
@@ -44,7 +44,7 @@ export class AddSkillsToProfieUseCase implements IAddSkillToProfileUseCase {
     const updated = await this._userRepository.addSkill(user.id, skill.id);
     if (!updated)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    console.log('skill updated user for addskillusecase ', updated);
+  //  console.log('skill updated user for addskillusecase ', updated);
 
     return updated;
   }

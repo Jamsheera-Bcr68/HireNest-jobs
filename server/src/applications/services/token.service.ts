@@ -13,7 +13,7 @@ import { UserRole } from '../../domain/enums/user.enums';
 export class TokenService implements ITokenService {
   generateAccessToken(userId: string, email: string, role: UserRole): string {
     const token = getToken(userId, email, role);
-    console.log('from generate access', verifyAccessToken(token));
+   // console.log('from generate access', verifyAccessToken(token));
 
     //  console.log('token from token service ', token);
 

@@ -23,7 +23,7 @@ app.use(
 connectDB();
 
 app.get('/', (req, res) => {
-  console.log('env', env);
+ // console.log('env', env);
 
   res.send('I am from your new project');
 });

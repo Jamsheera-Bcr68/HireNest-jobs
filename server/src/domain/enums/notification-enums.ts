@@ -6,6 +6,7 @@ export enum NotificationType {
   INTERVIEW_RESCHEDULED = 'Interview Rescheduled',
   INTERVIEW_CANCELLED = 'Interview Cancelled',
   APPLICATION_APPROVED = 'Application Approved',
+  APPLICATION_STATUS_UPDATED = 'Application status Updated',
   APPLICATION_REJECTED = 'Application Rejected',
   SKILL_APPROVAL_REQUEST = 'Skill Request Recieved',
   SKILL_STATUS_UPDATED = 'Skill Status updated',

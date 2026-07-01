@@ -37,7 +37,7 @@ export class SaveJobUseCase implements ISaveJobUseCase {
       ...user,
       savedJobs: [...user.savedJobs, jobId],
     });
-    console.log('updated', updated);
+   // console.log('updated', updated);
     if (!updated) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }

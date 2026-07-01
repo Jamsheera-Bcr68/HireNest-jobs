@@ -65,7 +65,7 @@ export class CompanyMapper {
   static CompanyUpdateFiedTypeToCompanyDto(
     data: CompanyUpdateFiedType
   ): Partial<companyDto> {
-    console.log('data from mapper', data);
+   
 
     const dto: Partial<companyDto> = {};
 

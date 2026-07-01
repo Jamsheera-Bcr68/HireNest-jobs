@@ -12,10 +12,10 @@ export class ForgotPassWordController {
   }
 
   handle = asyncHandler(async (req: Request, res: Response) => {
-    console.log('form forgot password controller');
+   // console.log('form forgot password controller');
     const { email, role } = req.body;
 
-    console.log('email is ', email);
+   // console.log('email is ', email);
     await this._forgotPasswordUsecase.execute(email, role);
     return res.status(statusCodes.OK).json({
       success: true,

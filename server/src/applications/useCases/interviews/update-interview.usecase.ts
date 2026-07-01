@@ -43,7 +43,7 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
       );
     }
    
-    console.log('from usecaser,filter', id, data);
+ //   console.log('from usecaser,filter', id, data);
 
     const interview = await this._interviewRepository.findById(id);
     if (!interview)
@@ -96,9 +96,9 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
       userId: interview.candidateId,
     };
 
-    await this._notificationService.create(notificationData);
+   const newNotification= await this._notificationService.create(notificationData);
 
-    getIO().to(notificationData.userId).emit('notification', notificationData);
+    getIO().to(notificationData.userId).emit('notification', newNotification);
 
     return InterviewMapper.entityToInterviewDto(
       updated,

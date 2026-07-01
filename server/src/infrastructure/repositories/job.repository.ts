@@ -225,7 +225,7 @@ export class JobRepository
       const selectedRanges = salary
         .map((label) => salaryLookup[label.trim()])
         .filter(Boolean);
-      console.log('selecteed range 0-10000', selectedRanges);
+     // console.log('selecteed range 0-10000', selectedRanges);
 
       const salaryConditions = selectedRanges.map((range) => {
         if (!range.max_salary) {
@@ -354,7 +354,7 @@ export class JobRepository
 
     const jobs = result[0]?.data || [];
     const totalDocs = result[0]?.totalCount[0]?.count || 0;
-    console.log('jobs', jobs);
+  //  console.log('jobs', jobs);
 
     return {
       jobs: jobs.map(({ _id, id, ...job }) => ({
@@ -405,7 +405,7 @@ export class JobRepository
     const salaryLookup = Object.fromEntries(
       SalaryRange.map((range) => [range.label, range])
     );
-    console.log('salartlookup', salaryLookup);
+ //   console.log('salartlookup', salaryLookup);
     // status: StatusEnum.ACTIVE,
     const matchStage: any = {
       _id: { $in: objectIds },
@@ -419,7 +419,7 @@ export class JobRepository
       const selectedRanges = salary
         .map((label) => salaryLookup[label.trim()])
         .filter(Boolean);
-      console.log('selecteed range 0-10000', selectedRanges);
+ //     console.log('selecteed range 0-10000', selectedRanges);
 
       const salaryConditions = selectedRanges.map((range) => {
         if (!range.max_salary) {

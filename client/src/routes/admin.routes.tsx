@@ -14,7 +14,7 @@ import AppDetailsPage from '../presentation/pages/admin/AppDetailsPage.tsx';
 import InterviewsPage from '../presentation/pages/admin/InterviewsPage.tsx';
 import  { ADMIN_ROUTES } from './routes.ts';
 export const AdminRoutes = () => {
-  console.log('from amin route');
+ // console.log('from amin route');
 
   return (
     <Routes>

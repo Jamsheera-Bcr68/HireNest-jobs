@@ -15,7 +15,7 @@ export class AdminAuthController {
 
   login = asyncHandler(async (req: Request, res: Response) => {
     const payload: AdminloginInput = req.body;
-    console.log('from admin controller,role', req.body.role);
+  //  console.log('from admin controller,role', req.body.role);
 
     const { admin, refreshToken, accessToken } =
       await this._loginUsecase.execute(payload, UserRole.ADMIN);

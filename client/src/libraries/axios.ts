@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { store } from '../redux/store';
-import { logout, setAccessToken } from '../redux/auth-slice';
+import { logout, setAccessToken} from '../redux/slices/auth.slice'
 import { parseApiError } from '../utils/error-parsor';
 
 import { showGlobalToast } from '../utils/toast.service';
@@ -116,15 +116,15 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const res = await refreshAxios.post('/auth/refresh-token', {});
+       // const res = await refreshAxios.post('/auth/refresh-token', {});
 
-        const newAccessToken = res.data?.accessToken;
+        const newAccessToken =await handleRefreshTokenApi()
 
         if (!newAccessToken) {
           throw new Error('accessToken not in refresh response');
         }
 
-        store.dispatch(setAccessToken({ accessToken: newAccessToken }));
+        store.dispatch(setAccessToken({ accessToken: newAccessToken.toString() }));
 
         originalRequest.headers = {
           ...originalRequest.headers,
@@ -142,7 +142,6 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    // ✅ 3. Global error handling (THIS MUST BE BEFORE RETURN)
     const message = parseApiError(error);
 
     showGlobalToast({
@@ -153,5 +152,23 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export async function handleRefreshTokenApi() {
+  const res = await refreshAxios.post('/auth/refresh-token', {});
+
+  const newAccessToken = res.data?.accessToken;
+
+  if (!newAccessToken) {
+    throw new Error('accessToken not in refresh response');
+  }
+
+  store.dispatch(
+    setAccessToken({
+      accessToken: newAccessToken,
+    })
+  );
+
+  return newAccessToken;
+}
 
 export default axiosInstance;

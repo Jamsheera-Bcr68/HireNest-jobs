@@ -30,12 +30,12 @@ export const otpValidator = (
   next: NextFunction
 ) => {
   try {
-    console.log(req.body);
+   // console.log(req.body);
     otpSchema.parse(req.body);
 
     next();
   } catch (error) {
-    console.log(error);
+    //console.log(error);
 
     if (error instanceof ZodError) {
       const message = error.issues.map((err) => err.message).join('');
@@ -49,14 +49,14 @@ export const resendOtpValidator = (
   next: NextFunction
 ) => {
   try {
-    console.log('from resend otp validator');
+   // console.log('from resend otp validator');
 
-    console.log(req.body);
+  //  console.log(req.body);
     resendOtpSchema.parse(req.body);
 
     next();
   } catch (error) {
-    console.log(error);
+  //  console.log(error);
 
     if (error instanceof ZodError) {
       const message = error.issues.map((err) => err.message).join('');

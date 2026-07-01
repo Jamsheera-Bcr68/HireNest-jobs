@@ -6,7 +6,10 @@ import { generalMessages } from '../../../shared/constants/messages/general.mess
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { interviewInputDto, interviewDto } from '../../dtos/interview.dto';
 import { Interview } from '../../../domain/entities/interview.entity';
-import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
+import {
+  ApplicationStatusEnum,
+  InterviewStatusEnum,
+} from '../../../domain/enums/status.enum';
 import { INotificationService } from '../../services/notification.service';
 import { NotificationType } from '../../../domain/enums/notification-enums';
 import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
@@ -14,6 +17,8 @@ import { ICompanyRepository } from '../../../domain/repository-interfaces/compan
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { NotificationInputDto } from '../../dtos/notification.dto';
 import { getIO } from '../../../infrastructure/socket';
+import { IChatroomRepository } from '../../../domain/repository-interfaces/chatroom.repository.interface';
+import { ChatroomInputDto } from '../../dtos/chatroom.dto';
 
 export interface IScheduleInterviewUsecase {
   execute(data: interviewInputDto): Promise<string>;
@@ -25,7 +30,8 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
     private _interviewRepository: IInterviewRepository,
     private _notificationService: INotificationService,
     private _companyRepository: ICompanyRepository,
-    private _jobRepository: IJobRepository
+    private _jobRepository: IJobRepository,
+    private _chatroomRepository: IChatroomRepository
   ) {}
   async execute(data: interviewInputDto): Promise<string> {
     const { applicationId } = data;
@@ -68,6 +74,9 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
     const newInterview = await this._interviewRepository.create(
       doc as Partial<Interview>
     );
+    await this._applicationRepository.update(applicationId, {
+      status: ApplicationStatusEnum.INTERVIEW_SCHEDULED,
+    });
     const company = await this._companyRepository.findById(
       newInterview.companyId
     );
@@ -99,6 +108,19 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
     };
 
     // console.log('notification data',notificationData);
+    const chatroomExist = await this._chatroomRepository.findOne({
+      jobId: newInterview.jobId,
+      candidateId: newInterview.candidateId,
+    });
+    if (!chatroomExist) {
+      const chatroomData: ChatroomInputDto = {
+        companyId: newInterview.companyId,
+        candidateId: newInterview.candidateId,
+        jobId: newInterview.jobId,
+      };
+
+      await this._chatroomRepository.create(chatroomData);
+    }
 
     const notification =
       await this._notificationService.create(notificationData);

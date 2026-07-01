@@ -16,6 +16,8 @@ export const generalMessages = {
       `${item} ${action} Successfully`,
     NEW_NOTIFICATION_COUNT_FETCHED:
       'New Notification count fetched Successfully',
+    NEW_MESSAGES_COUNT_FETCHED:
+      'New messages count fetched Successfully',
       ENTITIES_FETCHED:(item:string)=>`${item} Fetched Successfully`,
       MARK_AS_READ:'Notification marked as read',
       NOTIFICATION_DELETED:'Notification deleted successfully',
@@ -33,6 +35,7 @@ export const generalMessages = {
     ALREADY_REQUESTED_RESCHEDULE: 'Allready Requested for Reschedule',
     ALREADY_CONFIRMED: 'This interview is already confirmed',
    COMPANY_ALREADY_EXIST:(field:string)=>`Company with same ${field} is already exist`,
-   REAPPLY_COUNT_LIMIT_EXEEDED:'You can only reapply for 3 times'
+   REAPPLY_COUNT_LIMIT_EXEEDED:'You can only reapply for 3 times',
+   FORBIDDEN:`You are not authorized to access this resource.`
   },
 };

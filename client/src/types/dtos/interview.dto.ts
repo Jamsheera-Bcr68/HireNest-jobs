@@ -23,6 +23,7 @@ export type InterviewDto = {
   result?: string;
   company: string;
   companyLogo: string;
+  chatroomId?:string
   isConfirmed: boolean;
   createdAt:string
   score?:number

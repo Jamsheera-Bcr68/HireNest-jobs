@@ -44,9 +44,9 @@ export class SkillsController {
   }
 
   getAllSkills = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from getAllskills controller');
+   // console.log('from getAllskills controller');
     const user = req.user;
-    console.log('user from skill controler', user);
+    //console.log('user from skill controler', user);
 
     if (!user) {
       throw new AppError(
@@ -55,7 +55,7 @@ export class SkillsController {
       );
     }
     const data = req.query;
-    console.log('query status', data);
+    //console.log('query status', data);
     let filter = {};
     let { limit, page, search, sortBy } = req.query;
     if (data.status && data.status !== 'all') {
@@ -82,9 +82,9 @@ export class SkillsController {
   });
 
   getAllRequestedSkills = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from get requested Allskills controller');
+  //  console.log('from get requested Allskills controller');
     const user = req.user;
-    console.log('requested from skill controler', user);
+   // console.log('requested from skill controler', user);
 
     if (!user) {
       throw new AppError(
@@ -93,7 +93,7 @@ export class SkillsController {
       );
     }
     const data = req.query;
-    console.log('query status', data);
+   // console.log('query status', data);
     let filter = {};
     let { limit, page, search, sortBy } = req.query;
     if (data.status && data.status !== 'all') {
@@ -120,11 +120,11 @@ export class SkillsController {
   });
 
   addSkill = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from skill create controller');
+ //   console.log('from skill create controller');
 
     const { skill } = req.body;
     const user = req.user;
-    console.log('user from skill controler', user);
+   // console.log('user from skill controler', user);
 
     if (!user) {
       throw new AppError(
@@ -142,7 +142,7 @@ export class SkillsController {
       user.userId,
       user.role
     );
-    console.log('created skill', newSkill);
+  //  console.log('created skill', newSkill);
 
     return res.status(statusCodes.CREATED).json({
       success: true,
@@ -190,7 +190,7 @@ export class SkillsController {
         statusCodes.BADREQUEST
       );
     const { status, reason } = req.body;
-    console.log('from skill status updata,staus,reason', status, reason);
+ //   console.log('from skill status updata,staus,reason', status, reason);
     await this._updateSkillStatusUsecase.execute(
       skillId,
       user.userId,
@@ -205,7 +205,7 @@ export class SkillsController {
   });
 
   updateSkill = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from update skill');
+   // console.log('from update skill');
     const user = req.user;
     const { skillId } = req.params;
 
@@ -220,7 +220,7 @@ export class SkillsController {
         statusCodes.NOTFOUND
       );
     const { skill } = req.body;
-    console.log('from update job', skillId, skill);
+  //  console.log('from update job', skillId, skill);
     await this._updateSkillUsecase.execute(
       skillId,
 

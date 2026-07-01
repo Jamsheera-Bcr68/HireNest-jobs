@@ -52,7 +52,7 @@ export class GetAllSkillsUseCase implements IGetAllSkillsUseCase {
     usedCount: number = 0,
     candidateCount: number = 0
   ): UserSkillDto {
-    console.log('skill map to dto', skill, usedCount);
+  //  console.log('skill map to dto', skill, usedCount);
 
     return { ...skill, usedCount, usedCandidateCount: candidateCount };
   }

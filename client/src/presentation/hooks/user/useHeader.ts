@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../../redux/auth-slice';
+import { logout } from '../../../redux/slices/auth.slice';
 import {type RootState } from '../../../redux/store';
 import { useToast } from '../../../shared/toast/use-toast';
 import { useSelector } from 'react-redux';

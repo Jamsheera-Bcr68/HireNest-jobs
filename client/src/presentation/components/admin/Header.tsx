@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import NotificationModal from '../common/Notifications';
 import { useNotifications } from '../../hooks/notifications';
-import { logout } from '../../../redux/auth-slice';
+import { logout } from '../../../redux/slices/auth.slice';
 
 import { authService } from '../../../services/api-services/authServices';
 import { useEffect, useState } from 'react';

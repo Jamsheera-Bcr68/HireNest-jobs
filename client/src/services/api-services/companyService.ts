@@ -25,7 +25,7 @@ export const companyService = {
   },
 
   async registerCompany(data: CompanyRegisterType) {
-    console.log('from services', data);
+  //  console.log('from services', data);
 
     const res = await axiosInstance.post(API_ENDPOINTS.COMPANY, data);
     return res.data;
@@ -89,14 +89,14 @@ export const companyService = {
   },
 
   async getCompanyDetails(id: string) {
-    console.log('company id', id);
+   // console.log('company id', id);
 
     const res = await axiosInstance.get(API_ENDPOINTS.COMPANY_DATA(id));
     return res.data;
   },
 
   async updateCompany(data: CompanyRegisterType) {
-    console.log('from update services', data);
+    //console.log('from update services', data);
 
     const res = await axiosInstance.put(API_ENDPOINTS.COMPANY, data);
     return res.data;

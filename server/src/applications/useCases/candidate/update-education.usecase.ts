@@ -70,7 +70,7 @@ export class EditEducationUseCase implements IEditEducationUseCase {
     );
 
     if (!education || !education.id) {
-      console.log('edu id', eduId);
+    //  console.log('edu id', eduId);
 
       throw new AppError(
         userMessages.error.EDUCATION_NOTFOUND,
@@ -79,7 +79,7 @@ export class EditEducationUseCase implements IEditEducationUseCase {
     }
     const updatedUser = await this._userRepository.findById(userId);
 
-    console.log('updated user from add education', updatedUser, userId);
+   // console.log('updated user from add education', updatedUser, userId);
     if (!updatedUser)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     return updatedUser;

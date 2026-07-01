@@ -46,7 +46,7 @@ export class AuthController {
 
   verifyOtp = asyncHandler(async (req: Request, res: Response) => {
     const payload = req.body;
-    console.log('from auth  controller verify otp');
+  //  console.log('from auth  controller verify otp');
 
     await this._verifyOtpService.execute(payload.email, payload.otp);
 
@@ -57,7 +57,7 @@ export class AuthController {
 
   resendOtp = asyncHandler(async (req: Request, res: Response) => {
     const { email } = req.body;
-    console.log('from auth controller email is ', email);
+  //  console.log('from auth controller email is ', email);
 
     const otp_expiry = await this._sendOtpService.execute(email);
 
@@ -101,7 +101,7 @@ export class AuthController {
   });
 
   logout = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from logout controller');
+  //  console.log('from logout controller');
 
     this._logoutUsecase.execute(req, res);
     return res

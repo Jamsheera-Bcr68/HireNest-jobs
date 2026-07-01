@@ -27,7 +27,7 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
     search?: { job: string; location: string },
     sortBy?: string
   ): Promise<JobListDto> {
-    console.log('filter from usecase', filter);
+ //  console.log('filter from usecase', filter);
 
     await this.jobRepository.handleExpiredJobs()
 

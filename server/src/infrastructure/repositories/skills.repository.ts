@@ -22,14 +22,14 @@ export class SkillRepository
     sortBy?: string
   ): Promise<Skill[]> {
     limit = limit ?? 10;
-    console.log(
-      'filter,limit,page,search,sortBy',
-      filter,
-      limit,
-      page,
-      search,
-      sortBy
-    );
+  //  console.log(
+    //   'filter,limit,page,search,sortBy',
+    //   filter,
+    //   limit,
+    //   page,
+    //   search,
+    //   sortBy
+    // );
 
     const skip = limit * (page - 1);
     const matchStage: any = {};
@@ -85,7 +85,7 @@ export class SkillRepository
     return docs.map((doc) => this.mapToEntity(doc));
   }
   protected mapToPersistance(entity: Partial<Skill>): Partial<ISkillDocument> {
-    console.log('from map to entity skill');
+  //  console.log('from map to entity skill');
     const data = {} as Partial<ISkillDocument>;
     if (entity.skillName) data.skillName = entity.skillName;
     if (entity.createdAt) data.createdAt = new Date(entity.createdAt);

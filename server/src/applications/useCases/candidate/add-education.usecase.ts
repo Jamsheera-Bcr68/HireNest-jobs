@@ -70,7 +70,7 @@ export class AddEducationUseCase implements IAddEducationUseCase {
       userId,
       education.id
     );
-    console.log('updated user from add education', updatedUser, userId);
+  //  console.log('updated user from add education', updatedUser, userId);
     if (!updatedUser)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     return updatedUser;

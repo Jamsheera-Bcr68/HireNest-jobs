@@ -96,7 +96,7 @@ export class ApplicationRepository
   async getAllApplications(
     filter: ApplicationFilterDto
   ): Promise<{ applications: AggregatedApplication[]; totalDocs: number }> {
-    console.log('filter', filter);
+   // console.log('filter', filter);
 
     const {
       jobId,
@@ -230,7 +230,7 @@ export class ApplicationRepository
     });
     const result = await this._model.aggregate(pipeline);
     const applications = result[0]?.applications ?? [];
-    console.log(`applications from repositry:`, applications);
+  //  console.log(`applications from repositry:`, applications);
 
     const totalDocs = result[0]?.totalDocs[0]?.count ?? 0;
 
@@ -261,11 +261,11 @@ export class ApplicationRepository
     if (filter.status) {
       q.status = filter.status;
     }
-    console.log('q is ', q);
+//    console.log('q is ', q);
 
     const count = await this._model.countDocuments(q);
 
-    console.log(`app count per job`, count);
+  //  console.log(`app count per job`, count);
 
     return count;
   }

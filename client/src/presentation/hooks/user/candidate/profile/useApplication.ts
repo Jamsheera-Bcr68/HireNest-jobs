@@ -4,7 +4,7 @@ import { useToast } from '../../../../../shared/toast/use-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { applicationService } from '../../../../../services/api-services/application.service';
 import { useDispatch } from 'react-redux';
-import { updateUser } from '../../../../../redux/auth-slice';
+import { updateUser } from '../../../../../redux/slices/auth.slice';
 import type { ApplicationStatusType } from '../../../../../types/dtos/application.dto';
 import { useState } from 'react';
 import { candidateService } from '../../../../../services/api-services/candidateService';

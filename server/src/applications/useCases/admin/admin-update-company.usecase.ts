@@ -32,7 +32,7 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     reason?: string
   ): Promise<Company> {
     const company = await this._companyRepository.findById(id);
-    console.log('reason', reason);
+   // console.log('reason', reason);
 
     if (!company || !company.id) {
       throw new AppError(
@@ -50,7 +50,7 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
       data.reasonForSuspend = reason;
     }
     if (company.reapplyCount && status == 'rejected') {
-      console.log('reapply details', company.reapplyDetails);
+     // console.log('reapply details', company.reapplyDetails);
 
       data.reapplyDetails = company.reapplyDetails.map((app) =>
         app.status == StatusEnum.PENDING
@@ -59,7 +59,7 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
       );
     }
     if (company.reapplyCount && status == 'active') {
-      console.log('reapply details', company.reapplyDetails);
+    //  console.log('reapply details', company.reapplyDetails);
 
       data.reapplyDetails = company.reapplyDetails.map((app) =>
         app.status == StatusEnum.PENDING

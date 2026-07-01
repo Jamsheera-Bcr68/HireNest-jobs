@@ -23,7 +23,7 @@ export const formatTimeForInput = (time: string) => {
 };
 
 export const formatDateForInput = (date: string | Date) => {
-  console.log('date  ,,', date);
+  //console.log('date  ,,', date);
 
   const d = new Date(date);
   return d.toISOString().split('T')[0];

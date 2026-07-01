@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { loginSchema } from '../../../libraries/validations/auth/login.validation';
 import { useNavigate } from 'react-router-dom';
 import type { UserRole } from '../../../constants/types/user';
-import { loginSuccess } from '../../../redux/auth-slice';
+import { loginSuccess } from '../../../redux/slices/auth.slice';
 import { useDispatch } from 'react-redux';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useLocation } from 'react-router-dom';

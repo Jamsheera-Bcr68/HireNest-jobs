@@ -36,20 +36,20 @@ export class AdminLoginUsecase implements IAdminLoginUsecase {
       admin.email,
       UserRole.ADMIN
     );
-    console.log(
-      'just after ccreatign access',
-      this._tokenService.verifyAccessToken(accessToken)
-    );
+    // console.log(
+    //   'just after ccreatign access',
+    //   this._tokenService.verifyAccessToken(accessToken)
+    // );
 
     const refreshToken = this._tokenService.generateRefreshToken(
       admin.id,
       admin.email,
       UserRole.ADMIN
     );
-    console.log(
-      'just after ccreatign refresj',
-      this._tokenService.verifyRefreshToken(refreshToken)
-    );
+    // console.log(
+    //   'just after ccreatign refresj',
+    //   this._tokenService.verifyRefreshToken(refreshToken)
+    // );
 
     return { admin, accessToken, refreshToken };
   }

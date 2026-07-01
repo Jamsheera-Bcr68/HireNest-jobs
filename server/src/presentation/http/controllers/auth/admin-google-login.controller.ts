@@ -15,7 +15,7 @@ export class AdminGoogleAuthController {
   handle = asyncHandler(async (req: Request, res: Response) => {
     const { token, role } = req.body;
 
-    console.log('token, role', token, role);
+   // console.log('token, role', token, role);
 
     const { admin, refreshToken, accessToken } =
       await this._adminGoogleAuthUsecase.execute(token, role);

@@ -3,7 +3,13 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import app from './app';
 import { setIo } from '../infrastructure/socket';
-
+import { socketAuthMiddlewere } from '../presentation/socket/middleweres/socket-auth.middlewere';
+import {
+  markAsChatroomMessagesRead,
+  presenceService,
+} from '../infrastructure/config/di';
+import { MarkAsReadUsecase } from '../applications/useCases/notifications/mark-as-read.usecase';
+import {} from '../infrastructure/config/di';
 const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
@@ -11,17 +17,24 @@ const io = new Server(httpServer, {
 });
 
 setIo(io);
+io.use(socketAuthMiddlewere);
 
 io.on('connection', (socket) => {
   console.log('User connected,id:', socket.id);
 
-  io.on('join', (userId: string) => {
-    socket.join(userId);
-    console.log(`${userId} joined the room`);
+  console.log('room contains', io.sockets.adapter.rooms);
+  const userId: string = socket.data.user.userId;
+  socket.join(userId);
+  console.log(`${userId} joined the room`);
+  presenceService.setOnline(userId);
+
+  socket.on('mark_as_read', async ({ chatroomId }) => {
+  const upDatedhatroomId=  await markAsChatroomMessagesRead.execute(chatroomId, userId);
   });
 
   socket.on('disconnect', () => {
-    console.log('sokent disconnected');
+    presenceService.setOffline(userId);
+    console.log('soket disconnected', userId);
   });
 });
 httpServer.listen(env.Port, () => {

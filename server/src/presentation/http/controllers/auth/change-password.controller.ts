@@ -19,7 +19,7 @@ export class ChangePasswordController {
       );
     }
     const { userId, email } = req.user;
-    console.log('userId,email', userId, email);
+  //  console.log('userId,email', userId, email);
     const payload: changePasswordInputDto = req.body;
 
     await this._changePasswordUsecase.execute(

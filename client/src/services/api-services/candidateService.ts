@@ -6,14 +6,14 @@ import type { ProfileFormType } from '../../libraries/validations/auth/candidate
 
 export const profileService = {
   async getProfile() {
-    console.log('from candidate servie');
+  //  console.log('from candidate servie');
     
     const res = await axiosInstance.get(CANDIDATE_API_ENDPOINTS.PROFILE);
     return res.data;
   },
 
   async addExperience(formData: AddExperienceFormData) {
-    console.log('from data from service', formData);
+   // console.log('from data from service', formData);
 
     const response = await axiosInstance.post(
       CANDIDATE_API_ENDPOINTS.ADD_EXPERIENCE,
@@ -23,7 +23,7 @@ export const profileService = {
   },
 
   async editExperience(formData: AddExperienceFormData, expId: string) {
-    console.log('from editing experience', formData);
+    //console.log('from editing experience', formData);
 
     const response = await axiosInstance.put(
       CANDIDATE_API_ENDPOINTS.UPDATE_EXPERIENCE(expId),
@@ -63,7 +63,7 @@ export const profileService = {
   },
 
   async addSkill(skillId: string) {
-    console.log('from candidate skillservice', skillId);
+   // console.log('from candidate skillservice', skillId);
 
     const res = await axiosInstance.post(
       CANDIDATE_API_ENDPOINTS.ADD_SKILL(skillId)

@@ -6,7 +6,7 @@ import {
   type DocumentType,
   type AddressType,
 } from '../../../../types/dtos/profile-types/industry.type';
-import { updateUser } from '../../../../redux/auth-slice';
+import { updateUser } from '../../../../redux/slices/auth.slice';
 
 import { useToast } from '../../../../shared/toast/use-toast';
 import { companyService } from '../../../../services/api-services/companyService';

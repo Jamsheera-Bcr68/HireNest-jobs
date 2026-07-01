@@ -89,7 +89,7 @@ export class AddSkillUseCase implements IAddSkillUseCase {
       userId: userId,
       createdAt: new Date(),
     };
-    console.log('new skill form usecase', newSkill);
+  //  console.log('new skill form usecase', newSkill);
 
     if (role === UserRole.COMPANY) {
       const admin = await this._adminRepository.findOne({

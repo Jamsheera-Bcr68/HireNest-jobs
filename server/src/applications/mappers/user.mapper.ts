@@ -20,7 +20,7 @@ export class UserMapper {
     return returnData;
   }
   static toUserProfileDto(user: User, company: Company | null): userProfileDto {
-    console.log('user befor converting user.isBlocked', user.isBlocked);
+  //  console.log('user befor converting user.isBlocked', user.isBlocked);
     let companyData: {
       status: StatusEnum;
       id: string;

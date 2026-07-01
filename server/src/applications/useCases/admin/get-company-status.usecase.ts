@@ -8,7 +8,7 @@ export class GetCompanyStatusUseCase implements IGetCompanyStatusUseCase {
   constructor(private companyRepository: ICompanyRepository) {}
   async execute(): Promise<CompanyStatus> {
     const status = await this.companyRepository.getStatus();
-    console.log('status', status);
+  //  console.log('status', status);
 
     return status;
   }

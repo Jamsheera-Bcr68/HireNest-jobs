@@ -22,5 +22,5 @@ export enum InterviewStatusEnum {
   SCHEDULED = 'scheduled',
   COMPLETED = 'completed',
   CANCELLED = 'cancelled',
-  NO_SHOw = 'not-show',
+  NO_SHOW = 'not-show',
 }

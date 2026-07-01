@@ -74,7 +74,7 @@ export class CompanyRepository
     } else if (sortBy == 'newest') {
       sortStage = { createdAt: -1 };
     } else sortStage = { createdAt: -1 };
-    console.log('sortstage', sortStage);
+   // console.log('sortstage', sortStage);
 
     const companies = await this._model
       .aggregate([
@@ -158,7 +158,7 @@ export class CompanyRepository
     entity: Partial<Company>
   ): Partial<ICompanyDocument> {
     const data: Partial<ICompanyDocument> = {};
-    console.log('from map to persistance', entity);
+  //  console.log('from map to persistance', entity);
 
     if (entity.companyName !== undefined) data.companyName = entity.companyName;
     if (entity.userId !== undefined)
@@ -199,7 +199,7 @@ export class CompanyRepository
     if (entity.size !== undefined) data.size = entity.size;
     if (entity.address !== undefined) data.address = entity.address;
     if (entity.document !== undefined) data.document = entity.document;
-    console.log('data after persisatnce', data);
+  //  console.log('data after persisatnce', data);
 
     return data;
   }
@@ -213,7 +213,7 @@ export class CompanyRepository
       statusDoc.map((doc) => [doc._id, doc.count])
     );
     status.totalCompany = total;
-    console.log('status', status);
+ //   console.log('status', status);
 
     return status;
   }

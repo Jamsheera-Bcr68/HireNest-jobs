@@ -27,7 +27,7 @@ export const jobService = {
     limit?: number,
     page: number = 1
   ) {
-    console.log('filter,', filter);
+  //  console.log('filter,', filter);
 
     const res = await axiosInstance.get(API_ENDPOINTS.JOB, {
       params: { ...filter, sortBy, limit, page },
@@ -54,7 +54,7 @@ export const jobService = {
 
   async reportJob(formData: ReportFormType) {
     const { jobId, ...data } = formData;
-    console.log('report form from service', jobId, data);
+   // console.log('report form from service', jobId, data);
     const res = await axiosInstance.post(
       CANDIDATE_API_ENDPOINTS.REPORT_JOB(jobId),
       data
@@ -63,13 +63,13 @@ export const jobService = {
   },
 
   async saveJob(id: string) {
-    console.log('from service', id);
+   // console.log('from service', id);
     const res = await axiosInstance.post(CANDIDATE_API_ENDPOINTS.SAVE_JOB(id));
     return res.data;
   },
 
   async unsaveJob(id: string) {
-    console.log('from service', id);
+ //   console.log('from service', id);
     const res = await axiosInstance.delete(
       CANDIDATE_API_ENDPOINTS.UNSAVE_JOB(id)
     );
@@ -85,7 +85,7 @@ export const jobService = {
     payload: { status: StatusType; lastDate?: string },
     id: string
   ) {
-    console.log('status', payload);
+//    console.log('status', payload);
     const res = await axiosInstance.patch(
       COMPANY_API_ENDPOINTS.UPDATE_JOBSTATUS(id),
       payload

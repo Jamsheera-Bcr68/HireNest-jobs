@@ -31,6 +31,6 @@ export class ReportJobUseCase implements IReportJobUseCase {
       isReported: true,
       reportDetails: [...job.reportDetails, { ...data, reportedBy: userId }],
     });
-    console.log('updated', updated);
+  //  console.log('updated', updated);
   }
 }

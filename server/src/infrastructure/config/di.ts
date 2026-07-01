@@ -89,6 +89,16 @@ import { MarkAsReadUsecase } from '../../applications/useCases/notifications/mar
 import { MarkAllNotificationsAsReadUsecase } from '../../applications/useCases/notifications/mark-all-as-read.usecase';
 import { DeleteNotificationUsecase } from '../../applications/useCases/notifications/delete-notification.usecase';
 import { ReApplyCompanyUsecase } from '../../applications/useCases/company/reapply-company.usecase';
+import { GetChatroomsUsecase } from '../../applications/useCases/chat/get-chatrooms.usecase';
+import { GetChatroomMessagesUsecase } from '../../applications/useCases/chat/get-chatroom-messages.usecase';
+import { SendMessageUsecase } from '../../applications/useCases/chat/send-message.usecase';
+import { GetUnreadMessageCountUsecase } from '../../applications/useCases/messages/get_unread_count.usecase';
+import { MarkChatroomMessagesAsReadUsecase } from '../../applications/useCases/chat/mark-chatmessagesAsRead.usecase';
+
+
+
+
+
 //==Controllers
 //auth
 
@@ -111,6 +121,8 @@ import { ApplicationController } from '../../presentation/http/controllers/appli
 import { InterviewController } from '../../presentation/http/controllers/interview.controller';
 import { AdminUserController } from '../../presentation/http/controllers/admin/admin-user.controller';
 import { AdminJobController } from '../../presentation/http/controllers/admin/admin-job.controller';
+import { ChatroomController } from '../../presentation/http/controllers/chatroom.controller';
+import { MessageController } from '../../presentation/http/controllers/message.controller';
 //==repsitories
 
 import { UserRepository } from '../repositories/user.repository';
@@ -124,6 +136,8 @@ import { JobRepository } from '../repositories/job.repository';
 import { ApplicationRepository } from '../repositories/application.repository';
 import { InterviewRepository } from '../repositories/interview.repository';
 import { NotificationRepository } from '../repositories/notification.repository';
+import { ChatroomRepository } from '../repositories/chatroom.repository';
+import { MessageRepository } from '../repositories/message.repository';
 //services
 
 import { OtpGenerator } from '../services/otp-generator.service';
@@ -135,6 +149,11 @@ import { GoogleAuthService } from '../../applications/services/google-auth.servi
 import { ImageStorageService } from '../services/image-storage.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { NotificationService } from '../../applications/services/notification.service';
+import { PresenceService } from '../services/presence.service';
+import { CompanyService } from '../../applications/services/company.service';
+
+
+
 
 //repositories
 const userRepository = new UserRepository();
@@ -149,6 +168,8 @@ const jobRepository = new JobRepository();
 const applicationRepository = new ApplicationRepository();
 const interviewRepository = new InterviewRepository();
 const notificationRepository = new NotificationRepository();
+const chatromRepository = new ChatroomRepository();
+const messageRepository = new MessageRepository();
 
 const emailService = new EmailService();
 const verifyOtpService = new VerifyOtpService(otpRepository, userRepository);
@@ -157,6 +178,8 @@ const googleAuthService = new GoogleAuthService();
 const imageStorageService = new ImageStorageService();
 const fileStorageServices = new FileStorageService();
 const notificatinService = new NotificationService(notificationRepository);
+export const presenceService=new PresenceService()
+export const companyService=new CompanyService(companyRepository)
 
 const registerUseCase = new RegisterUseCase(userRepository);
 const sendOtpService = new SendOtpService(
@@ -219,7 +242,7 @@ const editExperienceUseCase = new EditExperienceUseCase(
   experienceRepository
 );
 //user
-const getUserUserCase = new GetUserUseCase(userRepository,companyRepository);
+const getUserUserCase = new GetUserUseCase(userRepository, companyRepository);
 const editProfileImageUseCase = new EditProfileImageUseCase(
   userRepository,
   imageStorageService
@@ -260,7 +283,9 @@ const getAllSkillsUseCase = new GetAllSkillsUseCase(
 );
 const companyRegisterUseCase = new CompanyRegisterUseCase(
   companyRepository,
-  userRepository,adminRepository,notificatinService
+  userRepository,
+  adminRepository,
+  notificatinService
 );
 const addLogoUseCase = new AddLogoUseCase(imageStorageService);
 const addDocumentUseCase = new AddDocumentUseCase(fileStorageServices);
@@ -295,7 +320,9 @@ const getCompaniesUseCase = new GetCompaniesUseCase(companyRepository);
 const adminGetCompanyUseCase = new AdminGetCompanyUseCase(companyRepository);
 const adminUpdateCompanyUseCase = new AdminUpdateCompanyUseCase(
   companyRepository,
-  userRepository,notificatinService)
+  userRepository,
+  notificatinService
+);
 const getCompnayStatusUseCase = new GetCompanyStatusUseCase(companyRepository);
 const getCandidateStatusUseCase = new GetCandidateStatusUseCase(userRepository);
 const adminGetCandidatesUseCase = new AdminGetCandidateUseCase(
@@ -320,7 +347,8 @@ const getJobDetailsUseCase = new GetJobDetailsUseCase(
   jobRepository,
   companyRepository,
   skillRepository,
-  userRepository,applicationRepository
+  userRepository,
+  applicationRepository
 );
 const reportJobUseCase = new ReportJobUseCase(jobRepository);
 const saveJobUseCase = new SaveJobUseCase(jobRepository, userRepository);
@@ -372,7 +400,7 @@ const scheduleInterviewUsecase = new ScheduleInterviewUsecase(
   interviewRepository,
   notificatinService,
   companyRepository,
-  jobRepository
+  jobRepository,chatromRepository
 );
 const getInterviewStatusUsecase = new GetInterviewStatusUseCase(
   interviewRepository,
@@ -380,7 +408,9 @@ const getInterviewStatusUsecase = new GetInterviewStatusUseCase(
 );
 const updateInterviewStatusUsecase = new UpdateInterviewStatusUsecase(
   interviewRepository,
-  companyRepository,notificatinService,jobRepository
+  companyRepository,
+  notificatinService,
+  jobRepository
 );
 
 export const authController = new AuthController(
@@ -398,7 +428,8 @@ export const getSkillStatusUseCase = new GetSkillSatusUseCase(
 
 export const updateSkillStatusUsecase = new UpdateSkillStatusUseCase(
   skillRepository,
-  adminRepository,notificatinService
+  adminRepository,
+  notificatinService
 );
 const updateSkillUseCase = new UpdateSkillUsecase(
   skillRepository,
@@ -417,7 +448,8 @@ const getApplicationStatusUseCase = new GetApplicationStatusUseCase(
 const getAllApplications = new GetAllApplicationsUsecase(
   applicationRepository,
   jobRepository,
-  companyRepository,userRepository
+  companyRepository,
+  userRepository
 );
 const updateApplicationStatusUsecase = new UpdateApplicationStatusUseCase(
   applicationRepository,
@@ -428,7 +460,7 @@ const updateApplicationStatusUsecase = new UpdateApplicationStatusUseCase(
 const getInterviewsUsecase = new GetInterviewsUsecase(
   interviewRepository,
   companyRepository,
-  userRepository
+  userRepository,chatromRepository
 );
 const getInterviewDetailsUsecase = new GetInterviewDetailsUsecase(
   interviewRepository,
@@ -441,7 +473,8 @@ const updateInterviewUsecase = new UpdateInterviewUsecase(
   companyRepository,
 
   jobRepository,
-  userRepository,notificatinService
+  userRepository,
+  notificatinService
 );
 const upateInterviewResultUsecase = new UpdateInterviewResultUsecase(
   interviewRepository,
@@ -455,7 +488,10 @@ const confirmInterviewUsecase = new ConfirmInterviewUsecase(
   userRepository
 );
 const rescheduleInterviewUsecase = new RescheduleRequestUsecase(
-  interviewRepository,notificatinService,userRepository,jobRepository
+  interviewRepository,
+  notificatinService,
+  userRepository,
+  jobRepository
 );
 
 const getNewNotificationCountUsecase = new GetNewNotificationCountUsecase(
@@ -477,7 +513,22 @@ const deleteNotificationUsecase = new DeleteNotificationUsecase(
   notificationRepository,
   companyRepository
 );
-const reapplyUsecase=new ReApplyCompanyUsecase(companyRepository,adminRepository,notificatinService)
+const reapplyUsecase = new ReApplyCompanyUsecase(
+  companyRepository,
+  adminRepository,
+  notificatinService
+);
+const getChatroomsUsecase=new GetChatroomsUsecase(chatromRepository,companyRepository,presenceService)
+const getChatroomMessagesUsecase=new GetChatroomMessagesUsecase(messageRepository,chatromRepository,companyRepository)
+const sendMessageUsecase=new SendMessageUsecase(messageRepository,chatromRepository,companyRepository)
+const getUnreadMessageCountUsecase=new GetUnreadMessageCountUsecase(messageRepository,companyRepository)
+export const markAsChatroomMessagesRead=new MarkChatroomMessagesAsReadUsecase(messageRepository,chatromRepository)
+
+
+
+
+
+
 
 export const refreshController = new RefreshTokenController(tokenService);
 export const adminAuthController = new AdminAuthController(adminLoginUsecase);
@@ -566,7 +617,8 @@ export const adminJobcontroller = new AdminJobController(
 );
 export const userControlller = new UserController(
   getHomeDataUseCase,
-  getCompanyDataUsecase, reapplyUsecase
+  getCompanyDataUsecase,
+  reapplyUsecase
 );
 
 export const applicationController = new ApplicationController(
@@ -596,3 +648,6 @@ export const notificationController = new NotificationControlller(
   markAllAsReadUsecase,
   deleteNotificationUsecase
 );
+
+export const chatroomController=new ChatroomController(getChatroomsUsecase,getChatroomMessagesUsecase,sendMessageUsecase)
+export const messageController=new MessageController(getUnreadMessageCountUsecase)

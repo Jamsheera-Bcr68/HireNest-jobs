@@ -21,7 +21,7 @@ export class GetSkillSatusUseCase implements IGetEntitySatusUseCase<SkillStatusC
     let filter: Partial<Skill> = {};
     if (role == UserRole.COMPANY) {
       const company = await this.companyRepository.findByUserId(userId);
-      console.log('user is company', company);
+   //   console.log('user is company', company);
 
       if (!company || !company.id) {
         throw new AppError(

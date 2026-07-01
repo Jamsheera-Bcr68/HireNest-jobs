@@ -9,18 +9,22 @@ import { useEffect, useState } from 'react';
 import NotificationModal from './Notifications';
 import { useSelector, useDispatch } from 'react-redux';
 import { type RootState } from '../../../redux/store';
-
+import { addChatroom, setChatrooms } from '../../../redux/slices/chatroom.slice';
 import { setNotifications } from '../../../redux/slices/notification.slice';
+
+import { chatService } from '../../../services/api-services/chat.service';
 
 const Header = ({ title }: { title?: string }) => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
   const notifications = useSelector(
     (state: RootState) => state.notification.notifications
   );
+  const chatrooms = useSelector((state: RootState) => state.chatroom.chatrooms);
   const { getNotifications, markAsRead, markAllAsRead, deleteNotification } =
     useNotifications();
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notes, setNots] = useState<NotificationType[]>([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,14 +39,23 @@ const Header = ({ title }: { title?: string }) => {
     loadNotifications();
   }, []);
 
+  useEffect(() => {
+    const getChatrooms = async () => {
+      const data = await chatService.getConversations();
+      console.log('chatroms afrer getting chatroom',data)
+      dispatch(setChatrooms(data.chatrooms));
+    };
+
+    if (user) getChatrooms();
+  }, []);
+
   const count = notifications.filter((n) => n.isRead === false).length;
+  const unreadCount = chatrooms.reduce(
+    (acc, ch) => acc + ch.unreadCount,
+    0
+  );
 
-  // const fetchNotifications = async (tab: 'new' | 'all') => {
-  //   const not = await getNotifications(tab);
-  //   console.log('notifications', not);
-
-  //   setNotifications(not);
-  // };
+  
 
   const handleNotificationClick = () => {
     setNotificationOpen(true);
@@ -61,6 +74,13 @@ const Header = ({ title }: { title?: string }) => {
     else setNots(notifications.filter((n) => n.isRead === false));
   };
 
+  const handleMessageClick = () => {
+    if (user.role == 'company') {
+      navigate('/company/messages');
+    } else if (user.role === 'candidate') {
+      navigate('/candidate/messages');
+    }
+  };
   const deleteHandle = async (id: string) => {
     console.log('from delete notifivation', id);
 
@@ -170,7 +190,7 @@ const Header = ({ title }: { title?: string }) => {
               {user && user.role !== 'admin' && (
                 <div className="text-yellow-600 transition-colors duration-200 cursor-pointer">
                   <MessageSquareText
-                    onClick={handleNotificationClick}
+                    onClick={handleMessageClick}
                     size={20}
                     className="transition-transform duration-200 hover:scale-110"
                   />
@@ -178,9 +198,9 @@ const Header = ({ title }: { title?: string }) => {
               )}
 
               {/* Notification Badge */}
-              {count !== 0 && (
+              {unreadCount !== 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-semibold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
-                  {count}
+                  {unreadCount}
                 </span>
               )}
             </div>

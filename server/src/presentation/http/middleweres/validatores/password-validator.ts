@@ -9,12 +9,12 @@ export const changePasswordValidator = (
   next: NextFunction
 ) => {
   try {
-    console.log('from validator ', req.body);
+   // console.log('from validator ', req.body);
     changePasswordSchema.parse(req.body);
 
     next();
   } catch (error) {
-    console.log(error);
+   // console.log(error);
 
     if (error instanceof ZodError) {
       const message = error.issues.map((err) => err.message).join('');

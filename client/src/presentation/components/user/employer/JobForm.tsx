@@ -210,7 +210,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
   };
 
   const handleAddNewSkill = async () => {
-    console.log('user confirmed');
+    //console.log('user confirmed');
     try {
       if (!skill) {
         setAddSkill(false);

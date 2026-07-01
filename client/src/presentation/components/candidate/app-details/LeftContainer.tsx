@@ -4,7 +4,7 @@ import { formatSalary } from '../../../../utils/salary-format';
 import { Card, SectionTitle } from '../ReusableComponents';
 import { useDispatch } from 'react-redux';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
-import { updateUser } from '../../../../redux/auth-slice';
+import { updateUser } from '../../../../redux/slices/auth.slice';
 import { useToast } from '../../../../shared/toast/use-toast';
 import { useSelector } from 'react-redux';
 import {

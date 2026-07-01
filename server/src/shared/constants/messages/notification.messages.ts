@@ -1,6 +1,9 @@
 import { NotificationType } from '../../../domain/enums/notification-enums';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
-import { StatusEnum } from '../../../domain/enums/status.enum';
+import {
+  ApplicationStatusEnum,
+  StatusEnum,
+} from '../../../domain/enums/status.enum';
 
 export const notificationMessages = {
   [NotificationType.INTERVIEW_SCHEDULED]: (data: {
@@ -49,11 +52,12 @@ has been confirmed by ${data.name}.`,
   [NotificationType.JOB_APPLIED]: (data: { jobTitle: string }) =>
     `A new application recieved for the position of ${data.jobTitle}.`,
 
-  [NotificationType.APPLICATION_SHORTLISTED]: (data: {
+  [NotificationType.APPLICATION_STATUS_UPDATED]: (data: {
+    status: ApplicationStatusEnum;
     companyName: string;
     jobTitle: string;
   }) =>
-    `Your application for ${data.jobTitle} at ${data.companyName} has been shortlisted.`,
+    `Your application for ${data.jobTitle} at ${data.companyName} has been ${data.status}.`,
 
   [NotificationType.COMPANY_REVIEW_COMPLETED]: (data: {
     status: StatusEnum;
@@ -103,6 +107,6 @@ has been confirmed by ${data.name}.`,
     } else
       msg = `Your requested skill ${data.skillName} is ${data.status} by the admin for the reason ${data.reason}`;
 
-      return msg
+    return msg;
   },
 };

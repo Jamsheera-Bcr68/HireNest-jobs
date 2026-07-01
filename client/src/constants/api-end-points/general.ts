@@ -30,4 +30,7 @@ export const API_ENDPOINTS = {
   NOTIFICATIONS: `/notifications`,
   NOTIFICATIONS_COUNT: `/notifications/not-read-count`,
   NOTIFICATION:(id:string)=>`/notifications/${id}`,
+  CHATROOMS:'/chatrooms',
+  MESSAGES:(chatroomId:string)=>`/chatrooms/${chatroomId}/messages`,
+  UNREAD_MESSAGE_COUNT:'/messages/unread-count'
 };

@@ -98,11 +98,11 @@ export class AdminUserController {
 
   updateCompany = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
-    console.log(user);
+    //console.log(user);
     const { companyId } = req.params;
 
     const { reason, ...data } = req.body;
-    console.log('reason,data', reason, data);
+   // console.log('reason,data', reason, data);
 
     if (!user || user.role !== UserRole.ADMIN) {
       throw new AppError(
@@ -174,7 +174,7 @@ export class AdminUserController {
 
   getCandidates = asyncHandler(async (req: Request, res: Response) => {
     const filter = req.query;
-    console.log('filter', filter);
+  //  console.log('filter', filter);
 
     const user = req.user;
 
@@ -227,7 +227,7 @@ export class AdminUserController {
   getCandidate = asyncHandler(async (req: Request, res: Response) => {
     const { candidateId } = req.params;
     const user = req.user;
-    console.log('user,company id', user, candidateId);
+  //  console.log('user,company id', user, candidateId);
 
     if (!candidateId)
       throw new AppError(
@@ -251,7 +251,7 @@ export class AdminUserController {
   checkFileExist = asyncHandler(async (req: Request, res: Response) => {
     const { url } = req.query;
 
-    console.log('url', url);
+   // console.log('url', url);
     const user = req.user;
 
     if (!user || user.role !== UserRole.ADMIN) {
