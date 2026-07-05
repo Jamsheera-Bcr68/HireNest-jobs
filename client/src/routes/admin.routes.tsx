@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { AdminLayout } from '../presentation/Layoutes/AdminLayout';
-import Dashboard from '../presentation/pages/admin/Dashboard.tsx';
+
 import Companies from '../presentation/pages/admin/Companies.tsx';
 import Candidates from '../presentation/pages/admin/Candidates.tsx';
 import Jobs from '../presentation/pages/admin/Jobs.tsx';
@@ -12,24 +12,42 @@ import SkillsPage from '../presentation/pages/admin/Skills.tsx';
 import ApplicationsPage from '../presentation/pages/admin/ApplicationsPage.tsx';
 import AppDetailsPage from '../presentation/pages/admin/AppDetailsPage.tsx';
 import InterviewsPage from '../presentation/pages/admin/InterviewsPage.tsx';
-import  { ADMIN_ROUTES } from './routes.ts';
+import AdminDashboard1 from '../presentation/components/admin/dashboard/sample.tsx';
+import { ADMIN_ROUTES } from './routes.ts';
+import AdminDashboard from '../presentation/pages/admin/AdminDashboard.tsx';
+import AdminDashboard2 from '../presentation/components/admin/dashboard/Dashbord2.tsx';
 export const AdminRoutes = () => {
- // console.log('from amin route');
+
 
   return (
     <Routes>
       <Route path="/" element={<AdminLayout />}>
-        <Route index element={<Dashboard />} />
+        <Route index element={<AdminDashboard />} />
+        <Route path='/dash2' element={<AdminDashboard2 />} />
+        <Route path='/dash1' element={<AdminDashboard1 />} />
+
         <Route path={ADMIN_ROUTES.COMPANIES} element={<Companies />} />
-        <Route path={ADMIN_ROUTES.COMPANY_DETAILS}element={<CompanyDetails />} />
+        <Route
+          path={ADMIN_ROUTES.COMPANY_DETAILS}
+          element={<CompanyDetails />}
+        />
         <Route path={ADMIN_ROUTES.CANDIDATES} element={<Candidates />} />
         <Route path={ADMIN_ROUTES.JOBS} element={<Jobs />} />
         <Route path="/pendings" element={<Pendings />} />
-        <Route path={ADMIN_ROUTES.CANDIDATE_DETAILS} element={<CandidateDetails />} />
-        <Route path={ADMIN_ROUTES.JOB_DETAILS}element={<AdminJobDetails />} />
-        <Route path={ADMIN_ROUTES.SKILLS}element={<SkillsPage />} />
-        <Route path={ADMIN_ROUTES.APPLICATIONS}element={<ApplicationsPage />} />
-        <Route path={ADMIN_ROUTES.APPLICATION_DETAILS} element={<AppDetailsPage />} />
+        <Route
+          path={ADMIN_ROUTES.CANDIDATE_DETAILS}
+          element={<CandidateDetails />}
+        />
+        <Route path={ADMIN_ROUTES.JOB_DETAILS} element={<AdminJobDetails />} />
+        <Route path={ADMIN_ROUTES.SKILLS} element={<SkillsPage />} />
+        <Route
+          path={ADMIN_ROUTES.APPLICATIONS}
+          element={<ApplicationsPage />}
+        />
+        <Route
+          path={ADMIN_ROUTES.APPLICATION_DETAILS}
+          element={<AppDetailsPage />}
+        />
         <Route path={ADMIN_ROUTES.INTERVIEWS} element={<InterviewsPage />} />
       </Route>
     </Routes>

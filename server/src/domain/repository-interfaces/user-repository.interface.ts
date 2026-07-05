@@ -1,4 +1,8 @@
-import { CandidateStatus } from '../../applications/dtos/candidate.dto';
+import {
+  CandidateStatus,
+  UserFilter,
+} from '../../applications/dtos/candidate.dto';
+import { UserDistributionChartData } from '../../applications/types/admin-dashboard.types';
 import {
   CandidateFilterType,
   PaginatedCandidates,
@@ -63,5 +67,7 @@ export interface IUserRepository extends IBaseRepository<User> {
 
   saveJob(userId: string, jobId: string): Promise<User | null>;
 
-  getCountBySkill(skillId: string, role:UserRole): Promise<number>;
+  getCountBySkill(skillId: string, role: UserRole): Promise<number>;
+  getCountByFilter(data: UserFilter): Promise<number>;
+  getUserDistributionData():Promise<{_id:UserRole,count:number}[]>
 }

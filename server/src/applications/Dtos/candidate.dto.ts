@@ -18,3 +18,11 @@ export type CandidateStatus = {
   suspended?: number;
   new: number;
 };
+
+export interface UserFilter{
+  role?:UserRole,
+  
+    startDate?:Date,
+    endDate?:Date,
+  
+}

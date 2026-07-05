@@ -86,8 +86,8 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
       message: `${company.companyName} has registered and is awaiting approval.`,
     };
 
-    await this._notificationService.create(notificationData);
-    getIO().to(admin.id).emit('notification', notificationData);
+  const newNotification=  await this._notificationService.create(notificationData);
+    getIO().to(admin.id).emit('notification', newNotification);
     return company;
   }
 }

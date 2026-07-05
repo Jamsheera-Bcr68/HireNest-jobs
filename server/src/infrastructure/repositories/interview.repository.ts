@@ -10,6 +10,8 @@ import {
 import mongoose, { PipelineStage } from 'mongoose';
 import { duration } from 'zod/v4/classic/iso.cjs';
 import { InterviewFilterDto } from '../../applications/dtos/interview.dto';
+import { InterviewStatusEnum } from '../../domain/enums/status.enum';
+import { InterviewResult } from '../../domain/enums/interview.enum';
 
 export class InterviewRepository
   extends GenericRepository<Interview, IInterviewDocument>
@@ -43,7 +45,7 @@ export class InterviewRepository
       reasonForCancel: doc.reasonForCancel,
       reasonForRescheduleRequest: doc.reasonForRescheduleRequest,
       cancelledBy: doc.cancelledBy,
-      score:doc.score
+      score: doc.score,
     };
   }
 
@@ -78,7 +80,7 @@ export class InterviewRepository
     if (entity.reasonForRescheduleRequest)
       data.reasonForRescheduleRequest = entity.reasonForRescheduleRequest;
     if (entity.cancelledBy) data.cancelledBy = entity.cancelledBy;
-    if(entity.score)data.score=entity.score
+    if (entity.score) data.score = entity.score;
     return data;
   }
 
@@ -112,7 +114,7 @@ export class InterviewRepository
   async getAllInterviews(
     filter: Partial<InterviewFilterDto>
   ): Promise<{ interviews: AggregatedInterviewDto[]; totalDocs: number }> {
-   // console.log('filter from repository', filter);
+    // console.log('filter from repository', filter);
 
     const {
       companyId,
@@ -202,7 +204,7 @@ export class InterviewRepository
     } else sortStage = { createdAt: -1 };
 
     pipeline.push({ $sort: sortStage });
-   
+
     pipeline.push({
       $facet: {
         interviews: [
@@ -215,8 +217,8 @@ export class InterviewRepository
               result: '$result',
               jobTitle: '$job.title',
               company: '$company.companyName',
-              companyId:'$company._id',
-              candidateId:'$candidateId',
+              companyId: '$company._id',
+              candidateId: '$candidateId',
               companyLogo: '$company.logoUrl',
               createdAt: '$createdAt',
               status: '$status',
@@ -237,12 +239,31 @@ export class InterviewRepository
     const resultDatas = await this._model.aggregate(pipeline);
     const interviews = resultDatas[0]?.interviews ?? [];
     const totalDocs = resultDatas[0]?.totalDocs[0]?.count ?? 0;
-  //  console.log(interviews);
-    
+    //  console.log(interviews);
 
     return {
       interviews,
       totalDocs,
     };
+  }
+
+  async getInterviewCountByStatus(): Promise<
+    { _id: InterviewStatusEnum; count: number }[]
+  > {
+    const interviewData = await this._model.aggregate([
+      { $group: { _id: '$status', count: { $sum: 1 } } },
+    ]);
+    console.log( 'interviewData from getInterviewCountByStatus ',interviewData);
+    
+    return interviewData;
+  }
+  async getCountByResult(): Promise<
+    { _id: InterviewResult; count: number }[]
+  > {
+    const interviewData = await this._model.aggregate([
+      { $group: { _id: '$result', count: { $sum: 1 } } },
+    ]);
+    console.log( 'interviewData from getCountByResult ',interviewData);
+    return interviewData;
   }
 }

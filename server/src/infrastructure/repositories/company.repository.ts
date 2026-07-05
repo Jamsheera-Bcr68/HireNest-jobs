@@ -12,10 +12,12 @@ import {
   PaginatedCompanies,
   CompanyListDTO,
   CompanyStatus,
+  PendingCompany,
 } from '../../applications/dtos/company.dto';
 import { CompanyFilterDto } from '../../applications/dtos/company.dto';
 import mongoose, { AggregateOptions, Types } from 'mongoose';
-
+import { chartDataDto } from '../../domain/types/chart.data.type';
+import { email, size } from 'zod';
 
 type CompanyQuery = {
   status?: StatusEnum;
@@ -25,14 +27,12 @@ type CompanyQuery = {
     email?: { $regex: string; $options: string };
     industry?: { $regex: string; $options: string };
   }[];
+  createdAt?: {
+    $gte?: Date;
+    $lte?: Date;
+  };
 };
-// type CompanyQuery = Partial<Company> & {
-//   $or?: {
-//     companyName?: { $regex: string; $options: string };
-//     email?: { $regex: string; $options: string };
-//     industry?: { $regex: string; $options: string };
-//   }[];
-// };
+
 export class CompanyRepository
   extends GenericRepository<Company, ICompanyDocument>
   implements ICompanyRepository
@@ -58,7 +58,7 @@ export class CompanyRepository
     limit: number,
     sortBy?: string
   ): Promise<PaginatedCompanies> {
-   const query: CompanyQuery = { ...filter };
+    const query: CompanyQuery = { ...filter };
 
     if (search) {
       query.$or = [
@@ -74,7 +74,7 @@ export class CompanyRepository
     } else if (sortBy == 'newest') {
       sortStage = { createdAt: -1 };
     } else sortStage = { createdAt: -1 };
-   // console.log('sortstage', sortStage);
+    // console.log('sortstage', sortStage);
 
     const companies = await this._model
       .aggregate([
@@ -158,7 +158,7 @@ export class CompanyRepository
     entity: Partial<Company>
   ): Partial<ICompanyDocument> {
     const data: Partial<ICompanyDocument> = {};
-  //  console.log('from map to persistance', entity);
+    //  console.log('from map to persistance', entity);
 
     if (entity.companyName !== undefined) data.companyName = entity.companyName;
     if (entity.userId !== undefined)
@@ -199,7 +199,7 @@ export class CompanyRepository
     if (entity.size !== undefined) data.size = entity.size;
     if (entity.address !== undefined) data.address = entity.address;
     if (entity.document !== undefined) data.document = entity.document;
-  //  console.log('data after persisatnce', data);
+    //  console.log('data after persisatnce', data);
 
     return data;
   }
@@ -213,7 +213,7 @@ export class CompanyRepository
       statusDoc.map((doc) => [doc._id, doc.count])
     );
     status.totalCompany = total;
- //   console.log('status', status);
+    //   console.log('status', status);
 
     return status;
   }
@@ -229,5 +229,49 @@ export class CompanyRepository
       jobCount: doc.jobCount,
       createdAt: doc.createdAt,
     };
+  }
+
+  async countByFilter(data: CompanyFilterDto): Promise<number> {
+    const matchStage: CompanyQuery = {};
+    const { status, endDate, startDate } = data;
+    if (status) matchStage.status = status;
+    if (startDate)
+      matchStage.createdAt = {
+        ...matchStage.createdAt,
+        $gte: new Date(startDate),
+      };
+    if (endDate)
+      matchStage.createdAt = {
+        ...matchStage.createdAt,
+        $lte: new Date(endDate),
+      };
+
+    return await this._model.countDocuments(matchStage);
+  }
+
+  async getMonthlyCompanyCount(): Promise<chartDataDto[]> {
+    const today = new Date();
+    const startOftheYear = new Date(today.getFullYear(), 0, 1);
+    const companyData = await this._model.aggregate([
+      { $match: { createdAt: { $gte: startOftheYear, $lte: today } } },
+      { $group: { _id: { $month: '$createdAt' }, count: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]);
+
+    console.log('company data', companyData);
+    return companyData;
+  }
+
+  async getCompanies(
+    filter: { status: StatusEnum },
+    limit: number
+  ): Promise<Company[]> {
+   
+
+    const companies = await this._model
+      .find(filter)
+      .sort({createdAt:-1})
+      .limit(limit);
+    return companies.map(c=>this.mapToEntity(c))
   }
 }

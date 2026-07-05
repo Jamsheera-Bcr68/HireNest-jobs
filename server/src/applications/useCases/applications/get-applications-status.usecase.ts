@@ -41,13 +41,7 @@ export class GetApplicationStatusUseCase implements IGetApplicationStatusUsecase
     } else if (jobId) {
 
       filter.jobId=jobId
-      // const company = await this._companyRepository.findById(companyId);
-      // if (!company)
-      //   throw new AppError(
-      //     generalMessages.errors.NOT_FOUND('Company'),
-      //     statusCodes.NOTFOUND
-      //   );
-      // filter.companyId = company.id;
+   
     }else throw new AppError(generalMessages.errors.ID_NOT_FOUND('Job'),statusCodes.BADREQUEST)
     const total = await this._applicationRepository.count(filter);
 

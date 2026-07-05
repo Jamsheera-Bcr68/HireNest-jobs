@@ -32,5 +32,16 @@ export const API_ENDPOINTS = {
   NOTIFICATION:(id:string)=>`/notifications/${id}`,
   CHATROOMS:'/chatrooms',
   MESSAGES:(chatroomId:string)=>`/chatrooms/${chatroomId}/messages`,
-  UNREAD_MESSAGE_COUNT:'/messages/unread-count'
+  UNREAD_MESSAGE_COUNT:'/messages/unread-count',
+  ADMIN_DASHBOARD:{
+    STATUSCARD:'/admin/dashboard/cards',
+    COMPANY_JOB_CHARTDATA:'/admin/dashboard/company-job-chartdata',
+    JOBCOUNT_BY_INDUSTRY:'/admin/dashboard/industry-jobCount',
+    USER_DISTRIBUTION:'/admin/dashboard/user-distribution',
+    APP_DATA:'/admin/dashboard/application-distribution',
+    INTERVIEW_DATA:'/admin/dashboard/interview-data',
+     PENDING_COMPANIES:'/admin/dashboard/pending-companies',
+     REPORTED_JOBS:'/admin/dashboard/reported-jobs'
+  }
+ 
 };

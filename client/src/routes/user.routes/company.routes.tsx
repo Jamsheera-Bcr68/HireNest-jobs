@@ -12,7 +12,7 @@ import ApplicationsPage from '../../presentation/pages/user/company/Applications
 import ApplicationDetailsPage from '../../presentation/pages/user/company/ApplicationDetails';
 import { COMPANY_ROUTES } from '../routes';
 import { ChatPage } from '../../presentation/pages/user/Chatpage';
-import Chat from '../../presentation/pages/user/Chat';
+
 
 import InterviewsPage from '../../presentation/pages/user/company/InterviewsPage';
 export const CompanyRoutes = () => {

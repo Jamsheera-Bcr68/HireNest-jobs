@@ -51,7 +51,7 @@ export interface JobUpdateDto {
 }
 export interface JobCardDto {
   companyLogo: string;
-  companyname: string;
+  companyName: string;
   location: AddressType;
   vacancyCount: number;
   reportDetails: JobReportType[];
@@ -117,6 +117,7 @@ export type JobFilter = {
   mode?: string[];
   companyId?: string;
   status?: StatusEnum;
+  isReported?: boolean;
 };
 export const SalaryRange = [
   { label: '₹0 - ₹10k', min_salary: 0, max_salary: 10000 },
@@ -143,3 +144,15 @@ export type JobReportType = {
   info?: string;
   reportedDate?: Date;
 };
+export interface JobCountFilter {
+  startDate?: Date;
+  endDate?: Date;
+  status?: StatusEnum;
+}
+
+export interface AdminDashboardReportedJob {
+  id: string;
+  title: string;
+  companyName: string;
+  type: JobType;
+}

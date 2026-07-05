@@ -3,15 +3,26 @@ import { StatusEnum } from '../../domain/enums/status.enum';
 import { IJobRepository } from '../../domain/repository-interfaces/job-repository.interface';
 import { IJobDocument, jobModel } from '../database/models/job.model';
 import { GenericRepository } from './generic.repository';
+
 import mongoose, { Types } from 'mongoose';
 import {
   JobCardDto,
   JobCountByIndustryDto,
+  JobCountFilter,
   JobFilter,
   JobListDto,
   SalaryRange,
 } from '../../applications/dtos/job.dto';
+import { chartDataDto } from '../../domain/types/chart.data.type';
+import { IndustryType } from '../../domain/types/company-profile.types';
 
+interface JobQuery {
+  status?: StatusEnum;
+  createdAt?: {
+    $gte?: Date;
+    $lte?: Date;
+  };
+}
 export class JobRepository
   extends GenericRepository<Job, IJobDocument>
   implements IJobRepository
@@ -225,7 +236,7 @@ export class JobRepository
       const selectedRanges = salary
         .map((label) => salaryLookup[label.trim()])
         .filter(Boolean);
-     // console.log('selecteed range 0-10000', selectedRanges);
+      // console.log('selecteed range 0-10000', selectedRanges);
 
       const salaryConditions = selectedRanges.map((range) => {
         if (!range.max_salary) {
@@ -354,7 +365,7 @@ export class JobRepository
 
     const jobs = result[0]?.data || [];
     const totalDocs = result[0]?.totalCount[0]?.count || 0;
-  //  console.log('jobs', jobs);
+    //  console.log('jobs', jobs);
 
     return {
       jobs: jobs.map(({ _id, id, ...job }) => ({
@@ -405,7 +416,7 @@ export class JobRepository
     const salaryLookup = Object.fromEntries(
       SalaryRange.map((range) => [range.label, range])
     );
- //   console.log('salartlookup', salaryLookup);
+    //   console.log('salartlookup', salaryLookup);
     // status: StatusEnum.ACTIVE,
     const matchStage: any = {
       _id: { $in: objectIds },
@@ -419,7 +430,7 @@ export class JobRepository
       const selectedRanges = salary
         .map((label) => salaryLookup[label.trim()])
         .filter(Boolean);
- //     console.log('selecteed range 0-10000', selectedRanges);
+      //     console.log('selecteed range 0-10000', selectedRanges);
 
       const salaryConditions = selectedRanges.map((range) => {
         if (!range.max_salary) {
@@ -562,5 +573,61 @@ export class JobRepository
         $set: { status: StatusEnum.EXPIRED },
       }
     );
+  }
+
+  async countBetweenTheDates(data: JobCountFilter): Promise<number> {
+    const { startDate, endDate, status } = data;
+
+    const matchStage: JobQuery = {};
+    if (startDate) {
+      matchStage.createdAt = {
+        ...matchStage.createdAt,
+        $gte: new Date(startDate),
+      };
+    }
+    if (endDate) {
+      matchStage.createdAt = {
+        ...matchStage.createdAt,
+        $lte: new Date(endDate),
+      };
+    }
+    if (status) {
+      matchStage.status = status;
+    }
+
+    const count = await this._model.countDocuments(matchStage);
+    return count;
+  }
+
+  async getMonthlyJobCount(): Promise<chartDataDto[]> {
+    const today = new Date();
+    const startOfyear = new Date(today.getFullYear(), 0, 1);
+    const jobdatas = await this._model.aggregate([
+      { $match: { createdAt: { $gte: startOfyear, $lte: today } } },
+      { $group: { _id: { $month: '$createdAt' }, count: { $sum: 1 } } },
+      { $sort: { _id: 1 } },
+    ]);
+
+    return jobdatas;
+  }
+
+  async postCountByIndustry(): Promise<
+    { _id: IndustryType; count: number }[]
+  > {
+    const data = await this._model.aggregate([{$match:{status:StatusEnum.ACTIVE}},
+      {
+        $lookup: {
+          from: 'companies',
+          localField: 'companyId',
+          foreignField: '_id',
+          as: 'companyData',
+        },
+      },
+      { $unwind: '$companyData' },
+      { $group: { _id: '$companyData.industry', count: { $sum: 1 } } },
+    ]);
+
+    console.log('postCountByIndustry', data);
+    return data;
   }
 }

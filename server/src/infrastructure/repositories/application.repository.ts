@@ -14,6 +14,7 @@ import {
 } from '../../applications/dtos/application.dto';
 import { PipelineStage } from 'mongoose';
 import { number } from 'zod';
+import { IndustryType } from '../../domain/types/company-profile.types';
 
 export class ApplicationRepository
   extends GenericRepository<Application, IApplicationDocument>
@@ -96,7 +97,7 @@ export class ApplicationRepository
   async getAllApplications(
     filter: ApplicationFilterDto
   ): Promise<{ applications: AggregatedApplication[]; totalDocs: number }> {
-   // console.log('filter', filter);
+    // console.log('filter', filter);
 
     const {
       jobId,
@@ -230,7 +231,7 @@ export class ApplicationRepository
     });
     const result = await this._model.aggregate(pipeline);
     const applications = result[0]?.applications ?? [];
-  //  console.log(`applications from repositry:`, applications);
+    //  console.log(`applications from repositry:`, applications);
 
     const totalDocs = result[0]?.totalDocs[0]?.count ?? 0;
 
@@ -242,7 +243,6 @@ export class ApplicationRepository
       totalDocs,
     };
   }
- 
 
   async count(filter: ApplicationFilterDto): Promise<number> {
     const { candidateId, companyId, jobId } = filter;
@@ -261,11 +261,11 @@ export class ApplicationRepository
     if (filter.status) {
       q.status = filter.status;
     }
-//    console.log('q is ', q);
+    //    console.log('q is ', q);
 
     const count = await this._model.countDocuments(q);
 
-  //  console.log(`app count per job`, count);
+    //  console.log(`app count per job`, count);
 
     return count;
   }
@@ -277,5 +277,23 @@ export class ApplicationRepository
     });
 
     return count;
+  }
+
+  async getIndustryWiseApplcationCount(): Promise<
+    { _id: IndustryType; count: number }[]
+  > {
+    const appData = await this._model.aggregate([
+      {
+        $lookup: {
+          from: 'companies',
+          localField: 'companyId',
+          foreignField: '_id',
+          as: 'company',
+        },
+      },
+      { $unwind: '$company' },
+      { $group: { _id: '$company.industry', count: { $sum: 1 } } },
+    ]);
+    return appData;
   }
 }

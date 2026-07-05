@@ -13,10 +13,14 @@ import { IResume } from '../../domain/values/profile-types';
 import { IExperienceDocument } from '../database/models/experience.model';
 import { Experience } from '../../domain/entities/experience.entity';
 import { IEducationDocument } from '../database/models/education.model';
-import { CandidateStatus } from '../../applications/dtos/candidate.dto';
+import {
+  CandidateStatus,
+  UserFilter,
+} from '../../applications/dtos/candidate.dto';
 import { UserMapper } from '../../applications/mappers/user.mapper';
 import { PaginatedEntities } from '../../applications/types/candidate.type';
 import { UserRole } from '../../domain/enums/user.enums';
+import { StatusEnum } from '../../domain/enums/status.enum';
 
 type CandidateQuery = Partial<User> & {
   $or?: {
@@ -320,7 +324,7 @@ export class UserRepository
       _id: new mongoose.Types.ObjectId(),
       ...data,
     };
-   // console.log('resume', resume);
+    // console.log('resume', resume);
 
     const doc = await this._model.findByIdAndUpdate(
       userId,
@@ -334,7 +338,7 @@ export class UserRepository
     return this.mapToRsumeEntity(resume);
   }
   private mapToRsumeEntity(doc: ResumeDocument): IResume {
- //   console.log('doc', doc);
+    //   console.log('doc', doc);
 
     return {
       id: doc._id.toString(),
@@ -408,7 +412,7 @@ export class UserRepository
     //console.log(status);
     status.new = newDocCount;
     status.totalCandidate = total;
-   // console.log('new dod', newDocCount);
+    // console.log('new dod', newDocCount);
 
     return status;
   }
@@ -420,7 +424,7 @@ export class UserRepository
     search?: string,
     education?: string
   ): Promise<PaginatedEntities<User>> {
-  //  console.log('filter', filter);
+    //  console.log('filter', filter);
     const skip = limit * (page - 1);
     const query: any = { ...filter };
 
@@ -460,7 +464,7 @@ export class UserRepository
       .skip(skip)
       .limit(Number(limit));
     let totalDocs = (await this._model.aggregate(pipeline)).length;
-   // console.log('candidatesss', candidates);
+    // console.log('candidatesss', candidates);
 
     return {
       entities: candidates.map((doc) => this.mapToCandidateList(doc)),
@@ -513,4 +517,44 @@ export class UserRepository
     });
     return count ? count : 0;
   }
+
+  async getCountByFilter(data: UserFilter): Promise<number> {
+    const matchStage: CandidateFilterQuery = {};
+    const { role, startDate, endDate } = data;
+    if (role) matchStage.role = role;
+    if (startDate)
+      matchStage.createdAt = {
+        ...matchStage.createdAt,
+        $gte: new Date(startDate),
+      };
+
+    if (endDate)
+      matchStage.createdAt = {
+        ...matchStage.createdAt,
+        $lte: new Date(endDate),
+      };
+    return this._model.countDocuments(matchStage);
+  }
+
+  async getUserDistributionData(
+  
+  ): Promise<{ _id: UserRole; count: number }[]> {
+    
+
+    const userdata = await this._model.aggregate([
+      { $match: { isBlocked:false} },
+      { $group: { _id: '$role', count: { $sum: 1 } } },
+    ]);
+    console.log('repository userdata',userdata);
+    
+    return userdata;
+  }
 }
+
+type CandidateFilterQuery = {
+  createdAt?: {
+    $gte?: Date;
+    $lte?: Date;
+  };
+  role?: UserRole;
+};

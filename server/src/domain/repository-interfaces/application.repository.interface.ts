@@ -6,6 +6,7 @@ import {
   ApplicationFilterDto,
   ApplicationListDto,
 } from '../../applications/dtos/application.dto';
+import { IndustryType } from '../types/company-profile.types';
 export interface IApplicationRepository extends IBaseRepository<Application> {
   findByUserIdAndJobId(
     userId: string,
@@ -19,4 +20,5 @@ export interface IApplicationRepository extends IBaseRepository<Application> {
   ): Promise<{ applications: AggregatedApplication[]; totalDocs: number }>;
 
    count(filter:ApplicationFilterDto):Promise<number>
+   getIndustryWiseApplcationCount():Promise<{_id:IndustryType,count:number}[]>
 }

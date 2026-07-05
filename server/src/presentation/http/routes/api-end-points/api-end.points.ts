@@ -40,10 +40,20 @@ export const API_END_POINTS = {
   REPORT_JOB: '/:jobId/reports',
   SAVE_JOB: '/:jobId/save',
   UNSAVE_JOB: '/:jobId/unsave',
-  JOB_APPLICATIONS:'/:jobId/applications',
-  CHATROOMS:'/',
-  CHATROOM_MESSAGES:'/:chatroomId/messages',
-  UNREAD_MESSAGE_COUNT:'/unread-count'
+  JOB_APPLICATIONS: '/:jobId/applications',
+  CHATROOMS: '/',
+  CHATROOM_MESSAGES: '/:chatroomId/messages',
+  UNREAD_MESSAGE_COUNT: '/unread-count',
+  STATUS_CARD_DATA: '/dashboard/cards',
+  ADMIN_DASHBOARD: {
+    COMPANY_JOB_CHARTDATA: `/dashboard/company-job-chartdata`,
+    JOBCOUNTBY_INDUSTRY: `/dashboard/industry-jobCount`,
+    USER_DISTRIBUTION: '/dashboard/user-distribution',
+    APP_DISTRIBUTION: '/dashboard/application-distribution',
+    INTERVIEW_DATA: '/dashboard/interview-data',
+    PENDING_COMPANIES: '/dashboard/pending-companies',
+    REPORTED_JOBS: '/dashboard/reported-jobs',
+  },
 };
 
 export const AUTH_END_POINTS = {

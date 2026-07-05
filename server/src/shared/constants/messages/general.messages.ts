@@ -16,12 +16,13 @@ export const generalMessages = {
       `${item} ${action} Successfully`,
     NEW_NOTIFICATION_COUNT_FETCHED:
       'New Notification count fetched Successfully',
-    NEW_MESSAGES_COUNT_FETCHED:
-      'New messages count fetched Successfully',
-      ENTITIES_FETCHED:(item:string)=>`${item} Fetched Successfully`,
-      MARK_AS_READ:'Notification marked as read',
-      NOTIFICATION_DELETED:'Notification deleted successfully',
-      COMPANY_REAPPLICATION_SUBMITTED:'Company Reapplication Submitted Successfully'
+    NEW_MESSAGES_COUNT_FETCHED: 'New messages count fetched Successfully',
+    ENTITIES_FETCHED: (item: string) => `${item} Fetched Successfully`,
+    MARK_AS_READ: 'Notification marked as read',
+    NOTIFICATION_DELETED: 'Notification deleted successfully',
+    COMPANY_REAPPLICATION_SUBMITTED:
+      'Company Reapplication Submitted Successfully',
+    DASHBOARD_STATUS_DATA_FETCHED: 'Dashboard statuscard data fetched',
   },
   errors: {
     NOT_FOUND: (entity: string) => `${entity} not found`,
@@ -34,8 +35,9 @@ export const generalMessages = {
     INTERVIEW_NOT_SCHEDULED: 'This interview is not scheduled ',
     ALREADY_REQUESTED_RESCHEDULE: 'Allready Requested for Reschedule',
     ALREADY_CONFIRMED: 'This interview is already confirmed',
-   COMPANY_ALREADY_EXIST:(field:string)=>`Company with same ${field} is already exist`,
-   REAPPLY_COUNT_LIMIT_EXEEDED:'You can only reapply for 3 times',
-   FORBIDDEN:`You are not authorized to access this resource.`
+    COMPANY_ALREADY_EXIST: (field: string) =>
+      `Company with same ${field} is already exist`,
+    REAPPLY_COUNT_LIMIT_EXEEDED: 'You can only reapply for 3 times',
+    FORBIDDEN: `You are not authorized to access this resource.`,
   },
 };

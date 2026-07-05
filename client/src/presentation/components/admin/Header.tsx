@@ -28,7 +28,7 @@ function Header({
   const { showToast } = useToast();
   const dispatch = useDispatch();
   const notifications = useSelector(
-    (state: RootState) => state.notification.notifications
+    (state: RootState) => state.notification.notifications??[]
   );
 
   const [nots, setNots] = useState<NotificationType[]>([]);

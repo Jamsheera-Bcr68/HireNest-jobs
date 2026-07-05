@@ -31,3 +31,23 @@ export const getTime = (data: Date): string => {
   return formatted;
 };
 
+export function percentageCalculator(
+  current: number,
+  prev: number
+): { percentage: number; isPositive: boolean } {
+  if (prev == 0) {
+    return {
+      percentage: current > 0 ? 100 : 0,
+      isPositive: current >= prev,
+    };
+  } else {
+    return {
+      percentage: Number((((current - prev) / prev) * 100).toFixed(1)),
+      isPositive: current >= prev,
+    };
+  }
+}
+
+export function getPercentsgeOfTotal(total: number, value: number): number {
+  return Number(((value / total) * 100).toFixed(2))
+}

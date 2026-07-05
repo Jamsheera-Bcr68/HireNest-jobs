@@ -27,16 +27,6 @@ export interface companyDto {
   size: CompanySize;
   address: IAddress;
   document: VerificationDocType;
-  // reapplyCount?: number;
-  // reapplyDetails?: [
-  //   {
-  //     status: {
-  //       type: string;
-  //       enum: StatusEnum;
-  //     };
-  //     rejectedReason: string;
-  //   },
-  // ];
 }
 export interface CompanyUpdateDto {
   companyName: string;
@@ -104,10 +94,18 @@ export type CompanyDataDto = {
 };
 
 export type CompanyFilterDto = {
+  startDate?: Date;
+  endDate?: Date;
 
- 
- 
-  status?:StatusEnum,
-  industry?:IndustryType
+  status?: StatusEnum;
+  industry?: IndustryType;
 };
 
+export type PendingCompany={
+  id:string
+  email?:string
+  logoUrl:string
+  location:string
+  submittedAt:string
+ 
+}
