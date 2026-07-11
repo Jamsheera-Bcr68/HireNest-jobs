@@ -13,6 +13,7 @@ import { addChatroom, setChatrooms } from '../../../redux/slices/chatroom.slice'
 import { setNotifications } from '../../../redux/slices/notification.slice';
 
 import { chatService } from '../../../services/api-services/chat.service';
+import { ur } from 'zod/locales';
 
 const Header = ({ title }: { title?: string }) => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
@@ -49,7 +50,7 @@ const Header = ({ title }: { title?: string }) => {
     if (user) getChatrooms();
   }, []);
 
-  const count = notifications.filter((n) => n.isRead === false).length;
+  const count = notifications?.filter((n) => n.isRead === false).length;
   const unreadCount = chatrooms.reduce(
     (acc, ch) => acc + ch.unreadCount,
     0
@@ -157,9 +158,13 @@ const Header = ({ title }: { title?: string }) => {
               </a>
             )}
           </div>
-          {user && user.role === 'company' && (
+          {/* && user.role === 'company' && */}
+          {user &&user?.role==='comapny'||user?.role=='candidate'&& (
             <button
-              onClick={() => navigate('/company/dashboard')}
+              onClick={() => {
+                const url=user.role=='company'?'/company/dashboard':'/candidate/dashboard'
+                navigate(url)
+              }}
               className="text-gray-700 bg-blue-50 hover:bg-blue-100 rounded-xl hover:text-blue-600 px-4 py-2 text-sm font-medium transition-colors"
             >
               Go To Dashboard

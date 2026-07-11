@@ -214,8 +214,17 @@ export class JobRepository
         sortStage = { createdAt: -1 };
     }
 
-    let { industry, jobType, experience, salary, companyId, status, ...rest } =
-      filter;
+    let {
+      skills,
+      industry,
+      jobType,
+      experience,
+      salary,
+      companyId,
+      status,
+      appliedJobIds,
+      ...rest
+    } = filter;
     const salaryLookup = Object.fromEntries(
       SalaryRange.map((range) => [range.label, range])
     );
@@ -243,6 +252,16 @@ export class JobRepository
           return {
             max_salary: { $gte: range.min_salary },
           };
+        }
+        if(skills&&skills.length){
+
+          const skillIds=skills .filter(mongoose.Types.ObjectId.isValid).map((id)=>new mongoose.Types.ObjectId(id))
+          matchStage.skills={$in:skillIds}
+        }
+        if(appliedJobIds&&appliedJobIds.length){
+
+          const jobIds=appliedJobIds .filter(mongoose.Types.ObjectId.isValid).map((id)=>new mongoose.Types.ObjectId(id))
+          matchStage._id={$nin:jobIds}
         }
 
         return {
@@ -611,10 +630,9 @@ export class JobRepository
     return jobdatas;
   }
 
-  async postCountByIndustry(): Promise<
-    { _id: IndustryType; count: number }[]
-  > {
-    const data = await this._model.aggregate([{$match:{status:StatusEnum.ACTIVE}},
+  async postCountByIndustry(): Promise<{ _id: IndustryType; count: number }[]> {
+    const data = await this._model.aggregate([
+      { $match: { status: StatusEnum.ACTIVE } },
       {
         $lookup: {
           from: 'companies',
@@ -627,7 +645,16 @@ export class JobRepository
       { $group: { _id: '$companyData.industry', count: { $sum: 1 } } },
     ]);
 
-    console.log('postCountByIndustry', data);
+    //console.log('postCountByIndustry', data);
     return data;
+  }
+
+  async savedJobCount(jobs: string[], filter: Partial<Job>): Promise<number> {
+    const jobIds = jobs.map((id) => new Types.ObjectId(id));
+    const savedJobs = await this._model.find({
+      _id: { $in: jobIds },
+      lastDate: { $gte: new Date() },
+    });
+    return savedJobs.length;
   }
 }

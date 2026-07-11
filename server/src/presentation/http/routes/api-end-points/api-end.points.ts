@@ -54,7 +54,12 @@ export const API_END_POINTS = {
     PENDING_COMPANIES: '/dashboard/pending-companies',
     REPORTED_JOBS: '/dashboard/reported-jobs',
   },
-};
+  CANDIDATE_DASHBOARD:{
+    APP_DATA:'/dashboard/application-details',
+    UPCOMING_INTERVIEW:`/dashboard/upcoming-intrview`,
+    PROFILE_DATA:'/dashboard/profile-data',
+    RECOMENTED_JOBS:'/dashboard/recomented-jobs'}
+}
 
 export const AUTH_END_POINTS = {
   REGISTER: '/register',

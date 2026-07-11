@@ -212,7 +212,7 @@ export class ApplicationController {
         statusCodes.NOTFOUND
       );
     const { status, reason } = req.body;
-    console.log('status,reason', status, reason);
+  //  console.log('status,reason', status, reason);
 
     const app = await this._updateEntityStatusUsecase.execute(
       applicationId,

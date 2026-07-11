@@ -22,8 +22,6 @@ import PendingCompany from './PendingCompany';
 import ReportedJobs from './ReportedJobs';
 import type { JobType } from '../../../../types/dtos/job.dto';
 
-
-
 type StatusCardType = {
   icon: LucideIcon;
   label: string;
@@ -74,8 +72,8 @@ export type AppData = {
 };
 
 const jobTypeConfig: Record<JobType, string> = {
-  'fullTime': 'Full Time',
-  'partTime': 'Part Time',
+  fullTime: 'Full Time',
+  partTime: 'Part Time',
 };
 
 export type PendingJobs = {
@@ -115,127 +113,133 @@ export default function AdminDashbordContainer() {
     admin: { color: '#10a99c', label: 'Admins' },
   };
   useEffect(() => {
-    const getStatusData = async () => {
-      const data = await adminDashboardService.getStatusData();
+    try {
+      const getStatusData = async () => {
+        const data = await adminDashboardService.getStatusData();
 
-      const activeJobs: StatusCardType = {
-        icon: Briefcase,
-        label: 'Total Active Jobs',
-        value: data.statusData.totalActiveJobs.count,
-        delta: data.statusData.totalActiveJobs.changePercentage + ' %',
-        positive: data.statusData.totalActiveJobs.isPositive,
-        classname: 'bg-amber-50 text-amber-600',
+        const activeJobs: StatusCardType = {
+          icon: Briefcase,
+          label: 'Total Active Jobs',
+          value: data.statusData.totalActiveJobs.count,
+          delta: data.statusData.totalActiveJobs.changePercentage + ' %',
+          positive: data.statusData.totalActiveJobs.isPositive,
+          classname: 'bg-amber-50 text-amber-600',
+        };
+        const pendingApproval: StatusCardType = {
+          icon: Clock,
+          label: 'Pending Approvals',
+          value: data.statusData.pendingApprovals.count,
+          delta: 'Needs review',
+          positive: data.statusData.pendingApprovals.isPositive,
+          classname: 'bg-rose-50 text-rose-600',
+        };
+        const registeredSeekers: StatusCardType = {
+          icon: Users,
+          label: 'Registered Seekers',
+          value: data.statusData.registeredSeekers.count,
+          delta: data.statusData.registeredSeekers.changePercentage + ' %',
+          positive: data.statusData.registeredSeekers.isPositive,
+          classname: 'bg-emerald-50 text-emerald-600',
+        };
+        const verifiedCompanies: StatusCardType = {
+          icon: Building2,
+          label: 'Verified Companies',
+          value: data.statusData.verifiedCompanies.count,
+          delta: data.statusData.verifiedCompanies.changePercentage + ' %',
+          positive: data.statusData.verifiedCompanies.isPositive,
+          classname: 'bg-sky-50 text-sky-600',
+        };
+        setStatusData([
+          activeJobs,
+          pendingApproval,
+          verifiedCompanies,
+          registeredSeekers,
+        ]);
       };
-      const pendingApproval: StatusCardType = {
-        icon: Clock,
-        label: 'Pending Approvals',
-        value: data.statusData.pendingApprovals.count,
-        delta: 'Needs review',
-        positive: data.statusData.pendingApprovals.isPositive,
-        classname: 'bg-rose-50 text-rose-600',
+      getStatusData();
+
+      const company_job_chartData = async () => {
+        const data = await adminDashboardService.getCompanyJobChartData();
+
+        setComp_job_chartData(data.chartData);
       };
-      const registeredSeekers: StatusCardType = {
-        icon: Users,
-        label: 'Registered Seekers',
-        value: data.statusData.registeredSeekers.count,
-        delta: data.statusData.registeredSeekers.changePercentage + ' %',
-        positive: data.statusData.registeredSeekers.isPositive,
-        classname: 'bg-emerald-50 text-emerald-600',
+
+      company_job_chartData();
+
+      const getIndustryJobCount = async () => {
+        const data = await adminDashboardService.getIndustryWiseJobCount();
+
+        setIndustryJobs(data.postData);
       };
-      const verifiedCompanies: StatusCardType = {
-        icon: Building2,
-        label: 'Verified Companies',
-        value: data.statusData.verifiedCompanies.count,
-        delta: data.statusData.verifiedCompanies.changePercentage + ' %',
-        positive: data.statusData.verifiedCompanies.isPositive,
-        classname: 'bg-sky-50 text-sky-600',
+
+      getIndustryJobCount();
+
+      const getUserData = async () => {
+        const data = await adminDashboardService.getUserDistributionData();
+        let resData: { role: UserRole; value: number }[] = data.userData;
+        //  console.log('userdata', data);
+        setUserData(
+          resData.map((data) => ({
+            ...data,
+            color: UserDistData[data.role].color,
+            label: UserDistData[data.role].label,
+          }))
+        );
       };
-      setStatusData([
-        activeJobs,
-        pendingApproval,
-        verifiedCompanies,
-        registeredSeekers,
-      ]);
-    };
-    getStatusData();
+      getUserData();
 
-    const company_job_chartData = async () => {
-      const data = await adminDashboardService.getCompanyJobChartData();
+      const getAppData = async () => {
+        const data = await adminDashboardService.getApplivcationData();
+        // console.log('appdata', data.appData);
 
-      setComp_job_chartData(data.chartData);
-    };
+        setIndustryApps(data.appData);
+      };
+      getAppData();
 
-    company_job_chartData();
+      const getInterviewData = async () => {
+        const data = await adminDashboardService.getInterviewData();
+        const intData: { status: Status; count: number; value: number }[] =
+          data.interviewData;
+        //console.log('interview data', data);
+        setInterviewData(
+          intData.map((data) => ({
+            ...data,
+            color: InterivewConfig[data.status].color,
+            label: InterivewConfig[data.status].label,
+          }))
+        );
+      };
+      getInterviewData();
 
-    const getIndustryJobCount = async () => {
-      const data = await adminDashboardService.getIndustryWiseJobCount();
+      const getPendingCompanies = async () => {
+        const data = await adminDashboardService.getPendingCompanies();
+        console.log('pending company data', data);
+        setPendingCompanies(data.companies);
+      };
 
-      setIndustryJobs(data.postData);
-    };
+      getPendingCompanies();
 
-    getIndustryJobCount();
+      const getReportedJobs = async () => {
+        const data = await adminDashboardService.getReportedJobs();
 
-    const getUserData = async () => {
-      const data = await adminDashboardService.getUserDistributionData();
-      let resData: { role: UserRole; value: number }[] = data.userData;
-      //  console.log('userdata', data);
-      setUserData(
-        resData.map((data) => ({
-          ...data,
-          color: UserDistData[data.role].color,
-          label: UserDistData[data.role].label,
-        }))
-      );
-    };
-    getUserData();
+        const jobs: {
+          id: string;
+          title: string;
+          type: JobType;
+          companyName: string;
+          count: number;
+        }[] = data.jobs;
+        setPendingJobs(
+          jobs.map((j) => ({
+            ...j,
+            reportCount: j.count,
+            jobTypeLabel: jobTypeConfig[j.type],
+          }))
+        );
+      };
 
-    const getAppData = async () => {
-      const data = await adminDashboardService.getApplivcationData();
-      // console.log('appdata', data.appData);
-
-      setIndustryApps(data.appData);
-    };
-    getAppData();
-
-    const getInterviewData = async () => {
-      const data = await adminDashboardService.getInterviewData();
-      const intData: { status: Status; count: number; value: number }[] =
-        data.interviewData;
-      //console.log('interview data', data);
-      setInterviewData(
-        intData.map((data) => ({
-          ...data,
-          color: InterivewConfig[data.status].color,
-          label: InterivewConfig[data.status].label,
-        }))
-      );
-    };
-    getInterviewData();
-
-    const getPendingCompanies = async () => {
-      const data = await adminDashboardService.getPendingCompanies();
-      console.log('pending company data', data);
-      setPendingCompanies(data.companies);
-    };
-
-    getPendingCompanies();
-
-    const getReportedJobs = async () => {
-      const data = await adminDashboardService.getReportedJobs();
-     
-      const jobs: {
-        id: string;
-        title: string;
-        type: JobType;
-        companyName: string;
-        count: number;
-      }[] = data.jobs
-      setPendingJobs(
-        jobs.map((j) => ({ ...j,reportCount:j.count, jobTypeLabel: jobTypeConfig[j.type] }))
-      );
-    };
-
-    getReportedJobs();
+      getReportedJobs();
+    } catch (error) {}
   }, []);
   return (
     <div>

@@ -118,6 +118,8 @@ export type JobFilter = {
   companyId?: string;
   status?: StatusEnum;
   isReported?: boolean;
+  skills?:string[]
+  appliedJobIds?:string[]
 };
 export const SalaryRange = [
   { label: '₹0 - ₹10k', min_salary: 0, max_salary: 10000 },

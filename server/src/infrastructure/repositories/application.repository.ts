@@ -15,7 +15,18 @@ import {
 import { PipelineStage } from 'mongoose';
 import { number } from 'zod';
 import { IndustryType } from '../../domain/types/company-profile.types';
+import { ApplicationStatusEnum } from '../../domain/enums/status.enum';
 
+type AppQuery = {
+  candidateId?: mongoose.Types.ObjectId;
+  companyId?: mongoose.Types.ObjectId;
+  jobId?: mongoose.Types.ObjectId;
+  status?: ApplicationStatusEnum;
+  createdAt?: {
+    $gte?: Date;
+    $lte?: Date;
+  };
+};
 export class ApplicationRepository
   extends GenericRepository<Application, IApplicationDocument>
   implements IApplicationRepository
@@ -245,10 +256,10 @@ export class ApplicationRepository
   }
 
   async count(filter: ApplicationFilterDto): Promise<number> {
-    const { candidateId, companyId, jobId } = filter;
+    const { candidateId, companyId, jobId, startDate, endDate } = filter;
     // console.log('filter', filter);
 
-    const q = {} as IApplicationDocument;
+    const q: AppQuery = {};
     if (candidateId) {
       q.candidateId = new mongoose.Types.ObjectId(candidateId);
     }
@@ -260,6 +271,12 @@ export class ApplicationRepository
     }
     if (filter.status) {
       q.status = filter.status;
+    }
+    if (filter.startDate) {
+      q.createdAt = { ...q.createdAt, $gte: new Date(filter.startDate) };
+    }
+    if (filter.endDate) {
+      q.createdAt = { ...q.createdAt, $lte: new Date(filter.endDate) };
     }
     //    console.log('q is ', q);
 
@@ -295,5 +312,16 @@ export class ApplicationRepository
       { $group: { _id: '$company.industry', count: { $sum: 1 } } },
     ]);
     return appData;
+  }
+
+  async getCountByStatus(
+    userId: string
+  ): Promise<{ status: ApplicationStatusEnum; count: number }[]> {
+    const appDate = await this._model.aggregate([
+      { $match: { candidateId: new mongoose.Types.ObjectId(userId) } },
+      { $group: { _id: '$status', count: { $sum: 1 } } },
+    ]);
+
+    return appDate.map((data) => ({ status: data._id, count: data.count }));
   }
 }

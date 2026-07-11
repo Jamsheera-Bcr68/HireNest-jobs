@@ -131,6 +131,10 @@ export class InterviewRepository
     const skip = (page - 1) * limit;
 
     let matchStage: PipelineStage.Match['$match'] = {};
+    if (sortBy === 'upcoming') {
+      matchStage.status = InterviewStatusEnum.SCHEDULED;
+      matchStage.scheduledAt = { $gte: new Date() };
+    }
     if (companyId)
       matchStage.companyId = new mongoose.Types.ObjectId(companyId);
     if (result) matchStage.result = result;
@@ -253,17 +257,85 @@ export class InterviewRepository
     const interviewData = await this._model.aggregate([
       { $group: { _id: '$status', count: { $sum: 1 } } },
     ]);
-    console.log( 'interviewData from getInterviewCountByStatus ',interviewData);
-    
+  //  console.log('interviewData from getInterviewCountByStatus ', interviewData);
+
     return interviewData;
   }
-  async getCountByResult(): Promise<
-    { _id: InterviewResult; count: number }[]
-  > {
+
+  async getCountByResult(): Promise<{ _id: InterviewResult; count: number }[]> {
     const interviewData = await this._model.aggregate([
       { $group: { _id: '$result', count: { $sum: 1 } } },
     ]);
-    console.log( 'interviewData from getCountByResult ',interviewData);
+  //  console.log('interviewData from getCountByResult ', interviewData);
     return interviewData;
+  }
+
+  async getInterview(filter: InterviewFilterDto): Promise<AggregatedInterviewDto | null> {
+    const { candidateId, companyId, type } = filter;
+    const matchStage: PipelineStage.Match['$match'] = {};
+    let sortStage: PipelineStage.Sort['$sort'] = {createdAt:-1};
+    if (candidateId)
+      matchStage.candidateId = new mongoose.Types.ObjectId(candidateId);
+    if (companyId)
+      matchStage.companyId = new mongoose.Types.ObjectId(companyId);
+
+    if (type === 'upcoming') {
+      matchStage.scheduledAt = { $gte: new Date() };
+      sortStage = { ...sortStage, scheduledAt: 1 };
+    }
+
+    const aggregatedInterview = await this._model.aggregate([
+      { $match: matchStage },
+      {
+        $lookup: {
+          from: 'companies',
+          foreignField: '_id',
+          localField: 'companyId',
+          as: 'company',
+        },
+      },
+      { $unwind: '$company' },
+      {
+        $lookup: {
+          from: 'jobs',
+          foreignField: '_id',
+          localField: 'jobId',
+          as: 'job',
+        },
+      },
+      { $unwind: '$job' },
+      {
+        $lookup: {
+          from: 'users',
+          foreignField: '_id',
+          localField: 'candidateId',
+          as: 'candidate',
+        },
+      },
+      { $unwind: '$candidate' },
+      {
+        $project: {
+          _id: 0,
+          id: { $toString: '$_id' },
+          name: '$candidate.name',
+          mode: '$mode',
+          result: '$result',
+          jobTitle: '$job.title',
+          company: '$company.companyName',
+          companyId: '$company._id',
+          candidateId: '$candidateId',
+          companyLogo: '$company.logoUrl',
+          createdAt: '$createdAt',
+          status: '$status',
+          scheduledAt: '$scheduledAt',
+          isConfirmed: '$isConfirmed',
+          isRescheduleRequested: '$isRescheduleRequested',
+          link:'$link'
+        },
+      },
+      { $sort: sortStage },
+      { $limit: 1 },
+    ]);
+    return aggregatedInterview[0]
   }
 }

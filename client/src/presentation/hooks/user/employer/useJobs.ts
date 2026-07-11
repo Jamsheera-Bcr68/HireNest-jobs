@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useSelector,useDispatch } from 'react-redux';
 import { type SkillType } from '../../../../types/dtos/skill.types';
 import { jobPostSchema } from '../../../../libraries/validations/company/job-form.validation';
 import { useToast } from '../../../../shared/toast/use-toast';
 import { jobService } from '../../../../services/api-services/jobService';
 import { useNavigate } from 'react-router-dom';
 import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
+import type { RootState } from '../../../../redux/store';
+import { updateUser } from '../../../../redux/slices/auth.slice';
 
 type FormType = {
   title: string;
@@ -83,10 +86,12 @@ export const useJobs = (
   onClose?: () => void,
   onUpdate?: (job: JobDetailsDto) => Promise<void>
 ) => {
+  const dispatch=useDispatch()
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormType>(initialData);
   const [error, setError] = useState<ErrorType>(initalError);
+  const {user}=useSelector((state:RootState)=>state.auth)
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -191,6 +196,85 @@ export const useJobs = (
       return;
     }
   };
+
+   const saveJobHandle = async (jobId: string) => {
+      if (!jobId) return;
+      if (!user) {
+        showToast({
+          msg: 'Please login to save Job',
+          type: 'error',
+        });
+        return;
+      }
+      if (user.role !== 'candidate') {
+        showToast({
+          msg: 'You are not allowed to Save job',
+          type: 'error',
+        });
+        return;
+      }
+      try {
+        const data = await jobService.saveJob(jobId);
+        console.log('after saving', data);
+        dispatch(
+          updateUser({
+            savedJobs: data.savedJobs || [...user.savedJobs, jobId],
+          })
+        );
+  
+        showToast({
+          msg: data.message,
+          type: 'success',
+        });
+      } catch (error: any) {
+        showToast({
+          msg: error?.response?.data.message || error.message,
+          type: 'error',
+        });
+      }
+    };
+  
+    const unSaveJobHandle = async (jobId: string) => {
+      console.log('from unsave fun');
+  
+      if (!jobId) return;
+      if (!user) {
+        showToast({
+          msg: 'Please login to save Job',
+          type: 'error',
+        });
+        return;
+      }
+      try {
+        const data = await jobService.unsaveJob(jobId);
+        console.log('after unsaving', data);
+        dispatch(
+          updateUser({
+            savedJobs: (user?.savedJobs || []).filter(
+              (id: string) => id !== jobId
+            ),
+          })
+        );
+        showToast({
+          msg: data.message,
+          type: 'success',
+        });
+        // if (mode == 'saved') {
+        //   const updated = jobs.filter((job) => job.id !== jobId);
+        //   setJobs(updated);
+        //   if (!updated.length) {
+        //     console.log(updated.length);
+  
+        //     setActiveJob(null);
+        //   }
+        // }
+      } catch (error: any) {
+        showToast({
+          msg: error?.response?.data.message || error.message,
+          type: 'error',
+        });
+      }
+    };
   return {
     formData,
     handleSubmit,
@@ -199,5 +283,6 @@ export const useJobs = (
     error,
     setError,
     handleSubmitForm,
+    saveJobHandle,unSaveJobHandle
   };
 };

@@ -101,7 +101,12 @@ import { UserDistributionUsecase } from '../../applications/useCases/admin/dasho
 import { ApplcationDistributionUsecase } from '../../applications/useCases/admin/dashoard/application-distributiion.usecase';
 import { InterviewDataUsecase } from '../../applications/useCases/admin/dashoard/interview-data.usecase';
 import { GetPendingCompaniesUsecase } from '../../applications/useCases/admin/dashoard/pending-companies.usecase';
-import { GetReportedJobsUsecase, IGetReportedJobsUsecase } from '../../domain/get-reported-jobs.usecase';
+import { GetReportedJobsUsecase } from '../../domain/get-reported-jobs.usecase';
+import { CandidateDashboardStatusDataUsecase } from '../../applications/useCases/candidate/dashboard/status-card.usecase';
+import { CandidateDashboardAppDataUsecase } from '../../applications/useCases/candidate/dashboard/get-dashboard-appData.usecase';
+import { UpcomingInterviewUsecase } from '../../applications/useCases/interviews/get-upcoming-interview.usecase';
+import { DashboardProfileDataUsecase } from '../../applications/useCases/candidate/dashboard/get-dashboard-profile-data.usecase';
+import { RecomentedJobUsecase } from '../../applications/useCases/candidate/dashboard/recomented-jobs.usecase';
 
 //==Controllers
 //==Controllers
@@ -131,6 +136,12 @@ import { AdminJobController } from '../../presentation/http/controllers/admin/ad
 import { ChatroomController } from '../../presentation/http/controllers/chatroom.controller';
 import { MessageController } from '../../presentation/http/controllers/message.controller';
 import { AdminDashboardController } from '../../presentation/http/controllers/admin/admin-dashboard.controller';
+import { CandidateDashboardController } from '../../presentation/http/controllers/candidateDashboard.controller';
+
+//==repsitories
+//==repsitories
+//==repsitories
+//==repsitories
 //==repsitories
 
 import { UserRepository } from '../repositories/user.repository';
@@ -567,6 +578,12 @@ const applcationDistributionUsecase = new ApplcationDistributionUsecase(
 const interviewDataUsecase = new InterviewDataUsecase(interviewRepository);
 const getPendingCompaniesUsecase=new GetPendingCompaniesUsecase(companyRepository)
 const getReportedJobsUsecase=new GetReportedJobsUsecase(jobRepository)
+const candidateDashboardStatusDataUsecase=new CandidateDashboardStatusDataUsecase(applicationRepository,userRepository,jobRepository,interviewRepository,notificationRepository)
+const candidateDashboardAppDataUsecase=new CandidateDashboardAppDataUsecase(applicationRepository)
+const upcomingInterviewUsecase=new UpcomingInterviewUsecase(interviewRepository,companyRepository)
+const dashboardProfileDataUsecase=new DashboardProfileDataUsecase(userRepository,companyRepository)
+const recomentedJobUsecase=new RecomentedJobUsecase(jobRepository,userRepository,skillRepository,applicationRepository)
+
 //controller
 //controller
 //controller
@@ -711,3 +728,5 @@ export const adminDashboarController = new AdminDashboardController(
   applcationDistributionUsecase,
   interviewDataUsecase,getPendingCompaniesUsecase,getReportedJobsUsecase
 );
+
+export const candidateDashboardController=new CandidateDashboardController(candidateDashboardStatusDataUsecase,candidateDashboardAppDataUsecase,upcomingInterviewUsecase,dashboardProfileDataUsecase,recomentedJobUsecase)

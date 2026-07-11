@@ -146,7 +146,7 @@ export class AdminDashboardController {
   );
 
   getInterviewData = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from interview distribution');
+  //  console.log('from interview distribution');
     const user = req.user;
 
     if (!user)
@@ -168,7 +168,7 @@ export class AdminDashboardController {
   });
 
   getPendingCompanies = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from interview distribution');
+    //console.log('from interview distribution');
     const user = req.user;
 
     if (!user)
@@ -189,7 +189,7 @@ export class AdminDashboardController {
   });
 
   getReportedJobs = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from interview distribution');
+    //console.log('from interview distribution');
     const user = req.user;
 
     if (!user)
@@ -199,7 +199,7 @@ export class AdminDashboardController {
       );
 
     const jobs = await this._getReportedJobsUsecase.execute(user.role);
-    console.log('controlle pending jobs',jobs);
+   // console.log('controlle pending jobs',jobs);
     
 
     return res.status(statusCodes.OK).json({

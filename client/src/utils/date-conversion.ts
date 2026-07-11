@@ -50,6 +50,16 @@ export function convertDateStringToInputDate(dateStr: string): string {
   return `${year}-${months[monthName]}-${day.padStart(2, '0')}`;
 }
 
+export const formatCurrentDate = (date:Date): string => {
+  const today = new Date(date);
+  const formatted = today.toLocaleDateString('en-Us', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+  return formatted;
+};
+
 export function to12Hour(time: string): string {
   let [hours, minutes] = time.split(':').map(Number);
 
@@ -60,3 +70,11 @@ export function to12Hour(time: string): string {
 
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${ampm}`;
 }
+
+export const getGreeting = (): string => {
+  const hour = new Date().getHours();
+
+  if (hour < 12) return 'GoodMorning';
+  else if (hour < 17) return 'Good afternoon';
+  else return 'Good evening';
+};

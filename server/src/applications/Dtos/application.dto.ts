@@ -71,6 +71,8 @@ export type ApplicationFilterDto = {
   limit?: number;
   sortBy?: string;
   jobType?: JobType;
+  startDate?:Date
+  endDate?:Date
 };
 export type TimelineStatus = 'done' | 'active' | 'pending';
 

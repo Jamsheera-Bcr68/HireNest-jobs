@@ -8,6 +8,8 @@ import InterviewsPage from '../../presentation/pages/user/candidate/InterviewsPa
 import { ChatPage } from '../../presentation/pages/user/Chatpage';
 import { CANDIDATE_ROUTES } from '../routes';
 import Chat from '../../presentation/pages/user/Chat';
+import CandidateDashboardPage from '../../presentation/pages/user/candidate/CandidateDashboardPage';
+import CandidateDashboard1 from '../../presentation/components/candidate/dashboard/Sample';
 
 export const CandidateRoutes = () => {
   return (
@@ -16,7 +18,11 @@ export const CandidateRoutes = () => {
         <Route path={CANDIDATE_ROUTES.PROFILE} element={<CandidateProfile />} />
         <Route
           path={CANDIDATE_ROUTES.DASHBOARD}
-          element={<CandidateProfile />}
+          element={<CandidateDashboardPage />}
+        />
+        <Route
+          path='/dash1'
+          element={<CandidateDashboard1 />}
         />
         <Route path={CANDIDATE_ROUTES.JOBS} element={<SavedJobs />} />
         <Route

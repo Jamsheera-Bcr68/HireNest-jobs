@@ -7,6 +7,7 @@ import {
   ApplicationListDto,
 } from '../../applications/dtos/application.dto';
 import { IndustryType } from '../types/company-profile.types';
+import { ApplicationStatusEnum } from '../enums/status.enum';
 export interface IApplicationRepository extends IBaseRepository<Application> {
   findByUserIdAndJobId(
     userId: string,
@@ -21,4 +22,5 @@ export interface IApplicationRepository extends IBaseRepository<Application> {
 
    count(filter:ApplicationFilterDto):Promise<number>
    getIndustryWiseApplcationCount():Promise<{_id:IndustryType,count:number}[]>
+   getCountByStatus(userId:string):Promise<{status:ApplicationStatusEnum,count:number}[]>
 }

@@ -88,7 +88,7 @@ function JobListingContainer({ mode }: Props) {
 
   const user = useSelector((state: StateType) => state.auth.user);
   const dispatch = useDispatch();
-const appliedJobs=user.appliedJobs
+
   const [reportForm, setReportForm] =
     useState<ReportFormType>(initialReportForm);
 

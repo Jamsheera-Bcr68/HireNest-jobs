@@ -34,6 +34,7 @@ export type AggregatedInterviewDto = {
   isRescheduleRequested: boolean;
   status: InterviewStatusEnum;
   scheduledAt: Date;
+  link?:string
 };
 
 export type interviewDto = {
@@ -63,16 +64,17 @@ export type InterviewStatsCardType = {
 };
 
 export type InterviewFilterDto = {
-  candidateId: string;
+  candidateId?: string;
   dateRange?: { startDate: string; endDate: string };
   search?: string;
   status?: InterviewStatusEnum;
   companyId?: string;
+  type?:'upcoming'
   page?: number;
   limit?: number;
   sortBy?: string;
   mode?: InterviewMode;
-  jobId: string;
+  jobId?: string;
   result?: InterviewResult;
 };
 

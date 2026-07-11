@@ -5,7 +5,7 @@ import {
   experienceFormValidator,
 } from '../middleweres/validatores/profile-validator';
 import { authValidator } from '../middleweres/auth-validator';
-import { tokenService } from '../../../infrastructure/config/di';
+import { tokenService,candidateDashboardController } from '../../../infrastructure/config/di';
 import {
   candidateProfileController,
   userControlller,
@@ -116,6 +116,31 @@ router.get(
   API_END_POINTS.GET_RESUMES,
   authValidator(tokenService),
   candidateProfileController.getResume
+);
+router.get(
+  API_END_POINTS.STATUS_CARD_DATA,
+  authValidator(tokenService),
+  candidateDashboardController.statuscardData
+);
+router.get(
+  API_END_POINTS.CANDIDATE_DASHBOARD.APP_DATA,
+  authValidator(tokenService),
+  candidateDashboardController.getAppData
+);
+router.get(
+  API_END_POINTS.CANDIDATE_DASHBOARD.UPCOMING_INTERVIEW,
+  authValidator(tokenService),
+  candidateDashboardController.getUpcomingInterview
+);
+router.get(
+  API_END_POINTS.CANDIDATE_DASHBOARD.PROFILE_DATA,
+  authValidator(tokenService),
+  candidateDashboardController.getProfileData
+);
+router.get(
+  API_END_POINTS.CANDIDATE_DASHBOARD.RECOMENTED_JOBS,
+  authValidator(tokenService),
+  candidateDashboardController.getRecomentedJobs
 );
 
 router.get(API_END_POINTS.HOME, userControlller.getHomeData);

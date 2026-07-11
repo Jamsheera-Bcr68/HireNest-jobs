@@ -12,19 +12,15 @@ import SkillsPage from '../presentation/pages/admin/Skills.tsx';
 import ApplicationsPage from '../presentation/pages/admin/ApplicationsPage.tsx';
 import AppDetailsPage from '../presentation/pages/admin/AppDetailsPage.tsx';
 import InterviewsPage from '../presentation/pages/admin/InterviewsPage.tsx';
-import AdminDashboard1 from '../presentation/components/admin/dashboard/sample.tsx';
+
 import { ADMIN_ROUTES } from './routes.ts';
 import AdminDashboard from '../presentation/pages/admin/AdminDashboard.tsx';
-import AdminDashboard2 from '../presentation/components/admin/dashboard/Dashbord2.tsx';
+
 export const AdminRoutes = () => {
-
-
   return (
     <Routes>
       <Route path="/" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
-        <Route path='/dash2' element={<AdminDashboard2 />} />
-        <Route path='/dash1' element={<AdminDashboard1 />} />
 
         <Route path={ADMIN_ROUTES.COMPANIES} element={<Companies />} />
         <Route

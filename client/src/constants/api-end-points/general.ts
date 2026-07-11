@@ -7,9 +7,10 @@ export const API_ENDPOINTS = {
   SKILL: (id: string) => `/skills/${id}`,
 
   APPLY_JOB: (id: string) => `/applications/${id}`,
-  CANDIDATE_APPLICATON_STATUS: (jobId:string)=>`/applications/applications-status/${jobId}`,
+  CANDIDATE_APPLICATON_STATUS: (jobId: string) =>
+    `/applications/applications-status/${jobId}`,
   APPLICATIONS: '/applications',
-  JOB_APPLICATIONS: (jobId:string)=>`/jobs/${jobId}/applications`,
+  JOB_APPLICATIONS: (jobId: string) => `/jobs/${jobId}/applications`,
   APPLICATION: (id: string) => `/applications/${id}`,
   COMPANY_DATA: (id: string) => `/company/${id}`,
   COMPANY_LOGO: '/company/logo',
@@ -29,19 +30,25 @@ export const API_ENDPOINTS = {
 
   NOTIFICATIONS: `/notifications`,
   NOTIFICATIONS_COUNT: `/notifications/not-read-count`,
-  NOTIFICATION:(id:string)=>`/notifications/${id}`,
-  CHATROOMS:'/chatrooms',
-  MESSAGES:(chatroomId:string)=>`/chatrooms/${chatroomId}/messages`,
-  UNREAD_MESSAGE_COUNT:'/messages/unread-count',
-  ADMIN_DASHBOARD:{
-    STATUSCARD:'/admin/dashboard/cards',
-    COMPANY_JOB_CHARTDATA:'/admin/dashboard/company-job-chartdata',
-    JOBCOUNT_BY_INDUSTRY:'/admin/dashboard/industry-jobCount',
-    USER_DISTRIBUTION:'/admin/dashboard/user-distribution',
-    APP_DATA:'/admin/dashboard/application-distribution',
-    INTERVIEW_DATA:'/admin/dashboard/interview-data',
-     PENDING_COMPANIES:'/admin/dashboard/pending-companies',
-     REPORTED_JOBS:'/admin/dashboard/reported-jobs'
-  }
- 
+  NOTIFICATION: (id: string) => `/notifications/${id}`,
+  CHATROOMS: '/chatrooms',
+  MESSAGES: (chatroomId: string) => `/chatrooms/${chatroomId}/messages`,
+  UNREAD_MESSAGE_COUNT: '/messages/unread-count',
+  ADMIN_DASHBOARD: {
+    STATUSCARD: '/admin/dashboard/cards',
+    COMPANY_JOB_CHARTDATA: '/admin/dashboard/company-job-chartdata',
+    JOBCOUNT_BY_INDUSTRY: '/admin/dashboard/industry-jobCount',
+    USER_DISTRIBUTION: '/admin/dashboard/user-distribution',
+    APP_DATA: '/admin/dashboard/application-distribution',
+    INTERVIEW_DATA: '/admin/dashboard/interview-data',
+    PENDING_COMPANIES: '/admin/dashboard/pending-companies',
+    REPORTED_JOBS: '/admin/dashboard/reported-jobs',
+  },
+  CANDIDATE_DASHBOARD: {
+    STATUSCARD: '/candidate/dashboard/cards',
+    PROFILE_DATA: '/candidate/dashboard/profile-data',
+    APP_DATA: '/candidate/dashboard/application-details',
+    RECOMENTED_JOBS: '/candidate/dashboard/recomented-jobs',
+    UPCOMING_INTERVIEW: '/candidate/dashboard/upcoming-intrview',
+  },
 };

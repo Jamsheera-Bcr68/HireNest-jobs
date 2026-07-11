@@ -102,7 +102,7 @@ has been confirmed by ${data.name}.`,
     reason?: string;
   }) => {
     let msg: string;
-    if (status == SkillStatus.APPROVED) {
+    if (data.status == SkillStatus.APPROVED) {
       msg = `Your requested skill ${data.skillName} is ${data.status} by the admin`;
     } else
       msg = `Your requested skill ${data.skillName} is ${data.status} by the admin for the reason ${data.reason}`;

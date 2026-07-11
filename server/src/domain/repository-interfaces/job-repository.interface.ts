@@ -35,4 +35,5 @@ export interface IJobRepository extends IBaseRepository<Job> {
   countBetweenTheDates(data: JobCountFilter): Promise<number>;
   getMonthlyJobCount(): Promise<chartDataDto[]>;
   postCountByIndustry(): Promise<{ _id: IndustryType; count: number }[]>;
+  savedJobCount(jobs: string[],filter:Partial<Job>): Promise<number>;
 }

@@ -177,7 +177,7 @@ type AppChartProps = {
 };
 
 export function ApplicationByIndustry({ appData }: AppChartProps) {
- // console.log('chart app data', appData);
+  console.log('chart app data', appData);
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6">

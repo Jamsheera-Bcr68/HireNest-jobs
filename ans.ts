@@ -78,4 +78,4 @@
 
 
     const now = new Date();
-    console.log( new Date(now.getFullYear(), now.getMonth() - 1, 1));
+  //  console.log( new Date(now.getFullYear(), now.getMonth() - 1, 1));

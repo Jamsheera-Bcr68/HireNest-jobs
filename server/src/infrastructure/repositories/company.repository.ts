@@ -258,7 +258,7 @@ export class CompanyRepository
       { $sort: { _id: 1 } },
     ]);
 
-    console.log('company data', companyData);
+   // console.log('company data', companyData);
     return companyData;
   }
 

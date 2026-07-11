@@ -51,3 +51,13 @@ export function percentageCalculator(
 export function getPercentsgeOfTotal(total: number, value: number): number {
   return Number(((value / total) * 100).toFixed(2))
 }
+
+export const getDayAndDate = (date:Date): string => {
+  const today = new Date(date);
+  const formatted = today.toLocaleDateString('en-Us', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+  return formatted;
+};
