@@ -3,10 +3,10 @@ import { AppError } from '../../../../domain/errors/app-error';
 import { IApplicationRepository } from '../../../../domain/repository-interfaces/application.repository.interface';
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
-import { IDashboardChartDataUsecase } from '../../../interfaces/dashboard/chart-data.usecase.interface';
+import { IDashboardDataListUsecase } from '../../../interfaces/dashboard/dashboard-data-list.usecase.interface';
 import { ApplcationDistributionChartData } from '../../../types/admin-dashboard.types';
 
-export class ApplcationDistributionUsecase implements IDashboardChartDataUsecase<ApplcationDistributionChartData> {
+export class ApplcationDistributionUsecase implements IDashboardDataListUsecase<ApplcationDistributionChartData> {
   // constructor(private _applcationDistributionUsecase:IDashboardChartDataUsecase<ApplcationDistributionChartData>){}
   constructor(private _appliationRepository: IApplicationRepository) {}
 

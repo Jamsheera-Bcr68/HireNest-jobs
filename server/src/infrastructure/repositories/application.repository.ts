@@ -224,10 +224,13 @@ export class ApplicationRepository
               category: '$company.industry',
               status: '$status',
               logo: '$company.logoUrl',
+              
               applicant: {
                 name: '$applicant.name',
                 email: '$applicant.email',
                 address: '$applicant.address',
+                
+imageUrl: '$applicant.imageUrl',
               },
               candidateId: { $toString: '$candidateId' },
             },
@@ -314,14 +317,73 @@ export class ApplicationRepository
     return appData;
   }
 
-  async getCountByStatus(
-    userId: string
-  ): Promise<{ status: ApplicationStatusEnum; count: number }[]> {
+  async getCountByStatus(filter: {
+    companyId?: string;
+    candidateId: string;
+  }): Promise<{ status: ApplicationStatusEnum; count: number }[]> {
+    const { candidateId, companyId } = filter;
+
+
+    const matchStage: PipelineStage.Match['$match'] = {};
+    if (candidateId)
+      matchStage.candidateId = new mongoose.Types.ObjectId(candidateId);
+    if (companyId)
+      matchStage.companyId = new mongoose.Types.ObjectId(companyId);
     const appDate = await this._model.aggregate([
-      { $match: { candidateId: new mongoose.Types.ObjectId(userId) } },
+      { $match: matchStage },
       { $group: { _id: '$status', count: { $sum: 1 } } },
     ]);
 
     return appDate.map((data) => ({ status: data._id, count: data.count }));
+  }
+
+  async monthlyAppCount(filter: {
+    companyId?: string;
+  }): Promise<{ month: number; count: number }[]> {
+    const { companyId } = filter;
+    console.log('repository: ', companyId);
+
+    const matchStage: PipelineStage.Match['$match'] = {};
+    if (companyId)
+     matchStage.companyId = new mongoose.Types.ObjectId(companyId);
+    const today = new Date();
+    const startOfyear = new Date(today.getFullYear(), 0, 1);
+    console.log('startOfyear ', startOfyear);
+
+    const appData: { _id: number; count: number }[] =
+      await this._model.aggregate([
+        {
+          $match: {
+            ...matchStage,
+            appliedAt: { $gte: startOfyear, $lte: today },
+          },
+        },
+        { $group: { _id: { $month: '$appliedAt' }, count: { $sum: 1 } } },
+        { $sort: { _id: -1 } },
+      ]);
+    console.log('from repo appData ', appData);
+
+    return appData.map((app) => ({ month: app._id, count: app.count }));
+  }
+
+  async getHiresPerMOnth(filter: {
+    companyId?: string;
+  }): Promise<{ month: number; count: number }[]> {
+    const { companyId } = filter;
+    const today = new Date();
+    const startOfyear = new Date(today.getFullYear(), 0, 1);
+    const matchStage: PipelineStage.Match['$match'] = {
+      status: ApplicationStatusEnum.HIRED,
+      createdAt: { $gte: startOfyear.getDate, $lte: new Date() },
+    };
+    if (companyId)
+      matchStage.companyId = new mongoose.Types.ObjectId(companyId);
+    const appData: { _id: number; count: number }[] =
+      await this._model.aggregate([
+        { $match: matchStage },
+        { $group: { _id: { $month: '$appliedAt' }, count: { $sum: 1 } } },
+        { $sort: { _id: -1 } },
+      ]);
+    return appData.map((app) => ({ month: app._id, count: app.count }));
   }
 }

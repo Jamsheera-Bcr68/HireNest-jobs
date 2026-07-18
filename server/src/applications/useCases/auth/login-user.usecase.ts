@@ -29,7 +29,10 @@ export class LoginUseCase implements IUserLoginUseCase {
     this._companyRepository = companyRepository;
     this._applicationRepository = applicationRepository;
   }
+
+
   async execute(input: IloginInput): Promise<loginOutPutDto> {
+    
     const user: User | null = await this._userRepository.findByEmail(
       input.email
     );

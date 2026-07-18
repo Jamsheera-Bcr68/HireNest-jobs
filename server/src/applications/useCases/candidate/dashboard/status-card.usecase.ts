@@ -46,7 +46,7 @@ export class CandidateDashboardStatusDataUsecase implements IDashboardCardDataUs
     });
 
     const appStatusData =
-      await this._applicationRepository.getCountByStatus(userId);
+      await this._applicationRepository.getCountByStatus({candidateId:userId});
 
     const appUnderReview = appStatusData.find(
       (data) => data.status == ApplicationStatusEnum.REVIEWED

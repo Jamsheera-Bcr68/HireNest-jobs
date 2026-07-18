@@ -209,11 +209,15 @@ export class JobRepository
       case 'vacancy-high-low':
         sortStage = { vacancyCount: -1 };
         break;
+      case 'app-count':
+        sortStage = { appCount: -1 };
+        break;
 
       default:
         sortStage = { createdAt: -1 };
     }
 
+    
     let {
       skills,
       industry,
@@ -221,7 +225,7 @@ export class JobRepository
       experience,
       salary,
       companyId,
-      status,
+      status='active',
       appliedJobIds,
       ...rest
     } = filter;
@@ -305,6 +309,19 @@ export class JobRepository
       {
         $unwind: '$companyData',
       },
+
+      //
+       {
+        $lookup: {
+          from: 'applications',
+          localField: '_id',
+          foreignField: 'jobId',
+          as: 'applications',
+        },
+      },
+
+      
+      //
     ];
 
     if (industry && industry?.length) {
@@ -359,6 +376,8 @@ export class JobRepository
               mode: 1,
               skills: 1,
               reportDetails: 1,
+             
+              appCount:{$size:'$applications'},
               companyName: '$companyData.companyName',
               companyLogo: '$companyData.logoUrl',
               location: '$companyData.address',
@@ -656,5 +675,11 @@ export class JobRepository
       lastDate: { $gte: new Date() },
     });
     return savedJobs.length;
+  }
+
+  async closingcount(filter: { companyId: string; status: StatusEnum; endDate: Date; }): Promise<number> {
+    const {companyId,status,endDate}=filter
+    const count=await this._model.countDocuments({companyId:new mongoose.Types.ObjectId(companyId),status:status,lastDate:{$gte:new Date(endDate)}})
+    return count
   }
 }

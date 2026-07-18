@@ -40,6 +40,7 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
       sortBy
     );
 
+
     const activeSkills = await this.skillRepository.getAll({
       status: SkillStatus.APPROVED,
     });
@@ -54,6 +55,7 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
       };
     });
 
+    console.log('from getAll jobs',modifiedJobs);
     return { jobs: modifiedJobs, totalDocs };
   }
 }

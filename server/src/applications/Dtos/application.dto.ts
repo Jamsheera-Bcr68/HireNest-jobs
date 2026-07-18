@@ -50,6 +50,7 @@ export type AggregatedApplication = {
     name:string,
     email:string,
     address:IAddress
+    imageUrl:string
   }
 };
 

@@ -35,6 +35,7 @@ export type AggregatedInterviewDto = {
   status: InterviewStatusEnum;
   scheduledAt: Date;
   link?:string
+  candidateImageUrl:string
 };
 
 export type interviewDto = {
@@ -69,6 +70,8 @@ export type InterviewFilterDto = {
   search?: string;
   status?: InterviewStatusEnum;
   companyId?: string;
+  isRescheduleRequested?:boolean
+  isConfirmed?:boolean,
   type?:'upcoming'
   page?: number;
   limit?: number;

@@ -34,7 +34,7 @@ export const applicationSchema = new mongoose.Schema<IApplicationDocument>({
   interviewSheduledAt: { type: String },
   offeredAt: { type: String },
   rejectedAt: { type: String },
-});
+},{ timestamps: true });
 
 export const applicationModel = mongoose.model<IApplicationDocument>(
   'Application',

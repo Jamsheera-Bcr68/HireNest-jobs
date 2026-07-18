@@ -15,7 +15,9 @@ export enum ApplicationStatusEnum {
   SHORT_LISTED = 'shortListed',
   REJECTED = 'rejected',
   INTERVIEW_SCHEDULED = 'interviewScheduled',
+  INTERVIEW_COMPLETED = 'interviewCompleted',
   OFFERED = 'offered',
+  HIRED='hired',
   WITHDRAWN = 'withdrawn',
 }
 export enum InterviewStatusEnum {

@@ -42,6 +42,7 @@ export class UserRepository
     const filter = { email };
 
     const user = await this._model.findOne(filter);
+ 
     //  console.log('user from repository ', email);
 
     if (!user) return null;

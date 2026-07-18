@@ -5,11 +5,11 @@ import { IJobRepository } from '../../../../domain/repository-interfaces/job-rep
 import { chartDataDto } from '../../../../domain/types/chart.data.type';
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
-import { IDashboardChartDataUsecase } from '../../../interfaces/dashboard/chart-data.usecase.interface';
+import { IDashboardDataListUsecase } from '../../../interfaces/dashboard/dashboard-data-list.usecase.interface';
 import { monthNames } from '../../../types/admin-dashboard.types';
 import { AdminCompanyJobChartDto } from '../../../types/admin-dashboard.types';
 
-export class AdminCompanyJobChartDataUsecase implements IDashboardChartDataUsecase<AdminCompanyJobChartDto> {
+export class AdminCompanyJobChartDataUsecase implements IDashboardDataListUsecase<AdminCompanyJobChartDto> {
   constructor(
     private _companyRepository: ICompanyRepository,
     private _jobRepository: IJobRepository

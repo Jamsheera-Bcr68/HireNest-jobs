@@ -7,7 +7,11 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { AppError } from '../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
-import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
+import {
+  ApplicationStatusEnum,
+  InterviewStatusEnum,
+} from '../../../domain/enums/status.enum';
+import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 
 export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<
   Interview,
@@ -15,7 +19,8 @@ export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<
 > {
   constructor(
     private _interviewRepository: IInterviewRepository,
-    private _companyRepositort: ICompanyRepository
+    private _companyRepository: ICompanyRepository,
+    private _applicationRepository: IApplicationRepository
   ) {}
   async execute(
     id: string,
@@ -35,7 +40,7 @@ export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<
         statusCodes.UNAUTHERIZED
       );
 
-    const company = await this._companyRepositort.findByUserId(userId);
+    const company = await this._companyRepository.findByUserId(userId);
     if (!company)
       throw new AppError(
         generalMessages.errors.NOT_FOUND('Company'),
@@ -46,10 +51,18 @@ export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-
-    await this._interviewRepository.update(id, {
-      ...data,
-      status: InterviewStatusEnum.COMPLETED,
-    });
+    await Promise.all([
+      this._applicationRepository.update(interview.applicationId, {
+        status: ApplicationStatusEnum.INTERVIEW_COMPLETED,
+      }),
+      this._interviewRepository.update(id, {
+        ...data,
+        status: InterviewStatusEnum.COMPLETED,
+      }),
+    ]);
+    // await this._interviewRepository.update(id, {
+    //   ...data,
+    //   status: InterviewStatusEnum.COMPLETED,
+    // });
   }
 }

@@ -114,7 +114,7 @@ export class InterviewRepository
   async getAllInterviews(
     filter: Partial<InterviewFilterDto>
   ): Promise<{ interviews: AggregatedInterviewDto[]; totalDocs: number }> {
-    // console.log('filter from repository', filter);
+    console.log('filter from repository', filter);
 
     const {
       companyId,
@@ -229,6 +229,7 @@ export class InterviewRepository
               scheduledAt: '$scheduledAt',
               isConfirmed: '$isConfirmed',
               isRescheduleRequested: '$isRescheduleRequested',
+              candidateImageUrl:'$candidate.imageUrl',
             },
           },
 

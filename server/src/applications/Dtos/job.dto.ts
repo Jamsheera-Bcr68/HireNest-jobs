@@ -58,11 +58,13 @@ export interface JobCardDto {
   title: string;
   id: string;
   mode: WorkMode;
+  createdAt:Date,
+  appCount?:number
   min_salary: string;
   jobType: JobType;
   skills: string[];
   max_salary: string;
-  postedDate: Date;
+ // postedDate: Date;
   lastDate: Date;
   experience: ExperienceType;
   status: StatusEnum;
@@ -147,6 +149,7 @@ export type JobReportType = {
   reportedDate?: Date;
 };
 export interface JobCountFilter {
+  companyId?:string
   startDate?: Date;
   endDate?: Date;
   status?: StatusEnum;

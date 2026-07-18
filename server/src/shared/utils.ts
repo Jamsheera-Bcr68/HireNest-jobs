@@ -31,6 +31,15 @@ export const getTime = (data: Date): string => {
   return formatted;
 };
 
+export const formatDate = (date:Date): string => {
+  const today = new Date(date);
+  const formatted = today.toLocaleDateString('en-Us', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+  return formatted;
+};
 export function percentageCalculator(
   current: number,
   prev: number

@@ -249,14 +249,8 @@ export default function AdminDashbordContainer() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {statusData.map((card, i) => {
               return (
-                <DashboardStatCard
-                  key={i}
-                  icon={card.icon}
-                  label={card.label}
-                  value={card.value}
-                  delta={card.delta}
-                  positive={card.positive}
-                  accent={card.classname}
+                <DashboardStatCard card={card}
+                 
                 />
               );
             })}

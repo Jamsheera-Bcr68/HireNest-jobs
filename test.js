@@ -221,40 +221,77 @@
 //   }
 // }
 
-interface INotification{
-  send(message:string):void
+// interface INotification{
+//   send(message:string):void
+// }
+// class Notification {
+//   send(message: string): void {
+//     console.log(`Sending: ${message}`);
+//   }
+// }
+
+// class EmailNotification implements INotification {
+//   send(message: string): void {
+//     console.log(`Email sent: ${message}`);
+//   }
+// }
+
+// class PushNotification extends INotification {
+//   send(message: string): void {
+//     console.log(`Push sent: ${message}`);
+//   }
+// }
+
+
+
+// function notifyAll(
+//   notifications: Notification[],
+//   message: string
+// ) {
+//   for (const notification of notifications) {
+//     notification.send(message);
+//   }
+// }
+
+// notifyAll([
+//   new EmailNotification(),
+//   new PushNotification(),
+
+// ], "Server is down!");
+const data = {
+    "name": "Alice",
+    "city": "Palakkad",
+    "country": "India",
+    "profession": "Software Engineer",
+    "age": 22,
+    "salary": 50000
 }
-class Notification {
-  send(message: string): void {
-    console.log(`Sending: ${message}`);
-  }
+
+// let res=Object.values(data)
+// let longest=''
+// for(let val of res){
+//   if(typeof (val)!=='number'){
+//       longest=longest.length>val.length?longest:val
+//   }  
+// }
+
+// console.log('longest',longest);
+
+
+
+// for(let key in data){
+//     if(data[key]===longest){
+//        delete data[key] 
+//         break
+//     }
+// }
+// console.log(data)
+
+
+for(let key in data){
+    if(typeof data[key]==='number'){
+        data[key]=data[key]+data[key]*(0.1)
+    }
 }
 
-class EmailNotification implements INotification {
-  send(message: string): void {
-    console.log(`Email sent: ${message}`);
-  }
-}
-
-class PushNotification extends INotification {
-  send(message: string): void {
-    console.log(`Push sent: ${message}`);
-  }
-}
-
-
-
-function notifyAll(
-  notifications: Notification[],
-  message: string
-) {
-  for (const notification of notifications) {
-    notification.send(message);
-  }
-}
-
-notifyAll([
-  new EmailNotification(),
-  new PushNotification(),
-
-], "Server is down!");
+console.log(data);

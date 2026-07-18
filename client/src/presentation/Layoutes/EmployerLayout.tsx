@@ -17,7 +17,7 @@ export const EmployerLayout = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   let activeItem = menuItems.find((item) => currentPath.startsWith(item.path));
-  console.log('currentPath,activeItem', currentPath, activeItem);
+  //console.log('currentPath,activeItem', currentPath, activeItem);
 
   if (!activeItem && currentPath.startsWith('/company/applications')) {
     activeItem = menuItems.find((item) => item.path === '/company/jobs');

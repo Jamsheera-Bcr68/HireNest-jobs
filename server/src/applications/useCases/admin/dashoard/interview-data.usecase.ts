@@ -4,10 +4,10 @@ import { IInterviewRepository } from '../../../../domain/repository-interfaces/i
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { getPercentsgeOfTotal } from '../../../../shared/utils';
-import { IDashboardChartDataUsecase } from '../../../interfaces/dashboard/chart-data.usecase.interface';
+import { IDashboardDataListUsecase } from '../../../interfaces/dashboard/dashboard-data-list.usecase.interface';
 import { InterviewData } from '../../../types/admin-dashboard.types';
 
-export class InterviewDataUsecase implements IDashboardChartDataUsecase<InterviewData> {
+export class InterviewDataUsecase implements IDashboardDataListUsecase<InterviewData> {
   constructor(private _interviewRepository: IInterviewRepository) {}
 
   async execute(userId: string, role: UserRole): Promise<InterviewData[]> {

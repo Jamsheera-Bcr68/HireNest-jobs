@@ -9,7 +9,8 @@ export type ApplicationStatusType =
   | 'shortListed'
   | 'rejected'
   | 'interviewScheduled'
-  | 'withdrawn';
+  | 'interviewCompleted'
+  | 'withdrawn'|'hired'
 
 export type ApplicationDto = {
   id: string;

@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
 
   res.send('I am from your new project');
 });
+
 app.use('/', routes);
 app.use(errorHandler);
 export default app;

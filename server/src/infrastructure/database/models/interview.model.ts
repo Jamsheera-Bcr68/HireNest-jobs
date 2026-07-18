@@ -54,7 +54,7 @@ export const InterviewSchema = new mongoose.Schema<IInterviewDocument>({
   cancelledBy: { type: String, enum: Object.values(UserRole) },
   score: { type: Number },
   feedback: { type: String },
-  createdAt: { type: Date },
+  createdAt: { type: Date,default:new Date() },
   notes: { type: String },
   applicationId: { type: mongoose.Types.ObjectId },
   result: { type: String, enum: Object.values(InterviewResult) },
@@ -65,7 +65,7 @@ export const InterviewSchema = new mongoose.Schema<IInterviewDocument>({
   isRescheduleRequested: { type: Boolean, default: false },
   reasonForCancel: { type: String },
   reasonForRescheduleRequest: { type: String },
-});
+},{ timestamps: true });
 
 export const interviewModel = mongoose.model<IInterviewDocument>(
   'Interview',

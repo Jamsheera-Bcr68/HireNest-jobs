@@ -9,11 +9,10 @@ import { useEffect, useState } from 'react';
 import NotificationModal from './Notifications';
 import { useSelector, useDispatch } from 'react-redux';
 import { type RootState } from '../../../redux/store';
-import { addChatroom, setChatrooms } from '../../../redux/slices/chatroom.slice';
+import { setChatrooms } from '../../../redux/slices/chatroom.slice';
 import { setNotifications } from '../../../redux/slices/notification.slice';
 
 import { chatService } from '../../../services/api-services/chat.service';
-import { ur } from 'zod/locales';
 
 const Header = ({ title }: { title?: string }) => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
@@ -43,7 +42,7 @@ const Header = ({ title }: { title?: string }) => {
   useEffect(() => {
     const getChatrooms = async () => {
       const data = await chatService.getConversations();
-      console.log('chatroms afrer getting chatroom',data)
+      console.log('chatroms afrer getting chatroom', data);
       dispatch(setChatrooms(data.chatrooms));
     };
 
@@ -51,12 +50,7 @@ const Header = ({ title }: { title?: string }) => {
   }, []);
 
   const count = notifications?.filter((n) => n.isRead === false).length;
-  const unreadCount = chatrooms.reduce(
-    (acc, ch) => acc + ch.unreadCount,
-    0
-  );
-
-  
+  const unreadCount = chatrooms.reduce((acc, ch) => acc + ch.unreadCount, 0);
 
   const handleNotificationClick = () => {
     setNotificationOpen(true);
@@ -109,6 +103,8 @@ const Header = ({ title }: { title?: string }) => {
     );
   };
 
+  const showDashboardButton =
+    user && ['company', 'candidate'].includes(user.role);
   return (
     <header className="sticky top-0 z-50  shadow-md">
       <nav className="container header  mx-auto px-4 sm:px-6 lg:px-8">
@@ -159,7 +155,7 @@ const Header = ({ title }: { title?: string }) => {
             )}
           </div>
           {/* && user.role === 'company' && */}
-          {user &&user?.role==='comapny'||user?.role=='candidate'&& (
+          {/* {user &&user?.role==='company'||user?.role=='candidate'&& (
             <button
               onClick={() => {
                 const url=user.role=='company'?'/company/dashboard':'/candidate/dashboard'
@@ -169,6 +165,19 @@ const Header = ({ title }: { title?: string }) => {
             >
               Go To Dashboard
             </button>
+          )} */}
+
+          {showDashboardButton && (
+            <button
+              onClick={() => {
+                const url=user.role=='company'?'/company/dashboard':'/candidate/dashboard'
+                navigate(url)
+              }}
+              className="text-gray-700 bg-blue-50 hover:bg-blue-100 rounded-xl hover:text-blue-600 px-4 py-2 text-sm font-medium transition-colors"
+            >
+              Go To Dashboard
+            </button>
+          
           )}
 
           {/* Desktop Auth Buttons */}

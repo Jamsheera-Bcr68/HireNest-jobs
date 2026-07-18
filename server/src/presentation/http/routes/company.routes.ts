@@ -1,6 +1,7 @@
 import express from 'express';
 import { authValidator } from '../middleweres/auth-validator';
 import {
+  companyDashboardController,
   jobController,
   tokenService,
   userControlller,
@@ -94,5 +95,11 @@ router.put(
   authValidator(tokenService),
   userControlller.updateCompany
 );
+router.get(API_END_POINTS.COMPANY_DASHBOARD.STATUS_DATA,authValidator(tokenService),companyDashboardController.getStatusData)
+router.get(API_END_POINTS.COMPANY_DASHBOARD.APPDATA,authValidator(tokenService),companyDashboardController.getApplicationData)
+router.get(API_END_POINTS.COMPANY_DASHBOARD.JOB_DATA,authValidator(tokenService),companyDashboardController.getJobData)
+router.get(API_END_POINTS.COMPANY_DASHBOARD.INTERVIEW_DATA,authValidator(tokenService),companyDashboardController.getInterviewData)
+router.get(API_END_POINTS.COMPANY_DASHBOARD.RECENT_ACTIVITIES,authValidator(tokenService),companyDashboardController.getRecentActivities)
+router.get(API_END_POINTS.COMPANY_DASHBOARD.PENDING_ACTION,authValidator(tokenService),companyDashboardController.getPendingActivities)
 
 export default router;

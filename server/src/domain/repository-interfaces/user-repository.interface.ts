@@ -12,8 +12,10 @@ import { User } from '../entities/user.entity';
 import { UserRole } from '../enums/user.enums';
 import { IExperience, IResume } from '../values/profile-types';
 import { IBaseRepository } from './base-repository.interface';
+
+
 export interface IUserRepository extends IBaseRepository<User> {
-  findByEmail(email: string, userId?: string): Promise<User | null>;
+  findByEmail(email: string, userId?: string): Promise<User | null>
 
   createUser(user: User): Promise<User>;
 

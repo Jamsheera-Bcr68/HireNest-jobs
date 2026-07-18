@@ -25,7 +25,10 @@ export const generalMessages = {
     DASHBOARD_STATUS_DATA_FETCHED: 'Dashboard statuscard data fetched',
   },
   errors: {
+
+
     NOT_FOUND: (entity: string) => `${entity} not found`,
+    
     INTERNAL_SERVER_ERROR: 'Something went wrong, please try again later',
     INVALID_RESUME_FILE_TYPE: 'Only docx and pdf formats are allowed',
     INVALID_IMAGES_FILE_TYPE: 'Only png and jpeg formats are allowed',

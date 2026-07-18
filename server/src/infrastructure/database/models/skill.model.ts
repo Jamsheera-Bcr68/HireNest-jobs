@@ -33,7 +33,7 @@ const skillSchema = new mongoose.Schema<ISkillDocument>({
   reasonForRemove: { type: String, default: null },
   postUsedCount: { type: Number, default: 0 },
   candidateUsedCount: { type: Number, default: 0 },
-});
+},{ timestamps: true });
 
 export const skillModel: Model<ISkillDocument> = model<ISkillDocument>(
   'Skill',

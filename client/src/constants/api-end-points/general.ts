@@ -51,4 +51,12 @@ export const API_ENDPOINTS = {
     RECOMENTED_JOBS: '/candidate/dashboard/recomented-jobs',
     UPCOMING_INTERVIEW: '/candidate/dashboard/upcoming-intrview',
   },
+  COMPANY_DASHBOARD:{
+   STATUSCARD:'/company/dashboard/status-data',
+   APPDATA:'/company/dashboard/applications-data',
+   JOB_DATA:'/company/dashboard/jobs-data',
+   INTERVIEW_DATA:'/company/dashboard/interview-data',
+   RECENT_ACTIVITIES:'/company/dashboard/recent_activities',
+   PENDING_ACTION:'/company/dashboard/pending-actions',
+  }
 };

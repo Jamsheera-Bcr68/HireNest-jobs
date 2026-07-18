@@ -58,7 +58,15 @@ export const API_END_POINTS = {
     APP_DATA:'/dashboard/application-details',
     UPCOMING_INTERVIEW:`/dashboard/upcoming-intrview`,
     PROFILE_DATA:'/dashboard/profile-data',
-    RECOMENTED_JOBS:'/dashboard/recomented-jobs'}
+    RECOMENTED_JOBS:'/dashboard/recomented-jobs'},
+    COMPANY_DASHBOARD:{
+      STATUS_DATA:`/dashboard/status-data`,
+      APPDATA:'/dashboard/applications-data',
+      JOB_DATA:'/dashboard/jobs-data',
+      INTERVIEW_DATA:'/dashboard/interview-data',
+      RECENT_ACTIVITIES:'/dashboard/recent_activities',
+       PENDING_ACTION:'/dashboard/pending-actions',
+    }
 }
 
 export const AUTH_END_POINTS = {

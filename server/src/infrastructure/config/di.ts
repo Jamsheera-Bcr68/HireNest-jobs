@@ -107,6 +107,11 @@ import { CandidateDashboardAppDataUsecase } from '../../applications/useCases/ca
 import { UpcomingInterviewUsecase } from '../../applications/useCases/interviews/get-upcoming-interview.usecase';
 import { DashboardProfileDataUsecase } from '../../applications/useCases/candidate/dashboard/get-dashboard-profile-data.usecase';
 import { RecomentedJobUsecase } from '../../applications/useCases/candidate/dashboard/recomented-jobs.usecase';
+import { CompanyDashboardStatusCardDataUsecase } from '../../applications/useCases/company/dashboard/get-statuscard-data.usecase';
+import { CompanyDashboardAppDataUsecase } from '../../applications/useCases/company/dashboard/get-application-data.usecase';
+import { CompanyDashboardTopJobsUsecase } from '../../applications/useCases/company/dashboard/dashboard-jobdata.usecase';
+import { RecentActivitiesUsecase } from '../../applications/useCases/company/dashboard/recent-activities.usecase';
+import { PendingActionsUsecase } from '../../applications/useCases/company/dashboard/get-pending-actions.usecase';
 
 //==Controllers
 //==Controllers
@@ -137,6 +142,8 @@ import { ChatroomController } from '../../presentation/http/controllers/chatroom
 import { MessageController } from '../../presentation/http/controllers/message.controller';
 import { AdminDashboardController } from '../../presentation/http/controllers/admin/admin-dashboard.controller';
 import { CandidateDashboardController } from '../../presentation/http/controllers/candidateDashboard.controller';
+import { CompanyDashboardController } from '../../presentation/http/controllers/company-dashboard.controller';
+import { CompanyDashboardInterviewDataUsecase } from '../../applications/useCases/company/dashboard/get-interview-data.usecase';
 
 //==repsitories
 //==repsitories
@@ -496,7 +503,8 @@ const updateInterviewUsecase = new UpdateInterviewUsecase(
 );
 const upateInterviewResultUsecase = new UpdateInterviewResultUsecase(
   interviewRepository,
-  companyRepository
+  companyRepository,
+  applicationRepository
 );
 
 const confirmInterviewUsecase = new ConfirmInterviewUsecase(
@@ -576,14 +584,70 @@ const applcationDistributionUsecase = new ApplcationDistributionUsecase(
   applicationRepository
 );
 const interviewDataUsecase = new InterviewDataUsecase(interviewRepository);
-const getPendingCompaniesUsecase=new GetPendingCompaniesUsecase(companyRepository)
-const getReportedJobsUsecase=new GetReportedJobsUsecase(jobRepository)
-const candidateDashboardStatusDataUsecase=new CandidateDashboardStatusDataUsecase(applicationRepository,userRepository,jobRepository,interviewRepository,notificationRepository)
-const candidateDashboardAppDataUsecase=new CandidateDashboardAppDataUsecase(applicationRepository)
-const upcomingInterviewUsecase=new UpcomingInterviewUsecase(interviewRepository,companyRepository)
-const dashboardProfileDataUsecase=new DashboardProfileDataUsecase(userRepository,companyRepository)
-const recomentedJobUsecase=new RecomentedJobUsecase(jobRepository,userRepository,skillRepository,applicationRepository)
+const getPendingCompaniesUsecase = new GetPendingCompaniesUsecase(
+  companyRepository
+);
+const getReportedJobsUsecase = new GetReportedJobsUsecase(jobRepository);
+const candidateDashboardStatusDataUsecase =
+  new CandidateDashboardStatusDataUsecase(
+    applicationRepository,
+    userRepository,
+    jobRepository,
+    interviewRepository,
+    notificationRepository
+  );
+const candidateDashboardAppDataUsecase = new CandidateDashboardAppDataUsecase(
+  applicationRepository
+);
+const upcomingInterviewUsecase = new UpcomingInterviewUsecase(
+  interviewRepository,
+  companyRepository
+);
+const dashboardProfileDataUsecase = new DashboardProfileDataUsecase(
+  userRepository,
+  companyRepository
+);
+const recomentedJobUsecase = new RecomentedJobUsecase(
+  jobRepository,
+  userRepository,
+  skillRepository,
+  applicationRepository
+);
+const companyDashboardStatusCardDataUsecase =
+  new CompanyDashboardStatusCardDataUsecase(
+    companyRepository,
+    jobRepository,
+    applicationRepository,
+    interviewRepository,
+    notificationRepository,
+    skillRepository
+  );
 
+const companyDashboardAppDataUsecase = new CompanyDashboardAppDataUsecase(
+  applicationRepository,
+  companyRepository
+);
+const companyDashboardTopJobsUsecase = new CompanyDashboardTopJobsUsecase(
+  jobRepository,
+  companyRepository
+);
+const companyDashboardInterviewDataUsecase =
+  new CompanyDashboardInterviewDataUsecase(
+    interviewRepository,
+    companyRepository
+  );
+const recentActivitiesUsecase = new RecentActivitiesUsecase(
+  jobRepository,
+  companyRepository,
+  applicationRepository,
+  interviewRepository
+);
+const pendingActionsUsecase = new PendingActionsUsecase(
+  interviewRepository,
+  companyRepository,
+  applicationRepository,
+  jobRepository
+);
 //controller
 //controller
 //controller
@@ -726,7 +790,23 @@ export const adminDashboarController = new AdminDashboardController(
   industryWiseJobCountUsecase,
   userDistributionUsecase,
   applcationDistributionUsecase,
-  interviewDataUsecase,getPendingCompaniesUsecase,getReportedJobsUsecase
+  interviewDataUsecase,
+  getPendingCompaniesUsecase,
+  getReportedJobsUsecase
 );
 
-export const candidateDashboardController=new CandidateDashboardController(candidateDashboardStatusDataUsecase,candidateDashboardAppDataUsecase,upcomingInterviewUsecase,dashboardProfileDataUsecase,recomentedJobUsecase)
+export const candidateDashboardController = new CandidateDashboardController(
+  candidateDashboardStatusDataUsecase,
+  candidateDashboardAppDataUsecase,
+  upcomingInterviewUsecase,
+  dashboardProfileDataUsecase,
+  recomentedJobUsecase
+);
+export const companyDashboardController = new CompanyDashboardController(
+  companyDashboardStatusCardDataUsecase,
+  companyDashboardAppDataUsecase,
+  companyDashboardTopJobsUsecase,
+  companyDashboardInterviewDataUsecase,
+  recentActivitiesUsecase,
+  pendingActionsUsecase
+);

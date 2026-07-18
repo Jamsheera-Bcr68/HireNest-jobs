@@ -10,7 +10,7 @@ export class CandidateDashboardAppDataUsecase implements IDashboardAppDataUsecas
 
   async execute(userId: string, role: UserRole): Promise<AppData> {
     const appStatusWiseData =
-      await this._applicationRepository.getCountByStatus(userId);
+      await this._applicationRepository.getCountByStatus({candidateId:userId});
     const { applications } =
       await this._applicationRepository.getAllApplications({
         candidateId: userId,
@@ -30,4 +30,6 @@ export class CandidateDashboardAppDataUsecase implements IDashboardAppDataUsecas
       })),
     };
   }
+
+
 }

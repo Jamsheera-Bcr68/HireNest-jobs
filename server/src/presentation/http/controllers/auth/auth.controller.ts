@@ -33,6 +33,7 @@ export class AuthController {
   }
 
   register = asyncHandler(async (req: Request, res: Response) => {
+
     const payload = req.body;
     const pendingUser = await this._registerUseCase.execute(payload);
 

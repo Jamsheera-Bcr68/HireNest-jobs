@@ -19,8 +19,20 @@ export interface IApplicationRepository extends IBaseRepository<Application> {
   getAllApplications(
     filter: ApplicationFilterDto
   ): Promise<{ applications: AggregatedApplication[]; totalDocs: number }>;
-
-   count(filter:ApplicationFilterDto):Promise<number>
-   getIndustryWiseApplcationCount():Promise<{_id:IndustryType,count:number}[]>
-   getCountByStatus(userId:string):Promise<{status:ApplicationStatusEnum,count:number}[]>
+  monthlyAppCount(filter: {
+    companyId?: string;
+    candidateId?: string;
+  }): Promise<{ month: number; count: number }[]>;
+  getHiresPerMOnth(filter: {
+    companyId?: string;
+    candidateId?: string;
+  }): Promise<{ month: number; count: number }[]>;
+  count(filter: ApplicationFilterDto): Promise<number>;
+  getIndustryWiseApplcationCount(): Promise<
+    { _id: IndustryType; count: number }[]
+  >;
+  getCountByStatus(filter: {
+    companyId?: string;
+    candidateId?: string;
+  }): Promise<{ status: ApplicationStatusEnum; count: number }[]>;
 }

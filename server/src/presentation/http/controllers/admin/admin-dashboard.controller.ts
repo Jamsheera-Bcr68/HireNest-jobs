@@ -13,7 +13,7 @@ import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { asyncHandler } from '../../middleweres/async-handler';
 import { Request, Response } from 'express';
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
-import { IDashboardChartDataUsecase } from '../../../../applications/interfaces/dashboard/chart-data.usecase.interface';
+import { IDashboardDataListUsecase } from '../../../../applications/interfaces/dashboard/dashboard-data-list.usecase.interface';
 import { IIndustryWiseJobCountUsecase } from '../../../../applications/useCases/admin/dashoard/job-count-by-industry.usecase';
 import { ApplcationDistributionUsecase } from '../../../../applications/useCases/admin/dashoard/application-distributiion.usecase';
 import { IGetCompaniesUseCase } from '../../../../applications/useCases/admin/get-companies.usecase';
@@ -25,11 +25,11 @@ import { IGetReportedJobsUsecase } from '../../../../domain/get-reported-jobs.us
 export class AdminDashboardController {
   constructor(
     private _adminDashboardStatusDataUsecase: IDashboardCardDataUsecase<AdminDashboardCardsDto>,
-    private _companyJobChartData: IDashboardChartDataUsecase<AdminCompanyJobChartDto>,
+    private _companyJobChartData: IDashboardDataListUsecase<AdminCompanyJobChartDto>,
     private _industryWistPostCountusecase: IIndustryWiseJobCountUsecase,
-    private _userDistributionData: IDashboardChartDataUsecase<UserDistributionChartData>,
-    private _appDistributionDataUsecase: IDashboardChartDataUsecase<ApplcationDistributionChartData>,
-    private _interviewDataUsecase: IDashboardChartDataUsecase<InterviewData>,
+    private _userDistributionData: IDashboardDataListUsecase<UserDistributionChartData>,
+    private _appDistributionDataUsecase: IDashboardDataListUsecase<ApplcationDistributionChartData>,
+    private _interviewDataUsecase: IDashboardDataListUsecase<InterviewData>,
     private _getPendingCompaniesUsecase: IGetPendingCompaniesUsecase,
     private _getReportedJobsUsecase: IGetReportedJobsUsecase
   ) {}

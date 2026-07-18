@@ -15,7 +15,7 @@ export interface IDashboardProfileDataUsecase {
 export class DashboardProfileDataUsecase implements IDashboardProfileDataUsecase {
   constructor(
     private _userRepository: IUserRepository,
-    private companyRepository: ICompanyRepository
+    private _companyRepository: ICompanyRepository
   ) {}
   private getProfileCompletionPercentage(candidate: User): {
     percentage: number;
