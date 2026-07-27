@@ -71,7 +71,7 @@ function InterviewDetails({ interview }: Props) {
               <span className="p-1.5 border text-sm rounded-xl hover:bg-50-blue">
                 {' '}
                 <a
-                  href={interview.meetLink}
+                  href={`/candidate/meetings/${interview.meetLink}`}
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm text-blue-600 text-center break-all"

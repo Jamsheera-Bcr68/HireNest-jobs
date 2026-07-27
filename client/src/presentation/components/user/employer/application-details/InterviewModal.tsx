@@ -155,7 +155,7 @@ export default function InterviewModal({
   appId,
   onSchedule,
 }: Props) {
-  const { formData, updateFormdata, submitInterviewForm, error } =
+  const { formData, updateFormdata, submitInterviewForm, error,generateMeetLink } =
     useInterviews();
 
   const handleSchedule = async () => {
@@ -164,6 +164,7 @@ export default function InterviewModal({
     updateFormdata(initialData);
     onSchedule('interviewScheduled');
   };
+
 
   if (!isOpen) return null;
 
@@ -367,7 +368,7 @@ export default function InterviewModal({
                       className="flex-1"
                     />
 
-                    <button className="flex-shrink-0 px-3 py-2 text-xs font-medium rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-colors whitespace-nowrap">
+                    <button onClick={generateMeetLink} className="flex-shrink-0 px-3 py-2 text-xs font-medium rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-colors whitespace-nowrap">
                       Generate
                     </button>
                   </div>

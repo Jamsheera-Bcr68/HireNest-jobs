@@ -26,10 +26,12 @@ export const interviewStatusStyles: Record<string, string> = {
   cancelled: 'bg-red-100 text-red-700',
   no_show: 'bg-gray-200 text-gray-700',
 };
+
 export const interviewResultStyles: Record<string, string> = {
   failed: 'text-blue-700',
   passed: 'text-green-700',
 };
+
 type FormType = {
   mode: InterviewMode;
   date: string;
@@ -42,6 +44,7 @@ type FormType = {
   feedback?: string;
   result?: InterviewResult;
 };
+
 export const initialData: FormType = {
   mode: 'online',
   date: '',
@@ -52,6 +55,7 @@ export const initialData: FormType = {
   duration: '',
   location: '',
 };
+
 type ErrorType = {
   mode: string;
   date: string;
@@ -64,6 +68,7 @@ type ErrorType = {
   feedback?: string;
   result?: string;
 };
+
 export const useInterviews = (setPage?: (page: number) => void) => {
   const { showToast } = useToast();
   const [formData, setFormData] = useState<FormType>(initialData);
@@ -84,6 +89,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
       { label: 'Cancelled', value: 'cancelled' },
     ],
   };
+
   const resultFilter: FilterOption<InterviewFilter> = {
     key: 'result',
     label: 'Result',
@@ -93,6 +99,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
       { label: 'Failed', value: 'failed' },
     ],
   };
+
   const submitInterviewForm = async (
     mode: 'add' | 'edit',
     ids: { applicationId?: string; interviewId?: string }
@@ -166,6 +173,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
       { label: 'Offline', value: 'offline' },
     ],
   };
+
   const resultsFilter: FilterOption<InterviewFilter> = {
     key: 'result',
     label: 'Result',
@@ -179,10 +187,9 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     key: 'sortBy',
     label: 'Sort',
     options: [
-   
       { label: 'Newest', value: 'newest' },
       { label: 'Role A-Z', value: 'a-z' },
-         { label: 'Upcoming', value: 'upcoming' },
+      { label: 'Upcoming', value: 'upcoming' },
     ],
   };
   const filterOptions = [modeFilter, resultsFilter];
@@ -236,6 +243,32 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     }
   };
 
+  const generateMeetLink = async () => {
+    try {
+      const data = await interviewService.generateMeetLink();
+      console.log('generate meeet lik', data.data.link);
+      updateFormdata({ meetLink: data.data.link });
+    } catch (error) {}
+  };
+
+  const fetchMeeting = async (
+    meetId: string,
+
+    setLoading: (data: boolean) => void
+  ) => {
+    setLoading(true);
+    try {
+     
+      
+      const data = await interviewService.getMeetInfo(meetId);
+      console.log('data,', data);
+      return data.meeting;
+    } catch {
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     updateFormdata,
     formData,
@@ -243,7 +276,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     error,
     initialData,
     filter,
-
+    generateMeetLink,
     updateFilter,
     filterOptions,
     sortFilter,
@@ -251,5 +284,6 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     getInterviewDetails,
     statusFilter,
     resultFilter,
+    fetchMeeting,
   };
 };

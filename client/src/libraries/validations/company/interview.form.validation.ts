@@ -14,7 +14,7 @@ export const interviewSchema = z
 
     meetLink: z
       .string()
-      .url('Enter a valid meeting link')
+      
       .optional()
       .or(z.literal('')),
 

@@ -15,6 +15,8 @@ function App() {
   );
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.auth.accessToken);
+
+  
   useEffect(() => {
     if (token && !socket.connected) {
       socket.auth = { token };

@@ -32,6 +32,8 @@ import { IGetEntityDetailsUsecase } from '../../../applications/interfaces/useca
 import { IUpdateEntityUseCase } from '../../../applications/interfaces/usecases/update-entity.usecase.interface';
 import { IConfirmInterviewUsecase } from '../../../applications/useCases/interviews/confirm-interview.usecase';
 import { IRescheduleRequestUsecase } from '../../../applications/useCases/interviews/reschedule-request.usecase';
+import { IGenerateMeetlinkUsecase } from '../../../applications/useCases/interviews/generate-meetlink.usecase';
+import { MeetingDto } from '../../../applications/dtos/meeting.dto';
 
 export class InterviewController {
   constructor(
@@ -59,9 +61,10 @@ export class InterviewController {
       void
     >,
     private _confirmInterviewUsecase: IConfirmInterviewUsecase,
-    private _requestForRescheduleUsecase: IRescheduleRequestUsecase
+    private _requestForRescheduleUsecase: IRescheduleRequestUsecase,
+    private _generateMeetlinkUsecase: IGenerateMeetlinkUsecase,
+    private _getMeetingInfoUsecase: IGetEntityDetailsUsecase<MeetingDto>
   ) {}
-
 
   scheduleInterview = asyncHandler(async (req: Request, res: Response) => {
     // console.log('from interview controller', req.body);
@@ -73,7 +76,7 @@ export class InterviewController {
         statusCodes.UNAUTHERIZED
       );
     const interview = await this._scheduleInterviewUsecase.execute(req.body);
-   
+
     return res.status(statusCodes.OK).json({
       success: true,
       message: generalMessages.success.ENTITY_CREATED('Interview', 'Scheduled'),
@@ -82,7 +85,7 @@ export class InterviewController {
   });
 
   updateInterview = asyncHandler(async (req: Request, res: Response) => {
- //   console.log('from interview controller', req.body);
+    //   console.log('from interview controller', req.body);
 
     const user = req.user;
     if (!user)
@@ -99,7 +102,7 @@ export class InterviewController {
       user.userId,
       data
     );
-//    console.log('updated interview', interview);
+    //    console.log('updated interview', interview);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -145,7 +148,7 @@ export class InterviewController {
       endDate,
     } = req.query;
 
-   // console.log('req.query', req.query);
+    // console.log('req.query', req.query);
     const user = req.user;
     if (!user || !user.userId) {
       throw new AppError(
@@ -186,7 +189,7 @@ export class InterviewController {
     if (limit) {
       q.limit = Number(limit);
     }
-   // console.log('q from controller', q);
+    // console.log('q from controller', q);
 
     const { interviews, totalDocs } = await this._getInterviewsUsecase.execute(
       q,
@@ -218,7 +221,7 @@ export class InterviewController {
         statusCodes.BADREQUEST
       );
     const { status, reason } = req.body;
-   // console.log(' req.body', req.body);
+    // console.log(' req.body', req.body);
 
     await this._updateInterviewStatusUsecase.execute(
       interviewId,
@@ -254,7 +257,7 @@ export class InterviewController {
       user.userId,
       user.role
     );
-   // console.log('interview from controller', interview);
+    // console.log('interview from controller', interview);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -279,7 +282,7 @@ export class InterviewController {
         statusCodes.BADREQUEST
       );
 
-  //  console.log(' req.body', req.body);
+    //  console.log(' req.body', req.body);
 
     const { data } = req.body;
 
@@ -355,6 +358,47 @@ export class InterviewController {
         'Interveiw ',
         'Requested for Reschedule'
       ),
+    });
+  });
+
+  createMeetlink = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user || !user.userId) {
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('User'),
+        statusCodes.NOTFOUND
+      );
+    }
+
+    const link = await this._generateMeetlinkUsecase.execute(user.userId);
+
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: generalMessages.success.ENTITY_CREATED('MeetLink ', 'Generated'),
+      data: link,
+    });
+  });
+
+  getMeetInfo = asyncHandler(async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user || !user.userId) {
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('User'),
+        statusCodes.NOTFOUND
+      );
+    }
+    const { meetId } = req.params;
+
+    const meeting = await this._getMeetingInfoUsecase.execute(
+      meetId,
+      user.userId,
+      user.role
+    );
+    console.log('meet id', meeting);
+    return res.status(statusCodes.OK).json({
+      success: true,
+      message: generalMessages.success.ENTITIES_FETCHED('Meeting '),
+      meeting,
     });
   });
 }

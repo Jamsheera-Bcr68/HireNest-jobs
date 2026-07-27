@@ -5,6 +5,7 @@ export const CANDIDATE_ROUTES = {
   INTERVIEWS: '/interviews',
   APPLICATIONS: '/applications',
   MESSAGES: '/messages',
+  MEET: '/meetings/:meetId',
   APPLICATION_DETAILS: '/applications/:id',
 } as const;
 
@@ -21,6 +22,7 @@ export const COMPANY_ROUTES = {
   INTERVIEWS: 'interviews',
   PROFILE: 'profile',
   MESSAGES: 'messages',
+   MEET: 'meetings/:meetId',
 } as const;
 
 export const ADMIN_ROUTES = {

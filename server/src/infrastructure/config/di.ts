@@ -112,7 +112,8 @@ import { CompanyDashboardAppDataUsecase } from '../../applications/useCases/comp
 import { CompanyDashboardTopJobsUsecase } from '../../applications/useCases/company/dashboard/dashboard-jobdata.usecase';
 import { RecentActivitiesUsecase } from '../../applications/useCases/company/dashboard/recent-activities.usecase';
 import { PendingActionsUsecase } from '../../applications/useCases/company/dashboard/get-pending-actions.usecase';
-
+import { GenerateMeetlinkUsecase } from '../../applications/useCases/interviews/generate-meetlink.usecase';
+import { GetInterviewByMeetingIdUsecase } from '../../applications/useCases/meetings/get-meeting.usecase';
 //==Controllers
 //==Controllers
 //==Controllers
@@ -177,6 +178,7 @@ import { FileStorageService } from '../services/file-storage.service';
 import { NotificationService } from '../../applications/services/notification.service';
 import { PresenceService } from '../services/presence.service';
 import { CompanyService } from '../../applications/services/company.service';
+import { CryptoService } from '../services/crypto.service';
 
 //repositories
 const userRepository = new UserRepository();
@@ -203,6 +205,7 @@ const fileStorageServices = new FileStorageService();
 const notificatinService = new NotificationService(notificationRepository);
 export const presenceService = new PresenceService();
 export const companyService = new CompanyService(companyRepository);
+export const cryptoService=new CryptoService()
 
 const registerUseCase = new RegisterUseCase(userRepository);
 const sendOtpService = new SendOtpService(
@@ -648,6 +651,9 @@ const pendingActionsUsecase = new PendingActionsUsecase(
   applicationRepository,
   jobRepository
 );
+
+const generateMeetlinkUsecase=new GenerateMeetlinkUsecase(cryptoService)
+const getInterviewByMeetingIdUsecase=new GetInterviewByMeetingIdUsecase(interviewRepository,companyRepository)
 //controller
 //controller
 //controller
@@ -765,7 +771,7 @@ export const interviewcontroller = new InterviewController(
   updateInterviewUsecase,
   upateInterviewResultUsecase,
   confirmInterviewUsecase,
-  rescheduleInterviewUsecase
+  rescheduleInterviewUsecase,generateMeetlinkUsecase,getInterviewByMeetingIdUsecase
 );
 
 export const notificationController = new NotificationControlller(

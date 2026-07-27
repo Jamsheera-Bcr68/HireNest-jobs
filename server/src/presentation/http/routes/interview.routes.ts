@@ -70,5 +70,18 @@ router.patch(
   authValidator(tokenService),
   interviewcontroller.requestForReschedule
 );
+router.post(
+  API_END_POINTS.GENERATE_MEETLINK,
+  authValidator(tokenService),
+  interviewcontroller.createMeetlink
+);
+          
+router.get(
+
+  API_END_POINTS.GET_MEET_INFO,
+  authValidator(tokenService),
+  interviewcontroller.getMeetInfo
+);
+          
 
 export default router;

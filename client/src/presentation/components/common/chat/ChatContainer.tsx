@@ -12,10 +12,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import type { RootState } from '../../../../redux/store';
 
-// const filteredConversations = CONVERSATIONS.filter((c) =>
-//     c.name.toLowerCase().includes(search.toLowerCase())
-//   );
-
 function ChatContainer() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -30,22 +26,21 @@ function ChatContainer() {
   const [activeChatroom, setActiveChatroom] = useState<ChatroomType | null>(
     null
   );
-useEffect(() => {
-  if (chatroomId) {
-    dispatch(setActiveChatroomId(chatroomId));
-  }
-}, [chatroomId, dispatch]);
+  useEffect(() => {
+    if (chatroomId) {
+      dispatch(setActiveChatroomId(chatroomId));
+    }
+  }, [chatroomId, dispatch]);
 
+  useEffect(() => {
+    if (!activeChatroomId) {
+      setActiveChatroom(null);
+      return;
+    }
 
-useEffect(() => {
-  if (!activeChatroomId) {
-    setActiveChatroom(null);
-    return;
-  }
-
-  const chat = chatrooms.find((c) => c.id === activeChatroomId);
-  setActiveChatroom(chat ? { ...chat, unreadCount: 0 } : null);
-}, [activeChatroomId, chatrooms]);
+    const chat = chatrooms.find((c) => c.id === activeChatroomId);
+    setActiveChatroom(chat ? { ...chat, unreadCount: 0 } : null);
+  }, [activeChatroomId, chatrooms]);
 
   useEffect(() => {
     async function getConversations() {

@@ -29,8 +29,28 @@ io.on('connection', (socket) => {
   presenceService.setOnline(userId);
 
   socket.on('mark_as_read', async ({ chatroomId }) => {
-  const upDatedhatroomId=  await markAsChatroomMessagesRead.execute(chatroomId, userId);
+    const upDatedhatroomId = await markAsChatroomMessagesRead.execute(
+      chatroomId,
+      userId
+    );
   });
+
+  socket.on('join-meeting', ({ meetId }) => {
+    console.log('join mmeeting called',meetId);
+    
+    socket.join(meetId);
+   
+    
+    console.log(`${socket.id} joined ${meetId} userid is ${userId}`);
+    socket.to(meetId).emit('participant-joined', { userId });
+
+  });
+
+  socket.on('offer',({meetId,offer})=>{
+    console.log('offer lisner',offer);
+    
+    socket.to(meetId).emit("offer",{offer})
+  })
 
   socket.on('disconnect', () => {
     presenceService.setOffline(userId);

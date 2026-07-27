@@ -15,6 +15,8 @@ export const API_END_POINTS = {
   INTERVIEW_RESULT: '/:interviewId/result',
   INTERVIEWS_STATUS: '/interviews-status',
   RESCHEDULE_REQUEST: '/:interviewId/request-reschedule',
+   GENERATE_MEETLINK:'/meetlink',
+   GET_MEET_INFO:`/meetings/:meetId`,
   GET_NOT_READ_COUNT: '/not-read-count',
   NOTIFICATIONS: '/',
   NOTIFICATION: '/:notificationId',

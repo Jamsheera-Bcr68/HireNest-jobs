@@ -10,6 +10,7 @@ import { CANDIDATE_ROUTES } from '../routes';
 import Chat from '../../presentation/pages/user/Chat';
 import CandidateDashboardPage from '../../presentation/pages/user/candidate/CandidateDashboardPage';
 import CandidateDashboard1 from '../../presentation/components/candidate/dashboard/Sample';
+import MeetPage from '../../presentation/pages/user/MeetPage';
 
 export const CandidateRoutes = () => {
   return (
@@ -38,6 +39,7 @@ export const CandidateRoutes = () => {
           element={<ApplicationsPage />}
         />
         <Route path={CANDIDATE_ROUTES.MESSAGES} element={<ChatPage />} />
+        <Route path={CANDIDATE_ROUTES.MEET} element={<MeetPage/>}/>
         <Route path={'/messagess'} element={<Chat />} />
       </Route>
     </Routes>
