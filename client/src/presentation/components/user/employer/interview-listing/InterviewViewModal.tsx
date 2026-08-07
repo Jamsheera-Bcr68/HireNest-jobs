@@ -505,7 +505,7 @@ export default function InterviewDetailsModal({
                           <div>
                             <span className="bg-blue-50 rounded p-1 mt-3">
                               <a
-                                href={`/company/meetings/${interview.meetLink}`}
+                                href={`/meeting/${interview.meetLink}`}
                                 target="_blank"
                                 className="text-xs text-blue-500 hover:underline"
                               >

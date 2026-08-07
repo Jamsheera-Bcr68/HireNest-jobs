@@ -242,8 +242,6 @@
 //   }
 // }
 
-
-
 // function notifyAll(
 //   notifications: Notification[],
 //   message: string
@@ -258,40 +256,45 @@
 //   new PushNotification(),
 
 // ], "Server is down!");
-const data = {
-    "name": "Alice",
-    "city": "Palakkad",
-    "country": "India",
-    "profession": "Software Engineer",
-    "age": 22,
-    "salary": 50000
-}
 
 // let res=Object.values(data)
 // let longest=''
 // for(let val of res){
 //   if(typeof (val)!=='number'){
 //       longest=longest.length>val.length?longest:val
-//   }  
+//   }
 // }
 
 // console.log('longest',longest);
 
-
-
 // for(let key in data){
 //     if(data[key]===longest){
-//        delete data[key] 
+//        delete data[key]
 //         break
 //     }
 // }
 // console.log(data)
 
+// function outer(){
+//     const outerVar=10
 
-for(let key in data){
-    if(typeof data[key]==='number'){
-        data[key]=data[key]+data[key]*(0.1)
-    }
-}
+//     return ()=>{
+//         const inntervar=20
+//         console.log('inntervar',inntervar)
+//         console.log('outerVar',outerVar)
+//     }
+// }
 
-console.log(data);
+// const myFun=outer()
+
+// myFun()
+
+import fs from "fs";
+
+fs.readFile("sample.txt", 'utf-8',(err, data) => {
+  if (err) {
+    console.log(`error in reading file`, err);
+  } else {
+    console.log(data);
+  }
+});

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import type {
   InterviewMode,
   InterviewStatusType,
@@ -251,24 +251,18 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     } catch (error) {}
   };
 
-  const fetchMeeting = async (
-    meetId: string,
-
-    setLoading: (data: boolean) => void
-  ) => {
-    setLoading(true);
+  const fetchMeeting =useCallback( async (meetId: string) => {
     try {
-     
-      
       const data = await interviewService.getMeetInfo(meetId);
       console.log('data,', data);
       return data.meeting;
-    } catch {
+    } catch(err) {
+      console.log(err);
+      
     } finally {
-      setLoading(false);
     }
-  };
-
+  },[]
+)
   return {
     updateFormdata,
     formData,

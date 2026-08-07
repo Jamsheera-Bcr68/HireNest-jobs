@@ -19,8 +19,12 @@ const io = new Server(httpServer, {
 setIo(io);
 io.use(socketAuthMiddlewere);
 
+const activeParticipants = new Map<
+  string,
+  { userId: string; socketId: string }
+>();
 io.on('connection', (socket) => {
-  console.log('User connected,id:', socket.id);
+  // console.log('User connected,id:', socket.id);
 
   console.log('room contains', io.sockets.adapter.rooms);
   const userId: string = socket.data.user.userId;
@@ -36,25 +40,67 @@ io.on('connection', (socket) => {
   });
 
   socket.on('join-meeting', ({ meetId }) => {
-    console.log('join mmeeting called',meetId);
-    
-    socket.join(meetId);
-   
-    
-    console.log(`${socket.id} joined ${meetId} userid is ${userId}`);
-    socket.to(meetId).emit('participant-joined', { userId });
+    console.log('join mmeeting called', meetId);
+    const key = `${meetId}:${userId}`;
 
+    socket.join(meetId);
+
+    console.log('Join meeting event');
+    console.log('Socket ID:', socket.id);
+    console.log('Key:', key);
+    console.log('Map size:', activeParticipants.size);
+    console.log('Map contents:', [...activeParticipants.entries()]);
+    const existing = activeParticipants.get(key);
+  console.log("Existing:", existing);
+
+    if (existing && existing.socketId !== socket.id) {
+      console.log('this user is already in the room');
+
+      const oldSocket = io.sockets.sockets.get(existing.socketId);
+      if (oldSocket) {
+        console.log('disconnecting old socket,emitting duplicate-session');
+        oldSocket.emit('duplicate-session');
+        setTimeout(() => {
+          oldSocket.disconnect(true);
+        }, 100);
+      }
+    }
+    activeParticipants.set(key, { userId, socketId: socket.id });
+
+    const room = io.sockets.adapter.rooms.get(meetId);
+
+    console.log('room size ', room?.size);
+
+    console.log(`${socket.id} joined ${meetId} userid is ${userId}`);
+    if (room && room.size == 2)
+      io.to(meetId).emit('participant-joined', { userId });
   });
 
-  socket.on('offer',({meetId,offer})=>{
-    console.log('offer lisner',offer);
-    
-    socket.to(meetId).emit("offer",{offer})
-  })
+  socket.on('offer', ({ meetId, offer }) => {
+    // console.log('offer lisner',offer);
+
+    socket.to(meetId).emit('offer', { offer });
+  });
+
+  socket.on('ice-candidate', ({ meetId, candidate }) => {
+    socket.to(meetId).emit('ice-candidate', { candidate });
+  });
+
+  socket.on('answer', ({ meetId, answer }) => {
+    socket.to(meetId).emit('answer', { answer });
+  });
 
   socket.on('disconnect', () => {
-    presenceService.setOffline(userId);
     console.log('soket disconnected', userId);
+
+    for (const [key, participant] of activeParticipants) {
+      if (participant.socketId === socket.id) {
+        activeParticipants.delete(key);
+        break;
+      }
+    }
+
+    presenceService.setOffline(userId);
   });
 });
 httpServer.listen(env.Port, () => {

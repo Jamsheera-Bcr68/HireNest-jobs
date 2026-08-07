@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import MeetPage from '../presentation/pages/user/MeetPage';
 
 import ProtectedRoutes from './PrivateRoutes';
 import { CandidateRoutes } from './user.routes/candidate.route';
@@ -18,6 +19,7 @@ import { AdminRoutes } from './admin.routes';
 import { AdminProtectedRoute } from './PrivateRoutes';
 import JobListing from '../presentation/pages/user/JobListing';
 import JobDetailsPage from '../presentation/components/candidate/jobListing/JobDetailsWrapper';
+import InterviewRoom from '../presentation/InterviewRoom';
 
 export const AppRoutes = () => {
   return (
@@ -45,6 +47,8 @@ export const AppRoutes = () => {
       <Route element={<AdminProtectedRoute />}>
         <Route path="/admin/*" element={<AdminRoutes />} />
       </Route>
+        <Route path="/meeting/:meetId" element={<MeetPage />} />
+        <Route path="/meet" element={<InterviewRoom canndidateName='Jams' roleTitle='role title' interviewerName='Interviewer'  onEndCall={()=>{}} />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

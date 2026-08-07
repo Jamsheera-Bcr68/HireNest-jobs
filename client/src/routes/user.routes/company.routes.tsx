@@ -4,7 +4,7 @@ import EmployerHome from '../../presentation/pages/user/employer/Home';
 import CompanyRegistration from '../../presentation/pages/user/company/CompanyRegisterPage';
 import { EmployerLayout } from '../../presentation/Layoutes/EmployerLayout';
 import { JobCreate } from '../../presentation/pages/user/employer/JobCreate';
-import Dashboard from '../../presentation/pages/admin/Dashboard';
+
 import MeetPage from '../../presentation/pages/user/MeetPage';
 import CompanyJobListing from '../../presentation/pages/user/company/CompanyJobListing';
 import JobDetails from '../../presentation/pages/user/company/JobDetails';
@@ -17,6 +17,7 @@ import CompanyDashboardPage from '../../presentation/pages/user/company/CompanyD
 import HireNestDashboard from '../../presentation/components/user/employer/dashboard/Sample';
 
 import InterviewsPage from '../../presentation/pages/user/company/InterviewsPage';
+import InterviewRoom from '../../presentation/InterviewRoom';
 export const CompanyRoutes = () => {
   return (
     <Routes>
@@ -37,6 +38,7 @@ export const CompanyRoutes = () => {
         <Route path={COMPANY_ROUTES.PROFILE}element={<CompanyProfile />} />
         <Route path={COMPANY_ROUTES.MESSAGES}element={<ChatPage />} />
         <Route path={COMPANY_ROUTES.MEET}element={<MeetPage />} />
+        <Route path='meet' element={<InterviewRoom candidateName='Jams' roleTitle='role title' interviewerName='Interviewer'  onEndCall={()=>{}} />} />
 
       </Route>
     </Routes>

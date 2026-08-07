@@ -79,6 +79,10 @@ function App() {
       }
       dispatch(addChatroom(updatedChatroom));
     });
+
+   
+
+
     return () => {
       socket.off('notification');
       socket.off('message');
