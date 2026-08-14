@@ -1,5 +1,3 @@
-
-
 type Props = {
   setShowEndConfirm: (v: boolean) => void;
   onEndCall: () => void;
@@ -35,3 +33,69 @@ function EndConfirmForm({ setShowEndConfirm, onEndCall }: Props) {
 }
 
 export default EndConfirmForm;
+
+// components/CameraOffTile.tsx
+import { Mic, MicOff, VideoOff } from 'lucide-react';
+
+interface CameraOffTileProps {
+  name: string;
+  size?: 'sm' | 'md' | 'lg';
+  showIcon?: boolean;
+  micOn: boolean;
+  className?: string;
+}
+
+const sizeStyles = {
+  sm: {
+    avatar: 'w-8 h-8 text-xs',
+    icon: 'w-3 h-3',
+    label: 'text-[10px] mt-1.5',
+    gap: 'gap-1',
+  },
+  md: {
+    avatar: 'w-14 h-14 text-sm',
+    icon: 'w-3.5 h-3.5',
+    label: 'text-xs mt-2',
+    gap: 'gap-1.5',
+  },
+  lg: {
+    avatar: 'w-24 h-24 text-2xl',
+    icon: 'w-4 h-4',
+    label: 'text-sm mt-2.5',
+    gap: 'gap-2',
+  },
+};
+
+export function CameraOffTile({
+  name,
+  size = 'md',
+
+  micOn,
+  className = '',
+}: CameraOffTileProps) {
+  const s = sizeStyles[size];
+  const initial = name?.charAt(0)?.toUpperCase() || '?';
+
+  return (
+    <div
+      className={`w-full h-full flex flex-col items-center justify-center bg-[#1a1b1e] ${className}`}
+    >
+      <div
+        className={`${s.avatar} rounded-full bg-white/10 border border-white/10 flex items-center justify-center font-semibold text-white/70`}
+      >
+        {initial}
+      </div>
+
+      <div className={`flex items-center ${s.gap} ${s.label} text-white/40`}>
+        <VideoOff className={s.icon} />
+        <span>Camera off</span>
+        {micOn ? (
+          <Mic className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/60" />
+        ) : (
+          <MicOff className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/60" />
+        )}{' '}
+      
+      </div>
+    </div>
+  );
+}

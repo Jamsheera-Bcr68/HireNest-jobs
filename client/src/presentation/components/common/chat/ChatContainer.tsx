@@ -26,6 +26,37 @@ function ChatContainer() {
   const [activeChatroom, setActiveChatroom] = useState<ChatroomType | null>(
     null
   );
+  const [filteredConversations, setFilteredConversations] =
+    useState<ChatroomType[]>(chatrooms);
+  const [search, setSearch] = useState<string>('');
+
+  const handlesearch = (s: string) => {
+    setSearch(s);
+  };
+
+  useEffect(() => {
+    const timer=setTimeout(()=>{
+ if (!search.trim()) {
+      setFilteredConversations(chatrooms);
+      return;
+    }
+
+    const term = search.trim().toLowerCase();
+    setFilteredConversations(
+      chatrooms.filter((ch) =>
+        ch.participantName.toLowerCase().startsWith(term)
+      )
+    );
+    },300)
+   
+return ()=>{
+  clearTimeout(timer)
+}
+  }, [chatrooms,search]);
+
+
+
+
   useEffect(() => {
     if (chatroomId) {
       dispatch(setActiveChatroomId(chatroomId));
@@ -78,17 +109,18 @@ function ChatContainer() {
   };
 
   return (
-    <div className="flex  w-full h-full bg-white">
+    <div className="flex  h-[calc(100vh-88px)] min-h-0 w-full overflow-hidden bg-white   ">
       <ConversationList
         selectedId={activeChatroomId}
-        filteredConversations={chatrooms}
+        filteredConversations={filteredConversations}
         handleChatroomChange={onChatroomChange}
+        handlesearch={handlesearch}
+        search={search}
       />
 
       <MessageWindow
         selectedId={activeChatroomId}
         updateChatroom={updateChatroom}
-        // setSelectId={(setActiveChatroomId)}
         activeChatroom={activeChatroom}
       />
     </div>

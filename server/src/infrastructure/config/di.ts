@@ -653,7 +653,7 @@ const pendingActionsUsecase = new PendingActionsUsecase(
 );
 
 const generateMeetlinkUsecase=new GenerateMeetlinkUsecase(cryptoService)
-const getInterviewByMeetingIdUsecase=new GetInterviewByMeetingIdUsecase(interviewRepository,companyRepository)
+const getInterviewByMeetingIdUsecase=new GetInterviewByMeetingIdUsecase(interviewRepository,companyRepository,userRepository,jobRepository)
 //controller
 //controller
 //controller

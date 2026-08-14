@@ -1,17 +1,22 @@
 export interface IWebRTCServices {
-    getLocalStream():Promise<MediaStream>
-  getPeerConnection():RTCPeerConnection
-    
+  getVideoStream(): Promise<MediaStream>;
+  getAudioStream(): Promise<MediaStream>;
+  getPeerConnection(): RTCPeerConnection;
 }
 
-export class WebRTCServices implements IWebRTCServices{
+export class WebRTCServices implements IWebRTCServices {
   constructor() {}
 
-  async getLocalStream() {
-    return navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+  async getVideoStream() {
+    return navigator.mediaDevices.getUserMedia({ video: true });
+  }
+  async getAudioStream() {
+    return navigator.mediaDevices.getUserMedia({ audio: true });
   }
 
   getPeerConnection(): RTCPeerConnection {
-    return new RTCPeerConnection({iceServers:[{urls:"stun:stun.l.google.com:19302"}]})
+    return new RTCPeerConnection({
+      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
+    });
   }
 }

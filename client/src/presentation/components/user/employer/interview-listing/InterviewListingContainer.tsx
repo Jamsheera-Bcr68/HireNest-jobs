@@ -168,15 +168,15 @@ function InterviewListingContainer() {
       ),
     },
 
-    {
-      key: 'scheduledAt',
-      label: 'Date',
-      render: (i: InterviewDto) => (
-        <span className="text-slate-700 whitespace-nowrap">
-          {i.scheduledAt.date}
-        </span>
-      ),
-    },
+    // {
+    //   key: 'scheduledAt',
+    //   label: 'Date',
+    //   render: (i: InterviewDto) => (
+    //     <span className="text-slate-700 whitespace-nowrap">
+    //       {i.scheduledAt.date}
+    //     </span>
+    //   ),
+    // },
 
     {
       key: 'time',

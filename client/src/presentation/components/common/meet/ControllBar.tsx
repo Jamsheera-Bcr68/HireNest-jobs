@@ -61,50 +61,50 @@ function ControllBar({
         )}
       </CtrlButton>
 
-      <CtrlButton
+      {/* <CtrlButton
         active={sharingScreen}
         onClick={toggleSharing}
         activeClasses="bg-indigo-500 hover:bg-indigo-400 text-white"
         label="Share screen"
       >
         <MonitorUp className="w-[18px] h-[18px]" />
-      </CtrlButton>
+      </CtrlButton> */}
 
       <div className="w-px h-6 bg-white/10 mx-1" />
 
-      <CtrlButton
+      {/* <CtrlButton
         active={panel === 'notes'}
         //onClick={() => togglePanel("notes")}
         activeClasses="bg-white text-black hover:bg-white/90"
         label="Questions"
       >
         <ChevronRight className="w-[18px] h-[18px]" />
-      </CtrlButton>
+      </CtrlButton> */}
 
-      <CtrlButton
+      {/* <CtrlButton
         active={panel === 'chat'}
         //  onClick={() => togglePanel("chat")}
         activeClasses="bg-white text-black hover:bg-white/90"
         label="Chat"
       >
         <MessageSquare className="w-[18px] h-[18px]" />
-      </CtrlButton>
+      </CtrlButton> */}
 
-      <CtrlButton
+      {/* <CtrlButton
         active={panel === 'people'}
         // onClick={() => togglePanel("people")}
         activeClasses="bg-white text-black hover:bg-white/90"
         label="People"
       >
         <Users className="w-[18px] h-[18px]" />
-      </CtrlButton>
+      </CtrlButton> */}
 
-      <CtrlButton
+      {/* <CtrlButton
         // onClick={() => {}}
         label="More"
       >
         <MoreHorizontal className="w-[18px] h-[18px]" />
-      </CtrlButton>
+      </CtrlButton> */}
 
       <div className="w-px h-6 bg-white/10 mx-1" />
 

@@ -1,5 +1,4 @@
 import type { MessageType } from '../../../../types/message.types';
-import { useState } from 'react';
 
 export function DateDivider({ label }: { label: string }) {
   return (
@@ -58,6 +57,8 @@ export function MessageInput({
   onSendMsg: () => Promise<void>;
 }) {
   const handleSendMessage = async () => {
+    console.log('message value', value);
+
     if (!value) return;
     await onSendMsg();
     setValue('');
@@ -88,6 +89,15 @@ export function MessageInput({
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Type a message"
+          onKeyDown={(e) => {
+             console.log('e',e);
+            if (e.key == 'Enter') {
+            console.log('key is enter');
+            
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
           className="flex-1 bg-transparent outline-none text-sm text-slate-700 placeholder:text-slate-400"
         />
         {/* <button className="text-slate-500 ml-2 shrink-0" aria-label="Emoji">
@@ -113,7 +123,6 @@ export function MessageInput({
         className="p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shrink-0 transition-colors"
         aria-label="Send message"
         onClick={handleSendMessage}
-        // TODO: onClick={handleSend}
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
           <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />

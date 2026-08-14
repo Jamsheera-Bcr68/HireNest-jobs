@@ -17,14 +17,16 @@ export const EmployerLayout = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   let activeItem = menuItems.find((item) => currentPath.startsWith(item.path));
-  //console.log('currentPath,activeItem', currentPath, activeItem);
+  console.log('currentPath,activeItem', currentPath, activeItem);
 
   if (!activeItem && currentPath.startsWith('/company/applications')) {
     activeItem = menuItems.find((item) => item.path === '/company/jobs');
   }
 
   const [isSidebarOpen, setsidebarOpen] = useState(true);
-  const [title, seTitle] = useState(activeItem || 'Dashboard');
+  console.log('active item',activeItem);
+  
+  const [title, seTitle] = useState(activeItem?.label || 'Dashboard');
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -38,7 +40,7 @@ export const EmployerLayout = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
-    <>
+    
       <div className="flex min-h-screen ">
         <SideBar
           isOpen={isSidebarOpen}
@@ -49,11 +51,11 @@ export const EmployerLayout = () => {
         <div className="flex-1  bg-gray-100">
           <Header />
 
-          <div className="p-3">
+          <div className="p-3  ">
             <Outlet />
           </div>
         </div>
       </div>
-    </>
+    
   );
 };

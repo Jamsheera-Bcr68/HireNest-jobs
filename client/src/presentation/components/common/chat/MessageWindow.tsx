@@ -3,7 +3,7 @@ import { DateDivider } from './Components';
 import { ChatHeader } from './ChatHeader';
 
 import { MessageBubble, MessageInput, EmptyState } from './Components';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { messageService } from '../../../../services/api-services/message.service';
 import { setMessages } from '../../../../redux/slices/chatroom.slice';
 import { useSelector, useDispatch } from 'react-redux';
@@ -48,43 +48,87 @@ function MessageWindow({
     if (selectedId) getMessages();
   }, [selectedId]);
 
-  return (
-    <div className="flex flex-col flex-1 h-full w-full">
-      {activeChatroom ? (
-        <div
-          className={`${selectedId ? 'flex' : 'hidden'} md:flex flex-col flex-1 min-w-0 h-full`}
-        >
-          <ChatHeader
-            conversation={activeChatroom}
-            // onBack={() => setSelectId(null)}
-          />
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-          <div
-            // ref={scrollRef}
-            className="flex-1 overflow-y-auto py-4 space-y-3 bg-slate-50"
-            style={{
-              backgroundImage:
-                'radial-gradient(circle, #e2e8f0 1px, transparent 1px)',
-              backgroundSize: '20px 20px',
-            }}
-          >
+useEffect(() => {
+  messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+}, [messages]);
+  return (
+  <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-hidden">
+    {activeChatroom ? (
+      <div
+        className={`${selectedId ? 'flex' : 'hidden'} md:flex flex-col flex-1 min-w-0 h-full min-h-0 overflow-hidden`}
+      >
+        <ChatHeader conversation={activeChatroom} />
+
+        <div
+          className="flex-1 min-h-0 overflow-y-auto py-4 bg-slate-50"
+          style={{
+            backgroundImage:
+              'radial-gradient(circle, #e2e8f0 1px, transparent 1px)',
+            backgroundSize: '20px 20px',
+          }}
+        >
+          <div className="space-y-3">
             <DateDivider label="Today" />
             {messages?.map((m) => (
               <MessageBubble key={m.id} message={m} />
             ))}
+            <div ref={messagesEndRef} />
           </div>
-
-          <MessageInput
-            value={value}
-            setValue={setValue}
-            onSendMsg={handleSendMsg}
-          />
         </div>
-      ) : (
-        <EmptyState />
-      )}
-    </div>
-  );
+
+        <MessageInput
+          value={value}
+          setValue={setValue}
+          onSendMsg={handleSendMsg}
+        />
+      </div>
+    ) : (
+      <EmptyState />
+    )}
+  </div>
+);
+
+  // return (
+  //   <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-hidden">
+  //     {activeChatroom ? (
+  //       <div
+  //         className={`${selectedId ? 'flex' : 'hidden'} md:flex flex-col flex-1 min-w-0 h-full min-h-0 overflow-hidden`}
+  //       >
+  //         <ChatHeader
+  //           conversation={activeChatroom}
+  //           // onBack={() => setSelectId(null)}
+  //         />
+
+  //         <div
+  //           // ref={scrollRef}
+  //           className="flex-1  min-h-0 o overflow-y-auto py-4 space-y-3 bg-slate-50"
+  //           style={{
+  //             backgroundImage:
+  //               'radial-gradient(circle, #e2e8f0 1px, transparent 1px)',
+  //             backgroundSize: '20px 20px',
+  //           }}
+  //         >
+  //           <div className="flex min-h-full flex-col justify-end gap-3">
+  //           <DateDivider label="Today" />
+  //           {messages?.map((m) => (
+  //             <MessageBubble key={m.id} message={m} />
+  //           ))}
+  //         </div>
+  //         </div>
+
+  //         <MessageInput
+  //           value={value}
+  //           setValue={setValue}
+  //           onSendMsg={handleSendMsg}
+  //         />
+  //       </div>
+  //     ) : (
+  //       <EmptyState />
+  //     )}
+  //   </div>
+  // );
 }
 
 export default MessageWindow;

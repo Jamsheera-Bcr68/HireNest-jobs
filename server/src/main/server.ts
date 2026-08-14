@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
     console.log('Map size:', activeParticipants.size);
     console.log('Map contents:', [...activeParticipants.entries()]);
     const existing = activeParticipants.get(key);
-  console.log("Existing:", existing);
+    console.log('Existing:', existing);
 
     if (existing && existing.socketId !== socket.id) {
       console.log('this user is already in the room');
@@ -88,6 +88,22 @@ io.on('connection', (socket) => {
 
   socket.on('answer', ({ meetId, answer }) => {
     socket.to(meetId).emit('answer', { answer });
+  });
+
+  socket.on('end-call', ({ meetId }) => {
+    console.log(' listened to endcall');
+
+    socket.to(meetId).emit('call-ended ');
+  });
+
+  socket.on('camera-state', ({ meetId, enabled }) => {
+    console.log('from camera state,enabled', enabled);
+    socket.to(meetId).emit('camera-state',{enabled:enabled})
+  });
+
+  socket.on('mic-state', ({ meetId, enabled }) => {
+    console.log('from mic state,enabled', enabled);
+    socket.to(meetId).emit('mic-state',{enabled:enabled})
   });
 
   socket.on('disconnect', () => {

@@ -522,7 +522,7 @@ const navigate=useNavigate()
               ) : (
                 <EmptyState
                   icon={CalendarClock}
-                  title="Nothing scheduled"
+                  title="No Interview scheduled"
                   subtitle="Interviews you book will show up here."
                 />
               )}

@@ -4,9 +4,15 @@ import { WebRTCServices } from '../../services/web-RTC.services';
 const webRTCServices = new WebRTCServices();
 
 export function useVideoCall() {
-  const getLocalStream = useCallback(async () => {
+  const getVideoStream = useCallback(async () => {
     try {
-      const stream = await webRTCServices.getLocalStream();
+      const stream = await webRTCServices.getVideoStream();
+      return stream;
+    } catch {}
+  }, []);
+  const getAudioStream = useCallback(async () => {
+    try {
+      const stream = await webRTCServices.getAudioStream();
       return stream;
     } catch {}
   }, []);
@@ -16,7 +22,8 @@ export function useVideoCall() {
     return connection;
   }, []);
   return {
-    getLocalStream,
+    getAudioStream,
+    getVideoStream,
     createPeerConnection,
   };
 }
