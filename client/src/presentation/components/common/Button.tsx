@@ -10,7 +10,7 @@ export const Button = ({
   children,
   onClick,
   variant = 'secondary',
-  color = 'indigo-600',
+  color = 'white',
   size = 'md',
 }: ButtonProps) => {
   const sizeClasses = {
@@ -20,9 +20,10 @@ export const Button = ({
   };
 
   const variantClasses = {
-    info: `px-4 py-1 bg-teal-400  text-${color} rounded`,
+    info: `px-4 py-1 bg-[#8A0999]  text-${color} rounded`,
     primary: 'bg-blue-600 text-white hover:bg-blue-700',
     secondary: 'bg-gray-200 text-black hover:bg-gray-300',
+    
   };
 
   return (

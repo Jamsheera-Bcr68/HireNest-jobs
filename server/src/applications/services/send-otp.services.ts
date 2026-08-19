@@ -19,6 +19,7 @@ export class SendOtpService implements ISendOtpService {
 
   async execute(email: string): Promise<Date> {
  //   console.log(`from sendotp service `, email);
+ 
 
     const otp = this._otpGenerator.generate();
    // console.log('otp is ', otp);

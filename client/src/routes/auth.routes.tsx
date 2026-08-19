@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom';
 import Register from '../presentation/pages/auth/Register.tsx';
 import Loginfile from '../presentation/pages/auth/Login.tsx';
-import Home from '../presentation/pages/user/Home.tsx';
+import Home from '../presentation/pages/user/Landing.tsx';
 import Otp from '../presentation/pages/auth/Otp.tsx';
 import AdminLogin from '../presentation/pages/auth/AdminLogin.tsx';
 

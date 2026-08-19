@@ -44,7 +44,7 @@ const ServicesSection = () => {
     <section className="py-20 bg-gray/20 sm:py-28">
       <div className="mx-auto max-w-7xl bg-white px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-wider text-teal-600">
+          <span className="text-sm font-semibold uppercase tracking-wider text-[#8A0999]">
             Our Services
           </span>
           <h2 className="mt-3 text-3xl font-bold text-grey-400 sm:text-4xl">
@@ -59,9 +59,9 @@ const ServicesSection = () => {
           {services.map((service) => (
             <div
               key={service.title}
-              className="group rounded-2xl bg-white border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-teal/30"
+              className="group rounded-2xl bg-white border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-[#8A0999]"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal/10 text-teal-600 transition-colors group-hover:bg-teal-100 hover:text-white">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal/10 text-[#8A0999] transition-colors group-hover:bg-fuchsia-100 hover:text-white">
                 <service.icon className="h-6 w-6 " />
               </div>
               <h3 className="mt-5 text-xl font-semibold text-foreground">

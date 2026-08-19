@@ -32,7 +32,7 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
     userId: string,
     role: UserRole
   ): Promise<Company> {
-   // console.log('pay load form usecase', payload);
+    // console.log('pay load form usecase', payload);
 
     const user = await this._userRepository.findById(userId);
     if (!user || !user.id) {
@@ -40,14 +40,19 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
     }
     payload.userId = userId;
 
+    if (!payload.email) {
+      payload.email = user.email;
+    }
     const emailExist = await this._companyRepository.findOne({
       email: payload.email,
     });
+
     if (emailExist)
       throw new AppError(
         generalMessages.errors.COMPANY_ALREADY_EXIST('Email'),
         statusCodes.CONFLICT
       );
+
     const nameExist = await this._companyRepository.findOne({
       email: payload.companyName,
     });
@@ -86,7 +91,8 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
       message: `${company.companyName} has registered and is awaiting approval.`,
     };
 
-  const newNotification=  await this._notificationService.create(notificationData);
+    const newNotification =
+      await this._notificationService.create(notificationData);
     getIO().to(admin.id).emit('notification', newNotification);
     return company;
   }

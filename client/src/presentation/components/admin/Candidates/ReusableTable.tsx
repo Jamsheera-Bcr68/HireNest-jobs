@@ -20,15 +20,18 @@ export type TabType = { label: string; value: string };
 type Props<T extends { id: string }> = {
   tabs: TabType[];
   updateFilter: (filter: any) => void;
+  item: string;
   entities: T[];
   columns: ColumnType<T>[];
   filterOptions: FilterOption[];
   totalDocs: number;
   sortOption?: SortOption;
   setSortBy?: (option: string) => void;
+ onResetfilter:()=>void
 };
 
 function ReusableTable<T extends { id: string }>({
+  item,
   tabs,
   updateFilter,
   entities,
@@ -36,7 +39,7 @@ function ReusableTable<T extends { id: string }>({
   filterOptions,
   totalDocs,
   sortOption,
-  setSortBy,
+  setSortBy,onResetfilter
 }: Props<T>) {
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState('All');
@@ -99,6 +102,13 @@ function ReusableTable<T extends { id: string }>({
               </select>
             );
           })}
+          <button
+            type="button"
+            onClick={updateFilter}
+            className="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 text-slate-600 hover:bg-slate-100"
+          >
+            Clear filters
+          </button>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -177,7 +187,9 @@ function ReusableTable<T extends { id: string }>({
         </table>
 
         {entities.length === 0 && (
-          <div className="text-center py-16 text-slate-400">No data found</div>
+          <div className="text-center py-16 text-slate-400">
+            No {item} found
+          </div>
         )}
       </div>
     </>

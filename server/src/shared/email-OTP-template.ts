@@ -1,4 +1,4 @@
-export const emailTemplate = (otp: string) => `<!DOCTYPE html>
+export const emailTemplate = (otp: string,minutes:number) => `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -23,7 +23,7 @@ export const emailTemplate = (otp: string) => `<!DOCTYPE html>
             <td style="padding:20px 0; font-size:14px; color:#555; line-height:1.6;">
               Hello,<br/><br/>
               Use the following One-Time Password (OTP) to complete your verification.
-              This code is valid for <strong>5 minutes</strong>.
+              This code is valid for <strong> ${minutes} minutes</strong>.
             </td>
           </tr>
 

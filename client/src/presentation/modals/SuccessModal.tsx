@@ -48,7 +48,7 @@ function SuccessModal({ open, onClose }: ModalProps) {
               <p className="text-gray-600 text-base">
                 Your company profile has been successfully submitted.
               </p>
-              <div className="mt-4 rounded-lg bg-blue-50 p-3 text-sm text-blue-700">
+              <div className="mt-4 rounded-lg bg-fuchsia-50 p-3 text-sm text-fuchsia-700">
                 <strong>Under Review:</strong> We’ll process your application
                 and provide an update within 2 business days.
               </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Lightbulb,LayoutDashboard,Building2, Users, Briefcase,CalendarDays ,FileUser} from 'lucide-react';
 
 const navItems = [
   'Dashboard',
@@ -11,7 +12,7 @@ const navItems = [
   // 'Pendings',
   'Skills',
 ];
-const navIcons = ['⊞', '🏢', '👥', '💼', '📋', '📊', '🛠️'];
+const navIcons = [<LayoutDashboard/> , <Building2/>,<Users/>, <Briefcase/>, <FileUser/>, <CalendarDays/>, <Lightbulb/>];
 const navLinks: Record<string, string> = {
   Dashboard: '/admin',
   Candidates: '/admin/candidates ',

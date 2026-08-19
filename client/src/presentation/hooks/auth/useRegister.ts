@@ -36,7 +36,8 @@ export const useRegister = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   const submitHandle = async (
-    e: React.SyntheticEvent<HTMLButtonElement>
+    //e: React.SyntheticEvent<HTMLButtonElement>
+    e:React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
 

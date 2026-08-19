@@ -53,11 +53,11 @@ const HeroSection = ({ heroImage }: HeroProps) => {
       </div>
       <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:py-40">
         <div className="max-w-2xl">
-          <span className="mb-4 inline-block rounded-full px-4 py-1.5 text-sm bg-white/20 text-teal-400 font-medium">
+          <span className="mb-4 inline-block rounded-full px-4 py-1.5 text-sm bg-white/20 text-[#8A0999] font-medium">
             🚀 #1 Hiring Platform for Employers
           </span>
           <h1 className="text-3xl text-white font-extrabold leading-tight tracking-tight text-primary-foreground sm:text-5xl lg:text-6xl">
-            Find the Right Talent, <span className="text-teal-600">Faster</span>
+            Find the Right Talent, <span className="text-[#8A0999]">Faster</span>
           </h1>
           <p className="mt-6 text-lg text-white leading-relaxed text-primary-foreground/80 sm:text-xl">
             Post jobs, review candidates, and hire top professionals — all in
@@ -103,7 +103,7 @@ const HeroSection = ({ heroImage }: HeroProps) => {
         <CompanyRegistrationPendingModal
           title="Register your company"
           type={'new'}
-          message={`You does not have a active company for posting a job,Please rregister your company `}
+          message={`You does not have a active company for posting a job,Please Register your company `}
           onClose={() => setinfoOpen(false)}
         />
       </ModalLayout>

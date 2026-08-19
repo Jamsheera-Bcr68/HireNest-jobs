@@ -6,6 +6,9 @@ import {
   ChevronRight,
   BriefcaseBusiness,
   ChevronLeftIcon,
+  User,
+  CalendarDays,
+  FileUser,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 const navItems = [
@@ -29,10 +32,10 @@ const navRoutes: Record<string, string> = {
 const navIcons = [
   <Home />,
   <BriefcaseBusiness />,
-  '📋',
-  '📅',
+  <FileUser/>,
+  <CalendarDays/>,
   <MessagesSquareIcon />,
-  '👤',
+   <User/>,
   <LogOutIcon />,
 ];
 type SidebarProps = {

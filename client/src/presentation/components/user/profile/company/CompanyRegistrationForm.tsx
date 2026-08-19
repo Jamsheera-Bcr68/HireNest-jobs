@@ -22,10 +22,10 @@ const IconCamera = () => (
   <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
     <path
       d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"
-      stroke="#a5b4fc"
+      stroke="#bc1ff1"
       strokeWidth="1.6"
     />
-    <circle cx="12" cy="13" r="4" stroke="#a5b4fc" strokeWidth="1.6" />
+    <circle cx="12" cy="13" r="4" stroke="#bc1ff1" strokeWidth="1.6" />
   </svg>
 );
 
@@ -43,10 +43,10 @@ const IconChevron = () => (
 
 const IconInfo = () => (
   <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="10" stroke="#6366F1" strokeWidth="1.8" />
+    <circle cx="12" cy="12" r="10" stroke="#bc1ff1" strokeWidth="1.8" />
     <path
       d="M12 8v4m0 4h.01"
-      stroke="#6366F1"
+      stroke="#bc1ff1"
       strokeWidth="1.8"
       strokeLinecap="round"
     />
@@ -77,8 +77,8 @@ const Field = ({
   </div>
 );
 
-const inputCls = ` w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-300 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all`;
-const docSelect = ` w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-300 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all`;
+const inputCls = ` w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-300 outline-none focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-100 transition-all`;
+const docSelect = ` w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 placeholder-slate-300 outline-none focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-100 transition-all`;
 
 type SelectProps<T extends string> = {
   placeholder: string;
@@ -192,7 +192,7 @@ const Checkbox = ({ children, checked, handleChange, name }: CheckboxProps) => (
       type="checkbox"
       checked={checked}
       onChange={handleChange}
-      className="mt-2"
+      className={`mt-2 ${ checked ? "accent-fuchsia-600" : "accent-gray-400"}`}
     />
 
     <span className="text-sm text-slate-600 leading-relaxed block">
@@ -291,24 +291,23 @@ export default function CompanyRegistration({ isReapply }: Props) {
         {/* ── Main form area ──mt-3 */}
         <div className="max-w-2xl mx-auto bg-white px-4 py-10 flex flex-col gap-6">
           {/* Info banner */}
-          <div className="flex items-start gap-3 rounded-2xl bg-indigo-50 border border-indigo-100 px-5 py-4">
+          <div className="flex items-start gap-3 rounded-2xl bg-fuchsia-50 border border-fuchsia-100 px-5 py-4">
             <div className="flex-shrink-0 mt-0.5">
               <IconInfo />
             </div>
             <div>
               <p
-                className="text-sm font-bold text-indigo-600 mb-0.5"
+                className="text-sm font-bold text-fuchsia-600 mb-0.5"
                 style={{ fontFamily: "'Syne',sans-serif" }}
               >
                 Your account is already set up
               </p>
-              <p className="text-xs text-indigo-500/80 leading-relaxed">
+              <p className="text-xs text-fuchsia-500/80 leading-relaxed">
                 Your username, password, and phone number are carried over from
                 your existing account — no need to re-enter them. Just complete
                 your company profile below.
               </p>
             </div>
-           
           </div>
           {/* ─── CARD 1 · Company Identity ─── */}
           <Card title="Company Identity">
@@ -317,7 +316,7 @@ export default function CompanyRegistration({ isReapply }: Props) {
               <div className="flex flex-col items-center gap-2">
                 <div
                   onClick={handleCameraClick}
-                  className="relative w-28 h-28 rounded-full border-2 border-dashed border-slate-200 bg-white flex items-center justify-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all overflow-hidden"
+                  className="relative w-28 h-28 rounded-full border-2 border-dashed border-slate-200 bg-white flex items-center justify-center cursor-pointer hover:border-fuchsia-400 hover:bg-fuchsia-50 transition-all overflow-hidden"
                 >
                   <input
                     onChange={handleImageChange}
@@ -693,33 +692,35 @@ export default function CompanyRegistration({ isReapply }: Props) {
                     * {error.documents.file}
                   </p>
                 )} */}
-                 <label
-    className={`${inputCls} flex items-center justify-between cursor-pointer`}
-  >
-    <span className="truncate">
-      {verify_file?.name ||
-        formData.documents.name ||
-        'Choose file'}
-    </span>
+                <label
+                  className={`${inputCls} flex items-center justify-between cursor-pointer`}
+                >
+                  <span className="truncate">
+                    {verify_file?.name ||
+                      formData.documents.name ||
+                      'Choose file'}
+                  </span>
 
-    <span className="px-2 py-1 rounded-md bg-indigo-50 text-indigo-600">
-      Browse
-    </span>
+                  <span className="px-2 py-1 rounded-md bg-fuchsia-50 text-fuchsia-600">
+                    Browse
+                  </span>
 
-    <input
-      type="file"
-      className="hidden"
-      onChange={(e: ChangeEvent<HTMLInputElement>) =>
-        setVerify_file(e.target.files?.[0] || null)
-      }
-    />
-  </label>
+                  <input
+                    type="file"
+                    className="hidden"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setVerify_file(e.target.files?.[0] || null)
+                    }
+                  />
 
-  {error?.documents?.file && (
-    <p className="text-red-600 text-sm">
-      * {error.documents.file}
-    </p>
-  )}
+                  
+                </label>
+
+                {error?.documents?.file && (
+                  <p className="text-red-600 text-sm">
+                    * {error.documents.file}
+                  </p>
+                )}
               </div>
             </div>
           </Card>
@@ -734,14 +735,14 @@ export default function CompanyRegistration({ isReapply }: Props) {
               authorised to register this company on HIRNEST. I agree to the{' '}
               <a
                 href="#"
-                className="text-indigo-500 hover:underline font-medium"
+                className="text-fuchsia-500 hover:underline font-medium"
               >
                 Employer Terms of Service
               </a>{' '}
               and{' '}
               <a
                 href="#"
-                className="text-indigo-500 hover:underline font-medium"
+                className="text-fuchsia-500 hover:underline font-medium"
               >
                 Privacy Policy
               </a>
@@ -776,7 +777,7 @@ export default function CompanyRegistration({ isReapply }: Props) {
             <div className="flex gap-3 w-full sm:w-auto">
               <button
                 onClick={handleSubmit}
-                className="flex-1 sm:flex-none rounded-xl bg-green-600 px-7 py-2.5 text-sm font-bold text-white hover:bg-indigo-600 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-200 transition-all"
+                className="flex-1 sm:flex-none bg-fuchsia-100 rounded-xl border border-fuchsia-600 px-7 py-2.5 text-sm font-bold text-fuchsia-600 hover:bg-fuchsia-600 hover:text-white hover:-translate-y-0.5 hover:shadow-lg hover:shadow-fuchsia-200 transition-all"
                 style={{ fontFamily: "'Syne',sans-serif" }}
               >
                 Submit & Continue →
@@ -786,7 +787,7 @@ export default function CompanyRegistration({ isReapply }: Props) {
           {/* Help note */}
           <p className="text-center text-xs text-slate-400 pb-4">
             Documents are reviewed within 1–2 business days.{' '}
-            <a href="#" className="text-indigo-500 hover:underline">
+            <a href="#" className="text-fuchsia-500 hover:underline">
               Contact Support
             </a>
           </p>
@@ -803,16 +804,7 @@ export default function CompanyRegistration({ isReapply }: Props) {
             setFormData((prev) => ({ ...prev, logoUrl: url }))
           }
         />
-        {/* <ImageCropModal
-          preview={preview}
-          open={isOpen}
-          onClose={() => setIsOpen(false)}
-          image={imageSrc}
-          setPreview={setPreview}
-          isCropping={isCropping}
-          setIsCropping={setIsCropping}
-          handleSelectedImage={setUrl}
-        /> */}
+
         <SuccessModal
           open={isSuccessOpen}
           onClose={() => setIsSuccessOpen(false)}

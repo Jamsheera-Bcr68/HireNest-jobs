@@ -2,6 +2,7 @@ import { useLogin } from '../../hooks/auth/useLogin';
 import type { ILoginFormProps } from '../../../constants/interfaces/auth';
 
 import { Eye, EyeClosedIcon } from 'lucide-react';
+import AuthForms from './AuthForms';
 
 const LoginForm = ({ role }: ILoginFormProps) => {
   const {
@@ -16,14 +17,11 @@ const LoginForm = ({ role }: ILoginFormProps) => {
   } = useLogin(role);
 
   return (
-    <div className="rounded-md">
+    <form onSubmit={submitHandle} className="rounded-md">
       <div className="text-center  mb-5">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Login</h1>
-
-        {errors.server && (
-          <p className="text-red-500 text-sm mt-1">{errors.server}</p>
-        )}
+      
       </div>
+      <AuthForms title='Login'  error={errors.server}/>
 
       <div className="space-y-4">
         <button
@@ -47,7 +45,7 @@ const LoginForm = ({ role }: ILoginFormProps) => {
             name="email"
             type="email"
             placeholder="Email address"
-            className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+            className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent outline-none transition"
           />
         </div>
         {errors.email && (
@@ -61,7 +59,7 @@ const LoginForm = ({ role }: ILoginFormProps) => {
             name="password"
             type={showPassword ? 'text' : 'password'}
             placeholder="Password"
-            className="w-full  px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+            className="w-full  px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent outline-none transition"
           />{' '}
           <button
             className="absolute inset-y-0 right-3 flex items-center text-gray-500"
@@ -76,16 +74,16 @@ const LoginForm = ({ role }: ILoginFormProps) => {
         )}
         {/* Submit */}
         <button
-          onClick={submitHandle}
-          className="w-full bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition duration-200 shadow-md hover:shadow-lg"
+          type='submit'
+          className="w-full bg-fuchsia-800 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-fuchsia-700 transition duration-200 shadow-md hover:shadow-lg"
         >
           Login
         </button>
       </div>
       <div className="w-full ">
-        <button
+        <button color='white'
           onClick={handleForgotPassword}
-          className="ml-60 text-sm text-indigo-600 hover:text-indigo-700 transition"
+          className="ml-60 text-sm text-fuchsia-800 hover:text-fuchsia-500 transition"
         >
           Forgot Password ?
         </button>
@@ -95,7 +93,7 @@ const LoginForm = ({ role }: ILoginFormProps) => {
           Don't have an account?{' '}
           <a
             href="/register"
-            className="text-indigo-600 font-semibold hover:text-indigo-700 transition"
+            className="text-fuchsia-800 font-semibold hover:text-fuchsia-600 transition"
           >
             Create
           </a>
@@ -103,7 +101,7 @@ const LoginForm = ({ role }: ILoginFormProps) => {
       ) : (
         ''
       )}
-    </div>
+    </form>
   );
 };
 

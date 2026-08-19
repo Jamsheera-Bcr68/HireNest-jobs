@@ -37,10 +37,21 @@ const selectVal = <T extends readonly [string, ...string[]]>(
     })
   );
 
+  const websiteValOpt = (field: string, min: number, max: number) =>
+  z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z
+      .string()
+      .trim()
+      .min(min, `${field} should be at least ${min} characters`)
+      .max(max, `${field} should not be more than ${max} characters`)
+      .url(`Enter a valid ${field} URL`)
+      .optional()
+  );
 export const companyRegisterSchema = z.object({
-  companyName: stringValMand('Company Name', 3, 30),
+  companyName: stringValMand('Company Name', 3, 30).regex(/^[A-Za-z\s]+$/, `Company Name should contain only letters`),
   tagLine: stringValOpt('Tagline', 3, 30).nullable().optional(),
-  website: stringValOpt('Website', 6, 50),
+  website: websiteValOpt('Website', 6, 50),
   industry: selectVal('Industry', Industry_Type),
   size: selectVal('Company size', Company_Size),
 

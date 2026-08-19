@@ -22,9 +22,9 @@ export const CompanyRoutes = () => {
   return (
     <Routes>
       <Route path={COMPANY_ROUTES.HOME} element={<EmployerHome />} />
-
+  <Route path={COMPANY_ROUTES.REGISTER} element={<CompanyRegistration />} />
       <Route path="/" element={<EmployerLayout />}>
-        <Route path={COMPANY_ROUTES.REGISTER} element={<CompanyRegistration />} />
+      
         <Route path={COMPANY_ROUTES.DASHBOARD}element={<CompanyDashboardPage />} />
         <Route path={'dash'}element={<HireNestDashboard />} />
         <Route path={COMPANY_ROUTES.JOBS}element={<CompanyJobListing />} />

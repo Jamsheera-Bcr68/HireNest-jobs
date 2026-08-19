@@ -63,7 +63,7 @@ export const useLogin = (role: UserRole) => {
 
   const navigate = useNavigate();
 
-  const submitHandle = async (e: any) => {
+  const submitHandle = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const result = loginSchema.safeParse(formData);

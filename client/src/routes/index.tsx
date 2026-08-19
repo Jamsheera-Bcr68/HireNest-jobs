@@ -5,13 +5,13 @@ import ProtectedRoutes from './PrivateRoutes';
 import { CandidateRoutes } from './user.routes/candidate.route';
 
 import NotFound from '../presentation/pages/NotFound';
-import Home from '../presentation/pages/user/Home';
+import Landing from '../presentation/pages/user/Landing';
 import PublicRoutes from './PublicOnlyRoutes';
 import Login from '../presentation/pages/auth/Login';
 import Register from '../presentation/pages/auth/Register';
 import Otp from '../presentation/pages/auth/Otp';
 import AdminLogin from '../presentation/pages/auth/AdminLogin';
-
+import { useSelector } from 'react-redux';
 import ForgotPassword from '../presentation/pages/auth/ForgotPassword';
 import ResetPassword from '../presentation/pages/auth/ResetPasswordForm';
 import { CompanyRoutes } from './user.routes/company.routes';
@@ -19,12 +19,15 @@ import { AdminRoutes } from './admin.routes';
 import { AdminProtectedRoute } from './PrivateRoutes';
 import JobListing from '../presentation/pages/user/JobListing';
 import JobDetailsPage from '../presentation/components/candidate/jobListing/JobDetailsWrapper';
-import InterviewRoom from '../presentation/InterviewRoom';
+import Home from '../presentation/pages/user/Home';
+import type { RootState } from '../redux/store';
 
 export const AppRoutes = () => {
+  const { user } = useSelector((state: RootState) => state?.auth);
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={user ? <Home /> : <Landing />} />
+
       <Route path="/jobs" element={<JobListing />} />
       <Route path="/jobs/:id" element={<JobDetailsPage />} />
 
@@ -47,8 +50,8 @@ export const AppRoutes = () => {
       <Route element={<AdminProtectedRoute />}>
         <Route path="/admin/*" element={<AdminRoutes />} />
       </Route>
-        <Route path="/meeting/:meetId" element={<MeetPage />} />
-        <Route path="/meet" element={<InterviewRoom canndidateName='Jams' roleTitle='role title' interviewerName='Interviewer'  onEndCall={()=>{}} />} />
+      <Route path="/meeting/:meetId" element={<MeetPage />} />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -2,6 +2,7 @@ import { useResetPassword } from '../../hooks/auth/useResetPassword';
 import { useNavigate } from 'react-router-dom';
 
 import { Eye, EyeClosedIcon } from 'lucide-react';
+import AuthForms from './AuthForms';
 
 const ResetPasswordForm = () => {
   const {
@@ -15,11 +16,13 @@ const ResetPasswordForm = () => {
   } = useResetPassword();
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen flex items-center justify-center bg-indigo-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-fuchsia-50 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">
+        {/* <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">
           Reset Your Password
-        </h2>
+        </h2> */}
+        <AuthForms title='Reset Password'/>
+       
         {error?.server ? (
           <p className="text-sm  text-red-500 text-center mb-2">
             {error.server}
@@ -53,7 +56,7 @@ const ResetPasswordForm = () => {
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Enter Your Password"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
               />
               <button
                 type="button"
@@ -79,7 +82,7 @@ const ResetPasswordForm = () => {
               type={showPassword ? 'text' : 'password'}
               placeholder="Confirm Your Password"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
             />
 
             {error?.confirm_password ? (
@@ -93,7 +96,7 @@ const ResetPasswordForm = () => {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-2 rounded-lg
+            className="w-full bg-fuchsia-800 text-white py-2 rounded-lg
                      hover:bg-blue-700 transition duration-200"
           >
             Reset
@@ -104,7 +107,7 @@ const ResetPasswordForm = () => {
             onClick={() =>
               navigate(role == 'admin' ? '/admin/login' : '/login')
             }
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-fuchsia-800 hover:underline"
           >
             Back to Login
           </button>

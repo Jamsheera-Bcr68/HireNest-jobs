@@ -58,9 +58,9 @@ export class CompanyProfileController {
       payload,
       user.userId
     );
-    const company = this.companyRegisterUseCase.execute(
+    const company =await this.companyRegisterUseCase.execute(
       companyData,
-      user.userId,
+      user.userId, 
       user.role
     );
    // console.log('new company',company);

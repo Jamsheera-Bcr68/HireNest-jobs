@@ -1,5 +1,5 @@
 import { useState ,useEffect} from 'react';
-import { MessageSquare, MessageSquareDashed } from 'lucide-react';
+import { Briefcase, LayoutDashboard, LayoutDashboardIcon, MessageSquare, MessageSquareDashed, User } from 'lucide-react';
 import {
   Home,
   PlusIcon,
@@ -7,6 +7,7 @@ import {
   BriefcaseBusiness,
   ChevronLeftIcon,
   LightbulbIcon,
+  CalendarDays
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 const navItems = [
@@ -31,12 +32,12 @@ const navRoutes: Record<string, string> = {
   Messages: '/company/messages',
 };
 const navIcons = [
-  '⊞',
+  <LayoutDashboardIcon/>,
   <PlusIcon />,
 
-  '📅',
-  '🔖',
-  '👤',
+  <CalendarDays/>,
+<Briefcase/>,
+  <User/>,
   <LightbulbIcon />,
 
   <MessageSquare />,

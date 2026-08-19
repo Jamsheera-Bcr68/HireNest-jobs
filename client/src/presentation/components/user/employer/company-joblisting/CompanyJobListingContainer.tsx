@@ -28,17 +28,21 @@ export type UpdateStatusType = {
   lastDate?: string;
   reason?: string;
 };
-
+const experinceData = Experience_Types.map((e) => ({ label: e, value: e }));
 const filterOptions = [
   {
     key: 'experience',
     label: 'Experience',
-    options: Experience_Types,
+    options: experinceData,
   },
   {
     key: 'mode',
     label: 'Work Mode',
-    options: ['onsite', 'remote', 'hybrid'],
+    options: [
+      { label: 'Onsite', value: 'onsite' },
+      { label: 'Remote', value: 'remote' },
+      { label: 'Hybrid', value: 'hybrid' },
+    ],
   },
 ];
 
@@ -50,6 +54,10 @@ const tabs = [
   { label: 'Closed', value: 'closed' },
 ];
 
+type JobFilterUpdate = Omit<Partial<JobFilterType>, 'search'> & {
+  search?: string | JobFilterType['search'];
+};
+
 function CompanyJobListingContainer() {
   const user = useSelector((state: StateType) => state.auth.user);
   const { showToast } = useToast();
@@ -59,11 +67,11 @@ function CompanyJobListingContainer() {
   const [page, setPage] = useState<number>(1);
   const [totalDocs, setTotalDocs] = useState<number>(0);
   const [limit] = useState(10);
-
-  const [filter, setFilter] = useState<JobFilterType>({
+  const defaultFilter = {
     search: { job: '', location: '' },
     companyId: user.companyId,
-  });
+  };
+  const [filter, setFilter] = useState<JobFilterType>(defaultFilter);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [editModalOpen, setEditModalOpen] = useState<boolean>(false);
@@ -241,6 +249,7 @@ function CompanyJobListingContainer() {
     },
   ];
 
+ 
   useEffect(() => {
     async function getPostStatusData() {
       try {
@@ -298,14 +307,17 @@ function CompanyJobListingContainer() {
   }, [filter, page]);
 
   const handleFilterChange = (
-    incomingFilter: Partial<JobFilterType> & { search?: string }
+   // incomingFilter: Partial<JobFilterType> & { search?: string }
+    incomingFilter: JobFilterUpdate
   ) => {
-    const updatedFilter: Partial<JobFilterType> = { ...incomingFilter };
+    console.log('incoming filter',incomingFilter);
+    const {search,...rest}=incomingFilter
+    const updatedFilter: Partial<JobFilterType> = {...rest };
 
     // convert search string → search object
-    if (typeof incomingFilter.search === 'string') {
+    if (typeof search === 'string') {
       updatedFilter.search = {
-        job: incomingFilter.search,
+        job:search,
         location: '',
       };
     }
@@ -345,6 +357,10 @@ function CompanyJobListingContainer() {
       }),
     };
   };
+   const onResetFilter=()=>{
+    handleFilterChange({search:''})
+    
+  }
 
   return (
     <>
@@ -365,6 +381,8 @@ function CompanyJobListingContainer() {
                 updateFilter={handleFilterChange}
                 entities={jobs}
                 filterOptions={filterOptions}
+                item="Jobs"
+                onResetfilter={onResetFilter}
               />
               <Pagination
                 onPageChange={setPage}

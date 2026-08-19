@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { SideBar } from '../components/candidate/Sidebar';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import Header from '../components/common/Header';
+import Header from '../components/common/home/Header';
 
 const menuItems = [
   { label: 'Dashboard', path: '/candidate/dashboard' },

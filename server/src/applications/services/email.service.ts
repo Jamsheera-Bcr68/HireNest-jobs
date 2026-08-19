@@ -12,14 +12,17 @@ export class EmailService implements IEmailService {
       pass: process.env.EMAIL_PASS,
     },
   });
+
   async sendOtp(email: string, otp: string): Promise<void> {
-   // console.log('from email servives', email, otp);
+    console.log('EMAIL_USER:', process.env.EMAIL_USER);
+    console.log('EMAIL_PASS length:', process.env.EMAIL_PASS?.length);
+    console.log('from email services', email, otp);
 
     const info = await this.transporter.sendMail({
       from: `"HireNest" <${process.env.ADMIN_EMAIL}>`,
       to: email,
       subject: `Your OTP code`,
-      html: emailTemplate(otp),
+      html: emailTemplate(otp, 1),
     });
     console.log(
       '(nodemailer.getTestMessageUrl',
@@ -27,6 +30,14 @@ export class EmailService implements IEmailService {
     );
   }
   async sendResetPasswordLink(email: string, resetLink: string): Promise<void> {
+    console.log('EMAIL_USER:', process.env.EMAIL_USER);
+    console.log(
+      'EMAIL_PASS exists:',
+      !!process.env.EMAIL_PASS,
+      'length:',
+      process.env.EMAIL_PASS?.length
+    );
+
     const info = await this.transporter.sendMail({
       from: `"HireNest" <${process.env.ADMIN_EMAIL}>`,
       to: email,

@@ -1,6 +1,9 @@
 import { Search, MapPin } from 'lucide-react';
 import { useState } from 'react';
-import type { JobFilterType } from '../../../pages/user/JobListing';
+
+import type { JobFilterType } from '../../candidate/jobListing/ListingContainter';
+
+
 
 type Props = {
   jobCountOfToday: number;
@@ -15,13 +18,19 @@ function Hero({ jobCountOfToday, handleFilterChange, filter }: Props) {
 
   return (
     <div>
-      <section className="relative pb-24 px-6 overflow-hidden">
-        <div className="hero-glow absolute inset-0 pointer-events-none" />
-        <img
-          className="absolute inset-0 w-full h-full object-cover -z-10"
-          src="/review.jpg"
-          alt=""
-        />
+      {/* <section className="relative pb-24 px-6 overflow-hidden"> */}
+      <section className="relative pb-24 px-6">
+        <div className="absolute top-0 left-0 right-0 h-[650px] -z-10">
+          <img
+            src="/homeBg.jpg"
+            alt=""
+            className="w-full h-full object-cover"
+          />
+          <div className="hero-glow absolute inset-0" />
+        </div>
+
+      
+      
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="inline-flex bg-teal-50 items-center mt-20 gap-2 mb-6 px-4 py-1.5 rounded-full text-xs font-medium text-teal-800">
             ✦ {jobCountOfToday} new jobs added today
@@ -54,7 +63,7 @@ function Hero({ jobCountOfToday, handleFilterChange, filter }: Props) {
           <div className="search-bar bg-white rounded-2xl p-3 flex flex-col md:flex-row gap-3 max-w-3xl mx-auto shadow-2xl">
             {/* Job Title */}
             <div className="flex items-center gap-3 flex-1  px-2 py-1 border rounded-2xl bg-gray-100">
-              <Search size={18} className="w-5 h-5 text-indigo-400 shrink-0" />
+              <Search size={18} className="w-5 h-5 text-[#8A0999] shrink-0" />
               <input
                 value={jobSearch}
                 onChange={(e) => setJobSearch(e.target.value)}
@@ -68,7 +77,7 @@ function Hero({ jobCountOfToday, handleFilterChange, filter }: Props) {
 
             {/* Location */}
             <div className="flex items-center gap-3 flex-1 px-4 py-3 border rounded-2xl bg-gray-100">
-              <MapPin size={18} className="w-5 h-5 text-indigo-400 shrink-0" />
+              <MapPin size={18} className="w-5 h-5 text-[#8A0999] shrink-0" />
               <input
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
@@ -83,9 +92,9 @@ function Hero({ jobCountOfToday, handleFilterChange, filter }: Props) {
                   search: { job: jobSearch, location: location },
                 });
               }}
-              className="search-btn px-8 py-3.5 rounded-2xl  bg-indigo-400 text-sm font-semibold text-white shadow-lg whitespace-nowrap"
+              className="search-btn px-8 py-3.5 rounded-2xl  bg-[#8A0999] text-sm font-semibold text-white shadow-lg whitespace-nowrap"
             >
-              Search Jobs
+              Search 
             </button>
           </div>
 

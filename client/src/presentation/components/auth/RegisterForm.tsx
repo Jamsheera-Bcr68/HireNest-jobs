@@ -1,6 +1,7 @@
 import { useRegister } from '../../hooks/auth/useRegister';
 
 import { Eye, EyeClosedIcon } from 'lucide-react';
+import AuthForms from './AuthForms';
 
 function RegisterForm() {
   const {
@@ -14,20 +15,27 @@ function RegisterForm() {
   } = useRegister();
 
   return (
-    <>
-      <div className="text-center mb-5">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Create Account
-        </h1>
-        <p className="text-gray-600">Join us today and get started</p>
+    <form onSubmit={submitHandle}>
+      <AuthForms title='Create Account' error={errors.server} />
+      {/* <div className="text-center mb-5"> */}
+        {/* <div className="flex items-center justify-center gap-3 mb-2"> */}
+          {/* HireNest Logo */}
+          {/* <div className="w-10 h-10  rounded-full text-indigo-600 flex items-center justify-center shadow-sm"> */}
+            {/* <img  className="w-10 h-10 rounded-full bg-indigo-600 flex items-center border-indigo-600 justify-center shadow-sm" src="6.jpg" alt="" /> */}
+            {/* <span className=" font-bold text-lg">HN</span> */}
+          {/* </div> */}
 
-        {errors.server && (
+          {/* <h1 className="text-3xl font-bold text-gray-900">Create Account</h1> */}
+        {/* </div> */}
+
+        {/* {errors.server && (
           <p className="text-red-500 text-sm mt-1">{errors.server}</p>
-        )}
-        {succesMsg && (
+        )} */}
+
+        {/* {succesMsg && (
           <p className="text-green-500 text-sm mt-1">{succesMsg}</p>
-        )}
-      </div>
+        )} */}
+      {/* </div> */}
 
       <div className="space-y-4">
         <button
@@ -49,7 +57,7 @@ function RegisterForm() {
           name="email"
           type="email"
           placeholder="Email address"
-          className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+          className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent outline-none transition"
         />
         {errors.email && (
           <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -62,7 +70,7 @@ function RegisterForm() {
           name="phone"
           type="tel"
           placeholder="Phone number"
-          className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+          className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent outline-none transition"
         />
         {errors.phone && (
           <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
@@ -76,7 +84,7 @@ function RegisterForm() {
             name="password"
             type={showPassword ? 'text' : 'password'}
             placeholder="Password"
-            className="w-full  px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+            className="w-full  px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent outline-none transition"
           />{' '}
           <button
             className="absolute inset-y-0 right-3 flex items-center text-gray-500"
@@ -98,7 +106,7 @@ function RegisterForm() {
             name="confirm_password"
             type={showPassword ? 'text' : 'password'}
             placeholder="Confirm password"
-            className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+            className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent outline-none transition"
           />{' '}
         </div>
 
@@ -108,8 +116,8 @@ function RegisterForm() {
 
         {/* Submit */}
         <button
-          onClick={submitHandle}
-          className="w-full bg-indigo-600 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition duration-200 shadow-md hover:shadow-lg"
+          type="submit"
+          className="w-full bg-fuchsia-800 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-fuchsia-600 transition duration-200 shadow-md hover:shadow-lg"
         >
           Sign Up
         </button>
@@ -119,12 +127,12 @@ function RegisterForm() {
         Already have an account?{' '}
         <a
           href="/login"
-          className="text-indigo-600 font-semibold hover:text-indigo-700 transition"
+          className="text-fuchsia-800 font-semibold hover:text-fuchsia-600 transition"
         >
           Sign in
         </a>
       </p>
-    </>
+    </form>
   );
 }
 
