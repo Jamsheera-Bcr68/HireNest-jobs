@@ -10,10 +10,7 @@ import { statusStyles } from '../../../pages/admin/Candidates';
 import { useNavigate } from 'react-router-dom';
 import { Eye, Trash, Ban, ThumbsUp } from 'lucide-react';
 import { type ColumnType } from '../Candidates/ReusableTable';
-import {
-  Experience_Types,
-
-} from '../../../../types/dtos/profile-types/experience.type';
+import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
 import { type JobFilterType } from '../../candidate/jobListing/ListingContainter';
 import Pagination from '../../common/Pagination';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
@@ -23,8 +20,8 @@ import type { StatusType } from '../../../../types/dtos/profile-types/user.types
 import AddReasonModal from './AddReasonModal';
 
 const tabs = [
-  { label: 'All', value: '' },
   { label: 'Active', value: 'active' },
+  { label: 'All', value: '' },
   { label: 'Suspended', value: 'suspended' },
   { label: 'Expired', value: 'expired' },
   { label: 'Closed', value: 'closed' },
@@ -42,6 +39,7 @@ const filterOptions = [
     label: 'Experience',
     options: experience_filterOption,
   },
+ // {key:'Type',label:'Job Type',options:[{ label: 'Part Time', value: 'partTime' },{ label: 'Full Time', value: 'fullTime' },]},
   {
     key: 'mode',
     label: 'Work Mode',
@@ -137,9 +135,7 @@ function JobContainer() {
       render: (j: JobCardDto) => (
         <>
           {' '}
-          <div
-            className={` font-semibold text-slate-800 whitespace-nowrap"`}
-          >
+          <div className={` font-semibold text-slate-800 whitespace-nowrap"`}>
             <span className="font-semibold text-slate-800">{j.title}</span>
           </div>
         </>
@@ -151,9 +147,7 @@ function JobContainer() {
       render: (j: JobCardDto) => (
         <>
           {' '}
-          <div
-            className={`font-semibold text-slate-800 whitespace-nowrap"`}
-          >
+          <div className={`font-semibold text-slate-800 whitespace-nowrap"`}>
             <span className="font-semibold text-slate-800">
               {j.companyName}
             </span>
@@ -214,9 +208,8 @@ function JobContainer() {
         <div className="flex items-center  gap-2">
           <button
             onClick={() => {
-              console.log(`job`,j);
-              navigate(`/admin/jobs/${j.id}`)
-              
+              console.log(`job`, j);
+              navigate(`/admin/jobs/${j.id}`);
             }}
             className="text-indigo-600 hover:text_indigo-800 "
             title="view"
@@ -264,6 +257,20 @@ function JobContainer() {
       ),
     },
   ];
+  //  const handleFilterChange = (data: Partial<JobFilterType>) => {
+  //     console.log('data', data);
+
+  //     setFilter((prev) => ({
+  //       ...prev,
+  //       ...data,
+  //       search: {
+  //         ...prev.search,
+  //         ...data.search,
+  //       },
+  //     }));
+
+  //     setPage(1);
+  //   };
 
   const handleFilterChange = (
     incomingFilter: Partial<JobFilterType> & { search?: string }
@@ -286,6 +293,7 @@ function JobContainer() {
       ...normalizedFilter,
     }));
   };
+
   const normalizeFilter = (
     filter: Partial<JobFilterType>
   ): Partial<JobFilterType> => {
@@ -327,6 +335,7 @@ function JobContainer() {
     }
     await updateStatus(status);
   };
+
   const updateStatus = async (status: StatusType, reasonData?: string) => {
     if (!selectedJob) return;
     console.log('from update status', selectedJob, status, reasonData);
@@ -357,6 +366,7 @@ function JobContainer() {
       setSelectedJob(null);
     }
   };
+
   return (
     <>
       <div>
@@ -376,6 +386,8 @@ function JobContainer() {
                 updateFilter={handleFilterChange}
                 entities={jobs}
                 filterOptions={filterOptions}
+                item="Jobs"
+                onResetfilter={() => handleFilterChange({})}
               />
               <Pagination
                 onPageChange={setPage}

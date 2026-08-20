@@ -18,4 +18,5 @@ export interface IInterviewRepository extends IBaseRepository<Interview> {
   getInterviewCountByStatus():Promise<{_id:InterviewStatusEnum,count:number}[]>
   getCountByResult():Promise<{_id:InterviewResult,count:number}[]>
   getInterview(filter:InterviewFilterDto):Promise<AggregatedInterviewDto|null>
+  markMissedInterviews():Promise<void>
 }

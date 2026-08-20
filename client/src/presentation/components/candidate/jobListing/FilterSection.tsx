@@ -26,7 +26,7 @@ function FilterSection({ title, items, selected, onToggle, type }: Props) {
               className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-all overflow-hidden"
               style={{
                 background: active ? '#eef2ff' : 'transparent',
-                color: active ? '#4f46e5' : '#64748b',
+                color: active ? '#bf22ce' : '#64748b',
                 border: active
                   ? '1.5px solid #c7d2fe'
                   : '1.5px solid transparent',
@@ -44,7 +44,7 @@ function FilterSection({ title, items, selected, onToggle, type }: Props) {
               {active && (
                 <span
                   className="w-5 h-5 rounded-full flex items-center justify-center text-white"
-                  style={{ background: '#4f46e5' }}
+                  style={{ background: '#bf22ce' }}
                 >
                   <CheckIcon size={12} className="text-bold" />
                 </span>

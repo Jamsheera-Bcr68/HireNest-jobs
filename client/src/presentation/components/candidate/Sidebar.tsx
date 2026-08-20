@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useHeader } from '../../hooks/user/useHeader';
 import {
   Home,
   LogOutIcon,
@@ -32,10 +33,10 @@ const navRoutes: Record<string, string> = {
 const navIcons = [
   <Home />,
   <BriefcaseBusiness />,
-  <FileUser/>,
-  <CalendarDays/>,
+  <FileUser />,
+  <CalendarDays />,
   <MessagesSquareIcon />,
-   <User/>,
+  <User />,
   <LogOutIcon />,
 ];
 type SidebarProps = {
@@ -46,9 +47,14 @@ type SidebarProps = {
 };
 export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
   console.log('nav', nav);
+  const handleLogout = () => {
+    HandleLogout();
+  };
 
   const [activeNav, setActiveNav] = useState(nav ?? 'Dashboard');
   const navigate = useNavigate();
+  const { HandleLogout } = useHeader();
+  useEffect(()=>setActiveNav(nav),[nav])
   return (
     <div
       style={{ fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}
@@ -88,18 +94,22 @@ export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
             <button
               key={item}
               onClick={() => {
+                if (item === 'Logout') {
+                  handleLogout();
+                  return
+                }
                 setTitle(item);
                 setActiveNav(item);
                 navigate(navRoutes[item]);
               }}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                 activeNav === item
-                  ? 'bg-sky-600 text-white'
+                  ? 'bg-fuchsia-800 text-white'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800'
               }`}
             >
               <span className="text-base">{navIcons[i]}</span>
-              {isOpen && <span>{item}</span>}
+              {isOpen && <span className="items-center">{item}</span>}
             </button>
           ))}
         </nav>

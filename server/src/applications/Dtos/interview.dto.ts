@@ -66,7 +66,7 @@ export type InterviewStatsCardType = {
 
 export type InterviewFilterDto = {
   candidateId?: string;
-  dateRange?: { startDate: string; endDate: string };
+  dateRange?: { startDate?: string; endDate?: string };
   search?: string;
   status?: InterviewStatusEnum;
   companyId?: string;
@@ -79,6 +79,7 @@ export type InterviewFilterDto = {
   mode?: InterviewMode;
   jobId?: string;
   result?: InterviewResult;
+  
 };
 
 export type InterviewListDto = {

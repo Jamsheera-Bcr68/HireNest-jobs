@@ -34,4 +34,6 @@ export interface userProfileDto {
   education:Array<EducationDto>
   about:string
   resumes:Array<IResume>
+  applicationCount?:number
+  interviewsCount?:number
 }

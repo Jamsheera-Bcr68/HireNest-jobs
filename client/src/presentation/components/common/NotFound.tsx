@@ -16,7 +16,7 @@ export default function NotFoundComponent() {
 
       <Link
         to="/"
-        className="mt-6 inline-block px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+        className="mt-6 inline-block px-6 py-2 bg-fuchsia-800 text-white rounded-lg shadow hover:bg-fuchsia-600 transition"
       >
         Go Back Home
       </Link>

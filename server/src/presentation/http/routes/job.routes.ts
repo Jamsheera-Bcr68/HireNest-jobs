@@ -42,5 +42,10 @@ router.put(
 
   jobController.unSaveJob
 );
+router.patch(
+  API_END_POINTS.JOB,
+  authValidator(tokenService),
+  jobController.updateStatus
+);
 router.get(API_END_POINTS.JOB_APPLICATIONS,authValidator(tokenService),applicationController.getJobApplications)
 export default router;

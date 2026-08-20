@@ -39,6 +39,8 @@ export class CompanyProfileController {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
     const company = await this.getCompanyUseCase.execute(user.userId);
+    console.log('company from controoleler',company);
+    
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.COMPANY_FOUND,

@@ -39,10 +39,11 @@ export class UpcomingInterviewUsecase implements IUpcomingInteriewUsecase {
         generalMessages.errors.FORBIDDEN,
         statusCodes.FORBIDDEN
       );
+      filter.dateRange={startDate:new Date().toDateString()}
 
     const interview = await this._interviewRepository.getInterview({
       ...filter,
-      sortBy: 'upcoming',
+      type: 'upcoming',
       limit: 1,
     });
     if (!interview) return null;

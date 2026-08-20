@@ -85,7 +85,7 @@ function ToolBar({
                 className="px-3 py-1.5 text-xs font-bold transition-all"
                 style={{
                   background: viewMode === 'split' ? '#eef2ff' : 'white',
-                  color: viewMode === 'split' ? '#4f46e5' : '#94a3b8',
+                  color: viewMode === 'split' ? '#bf22ce' : '#94a3b8',
                 }}
               >
                 Split
@@ -96,7 +96,7 @@ function ToolBar({
                 className="px-3 py-1.5 text-xs font-bold transition-all"
                 style={{
                   background: viewMode === 'grid' ? '#eef2ff' : 'white',
-                  color: viewMode === 'grid' ? '#4f46e5' : '#94a3b8',
+                  color: viewMode === 'grid' ? '#bf22ce' : '#94a3b8',
                 }}
               >
                 Grid

@@ -1,5 +1,8 @@
 import { CheckCheck } from 'lucide-react';
-import { type InterviewDto } from '../../../../types/dtos/interview.dto';
+import {
+  type InterviewDto,
+  type InterviewStatusType,
+} from '../../../../types/dtos/interview.dto';
 import { to12Hour } from '../../../../utils/date-conversion';
 import { MessageCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -19,9 +22,15 @@ export function CandidateInterviewList({
 }: Props) {
   const navigate = useNavigate();
   console.log('Interviews');
-  
+
   const onChatClick = (chatroomId?: string) => {
     navigate('/candidate/messages', { state: { chatroomId } });
+  };
+  const statusConfig: Record<InterviewStatusType, string> = {
+    scheduled: 'Scheduled',
+    cancelled: 'Cancelled',
+    completed: 'Completed',
+    'not-show': 'Missed',
   };
   return (
     <>
@@ -94,7 +103,7 @@ export function CandidateInterviewList({
                             : 'bg-yellow-100 text-yellow-700'
                       }`}
                     >
-                      {interview.status}
+                      {statusConfig[interview.status]}
                     </span>
 
                     {interview.result && (
@@ -151,7 +160,7 @@ export function CandidateInterviewList({
                     ) : (
                       <button
                         onClick={() => onConfirmClick(interview.id)}
-                        className="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition"
+                        className="text-xs bg-fuchsia-800 text-white px-3 py-1.5 rounded-lg hover:bg-fuchsia-600 transition"
                       >
                         Confirm
                       </button>

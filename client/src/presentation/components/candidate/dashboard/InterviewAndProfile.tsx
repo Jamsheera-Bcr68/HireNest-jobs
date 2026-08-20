@@ -57,7 +57,7 @@ function InterviewAndProfile({
               <p className="text-xs text-white/50 mt-1 max-w-[200px]">
                 Keep applying — your next interview invite will show up here.
               </p>
-              <button className="mt-4 text-xs font-semibold bg-white text-slate-900 px-4 py-2 rounded-full hover:bg-slate-100 transition-colors">
+              <button onClick={()=>navigate('/jobs')} className="mt-4 text-xs font-semibold bg-white text-slate-900 px-4 py-2 rounded-full hover:bg-slate-100 transition-colors">
                 Browse jobs
               </button>
             </div>

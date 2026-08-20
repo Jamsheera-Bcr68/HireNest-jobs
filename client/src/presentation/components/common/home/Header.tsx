@@ -75,6 +75,8 @@ const Header = ({ title }: { title?: string }) => {
       navigate('/candidate/messages');
     }
   };
+
+  
   const deleteHandle = async (id: string) => {
     console.log('from delete notifivation', id);
 

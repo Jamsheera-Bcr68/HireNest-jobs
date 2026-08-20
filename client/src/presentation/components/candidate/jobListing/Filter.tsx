@@ -4,7 +4,7 @@ import { JOB_TYPES } from '../../../../types/dtos/job.dto';
 import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
 import { Industry_Type } from '../../../../types/dtos/profile-types/industry.type';
 import { SalaryType } from '../../../../types/dtos/profile-types/experience.type';
-import type { JobFilterType } from '../../../pages/user/JobListing';
+import type { JobFilterType } from '../../../components/candidate/jobListing/ListingContainter';
 
 type Props = {
   filter: JobFilterType;

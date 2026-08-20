@@ -74,14 +74,14 @@ export class AuthController {
 
     const payload: IloginInput = req.body;
     const {
-      user,
+      user,name,
       refreshToken,
       accessToken,
       companyId,
       isProfileCompleted,
       appliedJobs,
     } = await this._loginUseCase.execute(payload);
-    const userDto = UserMapper.toDto(user);
+    const userDto = UserMapper.toDto(user,name);
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,

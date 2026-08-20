@@ -100,4 +100,7 @@ export abstract class GenericRepository<
 
     return docs.map((doc) => this.mapToEntity(doc));
   }
+
+ 
+
 }

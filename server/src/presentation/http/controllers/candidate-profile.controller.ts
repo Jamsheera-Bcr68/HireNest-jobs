@@ -131,7 +131,7 @@ export class CandidateProfileController {
       userData.userId,
       userData.role
     );
-   // console.log('user is ', user);
+   console.log('user is ', user);
 
     return res.status(statusCodes.OK).json({
       success: true,

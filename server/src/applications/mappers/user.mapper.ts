@@ -5,10 +5,11 @@ import { StatusEnum } from '../../domain/enums/status.enum';
 import { userProfileDto } from '../dtos/user.dto';
 
 export class UserMapper {
-  static toDto(user: User) {
+  static toDto(user: User,name?:string) {
     let returnData = {
       id: user.id,
       email: user.email,
+      name:name,
       phone: user.phone,
       role: user.role,
       isRequested: user.isRequested,
@@ -49,7 +50,7 @@ export class UserMapper {
       company: companyData,
       about: user.about ?? '',
       resumes: user.resumes,
-      createdAt: user.createdAt?.toDateString(),
+      createdAt: user.createdAt?new Date(user.createdAt).toDateString():'',
       isBlocked: user.isBlocked ?? false,
     };
   }

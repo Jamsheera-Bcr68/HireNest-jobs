@@ -133,7 +133,7 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
               return (
                 <div className="flex items-center justify-between border rounded-lg p-4 hover:shadow-sm transition">
                   <div className="flex items-center space-x-3">
-                    <div className="bg-blue-100 p-2 rounded-lg">📄</div>
+                    <div className="bg-fuchsia-100 p-2 rounded-lg">📄</div>
 
                     <div>
                       <p className="text-sm font-medium text-gray-800">
@@ -152,21 +152,35 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
                   Default
                 </span> */}
 
-                    <a
-                      href={`${import.meta.env.VITE_BACKEND_URL}${res.url}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 text-sm"
+                    <button
+                      className="px-2 py-1 rounded-md border hover:border-fuchsia-600
+             text-fuchsia-600
+             transition-all duration-200
+             hover:bg-fuchsia-100
+            
+             hover:shadow-md"
                     >
-                      View
-                    </a>
+                      <a
+                        href={`${import.meta.env.VITE_BACKEND_URL}${res.url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className=" text-sm"
+                      >
+                        View
+                      </a>
+                    </button>
 
                     <button
                       onClick={() => {
                         setDeleteId(res.id);
                         setIsOpen(true);
                       }}
-                      className="text-red-500 hover:text-red-600 text-sm"
+                      // className="text-red-500 hover:text-red-600 text-sm"
+                      className='text-red-600 px-2 py-1 rounded-2xl
+             transition-all duration-200
+             hover:bg-red-100
+            
+             hover:shadow-md"'
                     >
                       <Trash size={16} />
                     </button>

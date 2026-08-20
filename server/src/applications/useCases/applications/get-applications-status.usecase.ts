@@ -14,7 +14,7 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 
 export interface IGetApplicationStatusUsecase {
   execute(
-    filter: ApplicationFilterDto,
+    filter: { jobId: string; userId: string },
     role: UserRole
   ): Promise<ApplicationStatsCardType>;
 }
@@ -26,23 +26,36 @@ export class GetApplicationStatusUseCase implements IGetApplicationStatusUsecase
   ) {}
 
   async execute(
-    query: ApplicationFilterDto,
+    query: { jobId: string; userId: string },
     role: string
   ): Promise<ApplicationStatsCardType> {
+    console.log('query,from getapplication usecase', query);
+
     const filter = {} as Partial<Application>;
-    const { candidateId, companyId, jobId } = query;
+    const { userId, jobId } = query;
     if (role == UserRole.CANDIDATE) {
-      if (!candidateId)
+      filter.candidateId = userId;
+      if (!userId)
         throw new AppError(
           generalMessages.errors.ID_NOT_FOUND('Candidate'),
           statusCodes.BADREQUEST
         );
-      filter.candidateId = candidateId;
     } else if (jobId) {
-
-      filter.jobId=jobId
-   
-    }else throw new AppError(generalMessages.errors.ID_NOT_FOUND('Job'),statusCodes.BADREQUEST)
+      filter.jobId = jobId;
+    } else if (role === UserRole.COMPANY) {
+      const company = await this._companyRepository.findByUserId(userId);
+      if (!company || !company.id) {
+        throw new AppError(
+          generalMessages.errors.NOT_FOUND('Company'),
+          statusCodes.NOTFOUND
+        );
+      }
+      filter.companyId = company.id;
+    } else
+      throw new AppError(
+        generalMessages.errors.ID_NOT_FOUND('Job'),
+        statusCodes.BADREQUEST
+      );
     const total = await this._applicationRepository.count(filter);
 
     const rejected = await this._applicationRepository.count({

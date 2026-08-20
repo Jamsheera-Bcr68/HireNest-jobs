@@ -168,7 +168,7 @@ export default function LogoImgViewModal({
               <div className="flex gap-2">
                 <button
                   onClick={saveCroppedImage}
-                  className="w-full w-1/4 ml-4 mt-3 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                  className="w-full w-1/4 ml-4 mt-3 rounded-md bg-fuchsia-800 text-white hover:bg-fuchsia-600"
                 >
                   Save
                 </button>
@@ -186,7 +186,7 @@ export default function LogoImgViewModal({
               <div className="flex justify-center">
                 <button
                   onClick={imageClick}
-                  className="w-1/2 mt-3 rounded-md bg-indigo-600 text-white py-2 hover:bg-blue-700"
+                  className="w-1/2 mt-3 rounded-md bg-fuchsia-800 text-white py-2 hover:bg-fuchsia-600"
                 >
                   Add Image
                 </button>
@@ -195,7 +195,7 @@ export default function LogoImgViewModal({
               <div className="flex gap-2">
                 <button
                   onClick={imageClick}
-                  className="w-full mt-3 w-1/4 ml-4 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+                  className="w-full mt-3 w-1/4 ml-4 rounded-md bg-fuchsia-800 text-white hover:bg-fuchsia-600"
                 >
                   Change Image
                 </button>

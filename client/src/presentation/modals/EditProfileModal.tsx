@@ -52,7 +52,7 @@ export default function ProfileEditModal({
               <X size={20} />
             </button>
           </Dialog.Close>
-          <Dialog.Title className="text-2xl font-semibold mt-3 text-indigo-800 text-center">
+          <Dialog.Title className="text-2xl font-semibold mt-3 text-fuchsia-800 text-center">
             Edit Profile
           </Dialog.Title>
           <form action="" onSubmit={handleSubmit}>
@@ -308,7 +308,7 @@ export default function ProfileEditModal({
 
                 <button
                   type="submit"
-                  className=" w-1/4 ml-10 mr-3 rounded-md border bg-green-600 text-white py-2 hover:bg-green-400"
+                  className=" w-1/4 ml-10 mr-3 rounded-md border bg-fuchsia-800 text-white py-2 hover:bg-green-400"
                 >
                   Save
                 </button>

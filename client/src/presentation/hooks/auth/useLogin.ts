@@ -83,9 +83,10 @@ export const useLogin = (role: UserRole) => {
     try {
       const data = await authService.googleSingnupSubmit(formData, role);
 
+
       setErrors({});
       const { access_Token, user, admin } = data.data;
-
+console.log('login user',user);
       localStorage.setItem('accessToken', access_Token);
       if (user) {
         localStorage.setItem('user', user);

@@ -65,7 +65,7 @@ export class ApplicationController {
     if (!user || !user.userId) {
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
     }
-
+    console.log('user from get applications', user);
     const { jobId } = req.params;
     if (!jobId)
       throw new AppError(
@@ -73,7 +73,7 @@ export class ApplicationController {
         statusCodes.BADREQUEST
       );
     const appStatus = await this._getAppStatusUseCase.execute(
-      { jobId: jobId, companyId: user.userId },
+      { jobId: jobId,userId:user.userId},
       user.role
     );
 
@@ -124,6 +124,7 @@ export class ApplicationController {
       totalDocs,
     });
   });
+
   getJobApplications = asyncHandler(async (req: Request, res: Response) => {
     const { search, status, page, limit, jobType, sortBy } = req.query;
 
@@ -139,7 +140,7 @@ export class ApplicationController {
         statusCodes.BADREQUEST
       );
 
-    let q = {jobId} as Partial<ApplicationFilterDto>;
+    let q = { jobId } as Partial<ApplicationFilterDto>;
     if (user.role == UserRole.CANDIDATE) {
       q.candidateId = user.userId;
     }
@@ -190,7 +191,7 @@ export class ApplicationController {
       user.userId,
       user.role
     );
- //   console.log('application', application);
+    //   console.log('application', application);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -212,7 +213,7 @@ export class ApplicationController {
         statusCodes.NOTFOUND
       );
     const { status, reason } = req.body;
-  //  console.log('status,reason', status, reason);
+    //  console.log('status,reason', status, reason);
 
     const app = await this._updateEntityStatusUsecase.execute(
       applicationId,

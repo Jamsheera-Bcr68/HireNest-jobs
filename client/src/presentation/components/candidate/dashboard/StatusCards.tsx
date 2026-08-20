@@ -98,9 +98,9 @@ function StatusCards({ statusData, isLoading }: Props) {
               {c.label}
             </div>
 
-            <div className="text-[10.5px] mt-1 font-medium">
+            {/* <div className="text-[10.5px] mt-1 font-medium">
               {c.trend}
-            </div>
+            </div> */}
           </div>
         );
       })}

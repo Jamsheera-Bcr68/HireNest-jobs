@@ -14,6 +14,8 @@ export const jobService = {
   },
 
   async updatePost(jobData: JobFormType, id: string) {
+   
+    
     const res = await axiosInstance.put(
       COMPANY_API_ENDPOINTS.UPDATE_JOB(id),
       jobData
@@ -85,6 +87,7 @@ export const jobService = {
     payload: { status: StatusType; lastDate?: string },
     id: string
   ) {
+     console.log('from update job status,payload',payload);
 //    console.log('status', payload);
     const res = await axiosInstance.patch(
       COMPANY_API_ENDPOINTS.UPDATE_JOBSTATUS(id),

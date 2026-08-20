@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import SelectResumeContent from '../applications/ResumeModal';
 
 import { useApplications } from '../../../hooks/user/candidate/profile/useApplication';
-import Header from '../../common/Header';
+import Header from '../../common/home/Header';
 import SearchBar from './SearchBar';
 import Filter from './Filter';
 import ToolBar from './ToolBar';

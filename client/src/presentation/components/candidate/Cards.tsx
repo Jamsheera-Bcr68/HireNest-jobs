@@ -30,13 +30,13 @@ const JobCard = ({ job, handleSave, handleUnSave, onApply }: JobCardProps) => {
     <div className="max-w-sm w-full rounded-3xl bg-white border border-gray-200 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
       <>
         {/* Top accent bar */}
-        <div className="h-2.5 bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-t-3xl" />
+        <div className="h-2.5 bg-gradient-to-r from-fuchsia-400 to-fuchsia-600 rounded-t-3xl" />
 
         <div className="p-5">
           {/* Header: logo + title + wishlist */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-11 h-11 rounded-xl bg-fuchsia-50 border border-gray-100 flex items-center justify-center overflow-hidden flex-shrink-0">
                 <img
                   className="w-full h-full object-cover"
                   src={`${backendUrl}${job.companyLogo}`}

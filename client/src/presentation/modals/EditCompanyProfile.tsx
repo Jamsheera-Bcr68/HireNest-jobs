@@ -213,7 +213,7 @@ export default function EditCompanyProfileModal({
               <X size={20} />
             </button>
           </Dialog.Close>
-          <Dialog.Title className="text-2xl font-semibold mt-3 text-indigo-800 text-center">
+          <Dialog.Title className="text-2xl font-semibold mt-3 text-fuchsia-800 text-center">
             Edit Profile
           </Dialog.Title>
           <form action="" onSubmit={handleSubmit}>
@@ -228,7 +228,7 @@ export default function EditCompanyProfileModal({
                   onChange={handleChange}
                   type="text"
                   placeholder="Eg:ABC pvt limited"
-                  className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full rounded-lg border px-4 py-2.5 text-sm focus:fuchsia-2 focus:ring-fuchsia-500 outline-none"
                 />
                 {error?.companyName && (
                   <p className="text-red-500 text-sm">*{error.companyName}</p>
@@ -246,7 +246,7 @@ export default function EditCompanyProfileModal({
                     onChange={handleChange}
                     type="text"
                     placeholder="Eg: we serve you better"
-                    className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
                   />
                   {error?.tagLine && (
                     <p className="text-red-500 text-sm">*{error.tagLine}</p>
@@ -264,7 +264,7 @@ export default function EditCompanyProfileModal({
                   <div>
                     <select
                       name="industry"
-                      className=" w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none mb-2"
+                      className=" w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none mb-2"
                       value={formData.industry}
                       onChange={handleChange}
                       id=""
@@ -288,7 +288,7 @@ export default function EditCompanyProfileModal({
                   </label>
                   <div>
                     <select
-                      className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none mb-2"
+                      className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none mb-2"
                       value={formData.size}
                       onChange={handleChange}
                       name="size"
@@ -313,7 +313,7 @@ export default function EditCompanyProfileModal({
                   <select
                     name="startedIn"
                     onChange={handleChange}
-                    className=" w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none mb-2"
+                    className=" w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none mb-2"
                     value={formData.startedIn}
                   >
                     <option value="">Select Started Year</option>
@@ -339,7 +339,7 @@ export default function EditCompanyProfileModal({
                     value={formData.website || ''}
                     type="text"
                     placeholder="Eg: www.yourwebsite.com"
-                    className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
                   />
                   {error?.website && (
                     <p className="text-red-500 text-sm">*{error.website}</p>
@@ -359,7 +359,7 @@ export default function EditCompanyProfileModal({
                     value={formData.address.state || ''}
                     type="text"
                     placeholder="Eg:Thamil Nadu"
-                    className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
                   />
                   {error?.address.state && (
                     <p className="text-red-500 text-sm">
@@ -380,7 +380,7 @@ export default function EditCompanyProfileModal({
                     onChange={handleChange}
                     type="text"
                     placeholder="Eg:India "
-                    className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
                   />
                   {error?.address.country && (
                     <p className="text-red-500 text-sm">
@@ -402,7 +402,7 @@ export default function EditCompanyProfileModal({
                         <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500">
                           {/* <Linkedin className="w-5 h-5 text-blue-500 mr-2" /> */}
                           <svg
-                            className="w-5 h-5 mr-3 text-blue-500"
+                            className="w-5 h-5 mr-3 text-fuchsia-500"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                           >
@@ -464,7 +464,7 @@ export default function EditCompanyProfileModal({
                               *{error.socialMediaLinks.twitter}
                             </p>
                           )}
-                        <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-400">
+                        <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-400">
                           <div className="relative w-5 h-5 mr-2">
                             {/* <MessageCircle
                               size={20}
@@ -553,7 +553,7 @@ export default function EditCompanyProfileModal({
 
                 <button
                   type="submit"
-                  className=" w-1/4 ml-10 mr-3 rounded-md border bg-green-600 text-white py-2 hover:bg-green-400"
+                  className=" w-1/4 ml-10 mr-3 rounded-md border bg-fuchsia-800 text-white py-2 hover:bg-fuchsia-600"
                 >
                   Save
                 </button>

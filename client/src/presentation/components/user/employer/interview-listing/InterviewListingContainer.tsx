@@ -402,6 +402,8 @@ function InterviewListingContainer() {
                 filterOptions={filterOptions}
                 sortOption={sortFilter}
                 setSortBy={setSortBy}
+                item='Interviews'
+                onResetfilter={()=>updateFilter({})}
               />
               <Pagination
                 onPageChange={setPage}

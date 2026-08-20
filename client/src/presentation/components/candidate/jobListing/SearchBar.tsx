@@ -3,20 +3,20 @@ import { useState } from 'react';
 import { type JobFilterType } from './ListingContainter';
 
 type Props = {
-  handleFilterChange: (data: Partial<JobFilterType>) => void;
+  handleFilterChange: (data: Partial<JobFilterType>) => void; 
   filter: { search: { job: string; location: string } };
 };
 function SearchBar({ handleFilterChange, filter }: Props) {
   const [jobSearch, setJobSearch] = useState<string>(filter.search.job);
   const [location, setLocation] = useState<string>(filter.search.location);
   return (
-    <div className="bg-indigo-100 sticky top-16 z-10  border-b border-slate-100 px-6 py-4">
+    <div className="bg-fuchsia-100 sticky top-16 z-10  border-b border-slate-100 px-6 py-4">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-3">
         <div
-          className="flex bg-indigo-200 items-center gap-3 flex-1 px-4 py-3 rounded-xl bg-slate-50 search-bar-shadow"
+          className="flex  items-center gap-3 flex-1 px-4 py-3 rounded-xl bg-slate-50 search-bar-shadow"
           style={{ border: '1.5px solid #e2e8f0' }}
         >
-          <Search className="text-indigo-500" size={18} />
+          <Search className="text-fuchsia-500" size={18} />
           <input
             value={jobSearch}
             onChange={(e) => setJobSearch(e.target.value)}
@@ -51,7 +51,7 @@ function SearchBar({ handleFilterChange, filter }: Props) {
           className="flex items-center gap-3 w-full md:w-72 px-4 py-3 rounded-xl bg-slate-50"
           style={{ border: '1.5px solid #e2e8f0' }}
         >
-          <Search className="text-indigo-500" size={18} />
+          <Search className="text-fuchsia-500" size={18} />
           <input
             value={location}
             onChange={(e) => setLocation(e.target.value)}
@@ -90,8 +90,8 @@ function SearchBar({ handleFilterChange, filter }: Props) {
               search: { job: jobSearch, location: location },
             });
           }}
-          className="apply-btn px-8 py-3 rounded-xl text-sm font-bold text-white whitespace-nowrap"
-          style={{ background: 'linear-gradient(135deg,#4f46e5,#7c3aed)' }}
+          className="apply-btn bg-fuchsia-800  hover:bg-fuchsia-600  px-8 py-3 rounded-xl text-sm font-bold text-white whitespace-nowrap"
+         // style={{ background: 'linear-gradient(135deg,#4f46e5,#7c3aed)' }}
         >
           Search
         </button>

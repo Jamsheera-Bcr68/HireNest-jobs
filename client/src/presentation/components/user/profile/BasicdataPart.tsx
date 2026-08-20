@@ -65,12 +65,12 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
 
         {/* Quick Stats */}
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <div className="bg-blue-50 rounded-lg p-3 text-center">
-            <p className="text-2xl font-bold text-blue-600">12</p>
+          <div className="bg-fuchsia-50 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-fuchsia-800">{user?.applicationCount??0}</p>
             <p className="text-gray-600 text-sm">Applications</p>
           </div>
           <div className="bg-green-50 rounded-lg p-3 text-center">
-            <p className="text-2xl font-bold text-green-600">3</p>
+            <p className="text-2xl font-bold text-green-600">{user?.interviewsCount??0}</p>
             <p className="text-gray-600 text-sm">Interviews</p>
           </div>
         </div>
@@ -79,7 +79,7 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
         <div className="mt-6 space-y-3">
           <div className="flex items-center space-x-3">
             <svg
-              className="w-5 h-5 text-blue-500"
+              className="w-5 h-5 text-fuchsia-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

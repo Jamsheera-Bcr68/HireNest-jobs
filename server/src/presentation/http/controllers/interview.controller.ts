@@ -34,6 +34,7 @@ import { IConfirmInterviewUsecase } from '../../../applications/useCases/intervi
 import { IRescheduleRequestUsecase } from '../../../applications/useCases/interviews/reschedule-request.usecase';
 import { IGenerateMeetlinkUsecase } from '../../../applications/useCases/interviews/generate-meetlink.usecase';
 import { MeetingDto } from '../../../applications/dtos/meeting.dto';
+import { IUpdateMissedInterviews } from '../../../applications/useCases/interviews/mark-missed-interviews.usecase';
 
 export class InterviewController {
   constructor(
@@ -63,7 +64,8 @@ export class InterviewController {
     private _confirmInterviewUsecase: IConfirmInterviewUsecase,
     private _requestForRescheduleUsecase: IRescheduleRequestUsecase,
     private _generateMeetlinkUsecase: IGenerateMeetlinkUsecase,
-    private _getMeetingInfoUsecase: IGetEntityDetailsUsecase<MeetingDto>
+    private _getMeetingInfoUsecase: IGetEntityDetailsUsecase<MeetingDto>,
+    private _markMissedInterviewUsecase: IUpdateMissedInterviews
   ) {}
 
   scheduleInterview = asyncHandler(async (req: Request, res: Response) => {
@@ -156,6 +158,8 @@ export class InterviewController {
         statusCodes.NOTFOUND
       );
     }
+
+    await this._markMissedInterviewUsecase.execute();
 
     let q = {} as Partial<InterviewFilterDto>;
     if (user.role == UserRole.CANDIDATE) {

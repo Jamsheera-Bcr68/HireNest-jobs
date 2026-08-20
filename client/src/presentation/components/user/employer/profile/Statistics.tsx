@@ -1,17 +1,15 @@
 import { type CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
+
+
 export function CompanyStatistics({
-  company,
+  company,stats
 }: {
-  company: CompanyProfileType | null;
+  company: CompanyProfileType | null,stats:{label:string,value?:number}[]
 }) {
   if (!company) return null;
 
-  const stats = [
-    { label: 'Employees', value: company?.startedIn || 'N/A' },
-    { label: 'Founded', value: company?.startedIn || 'N/A' },
-    { label: 'Jobs Posted', value: company?.startedIn || '0' },
-    { label: 'Offices', value: company?.startedIn || '1' },
-  ];
+  console.log('');
+  
 
   return (
     <div className="bg-white rounded-xl shadow p-6">
@@ -21,9 +19,9 @@ export function CompanyStatistics({
         {stats.map((item) => (
           <div
             key={item.label}
-            className="bg-green-50 rounded-lg p-4 text-center"
+            className="bg-fuchsia-50 rounded-lg p-4 text-center hover:-transition-y-1"
           >
-            <p className="text-xl font-semibold">{item.value}</p>
+            <p className="text-xl text-fuchsia-800  font-semibold">{item.value}</p>
             <p className="text-sm text-gray-500">{item.label}</p>
           </div>
         ))}

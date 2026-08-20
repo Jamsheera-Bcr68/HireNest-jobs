@@ -18,13 +18,13 @@ function CompanyProfileInputForm({
 }: Props) {
   return (
     <>
-      <h2 className="text-lg text-center mt-0 font-semibold mb-2">{title}</h2>
+      <h2 className="text-lg text-center mt-0 text-fuchsia-800 font-semibold mb-2">{title}</h2>
 
       <textarea
         value={value}
         onChange={onChange}
         placeholder={placeHolder}
-        className="w-full border rounded-md p-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full border rounded-md p-1 text-sm focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
         rows={4}
       />
       {error && <p className="text-sm text-red-500">* {error} </p>}
@@ -38,7 +38,7 @@ function CompanyProfileInputForm({
 
         <button
           onClick={onSubmit}
-          className="bg-green-600 text-white rounded-md text-sm px-4 py-2"
+          className="bg-fuchsia-800 hover:bg-fuchsia-600 text-white rounded-md text-sm px-4 py-2"
         >
           Save
         </button>

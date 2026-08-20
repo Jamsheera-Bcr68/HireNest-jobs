@@ -19,13 +19,13 @@ function ContactInputForm({
 }: Props) {
   return (
     <div>
-      <h2 className="text-lg text-center mt-0 font-semibold mb-2">{title}</h2>
+      <h2 className="text-lg text-fuchsia-800 text-center mt-0 font-semibold mb-2">{title}</h2>
 
       <div className="mt-3 space-y-3">
         {
           <div className="space-y-3">
             {/* LinkedIn */}
-            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500">
+            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-500">
               {/* <Linkedin className="w-5 h-5 text-blue-500 mr-2" /> */}
               <svg
                 className="w-5 h-5 mr-3 text-blue-500"
@@ -41,7 +41,7 @@ function ContactInputForm({
                 type="text"
                 name="linkedIn"
                 placeholder="LinkedIn profile URL"
-                className="w-full outline-none"
+                className="w-full outline-none  focus-within:ring-fuchsia-500"
               />
             </div>
             {error?.linkedIn && (
@@ -49,7 +49,7 @@ function ContactInputForm({
             )}
 
             {/* GitHub */}
-            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-800">
+            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-500">
               <Github className="w-5 h-5 text-gray-500 mr-2" />
               <input
                 value={formData?.gitHub || ''}
@@ -66,7 +66,7 @@ function ContactInputForm({
             )}
 
             {/* Twitter */}
-            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring--400">
+            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-500">
               <Twitter className="w-5 h-5 text-blue-500 mr-2" />
               <input
                 value={formData?.twitter || ''}
@@ -81,7 +81,7 @@ function ContactInputForm({
             {error?.twitter && formData?.twitter !== '' && (
               <p className="text-red-500 text-sm">*{error.twitter}</p>
             )}
-            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-400">
+            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-500">
               <div className="relative w-5 h-5 mr-2">
                 <svg
                   className="w-5 h-5 text-green-500"
@@ -106,7 +106,7 @@ function ContactInputForm({
               <p className="text-red-500 text-sm">*{error.whatsapp}</p>
             )}
             {/*youtube*/}
-            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-red-600">
+            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-600">
               <YoutubeIcon className="w-5 h-5 text-red-500 mr-2" />
               <input
                 value={formData?.youtube || ''}
@@ -123,7 +123,7 @@ function ContactInputForm({
             )}
 
             {/* Portfolio */}
-            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-green-500">
+            <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-fuchsia-500">
               <Globe className="w-5 h-5 text-gray-500 mr-2" />
               <input
                 value={formData?.portfolio || ''}
@@ -143,18 +143,19 @@ function ContactInputForm({
       </div>
 
       <div className="flex mt-4 gap-4 justify-end mr-4">
-        <button
-          onClick={onSubmit}
-          className="bg-green-600 text-white rounded-md text-sm w-1/6"
-        >
-          Save
-        </button>
-        <button
+         <button
           onClick={onCancel}
           className="bg-red-600 text-sm text-white rounded-md px-4 py-2"
         >
           Cancel
         </button>
+        <button
+          onClick={onSubmit}
+          className="bg-fuchsia-800 hover:bg-fuchsia-600 text-white rounded-md text-sm w-1/6"
+        >
+          Save
+        </button>
+       
       </div>
     </div>
   );

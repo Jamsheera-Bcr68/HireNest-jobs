@@ -71,7 +71,7 @@ const Skills = ({
               key={skill.id}
               className="
                 flex items-center
-                bg-blue-100 text-blue-800
+                bg-fuchsia-100 text-fuchsia-800
                 px-3 py-1.5
                 rounded-full
                 text-sm font-medium

@@ -56,6 +56,7 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
         statusCodes.BADREQUEST
       );
     }
+    let name=user.name
     let companyId;
     if (user.role == UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(user.id);
@@ -65,6 +66,7 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
           statusCodes.NOTFOUND
         );
       }
+      name=company.companyName
       companyId = company.id;
     }
     const accessToken = this._tokenService.generateAccessToken(
@@ -89,7 +91,7 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
       applications = await this._applicationRepository.getDocsByUserId(user.id);
     }
     return {
-      user,
+      user,name,
       accessToken,
       refreshToken,
       companyId,

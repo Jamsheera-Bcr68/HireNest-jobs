@@ -58,21 +58,21 @@ function BasicPart({ company, onUpdate }: Props) {
           </p>
         </div>
         {/* Quick Stats */}
-        {/* <div className="mt-6 grid grid-cols-2 gap-4">
-          <div className="bg-blue-50 rounded-lg p-3 text-center">
-            <p className="text-2xl font-bold text-blue-600">
-              {company?.totalJobs || 0}
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          <div className="bg-fuchsia-50 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-fuchsia-600">
+              {company?.totalJobs ?? 0}
             </p>
             <p className="text-gray-600 text-sm">Jobs Posted</p>
           </div>
 
-          <div className="bg-green-50 rounded-lg p-3 text-center">
-            <p className="text-2xl font-bold text-green-600">
-              {company?.totalHires || 0}
+          <div className="bg-fuchsia-50 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-fuchsia-600">
+              {company?.hiredCount ?? 0}
             </p>
             <p className="text-gray-600 text-sm">Total Hires</p>
           </div>
-        </div> */}
+        </div>
 
         {/* Website */}
 
@@ -90,7 +90,7 @@ function BasicPart({ company, onUpdate }: Props) {
         <div className="mt-6 space-y-3">
           <div className="flex items-center space-x-3">
             <svg
-              className="w-5 h-5 text-blue-500"
+              className="w-5 h-5 text-fuchsia-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

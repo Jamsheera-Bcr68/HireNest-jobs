@@ -5,6 +5,7 @@ export interface loginOutPutDto {
   accessToken: string;
   refreshToken: string;
   companyId?: string;
+  name?:string
   isProfileCompleted?: boolean;
   appliedJobs?: string[];
 }

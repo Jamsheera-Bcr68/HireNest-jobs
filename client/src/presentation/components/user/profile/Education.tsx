@@ -56,7 +56,7 @@ const Education = ({ onUserUpdate, educations }: EducationProps) => {
             return (
               <div
                 key={edu.id}
-                className="border-l-4 border-indigo-600 bg-white p-4 rounded-md shadow-sm hover:shadow-md hover:bg-gray-50 transition"
+                className="border-l-4 border-fuchsia-600 bg-white p-4 rounded-md shadow-sm hover:shadow-md hover:bg-gray-50 transition"
               >
                 <div className="flex justify-between items-start">
                   <div>
@@ -74,7 +74,7 @@ const Education = ({ onUserUpdate, educations }: EducationProps) => {
                           setEditEdu(edu);
                           setIsOpen({ type: 'edit', isOpen: true });
                         }}
-                        className="text-blue-600 cursor-pointer"
+                        className="text-fuchsia-600 cursor-pointer hover:scale-150 duration-300 "
                         size={18}
                       />
                       <Trash
@@ -82,7 +82,7 @@ const Education = ({ onUserUpdate, educations }: EducationProps) => {
                           setIsOpen({ type: 'delete', isOpen: true });
                           setDeleteEduId(edu.id);
                         }}
-                        className="text-red-600 cursor-pointer"
+                        className="text-red-600 cursor-pointer hover:scale-150 duration-300"
                         size={18}
                       />
                     </div>

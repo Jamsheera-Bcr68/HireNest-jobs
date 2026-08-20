@@ -43,6 +43,9 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
     if (!payload.email) {
       payload.email = user.email;
     }
+    if (!payload.phone) {
+      payload.phone = user.phone;
+    }
     const emailExist = await this._companyRepository.findOne({
       email: payload.email,
     });

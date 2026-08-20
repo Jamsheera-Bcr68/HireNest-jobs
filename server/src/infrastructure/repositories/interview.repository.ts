@@ -12,6 +12,7 @@ import { duration } from 'zod/v4/classic/iso.cjs';
 import { InterviewFilterDto } from '../../applications/dtos/interview.dto';
 import { InterviewStatusEnum } from '../../domain/enums/status.enum';
 import { InterviewResult } from '../../domain/enums/interview.enum';
+import { partial } from 'zod/v4/core/util.cjs';
 
 export class InterviewRepository
   extends GenericRepository<Interview, IInterviewDocument>
@@ -229,7 +230,7 @@ export class InterviewRepository
               scheduledAt: '$scheduledAt',
               isConfirmed: '$isConfirmed',
               isRescheduleRequested: '$isRescheduleRequested',
-              candidateImageUrl:'$candidate.imageUrl',
+              candidateImageUrl: '$candidate.imageUrl',
             },
           },
 
@@ -258,7 +259,7 @@ export class InterviewRepository
     const interviewData = await this._model.aggregate([
       { $group: { _id: '$status', count: { $sum: 1 } } },
     ]);
-  //  console.log('interviewData from getInterviewCountByStatus ', interviewData);
+    //  console.log('interviewData from getInterviewCountByStatus ', interviewData);
 
     return interviewData;
   }
@@ -267,14 +268,16 @@ export class InterviewRepository
     const interviewData = await this._model.aggregate([
       { $group: { _id: '$result', count: { $sum: 1 } } },
     ]);
-  //  console.log('interviewData from getCountByResult ', interviewData);
+    //  console.log('interviewData from getCountByResult ', interviewData);
     return interviewData;
   }
 
-  async getInterview(filter: InterviewFilterDto): Promise<AggregatedInterviewDto | null> {
+  async getInterview(
+    filter: InterviewFilterDto
+  ): Promise<AggregatedInterviewDto | null> {
     const { candidateId, companyId, type } = filter;
     const matchStage: PipelineStage.Match['$match'] = {};
-    let sortStage: PipelineStage.Sort['$sort'] = {createdAt:-1};
+    let sortStage: PipelineStage.Sort['$sort'] = { createdAt: -1 };
     if (candidateId)
       matchStage.candidateId = new mongoose.Types.ObjectId(candidateId);
     if (companyId)
@@ -282,7 +285,9 @@ export class InterviewRepository
 
     if (type === 'upcoming') {
       matchStage.scheduledAt = { $gte: new Date() };
-      sortStage = { ...sortStage, scheduledAt: 1 };
+      matchStage.scheduledAt = { $gte: new Date() };
+      matchStage.status = { $nin: ['cancelled', 'not-show', 'completed'] };
+      sortStage = { scheduledAt: 1 };
     }
 
     const aggregatedInterview = await this._model.aggregate([
@@ -331,12 +336,26 @@ export class InterviewRepository
           scheduledAt: '$scheduledAt',
           isConfirmed: '$isConfirmed',
           isRescheduleRequested: '$isRescheduleRequested',
-          link:'$link'
+          link: '$link',
         },
       },
       { $sort: sortStage },
       { $limit: 1 },
     ]);
-    return aggregatedInterview[0]
+    return aggregatedInterview[0];
+  }
+
+  async markMissedInterviews(): Promise<void> {
+    console.log('data from mart missed inter' );
+
+    await this._model.updateMany(
+      {
+        scheduledAt: { $lt: new Date() },
+        status: {
+          $nin: [InterviewStatusEnum.CANCELLED, InterviewStatusEnum.COMPLETED],
+        },
+      },
+      { status: InterviewStatusEnum.NO_SHOW }
+    );
   }
 }

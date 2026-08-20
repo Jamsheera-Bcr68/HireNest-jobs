@@ -9,16 +9,24 @@ import { userProfileDto } from '../../dtos/user.dto';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { UserMapper } from '../../mappers/user.mapper';
 import { Company } from '../../../domain/entities/company.entity';
+import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
+import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 
 export class GetUserUseCase implements IGetUserUseCase {
   private _userRepository: IUserRepository;
   private _companyRepository: ICompanyRepository;
+  private _applicationRepository: IApplicationRepository;
+  private _interviewRepository: IInterviewRepository;
   constructor(
     userRepository: IUserRepository,
-    companyRepository: ICompanyRepository
+    companyRepository: ICompanyRepository,
+    applicationRepository: IApplicationRepository,
+    interviewRepository: IInterviewRepository,
   ) {
     this._userRepository = userRepository;
     this._companyRepository = companyRepository;
+    this._applicationRepository = applicationRepository;
+    this._interviewRepository = interviewRepository;
   }
 
   async execute(userId: string, role: UserRole): Promise<userProfileDto> {
@@ -27,6 +35,8 @@ export class GetUserUseCase implements IGetUserUseCase {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
    // console.log('user from getuser ', user);
     let company: Company | null = null;
+    const interviewsCount=await this._interviewRepository.count({candidateId:userId})
+    const applicationCount=await this._applicationRepository.count({candidateId:userId})
     if (user.isRequested) {
    //   console.log('use is requested');
 
@@ -39,6 +49,7 @@ export class GetUserUseCase implements IGetUserUseCase {
     //   UserMapper.toUserProfileDto(user, company)
     // );
 
-    return UserMapper.toUserProfileDto(user, company);
+    const mapped= UserMapper.toUserProfileDto(user, company);
+    return{...mapped,interviewsCount,applicationCount}
   }
 }

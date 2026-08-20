@@ -87,6 +87,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
       { label: 'Scheduled', value: 'scheduled' },
       { label: 'Completed', value: 'completed' },
       { label: 'Cancelled', value: 'cancelled' },
+      { label: 'Missed', value: 'not-show' },
     ],
   };
 

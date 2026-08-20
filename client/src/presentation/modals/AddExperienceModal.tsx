@@ -66,7 +66,7 @@ export default function ExperienceModal({
               <X size={20} />
             </button>
           </Dialog.Close>
-          <Dialog.Title className="text-2xl font-semibold mt-3 text-indigo-800 text-center">
+          <Dialog.Title className="text-2xl font-semibold mt-3 text-fuchsia-800 text-center">
             {selectedExp ? 'Edit Experience' : 'Add Experience'}
           </Dialog.Title>
 
@@ -77,9 +77,10 @@ export default function ExperienceModal({
               type="text"
               name="title"
               value={formData.title}
+              
               onChange={handleChange}
               placeholder="e.g. Senior Full Stack Developer"
-              className="border rounded p-2"
+              className="border rounded p-2 focus:border-fuchsia-700"
             />
             {error?.title && (
               <p className=" text-sm text-red-600">* {error.title}</p>
@@ -95,7 +96,7 @@ export default function ExperienceModal({
               onChange={handleChange}
               type="text"
               placeholder="e.g. Tech Solutions Pvt Ltd"
-              className="border rounded p-2"
+              className="border rounded p-2 focus:border-fuchsia-700"
             />
             {error?.company && (
               <p className=" text-sm text-red-600">* {error.company}</p>
@@ -133,7 +134,7 @@ export default function ExperienceModal({
               </div>
               <div className="flex items-center w-1/4">
                 <input
-                  className="mr-1 mt-1"
+                  className="mr-1 mt-1 focus:border-fuchsia-700"
                   value="hybrid"
                   onChange={handleModeChange}
                   onClick={() => setIsOffline(false)}
@@ -155,7 +156,7 @@ export default function ExperienceModal({
                 onChange={handleChange}
                 type="text"
                 placeholder="e.g. Chennai, India"
-                className="border rounded p-2"
+                className="border rounded p-2 focus:border-fuchsia-700"
               />
               {error?.location && (
                 <p className=" text-sm text-red-600">* {error.location}</p>
@@ -172,7 +173,7 @@ export default function ExperienceModal({
                 value={formData.startDate}
                 onChange={handleChange}
                 type="month"
-                className="border rounded p-2"
+                className="border rounded p-2 focus:border-fuchsia-700"
               />
               {error?.startDate && (
                 <p className=" text-sm text-red-600">* {error.startDate}</p>
@@ -185,7 +186,7 @@ export default function ExperienceModal({
                   <label className="text-sm font-medium">End Date</label>
                   <input
                     type="month"
-                    className="border rounded p-2 "
+                    className="border rounded p-2 focus:border-fuchsia-700"
                     name="endDate"
                     onChange={handleChange}
                     value={formData.endDate}
@@ -204,6 +205,7 @@ export default function ExperienceModal({
               name="isWorking"
               checked={formData.isWorking}
               onChange={handleChange}
+
             />
 
             <label className="text-sm">I currently work here</label>
@@ -218,7 +220,7 @@ export default function ExperienceModal({
               name="description"
               value={formData.description}
               onChange={handleTextareaChange}
-              className="border rounded p-2"
+              className="border rounded p-2 focus:border-fuchsia-700"
             />
             {error?.discription && (
               <p className=" text-sm text-red-600">* {error.discription}</p>
@@ -237,14 +239,14 @@ export default function ExperienceModal({
             {selectedExp ? (
               <button
                 onClick={handleEdit}
-                className="px-4  py-2 bg-green-600 text-white rounded"
+                className="px-4  py-2 bg-fuchsia-800 text-white rounded"
               >
                 Update
               </button>
             ) : (
               <button
                 onClick={handleSubmit}
-                className="px-4  py-2 bg-green-600 text-white rounded"
+                className="px-4  py-2 bg-fuchsia-800 text-white rounded"
               >
                 Save
               </button>

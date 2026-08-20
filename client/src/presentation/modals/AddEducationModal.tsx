@@ -66,7 +66,7 @@ const AddEducationModal: React.FC<AddEducationModalProps> = ({
           </Dialog.Close>
 
           {/* Title */}
-          <Dialog.Title className="text-xl font-bold text-indigo-800 text-center">
+          <Dialog.Title className="text-xl font-bold text-fuchsia-800 text-center">
             {editEdu ? 'Edit Education' : 'Add Education'}
           </Dialog.Title>
 
@@ -98,7 +98,7 @@ const AddEducationModal: React.FC<AddEducationModalProps> = ({
             {/* Univercity */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Univercity
+                University
               </label>
               <input
                 name="university"
@@ -258,7 +258,7 @@ const AddEducationModal: React.FC<AddEducationModalProps> = ({
 
               <button
                 type="submit"
-                className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-blue-700"
+                className="px-4 py-2 rounded-lg bg-fuchsia-800 text-white hover:bg-blue-700"
               >
                 {editEdu ? 'Update' : 'Save'}
               </button>

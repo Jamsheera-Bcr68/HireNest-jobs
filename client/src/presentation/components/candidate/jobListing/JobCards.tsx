@@ -86,7 +86,7 @@ function JobCards({
               }`}
               style={{
                 border: `1.5px solid ${
-                  isActive && viewMode === 'split' ? '#818cf8' : '#e8edf5'
+                  isActive && viewMode === 'split' ? '#bf22ce' : '#e8edf5'
                 }`,
                 background:
                   isActive && viewMode === 'split' ? '#fafbff' : 'white',

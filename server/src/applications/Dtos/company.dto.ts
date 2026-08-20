@@ -73,7 +73,10 @@ export type CompanyDataDto = {
   companyName: string;
   logoUrl?: string;
   tagLine?: string;
-
+  hiredCount?: number;
+  totalJobs?: number;
+  totalInterviews?:number
+  totalApps?:number
   website?: string;
 
   about: string;
@@ -101,11 +104,10 @@ export type CompanyFilterDto = {
   industry?: IndustryType;
 };
 
-export type PendingCompany={
-  id:string
-  email?:string
-  logoUrl:string
-  location:string
-  submittedAt:string
- 
-}
+export type PendingCompany = {
+  id: string;
+  email?: string;
+  logoUrl: string;
+  location: string;
+  submittedAt: string;
+};

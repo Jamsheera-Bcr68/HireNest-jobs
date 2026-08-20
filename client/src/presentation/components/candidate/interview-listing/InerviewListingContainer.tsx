@@ -23,7 +23,7 @@ function InerviewListingContainer() {
   const [interviews, setInterviews] = useState<InterviewDto[]>([]);
 
   const [page, setPage] = useState<number>(1);
-  const [limit] = useState<number>(5);
+  const [limit] = useState<number>(6);
   const [totalDocs, setTotalDocs] = useState<number>(0);
   const [confirm, setConfirm] = useState<boolean>(false);
   const [reshedule, setReschedule] = useState<boolean>(false);

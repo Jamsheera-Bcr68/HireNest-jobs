@@ -42,6 +42,7 @@ export class LoginUseCase implements IUserLoginUseCase {
         statusCodes.NOTFOUND
       );
     let companyId;
+    let name=user.name
     if (user.role == UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(user.id);
       if (!company) {
@@ -50,6 +51,7 @@ export class LoginUseCase implements IUserLoginUseCase {
           statusCodes.NOTFOUND
         );
       }
+      name=company.companyName
       companyId = company.id;
     }
 
@@ -84,10 +86,11 @@ export class LoginUseCase implements IUserLoginUseCase {
     if (user.role == UserRole.CANDIDATE) {
       applications = await this._applicationRepository.getDocsByUserId(user.id);
     }
-    // console.log('applied jobs',applications);
+    console.log('user',user,'name:',name);
 
     return {
-      user,
+      user:user,
+      name:name,
       accessToken,
       refreshToken,
       companyId,

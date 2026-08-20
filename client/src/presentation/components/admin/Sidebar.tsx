@@ -7,18 +7,18 @@ const navItems = [
   'Companies',
   'Candidates',
   'Job Listings',
-  'Applications',
+  // 'Applications',
   'Interviews',
   // 'Pendings',
   'Skills',
 ];
-const navIcons = [<LayoutDashboard/> , <Building2/>,<Users/>, <Briefcase/>, <FileUser/>, <CalendarDays/>, <Lightbulb/>];
+const navIcons = [<LayoutDashboard/> , <Building2/>,<Users/>, <Briefcase/>, <CalendarDays/>, <Lightbulb/>];
 const navLinks: Record<string, string> = {
   Dashboard: '/admin',
   Candidates: '/admin/candidates ',
   Companies: '/admin/companies',
   'Job Listings': '/admin/jobs',
-  Applications: '/admin/applications',
+  // Applications: '/admin/applications',
   Interviews: '/admin/interviews',
   Skills: '/admin/skills',
   // Pendings: '/admin/reports',

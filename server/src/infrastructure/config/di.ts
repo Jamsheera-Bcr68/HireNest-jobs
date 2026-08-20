@@ -114,6 +114,7 @@ import { RecentActivitiesUsecase } from '../../applications/useCases/company/das
 import { PendingActionsUsecase } from '../../applications/useCases/company/dashboard/get-pending-actions.usecase';
 import { GenerateMeetlinkUsecase } from '../../applications/useCases/interviews/generate-meetlink.usecase';
 import { GetInterviewByMeetingIdUsecase } from '../../applications/useCases/meetings/get-meeting.usecase';
+import { UpdateMissedInterviews } from '../../applications/useCases/interviews/mark-missed-interviews.usecase';
 //==Controllers
 //==Controllers
 //==Controllers
@@ -268,7 +269,7 @@ const editExperienceUseCase = new EditExperienceUseCase(
   experienceRepository
 );
 //user
-const getUserUserCase = new GetUserUseCase(userRepository, companyRepository);
+const getUserUserCase = new GetUserUseCase(userRepository, companyRepository,applicationRepository,interviewRepository);
 const editProfileImageUseCase = new EditProfileImageUseCase(
   userRepository,
   imageStorageService
@@ -328,7 +329,7 @@ const createJobUseCase = new CrateJobUseCase(
   companyRepository,
   skillRepository
 );
-const getCompanyUseCase = new GetCompanyUseCase(companyRepository);
+const getCompanyUseCase = new GetCompanyUseCase(companyRepository,jobRepository,applicationRepository,interviewRepository);
 const changeLogoUseCase = new ChangeLogoUseCase(
   companyRepository,
   imageStorageService
@@ -439,6 +440,7 @@ const updateInterviewStatusUsecase = new UpdateInterviewStatusUsecase(
   notificatinService,
   jobRepository
 );
+const updateMissedInterviewUsecase=new UpdateMissedInterviews(interviewRepository)
 
 export const authController = new AuthController(
   registerUseCase,
@@ -771,7 +773,7 @@ export const interviewcontroller = new InterviewController(
   updateInterviewUsecase,
   upateInterviewResultUsecase,
   confirmInterviewUsecase,
-  rescheduleInterviewUsecase,generateMeetlinkUsecase,getInterviewByMeetingIdUsecase
+  rescheduleInterviewUsecase,generateMeetlinkUsecase,getInterviewByMeetingIdUsecase,updateMissedInterviewUsecase
 );
 
 export const notificationController = new NotificationControlller(

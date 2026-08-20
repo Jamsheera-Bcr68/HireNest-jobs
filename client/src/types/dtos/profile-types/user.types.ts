@@ -46,6 +46,8 @@ export interface UserProfileType {
   resumes: ResumeType[] ;
   isBlocked: boolean;
   createdAt: string;
+  interviewsCount?:number
+  applicationCount?:number
 }
 
 export interface CompanyProfileType {
@@ -75,6 +77,10 @@ export interface CompanyProfileType {
   joinedAt?: string;
   socialMediaLinks: ISocialLinks;
   document: { type: string; file: string };
+  totalJobs?:number
+  hiredCount?:number
+  totalApps?:number
+  totalInterviews?:number
 }
 export type CompanyFieldUpdateType = {
   about?: string;

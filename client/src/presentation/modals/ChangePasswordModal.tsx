@@ -32,7 +32,7 @@ export default function ChangePasswordModal({
           "
         >
           {/* Title */}
-          <Dialog.Title className="text-2xl text-indigo-700 font-semibold text-center">
+          <Dialog.Title className="text-2xl text-fuchsia-800 font-semibold text-center">
             Change Password
           </Dialog.Title>
 
@@ -48,7 +48,7 @@ export default function ChangePasswordModal({
                 onChange={handleChange}
                 type={show ? 'text' : 'password'}
                 placeholder="••••••••"
-                className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
               />
               {error?.current_password ? (
                 <p className="text-sm text-red-500">{error.current_password}</p>
@@ -68,7 +68,7 @@ export default function ChangePasswordModal({
                   onChange={handleChange}
                   type={show ? 'text' : 'password'}
                   placeholder="••••••••"
-                  className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
                 />
               </div>
               {error?.password ? (
@@ -88,7 +88,7 @@ export default function ChangePasswordModal({
                   onChange={handleChange}
                   type={show ? 'text' : 'password'}
                   placeholder="••••••••"
-                  className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full rounded-lg border px-4 py-2.5 text-sm focus:ring-2 focus:ring-fuchsia-500 outline-none"
                 />
                 <button
                   type="button"
@@ -116,7 +116,7 @@ export default function ChangePasswordModal({
 
             <button
               onClick={handleSubmit}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white"
+              className="rounded-lg bg-fuchsia-800 hover:bg-fuchsia-600 px-4 py-2 text-sm text-white"
             >
               Save
             </button>

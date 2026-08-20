@@ -54,7 +54,7 @@ const Experience = ({ user, onUserUpdate }: ExperienceProps) => {
         {user && user.experience?.length ? (
           user.experience.map((ex) => {
             return (
-              <div className="border-l-4 border-indigo-600 bg-white  p-4 rounded-md shadow-sm hover:shadow-md hover:bg-gray-50 transition">
+              <div className="border-l-4 border-fuchsia-600 bg-white  p-4 rounded-md shadow-sm hover:shadow-md hover:bg-gray-50 transition">
                 <div className="">
                   {/* Top section */}
                   <div className="flex justify-between items-start">
@@ -81,13 +81,14 @@ const Experience = ({ user, onUserUpdate }: ExperienceProps) => {
                             setIsExpOpen(true);
                             console.log('selected ex', selectedExp);
                           }}
-                          className="mt-2  text-blue-600 hover:text-blue-700 text-sm font-medium transition"
+                          className="mt-2  text-fuchsia-600 hover:text-fuchsia-700 hover:scale-150 duration-300 text-sm font-medium transition"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4"
+                            className="w-5 h-5 text-fuchsia-800"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
+                            fill="none"
                             strokeWidth="2"
                           >
                             <path
@@ -103,7 +104,7 @@ const Experience = ({ user, onUserUpdate }: ExperienceProps) => {
                             setDeleteId(ex.id ? ex.id : '');
                             setIsDeleteModalOpen(true);
                           }}
-                          className="mt-2 ml-3 text-red-600 hover:text-red-700 text-sm font-medium transition"
+                          className="mt-2 ml-3 text-red-600 hover:text-red-700 text-sm font-medium hover:scale-150 duration-300 transition"
                         />
                       </div>
 

@@ -99,7 +99,7 @@ export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
             }}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
               activeNav === item
-                ? 'bg-sky-600 text-white'
+                ? 'bg-fuchsia-600 text-white'
                 : 'text-slate-400 hover:text-white hover:bg-slate-800'
             }`}
           >

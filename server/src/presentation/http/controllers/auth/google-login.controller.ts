@@ -18,13 +18,14 @@ export class GoogleLoginController {
 
     const {
       user,
+      name,
       accessToken,
       refreshToken,
       companyId,
       isProfileCompleted,
       appliedJobs,
     } = await this._googleLoginUsecase.execute(token, role);
-    const userDto = UserMapper.toDto(user);
+    const userDto = UserMapper.toDto(user,name);
 
     res.cookie('refreshToken', refreshToken, {
       secure: process.env.NODE_ENV === 'production',
