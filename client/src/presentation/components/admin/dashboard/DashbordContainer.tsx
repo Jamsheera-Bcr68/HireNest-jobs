@@ -21,6 +21,7 @@ import type { UserRole } from '../../../../constants/types/user';
 import PendingCompany from './PendingCompany';
 import ReportedJobs from './ReportedJobs';
 import type { JobType } from '../../../../types/dtos/job.dto';
+import ActionPending from './ActionPending';
 
 type StatusCardType = {
   icon: LucideIcon;
@@ -57,7 +58,12 @@ export type UserData = {
   role: UserRole;
   value: number;
 };
-export type Status = 'passed' | 'failed' | 'scheduled' | 'completed';
+export type Status =
+  | 'passed'
+  | 'failed'
+  | 'scheduled'
+  | 'completed'
+  | 'not-show';
 
 export type InterviewData = {
   label: string;
@@ -86,10 +92,11 @@ export type PendingJobs = {
 };
 
 const InterivewConfig: Record<Status, { color: string; label: string }> = {
-  completed: { label: 'Completed', color: '#f59e0b' },
-  scheduled: { label: 'Interview Scheduled', color: 'yellow' },
+  completed: { label: 'Completed', color:  '#10a99c' },
+  scheduled: { label: 'Interview Scheduled', color: '#f59e0b' },
   passed: { label: 'Passed ', color: 'green' },
   failed: { label: 'Failed', color: 'red' },
+  'not-show': { label: 'Expired', color: 'gray' },
 };
 
 export default function AdminDashbordContainer() {
@@ -109,7 +116,7 @@ export default function AdminDashbordContainer() {
 
   const UserDistData: Record<UserRole, { color: string; label: string }> = {
     company: { color: '#f59e0b', label: 'Companies' },
-    candidate: { color: '#6366f1', label: 'Job seekers' },
+    candidate: { color: 'rgb(99, 102, 241)', label: 'Job seekers' },
     admin: { color: '#10a99c', label: 'Admins' },
   };
   useEffect(() => {
@@ -200,7 +207,7 @@ export default function AdminDashbordContainer() {
         const data = await adminDashboardService.getInterviewData();
         const intData: { status: Status; count: number; value: number }[] =
           data.interviewData;
-        //console.log('interview data', data);
+        console.log('interview data', intData);
         setInterviewData(
           intData.map((data) => ({
             ...data,
@@ -241,25 +248,43 @@ export default function AdminDashbordContainer() {
       getReportedJobs();
     } catch (error) {}
   }, []);
+
   return (
     <div>
       <main className="p-4 lg:p-8">
         <div className="space-y-6">
           {/* status cards */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {statusData.map((card, i) => {
-              return (
-                <DashboardStatCard card={card}
-                 
-                />
-              );
+              return <DashboardStatCard card={card} />;
             })}
           </div>
+          {pendingCompanies.length || pendingJobs.length ? (
+            <ActionPending companies={pendingCompanies} jobs={pendingJobs} />
+          ) : null}
           {/* job category+chart */}
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-            <Company_Job_chart chartData={comp_job_chartData} />
+            {comp_job_chartData.length > 0 && (
+              <div
+                className={
+                  industyJobs.length > 0 ? 'xl:col-span-2' : 'xl:col-span-3'
+                }
+              >
+                <Company_Job_chart chartData={comp_job_chartData} />
+              </div>
+            )}
 
-            <CategorywisePosts postData={industyJobs} />
+            {industyJobs.length > 0 && (
+              <div
+                className={
+                  comp_job_chartData.length > 0
+                    ? 'xl:col-span-1'
+                    : 'xl:col-span-3'
+                }
+              >
+                <CategorywisePosts postData={industyJobs} />
+              </div>
+            )}
           </div>
         </div>
 
@@ -267,10 +292,11 @@ export default function AdminDashbordContainer() {
           <UserDistributionChart userData={userData} />
           <ApplicationByIndustry appData={industryApps} />
           <InterviewStatusChart interviewData={interviewData} />
-        </div>
+        </div> 
+        
         <div className="grid grid-cols-1 mt-10 xl:grid-cols-2 gap-6">
-          <PendingCompany companies={pendingCompanies} />
-          <ReportedJobs jobs={pendingJobs} />
+          {/* <PendingCompany companies={pendingCompanies} /> */}
+          {/* <ReportedJobs jobs={pendingJobs} /> */}
         </div>
       </main>
     </div>

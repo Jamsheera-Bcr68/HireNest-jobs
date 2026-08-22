@@ -1,6 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lightbulb,LayoutDashboard,Building2, Users, Briefcase,CalendarDays ,FileUser} from 'lucide-react';
+import {
+  Lightbulb,
+  LayoutDashboard,
+  Building2,
+  Users,
+  Briefcase,
+  CalendarDays,
+  FileUser,
+  ListTodo,
+  LogOut,
+} from 'lucide-react';
+import { useHeader } from '../../hooks/user/useHeader';
 
 const navItems = [
   'Dashboard',
@@ -9,10 +20,19 @@ const navItems = [
   'Job Listings',
   // 'Applications',
   'Interviews',
-  // 'Pendings',
+
   'Skills',
+  'Pendings',"Logout"
 ];
-const navIcons = [<LayoutDashboard/> , <Building2/>,<Users/>, <Briefcase/>, <CalendarDays/>, <Lightbulb/>];
+const navIcons = [
+  <LayoutDashboard />,
+  <Building2 />,
+  <Users />,
+  <Briefcase />,
+  <CalendarDays />,
+  <Lightbulb />,
+  <ListTodo />,<LogOut/>
+];
 const navLinks: Record<string, string> = {
   Dashboard: '/admin',
   Candidates: '/admin/candidates ',
@@ -21,12 +41,11 @@ const navLinks: Record<string, string> = {
   // Applications: '/admin/applications',
   Interviews: '/admin/interviews',
   Skills: '/admin/skills',
-  // Pendings: '/admin/reports',
+  Pendings: '/admin/pendings',
 };
 
 function Sidebar({
-
-    setTitle,
+  setTitle,
   nav = 'Dashboard',
   sidebarOpen,
 }: {
@@ -36,7 +55,7 @@ function Sidebar({
 }) {
   const [activeNav, setActiveNav] = useState(nav);
   const navigate = useNavigate();
-
+const {HandleLogout}=useHeader()
   return (
     <aside
       className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all h-screen sticky top-0 duration-300 bg-slate-900 flex flex-col shrink-0`}
@@ -64,7 +83,10 @@ function Sidebar({
             onClick={() => {
               setTitle(item);
               //console.log('item,navLinks[item]', item, navLinks[item]);
-
+if(item==='Logout'){
+HandleLogout()
+return
+}
               navigate(navLinks[item]);
               setActiveNav(item);
             }}

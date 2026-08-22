@@ -129,4 +129,10 @@ export const adminService = {
     const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.JOB_DETAILS(jobId));
     return res.data;
   },
+
+  async getPendingData(){
+    console.log('from admin pending data');
+    const res= await axiosInstance.get(ADMIN_API_ENDPOINTS.PENDINGS);
+    return res.data;
+  }
 };

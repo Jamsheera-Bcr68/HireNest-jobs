@@ -34,7 +34,7 @@ type Props = {
 
 function Company_Job_chart({ chartData }: Props) {
   return (
-    <div className="xl:col-span-2 bg-white rounded-2xl border border-slate-200 p-6">
+    <div className="xl:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300     hover:shadow-lg">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-display text-lg text-slate-900">
@@ -119,7 +119,7 @@ type UserDataProps = {
 };
 export function UserDistributionChart({ userData }: UserDataProps) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6">
+    <div className="bg-white rounded-2xl border border-slate-200 p-6  duration-300 hover:-translate-y-1 hover:border-slate-300     hover:shadow-lg">
       <h3 className="font-display text-lg text-slate-900">User distribution</h3>
       <p className="text-sm text-slate-400 mb-2">Companies vs. candidates</p>
       <div className="h-56">
@@ -180,7 +180,7 @@ export function ApplicationByIndustry({ appData }: AppChartProps) {
   console.log('chart app data', appData);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6">
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300     hover:shadow-lg">
       <h3 className="font-display text-lg text-slate-900">
         Applications by Industry
       </h3>
@@ -237,19 +237,21 @@ export function ApplicationByIndustry({ appData }: AppChartProps) {
 }
 
 
-const INTERVIEW_STATUS = [
-  { name: 'Scheduled', value: 184, color: '#6366f1' },
-  { name: 'Completed', value: 342, color: '#22c55e' },
-  { name: 'Rejected', value: 128, color: '#f43f5e' },
-  { name: 'No-show', value: 41, color: '#f59e0b' },
-  { name: 'Awaiting feedback', value: 76, color: '#94a3b8' },
-];
+// const INTERVIEW_STATUS = [
+//   { name: 'Scheduled', value: 184, color: '#6366f1' },
+//   { name: 'Completed', value: 342, color: '#22c55e' },
+//   { name: 'Rejected', value: 128, color: '#f43f5e' },
+//   { name: 'No-show', value: 41, color: '#f59e0b' },
+//   { name: 'Awaiting feedback', value: 76, color: '#94a3b8' },
+// ];
 type InterviewProps={
   interviewData:InterviewData[]
 }
 export function InterviewStatusChart({interviewData}:InterviewProps) {
+  console.log('interview chart data',interviewData);
+  
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6">
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300     hover:shadow-lg">
       <h3 className="font-display text-lg text-slate-900">Interview status</h3>
       <p className="text-sm text-slate-400 mb-2">Across all active pipelines</p>
       <div className="h-56">
@@ -263,7 +265,7 @@ export function InterviewStatusChart({interviewData}:InterviewProps) {
               outerRadius={80}
               paddingAngle={3}
             >
-              {INTERVIEW_STATUS.map((entry, i) => (
+              {interviewData.map((entry, i) => (
                 <Cell key={i} fill={entry.color} stroke="none" />
               ))}
             </Pie>
