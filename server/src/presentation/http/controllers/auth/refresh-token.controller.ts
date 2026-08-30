@@ -14,21 +14,22 @@ export class RefreshTokenController {
   }
 
   handle = asyncHandler((req: Request, res: Response) => {
-  //  console.log('refresh-token endpoint hit');
+    //  console.log('refresh-token endpoint hit');
 
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
-    //  console.log('refresh token not found');
+      console.log('refresh token not found');
       throw new AppError(
         authMessages.error.REFRESH_TOKEN_REQUIRED,
         statusCodes.BADREQUEST
       );
     }
-  //  console.log('refresh token found');
+    
+    //  console.log('refresh token found');
 
     //  verify token
     const payload = this._tokenService.verifyRefreshToken(refreshToken);
-   // console.log('verified payload', payload);
+    // console.log('verified payload', payload);
 
     const newToken = this._tokenService.generateAccessToken(
       payload.userId,

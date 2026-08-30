@@ -37,3 +37,27 @@ export interface userProfileDto {
   applicationCount?:number
   interviewsCount?:number
 }
+
+export interface AdminCandidateDto{
+   id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  imageUrl?: string;
+  title?: string;
+  skills: Array<CandidateSkillDto>;
+  address?: IAddress;
+  isRequested: boolean;
+  company: { status: StatusEnum;id:string, reason?: string }|null;
+  socialLinks?: ISocialMediaLinks;
+  createdAt: string;
+  isBlocked: boolean;
+  experience: Array<Experience>;
+  education:Array<EducationDto>
+  about:string
+  resumes:Array<IResume>
+  applicationCount?:number
+  interviewsCount?:number
+  shortListedCount?:number
+  offeredCount?:number
+}

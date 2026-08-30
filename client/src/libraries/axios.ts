@@ -8,14 +8,14 @@ import { showGlobalToast } from '../utils/toast.service';
 //console.log('VITE_BACKEND_URL', import.meta.env.VITE_BACKEND_URL);
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
+  baseURL: "/api",
   withCredentials: true,
   // headers: {
   //   'Content-Type': ' application/json',
   // },
 });
 const refreshAxios = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
+  baseURL: "/api",
   withCredentials: true,
   headers: {
     'Content-Type': ' application/json',

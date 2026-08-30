@@ -40,14 +40,16 @@ export interface UserProfileType {
   socialLinks?: ISocialLinks;
   imageUrl?: string;
   about?: string;
-  company?: { status: StatusType;id:string, reason?: string };
-  experience: ExperienceType[] ;
-  education: EducationType[] ;
-  resumes: ResumeType[] ;
+  company?: { status: StatusType; id: string; reason?: string };
+  experience: ExperienceType[];
+  education: EducationType[];
+  resumes: ResumeType[];
   isBlocked: boolean;
   createdAt: string;
-  interviewsCount?:number
-  applicationCount?:number
+  interviewsCount?: number;
+  applicationCount?: number;
+  shortListedCount?: number;
+  offeredCount?: number;
 }
 
 export interface CompanyProfileType {
@@ -77,10 +79,10 @@ export interface CompanyProfileType {
   joinedAt?: string;
   socialMediaLinks: ISocialLinks;
   document: { type: string; file: string };
-  totalJobs?:number
-  hiredCount?:number
-  totalApps?:number
-  totalInterviews?:number
+  totalJobs?: number;
+  hiredCount?: number;
+  totalApps?: number;
+  totalInterviews?: number;
 }
 export type CompanyFieldUpdateType = {
   about?: string;

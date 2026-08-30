@@ -115,7 +115,9 @@ import { PendingActionsUsecase } from '../../applications/useCases/company/dashb
 import { GenerateMeetlinkUsecase } from '../../applications/useCases/interviews/generate-meetlink.usecase';
 import { GetInterviewByMeetingIdUsecase } from '../../applications/useCases/meetings/get-meeting.usecase';
 import { UpdateMissedInterviews } from '../../applications/useCases/interviews/mark-missed-interviews.usecase';
-//==Controllers
+import { GetPendingStatusUsecase } from '../../applications/useCases/admin/pendings/get-pending-status.usecase';
+
+import { GetPendingUsecase } from '../../applications/useCases/admin/pendings/get-pendings.usecase';//==Controllers
 //==Controllers
 //==Controllers
 //==Controllers
@@ -146,7 +148,7 @@ import { AdminDashboardController } from '../../presentation/http/controllers/ad
 import { CandidateDashboardController } from '../../presentation/http/controllers/candidateDashboard.controller';
 import { CompanyDashboardController } from '../../presentation/http/controllers/company-dashboard.controller';
 import { CompanyDashboardInterviewDataUsecase } from '../../applications/useCases/company/dashboard/get-interview-data.usecase';
-
+import { ActivityController } from '../../presentation/http/controllers/admin/activity.controller';
 //==repsitories
 //==repsitories
 //==repsitories
@@ -359,7 +361,7 @@ const adminGetCandidatesUseCase = new AdminGetCandidateUseCase(
 const adminUpdateCandidateUseCase = new AdminUpdateCandidateUseCase(
   userRepository
 );
-const adminGetEntityUseCase = new AdminGetEntityUseCase(userRepository);
+const adminGetEntityUseCase = new AdminGetEntityUseCase(userRepository,applicationRepository,interviewRepository,companyRepository);
 const getFileExistUseCase = new GetFileExistUseCase(fileStorageServices);
 const getHomeDataUseCase = new GetHomeDataUseCase(
   jobRepository,
@@ -656,6 +658,9 @@ const pendingActionsUsecase = new PendingActionsUsecase(
 
 const generateMeetlinkUsecase=new GenerateMeetlinkUsecase(cryptoService)
 const getInterviewByMeetingIdUsecase=new GetInterviewByMeetingIdUsecase(interviewRepository,companyRepository,userRepository,jobRepository)
+const getPendingStatusUsecase=new GetPendingStatusUsecase(jobRepository,companyRepository,adminRepository)
+const getPendingsUsecase=new GetPendingUsecase(adminRepository,companyRepository,jobRepository)
+
 //controller
 //controller
 //controller
@@ -818,3 +823,5 @@ export const companyDashboardController = new CompanyDashboardController(
   recentActivitiesUsecase,
   pendingActionsUsecase
 );
+
+export const activityController=new ActivityController(getPendingStatusUsecase,getPendingsUsecase)

@@ -1,4 +1,4 @@
-import InterviewsContatainer from '../../components/admin/interview-listing/InterviewsContatainer';
+import InterviewsContatainer from '../../components/admin/interview-listing/InterviewsContainer';
 
 function InterviewsPage() {
   return (

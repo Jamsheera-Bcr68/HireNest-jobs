@@ -10,4 +10,5 @@ export const ADMIN_API_ENDPOINTS = {
   COMPANY_STATUS: '/company-status',
   CANDIDATE_STATUS: '/candidates-status',
   CHECK_FILE_EXIST: '/check-fileExist',
+ 
 };

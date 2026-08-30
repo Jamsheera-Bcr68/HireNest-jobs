@@ -70,7 +70,7 @@ export class AuthController {
   });
 
   login = asyncHandler(async (req: Request, res: Response) => {
-    //  console.log('from login controller');
+      console.log('from login controller');
 
     const payload: IloginInput = req.body;
     const {
@@ -91,6 +91,9 @@ export class AuthController {
       path: '/auth/refresh-token',
     });
 
+    console.log('login success full access,',accessToken);
+    console.log('login success full refreshToken,',refreshToken);
+    
     return res.status(statusCodes.OK).json({
       success: true,
       message: authMessages.success.LOGIN_SUCCESS,
@@ -102,7 +105,7 @@ export class AuthController {
   });
 
   logout = asyncHandler(async (req: Request, res: Response) => {
-  //  console.log('from logout controller');
+    console.log('from logout controller');
 
     this._logoutUsecase.execute(req, res);
     return res

@@ -15,8 +15,8 @@ export const API_END_POINTS = {
   INTERVIEW_RESULT: '/:interviewId/result',
   INTERVIEWS_STATUS: '/interviews-status',
   RESCHEDULE_REQUEST: '/:interviewId/request-reschedule',
-   GENERATE_MEETLINK:'/meetlink',
-   GET_MEET_INFO:`/meetings/:meetId`,
+  GENERATE_MEETLINK: '/meetlink',
+  GET_MEET_INFO: `/meetings/:meetId`,
   GET_NOT_READ_COUNT: '/not-read-count',
   NOTIFICATIONS: '/',
   NOTIFICATION: '/:notificationId',
@@ -56,20 +56,23 @@ export const API_END_POINTS = {
     PENDING_COMPANIES: '/dashboard/pending-companies',
     REPORTED_JOBS: '/dashboard/reported-jobs',
   },
-  CANDIDATE_DASHBOARD:{
-    APP_DATA:'/dashboard/application-details',
-    UPCOMING_INTERVIEW:`/dashboard/upcoming-intrview`,
-    PROFILE_DATA:'/dashboard/profile-data',
-    RECOMENTED_JOBS:'/dashboard/recomented-jobs'},
-    COMPANY_DASHBOARD:{
-      STATUS_DATA:`/dashboard/status-data`,
-      APPDATA:'/dashboard/applications-data',
-      JOB_DATA:'/dashboard/jobs-data',
-      INTERVIEW_DATA:'/dashboard/interview-data',
-      RECENT_ACTIVITIES:'/dashboard/recent_activities',
-       PENDING_ACTION:'/dashboard/pending-actions',
-    }
-}
+  CANDIDATE_DASHBOARD: {
+    APP_DATA: '/dashboard/application-details',
+    UPCOMING_INTERVIEW: `/dashboard/upcoming-intrview`,
+    PROFILE_DATA: '/dashboard/profile-data',
+    RECOMENTED_JOBS: '/dashboard/recomented-jobs',
+  },
+  COMPANY_DASHBOARD: {
+    STATUS_DATA: `/dashboard/status-data`,
+    APPDATA: '/dashboard/applications-data',
+    JOB_DATA: '/dashboard/jobs-data',
+    INTERVIEW_DATA: '/dashboard/interview-data',
+    RECENT_ACTIVITIES: '/dashboard/recent_activities',
+    PENDING_ACTION: '/dashboard/pending-actions',
+  },
+  PENDINGS_STATUS: '/pendings/status',
+  PENDINGS: '/pendings',
+};
 
 export const AUTH_END_POINTS = {
   REGISTER: '/register',

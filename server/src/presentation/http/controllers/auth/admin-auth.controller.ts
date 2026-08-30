@@ -31,7 +31,7 @@ export class AdminAuthController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: authMessages.success.LOGIN_SUCCESS,
-      data: { admin: adminDto, access_Token: accessToken },
+      data: { admin: adminDto, accessToken: accessToken },
     });
   });
 }

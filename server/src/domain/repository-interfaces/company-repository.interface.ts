@@ -27,4 +27,5 @@ export interface ICompanyRepository extends IBaseRepository<Company> {
 
   getMonthlyCompanyCount(): Promise<chartDataDto[]>;
 getCompanies(filter: {status:StatusEnum},limit:number):Promise<Company[]>
+
 }

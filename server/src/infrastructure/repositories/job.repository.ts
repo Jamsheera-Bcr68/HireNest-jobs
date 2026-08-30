@@ -4,7 +4,7 @@ import { IJobRepository } from '../../domain/repository-interfaces/job-repositor
 import { IJobDocument, jobModel } from '../database/models/job.model';
 import { GenericRepository } from './generic.repository';
 
-import mongoose, { Types } from 'mongoose';
+import mongoose, { PipelineStage, Types } from 'mongoose';
 import {
   JobCardDto,
   JobCountByIndustryDto,
@@ -15,6 +15,7 @@ import {
 } from '../../applications/dtos/job.dto';
 import { chartDataDto } from '../../domain/types/chart.data.type';
 import { IndustryType } from '../../domain/types/company-profile.types';
+import { ReportedJobFilter } from '../../applications/types/pending.type';
 
 interface JobQuery {
   status?: StatusEnum;
@@ -22,6 +23,27 @@ interface JobQuery {
     $gte?: Date;
     $lte?: Date;
   };
+}
+
+interface AggregatedReportedJob {
+  _id: Types.ObjectId;
+  submitted: Date;
+  company: string;
+  role: string;
+  count: number;
+  status: StatusEnum;
+  createdAt: Date;
+  reason: string;
+}
+export interface MappedAggregatedReportedJob {
+  id: string;
+  submitted: string;
+  company: string;
+  role: string;
+  count: number;
+  status: StatusEnum;
+  createdAt: string;
+  reason: string;
 }
 export class JobRepository
   extends GenericRepository<Job, IJobDocument>
@@ -217,7 +239,6 @@ export class JobRepository
         sortStage = { createdAt: -1 };
     }
 
-    
     let {
       skills,
       industry,
@@ -225,7 +246,7 @@ export class JobRepository
       experience,
       salary,
       companyId,
-      status='active',
+      status = 'active',
       appliedJobIds,
       ...rest
     } = filter;
@@ -257,15 +278,17 @@ export class JobRepository
             max_salary: { $gte: range.min_salary },
           };
         }
-        if(skills&&skills.length){
-
-          const skillIds=skills .filter(mongoose.Types.ObjectId.isValid).map((id)=>new mongoose.Types.ObjectId(id))
-          matchStage.skills={$in:skillIds}
+        if (skills && skills.length) {
+          const skillIds = skills
+            .filter(mongoose.Types.ObjectId.isValid)
+            .map((id) => new mongoose.Types.ObjectId(id));
+          matchStage.skills = { $in: skillIds };
         }
-        if(appliedJobIds&&appliedJobIds.length){
-
-          const jobIds=appliedJobIds .filter(mongoose.Types.ObjectId.isValid).map((id)=>new mongoose.Types.ObjectId(id))
-          matchStage._id={$nin:jobIds}
+        if (appliedJobIds && appliedJobIds.length) {
+          const jobIds = appliedJobIds
+            .filter(mongoose.Types.ObjectId.isValid)
+            .map((id) => new mongoose.Types.ObjectId(id));
+          matchStage._id = { $nin: jobIds };
         }
 
         return {
@@ -311,7 +334,7 @@ export class JobRepository
       },
 
       //
-       {
+      {
         $lookup: {
           from: 'applications',
           localField: '_id',
@@ -320,7 +343,6 @@ export class JobRepository
         },
       },
 
-      
       //
     ];
 
@@ -376,8 +398,8 @@ export class JobRepository
               mode: 1,
               skills: 1,
               reportDetails: 1,
-             
-              appCount:{$size:'$applications'},
+
+              appCount: { $size: '$applications' },
               companyName: '$companyData.companyName',
               companyLogo: '$companyData.logoUrl',
               location: '$companyData.address',
@@ -677,9 +699,202 @@ export class JobRepository
     return savedJobs.length;
   }
 
-  async closingcount(filter: { companyId: string; status: StatusEnum; endDate: Date; }): Promise<number> {
-    const {companyId,status,endDate}=filter
-    const count=await this._model.countDocuments({companyId:new mongoose.Types.ObjectId(companyId),status:status,lastDate:{$gte:new Date(endDate)}})
-    return count
+  async closingcount(filter: {
+    companyId: string;
+    status: StatusEnum;
+    endDate: Date;
+  }): Promise<number> {
+    const { companyId, status, endDate } = filter;
+    const count = await this._model.countDocuments({
+      companyId: new mongoose.Types.ObjectId(companyId),
+      status: status,
+      lastDate: { $gte: new Date(endDate) },
+    });
+    return count;
+  }
+
+  // async getReportedJobs(
+  //   filter: Partial<ReportedJobFilter>
+  // ): Promise<MappedAggregatedReportedJob[]> {
+  //   const { isReported, limit = 5 } = filter;
+
+  //   const matchStage: PipelineStage.Match['$match'] = {};
+
+  //   if (isReported !== undefined) {
+  //     matchStage.isReported = isReported;
+  //   }
+
+  //   const documents: AggregatedReportedJob[] = await this._model.aggregate([
+  //     { $match: matchStage },
+
+  //     {
+  //       $lookup: {
+  //         from: 'companies',
+  //         localField: 'companyId',
+  //         foreignField: '_id',
+  //         as: 'company',
+  //       },
+  //     },
+
+  //     {
+  //       $project: {
+  //         _id: 1,
+  //         role: '$title',
+
+  //         company: {
+  //           $arrayElemAt: ['$company.companyName', 0],
+  //         },
+
+  //         count: {
+  //           $size: '$reportDetails',
+  //         },
+
+  //         submitted: {
+  //           $arrayElemAt: ['$reportDetails.reportedAt', -1],
+  //         },
+  //         createdAt: 1,
+  //          reason:'$reportDetails.0.reason'
+  //       },
+  //     },
+
+  //     {
+  //       $sort: {
+  //         submitted: -1,
+  //       },
+  //     },
+
+  //     {
+  //       $limit: limit,
+  //     },
+  //   ]);
+
+  //   return documents.map((doc) => this.mapToReported(doc));
+  // }
+  async getReportedJobs(
+    filter: Partial<ReportedJobFilter>
+  ): Promise<MappedAggregatedReportedJob[]> {
+    const { isReported, limit = 5 } = filter;
+
+    const matchStage: PipelineStage.Match['$match'] = {};
+
+    if (isReported !== undefined) {
+      matchStage.isReported = isReported;
+    }
+
+    const documents: AggregatedReportedJob[] = await this._model.aggregate([
+      {
+        $match: matchStage,
+      },
+
+      {
+        $lookup: {
+          from: 'companies',
+          localField: 'companyId',
+          foreignField: '_id',
+          as: 'company',
+        },
+      },
+
+      {
+        $project: {
+          _id: 1,
+          role: '$title',
+
+          company: {
+            $arrayElemAt: ['$company.companyName', 0],
+          },
+
+          count: {
+            $size: '$reportDetails',
+          },
+
+          submitted: {
+            $arrayElemAt: ['$reportDetails.reportedAt', -1],
+          },
+
+          createdAt: 1,
+
+          reportDetails: 1,
+        },
+      },
+
+      // Separate every report
+      {
+        $unwind: '$reportDetails',
+      },
+
+      // Count how many times each reason occurs for each job
+      {
+        $group: {
+          _id: {
+            jobId: '$_id',
+            reason: '$reportDetails.reason',
+          },
+
+          role: { $first: '$role' },
+          company: { $first: '$company' },
+          count: { $first: '$count' },
+          submitted: { $first: '$submitted' },
+          createdAt: { $first: '$createdAt' },
+
+          reasonCount: {
+            $sum: 1,
+          },
+        },
+      },
+
+      // Most frequent reason comes first for each job
+      {
+        $sort: {
+          '_id.jobId': 1,
+          reasonCount: -1,
+        },
+      },
+
+      // Put the job back together and take the first reason
+      {
+        $group: {
+          _id: '$_id.jobId',
+
+          role: { $first: '$role' },
+          company: { $first: '$company' },
+          count: { $first: '$count' },
+          submitted: { $first: '$submitted' },
+          createdAt: { $first: '$createdAt' },
+
+          reason: { $first: '$_id.reason' },
+        },
+      },
+
+      // Newest reported jobs first
+      {
+        $sort: {
+          submitted: -1,
+        },
+      },
+
+      {
+        $limit: limit,
+      },
+    ]);
+
+    return documents.map((doc) => this.mapToReported(doc));
+  }
+
+  private mapToReported(
+    doc: AggregatedReportedJob
+  ): MappedAggregatedReportedJob {
+    console.log('AggregatedReportedJob', doc);
+
+    return {
+      id: doc._id.toString(),
+      submitted: doc.submitted.toDateString(),
+      company: doc.company,
+      role: doc.role,
+      count: doc.count,
+      status: doc.status,
+      createdAt: doc.createdAt.toDateString(),
+      reason: doc.reason,
+    };
   }
 }

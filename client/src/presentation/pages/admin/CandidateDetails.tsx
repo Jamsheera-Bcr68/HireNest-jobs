@@ -25,9 +25,11 @@ function CandidateDetails() {
   const [candidate, setCandidate] = useState<UserProfileType | null>(null);
   const [activeTab, setActiveTab] = useState('Overview');
   const [contactLinks, setContactLinks] = useState<ContactDataType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     async function getCandidate(candidateId: string) {
+      setIsLoading(true);
       try {
         const data = await adminService.getCandidate(candidateId);
         console.log('candidate', data);
@@ -83,10 +85,13 @@ function CandidateDetails() {
             icon: <Phone size={18} className="text-green-700" />,
             value: data.candidate?.phone,
           });
-        setContactLinks(links);
+       console.log('links',links)
+         setContactLinks(links);
         console.log('candidate phone', candidate?.phone);
       } catch (error: any) {
         setCandidate(null);
+      } finally {
+        setIsLoading(false);
       }
     }
     getCandidate(candidateId);
@@ -96,7 +101,11 @@ function CandidateDetails() {
     <div className="min-h-screen bg-slate-100 p-4 md:p-8">
       <ImageAndName updateCandidate={setCandidate} candidate={candidate} />
       <Tabs activeTab={activeTab} handleTabChange={setActiveTab} />
-      <OverView contactLinkes={contactLinks} candidate={candidate} />
+      <OverView
+        isLoading={isLoading}
+        contactLinkes={contactLinks}
+        candidate={candidate}
+      />
     </div>
   );
 }

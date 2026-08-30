@@ -4,10 +4,20 @@ type Props = {
   label: string;
   value: number;
   color: string;
-  isLoading: boolean;key:number
+  isLoading: boolean;
+  key: number;
 };
 
-export const StatCard = ({ isLoading, label, value, color,key }: Props) => {
+export const StatCard = ({ isLoading, label, value, color, key }: Props) => {
+  console.log(
+    'from stauscard,isLoading, label, value, color,key',
+    isLoading,
+    label,
+    value,
+    color,
+    key
+  );
+
   if (isLoading)
     return (
       <div
@@ -20,8 +30,10 @@ export const StatCard = ({ isLoading, label, value, color,key }: Props) => {
       </div>
     );
   else
-    <div className={`rounded-xl p-4 flex flex-col gap-1 border ${color}`}>
-      <span className="text-2xl font-bold">{value}</span>
-      <span className="text-xs font-medium opacity-70">{label}</span>
-    </div>;
+    return (
+      <div className={`rounded-xl p-4 flex flex-col gap-1 border ${color}`}>
+        <span className="text-2xl font-bold">{value}</span>
+        <span className="text-xs font-medium opacity-70">{label}</span>
+      </div>
+    );
 };

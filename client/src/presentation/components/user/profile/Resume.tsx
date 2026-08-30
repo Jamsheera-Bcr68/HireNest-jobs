@@ -7,6 +7,7 @@ import { Upload } from 'lucide-react';
 import { Trash, X, LucideLoader } from 'lucide-react';
 import { FormatDate } from '../../../../utils/date-conversion';
 import DeleteConfirmationModal from '../../../modals/DeleteConfirmationModal';
+import DuplicateResumeModal from './RenameModal';
 
 type ResumeProps = {
   onUserUpdate: React.Dispatch<
@@ -18,18 +19,30 @@ type ResumeProps = {
 function Resume({ onUserUpdate, resumes }: ResumeProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [nameErr,setNameErr]=useState<string>('')
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [renameModal, setRenameModal] = useState<boolean>(false);
   const { showToast } = useToast();
 
   const handleUpload = async () => {
     if (isUploading) return;
-    console.log(file);
+    console.log('file', file);
+    console.log('resumes', resumes);
 
     if (!file) {
       showToast({ msg: 'Please select a file', type: 'error' });
+      setRenameModal(true);
       return;
+    }
+    const resumeExist = resumes.find((re) => re.name === file.name);
+    if (resumeExist) {
+      {
+        console.log('resume with same name alreay exist');
+        setRenameModal(true);
+        return;
+      }
     }
     try {
       setIsUploading(true);
@@ -78,6 +91,21 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
       setDeleteId(null);
       setIsOpen(false);
     }
+  };
+
+  const onRenameFile = (name: string) => {
+    console.log('new nae from rename ', name);
+    
+
+    setFile((prev) => {
+      if (!prev) return null;
+
+      return new File([prev], name, {
+        type: prev.type,
+        lastModified: prev.lastModified,
+      });
+    });
+    setRenameModal(false);
   };
 
   return (
@@ -204,6 +232,18 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
           }}
         />
       </div>
+      <DuplicateResumeModal
+        onRename={onRenameFile}
+        error={nameErr}
+        onCancel={() => {
+          setIsUploading(false);
+          setFile(null);
+          setRenameModal(false);
+        }}
+        fileName={file?.name ?? ''}
+        isOpen={renameModal}
+        setError={(err:string)=>setNameErr(err) }
+      />
     </div>
   );
 }

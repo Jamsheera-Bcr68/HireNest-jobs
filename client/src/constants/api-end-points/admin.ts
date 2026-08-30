@@ -10,5 +10,6 @@ export const ADMIN_API_ENDPOINTS = {
   JOBS: '/admin/jobs',
   UPDATE_JOBSTATUS: (jobId: string) => `/admin/jobs/${jobId}`,
   JOB_DETAILS: (jobId: string) => `/admin/jobs/${jobId}`,
+  PENDINGS_STATUS: `/admin/pendings/status`,
   PENDINGS: `/admin/pendings`,
 };

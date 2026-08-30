@@ -27,6 +27,7 @@ export class RemoveResumUseCase implements IRemoveResumeUseCase {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
+
     const res = user.resumes.find((resume) => resume.id === resumeId);
     if (!res)
       throw new AppError(
@@ -34,10 +35,30 @@ export class RemoveResumUseCase implements IRemoveResumeUseCase {
         statusCodes.CONFLICT
       );
 
-    await this.fileStorageService.removeFile(res.url);
-    const updated = await this.userRepository.removeResume(userId, resumeId);
-    if (!updated)
-      throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return updated;
+    try {
+      await this.fileStorageService.removeFile(res.url);
+      const updated = await this.userRepository.removeResume(userId, resumeId);
+      if (!updated)
+        throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
+      return updated;
+    } catch (err: any) {
+      if (
+        err instanceof AppError &&
+        err.message === userMessages.error.RESUME_ALREADY_DELETED
+      ) {
+        const updated = await this.userRepository.removeResume(
+          userId,
+          resumeId
+        );
+        if (!updated)
+          throw new AppError(
+            userMessages.error.NOT_FOUND,
+            statusCodes.NOTFOUND
+          );
+        return updated;
+      } else {
+        throw err;
+      }
+    }
   }
 }

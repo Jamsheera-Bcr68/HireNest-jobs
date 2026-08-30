@@ -1,6 +1,6 @@
 import BasicDataPart from './BasicdataPart';
 import { useProfile } from '../../../hooks/user/candidate/profile/useProfile';
-import { useToast } from '../../../../shared/toast/use-toast';
+
 import { useNavigate } from 'react-router-dom';
 import Resume from './Resume';
 
@@ -36,7 +36,11 @@ const ProfilePart = () => {
               </div>
 
               <button
-                onClick={() => navigate(`/company/register?companyId=${user.company?.id}&reapply=true`)}
+                onClick={() =>
+                  navigate(
+                    `/company/register?companyId=${user.company?.id}&reapply=true`
+                  )
+                }
                 className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition"
               >
                 Reapply
@@ -64,10 +68,21 @@ const ProfilePart = () => {
             educations={user?.education || []}
           />
           {/* Resume Upload */}
-          <Resume resumes={user.resumes || []} onUserUpdate={setUser} />
+          <Resume
+            resumes={
+              user.resumes.length
+                ? user.resumes.sort(
+                    (r1, r2) =>
+                      new Date(r2.uploadedAt).getTime() -
+                      new Date(r1.uploadedAt).getTime()
+                  )
+                : []
+            }
+            onUserUpdate={setUser}
+          />
         </div>
       </div>
     </div>
   );
-}
+};
 export default ProfilePart;

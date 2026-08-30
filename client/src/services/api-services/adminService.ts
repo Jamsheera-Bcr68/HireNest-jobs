@@ -6,6 +6,7 @@ import type { CandidateFilter } from '../../presentation/pages/admin/Candidates'
 import type { UserProfileType } from '../../types/dtos/user.types';
 import { type JobFilterType } from '../../presentation/components/candidate/jobListing/ListingContainter';
 import { type StatusType } from '../../types/dtos/profile-types/user.types';
+import type { Filter } from '../../presentation/components/admin/pending/Container';
 
 export const adminService = {
   async getAllCompanies(filter: CompanyFilter, page: number, limit: number) {
@@ -132,7 +133,13 @@ export const adminService = {
 
   async getPendingData(){
     console.log('from admin pending data');
-    const res= await axiosInstance.get(ADMIN_API_ENDPOINTS.PENDINGS);
+    const res= await axiosInstance.get(ADMIN_API_ENDPOINTS.PENDINGS_STATUS);
+    return res.data;
+  },
+  async getAllPendings(filter:Filter){
+    const {status}=filter
+    console.log('from admin pending data');
+    const res= await axiosInstance.get(ADMIN_API_ENDPOINTS.PENDINGS,{params:{item:status}});
     return res.data;
   }
 };

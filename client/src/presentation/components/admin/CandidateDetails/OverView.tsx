@@ -1,19 +1,20 @@
 import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 import { Section } from './Section';
 import RightSideBar, { type ContactDataType } from './RightSideBar';
+import { Briefcase, Building, Building2, Lightbulb, User } from 'lucide-react';
 
 type Props = {
   candidate: UserProfileType;
   contactLinkes: ContactDataType[];
+  isLoading: boolean;
 };
-function OverView({ candidate, contactLinkes }: Props) {
- // console.log('from overvire', contactLinkes);
 
+function OverView({ candidate, contactLinkes, isLoading }: Props) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 mt-4 space-y-6">
         {/* About */}
-        <Section title="About" icon="👤">
+        <Section title="About" icon={User}>
           {candidate.about ? (
             <p className="text-slate-600 leading-relaxed text-sm break-words">
               {candidate.about}
@@ -28,7 +29,7 @@ function OverView({ candidate, contactLinkes }: Props) {
         </Section>
 
         {/* Skills */}
-        <Section title="Skills" icon="⚡">
+        <Section title="Skills" icon={Lightbulb}>
           {candidate.skills.length > 0 ? (
             <div className="flex flex-wrap gap-2">
               {candidate.skills.map((skill) => (
@@ -48,7 +49,7 @@ function OverView({ candidate, contactLinkes }: Props) {
         </Section>
 
         {/* Experience */}
-        <Section title="Work Experience" icon="💼">
+        <Section title="Work Experience" icon={Briefcase}>
           {candidate.experience.length > 0 ? (
             candidate.experience.map((exp, i) => (
               <div
@@ -60,7 +61,7 @@ function OverView({ candidate, contactLinkes }: Props) {
                 }`}
               >
                 <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-lg flex-shrink-0">
-                  🏢
+                  <Building2 />
                 </div>
 
                 <div className="flex-1 min-w-0">
@@ -111,7 +112,7 @@ function OverView({ candidate, contactLinkes }: Props) {
         </Section>
 
         {/* Education */}
-        <Section title="Education" icon="🎓">
+        <Section title="Education" icon={Briefcase}>
           {candidate.education.length > 0 ? (
             <div className="space-y-4">
               {candidate.education.map((edu, i) => (
@@ -120,7 +121,7 @@ function OverView({ candidate, contactLinkes }: Props) {
                   className={`flex gap-4 ${i < candidate.education.length - 1 ? 'pb-4 border-b border-slate-100' : ''}`}
                 >
                   <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-lg flex-shrink-0">
-                    🏛️
+                    <Building />
                   </div>
                   <div className="flex-1">
                     <div className="flex flex-wrap items-start justify-between gap-2">
@@ -156,7 +157,12 @@ function OverView({ candidate, contactLinkes }: Props) {
       </div>
 
       {/* Right sidebar */}
-      <RightSideBar resumes={candidate.resumes} contactLinkes={contactLinkes} />
+      <RightSideBar
+        isLoading={isLoading}
+        candidate={candidate}
+        resumes={candidate.resumes}
+        contactLinkes={contactLinkes}
+      />
     </div>
   );
 }

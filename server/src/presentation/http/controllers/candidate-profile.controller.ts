@@ -500,7 +500,7 @@ export class CandidateProfileController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    if (resumeId)
+    if (!resumeId)
       throw new AppError(
         userMessages.error.RESUMEID_NOT_FOUND,
         statusCodes.BADREQUEST

@@ -312,7 +312,9 @@ function InterviewsContatainer() {
                 entities={interviews}
                 filterOptions={filterOptions}
                 sortOption={sortFilter}
+                item='Interviews'
                 setSortBy={setSortBy}
+                onResetfilter={()=>updateFilter({})}
               />
               <Pagination
                 onPageChange={setPage}

@@ -10,6 +10,8 @@ import {
 } from '../../applications/dtos/job.dto';
 import { IndustryType } from '../types/company-profile.types';
 import { StatusEnum } from '../enums/status.enum';
+import { ReportedJobFilter } from '../../applications/types/pending.type';
+import { MappedAggregatedReportedJob } from '../../infrastructure/repositories/job.repository';
 export interface IJobRepository extends IBaseRepository<Job> {
   count(data: Partial<Job>, filter?: string): Promise<number>;
   industryBasedJobs(): Promise<JobCountByIndustryDto[]>;
@@ -36,6 +38,13 @@ export interface IJobRepository extends IBaseRepository<Job> {
   countBetweenTheDates(data: JobCountFilter): Promise<number>;
   getMonthlyJobCount(): Promise<chartDataDto[]>;
   postCountByIndustry(): Promise<{ _id: IndustryType; count: number }[]>;
-  savedJobCount(jobs: string[],filter:Partial<Job>): Promise<number>;
-  closingcount(filter?:{companyId:string,status:StatusEnum,endDate:Date}): Promise<number>;
+  savedJobCount(jobs: string[], filter: Partial<Job>): Promise<number>;
+  closingcount(filter?: {
+    companyId: string;
+    status: StatusEnum;
+    endDate: Date;
+  }): Promise<number>;
+  getReportedJobs(
+    filter?: ReportedJobFilter
+  ): Promise<MappedAggregatedReportedJob[]>;
 }

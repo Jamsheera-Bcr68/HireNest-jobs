@@ -27,7 +27,7 @@ type Props<T extends { id: string }> = {
   totalDocs: number;
   sortOption?: SortOption;
   setSortBy?: (option: string) => void;
- onResetfilter:()=>void
+  onResetfilter: () => void;
 };
 
 function ReusableTable<T extends { id: string }>({
@@ -39,7 +39,8 @@ function ReusableTable<T extends { id: string }>({
   filterOptions,
   totalDocs,
   sortOption,
-  setSortBy,onResetfilter
+  setSortBy,
+  onResetfilter,
 }: Props<T>) {
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState('All');

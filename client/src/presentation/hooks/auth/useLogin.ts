@@ -31,7 +31,7 @@ export const useLogin = (role: UserRole) => {
       try {
         let resData = await authService.googleSignIn(token, role);
         const data = resData.data;
-      //  console.log('data', data);
+        //  console.log('data', data);
 
         if (role == 'admin') {
           localStorage.setItem('user', data.admin);
@@ -52,7 +52,7 @@ export const useLogin = (role: UserRole) => {
       } catch (error: any) {}
     },
     onError: () => {
-    //  console.log('google login failed');
+      //  console.log('google login failed');
     },
   });
 
@@ -65,6 +65,7 @@ export const useLogin = (role: UserRole) => {
 
   const submitHandle = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log('logn submit handle');
 
     const result = loginSchema.safeParse(formData);
 
@@ -78,22 +79,23 @@ export const useLogin = (role: UserRole) => {
       return;
     }
     setErrors({});
-  //  console.log('frontend validation success');
+    //  console.log('frontend validation success');
 
     try {
       const data = await authService.googleSingnupSubmit(formData, role);
 
-
       setErrors({});
-      const { access_Token, user, admin } = data.data;
-console.log('login user',user);
-      localStorage.setItem('accessToken', access_Token);
+      const { accessToken, user, admin } = data.data;
+      console.log('login admin,accecc token', accessToken);
+      console.log('admin',admin);
+      
+      localStorage.setItem('accessToken', accessToken);
       if (user) {
         localStorage.setItem('user', user);
-        dispatch(loginSuccess({ user, accessToken: access_Token }));
+        dispatch(loginSuccess({ user, accessToken: accessToken }));
       } else if (admin) {
         localStorage.setItem('user', admin);
-        dispatch(loginSuccess({ user: admin, accessToken: access_Token }));
+        dispatch(loginSuccess({ user: admin, accessToken: accessToken }));
       }
 
       const redirectPath =

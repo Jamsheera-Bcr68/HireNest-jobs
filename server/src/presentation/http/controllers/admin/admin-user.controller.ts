@@ -43,14 +43,13 @@ export class AdminUserController {
     if (!status || status == 'all') delete query.status;
     if (!industry || industry == 'all') delete query.industry;
 
-
     if (!user || user.role !== UserRole.ADMIN) {
       throw new AppError(
         adminMessages.error.ADMIN_NOT_FOUND,
         statusCodes.UNAUTHERIZED
       );
     }
-    let { page, limit, search = '',sortBy='', ...rest } = query;
+    let { page, limit, search = '', sortBy = '', ...rest } = query;
     // console.log('page,rest,limit,search', page, rest, limit, search);
     const pagenumber = Number(page);
 
@@ -58,7 +57,8 @@ export class AdminUserController {
       rest,
       pagenumber,
       String(search),
-      Number(limit),sortBy as string
+      Number(limit),
+      sortBy as string
     );
     const { totalDocs, companies } = paginated;
     const totalPages = Math.ceil(totalDocs / Number(limit));
@@ -73,7 +73,7 @@ export class AdminUserController {
   });
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
-    const { companyId ,sortBy} = req.params;
+    const { companyId, sortBy } = req.params;
     const user = req.user;
     //  console.log('user,company id', user, id);
 
@@ -102,7 +102,7 @@ export class AdminUserController {
     const { companyId } = req.params;
 
     const { reason, ...data } = req.body;
-   // console.log('reason,data', reason, data);
+    // console.log('reason,data', reason, data);
 
     if (!user || user.role !== UserRole.ADMIN) {
       throw new AppError(
@@ -174,7 +174,7 @@ export class AdminUserController {
 
   getCandidates = asyncHandler(async (req: Request, res: Response) => {
     const filter = req.query;
-  //  console.log('filter', filter);
+    //  console.log('filter', filter);
 
     const user = req.user;
 
@@ -193,7 +193,9 @@ export class AdminUserController {
       success: true,
       message: adminMessages.success.CANDIDATES_FETCHED,
       totalDocs,
-      candidates: entities.map((entity) => UserMapper.toUserProfileDto(entity,null)),
+      candidates: entities.map((entity) =>
+        UserMapper.toUserProfileDto(entity, null)
+      ),
     });
   });
 
@@ -211,7 +213,10 @@ export class AdminUserController {
       );
     }
 
-    const updated = await this.adminUpdateCandidateUseCase.execute(candidateId, data);
+    const updated = await this.adminUpdateCandidateUseCase.execute(
+      candidateId,
+      data
+    );
 
     const message = data.isBlocked
       ? adminMessages.success.CANDIDATE_BLOCKED
@@ -220,14 +225,14 @@ export class AdminUserController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: message,
-      candidate: UserMapper.toUserProfileDto(updated,null),
+      candidate: UserMapper.toUserProfileDto(updated, null),
     });
   });
 
   getCandidate = asyncHandler(async (req: Request, res: Response) => {
     const { candidateId } = req.params;
     const user = req.user;
-  //  console.log('user,company id', user, candidateId);
+    //  console.log('user,company id', user, candidateId);
 
     if (!candidateId)
       throw new AppError(
@@ -241,17 +246,19 @@ export class AdminUserController {
       );
     }
     const candidate = await this.adminGetEntityUseCase.execute(candidateId);
+    console.log('admin candidate',candidate);
+    
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.COMPANY_FETCHED,
-      candidate: UserMapper.toUserProfileDto(candidate,null),
+      candidate,
     });
   });
 
   checkFileExist = asyncHandler(async (req: Request, res: Response) => {
     const { url } = req.query;
 
-   // console.log('url', url);
+    // console.log('url', url);
     const user = req.user;
 
     if (!user || user.role !== UserRole.ADMIN) {

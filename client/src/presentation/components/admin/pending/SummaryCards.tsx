@@ -9,8 +9,8 @@ type SummaryCardsProps = {
 function SummaryCards({ loading, counts }: SummaryCardsProps) {
   if (loading) {
     return (
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 4 }).map((_, i) => (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, i) => (
           <SummaryCardSkeleton key={i} />
         ))}
       </div>
@@ -18,10 +18,11 @@ function SummaryCards({ loading, counts }: SummaryCardsProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {counts.map((count, i) => {
         return (
           <SummaryCard
+            key={i}
             icon={count.icon}
             tint={count.tint}
             count={count.value}
@@ -30,21 +31,6 @@ function SummaryCards({ loading, counts }: SummaryCardsProps) {
           />
         );
       })}
-
-      {/* <SummaryCard
-        icon={Flag}
-        tint="bg-red-50 text-red-600"
-        count={counts.reportedJobs}
-        label="Reported Jobs"
-        sub="Awaiting moderation"
-      /> */}
-      {/* <SummaryCard
-        icon={Building2}
-        tint="bg-blue-50 text-blue-600"
-        count={counts.companies}
-        label="Company Registrations"
-        sub="Awaiting approval"
-      /> */}
     </div>
   );
 }

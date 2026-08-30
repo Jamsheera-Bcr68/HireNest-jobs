@@ -7,7 +7,10 @@ import {
   adminUserController,
   adminJobcontroller,
 } from '../../../infrastructure/config/di';
-import { adminDashboarController } from '../../../infrastructure/config/di';
+import {
+  adminDashboarController,
+  activityController,
+} from '../../../infrastructure/config/di';
 const router = express.Router();
 
 router.get(
@@ -117,6 +120,15 @@ router.get(
   authValidator(tokenService),
   adminDashboarController.getReportedJobs
 );
-
+router.get(
+  API_END_POINTS.PENDINGS_STATUS,
+  authValidator(tokenService),
+  activityController.getPendingStatusData
+);
+router.get(
+  API_END_POINTS.PENDINGS,
+  authValidator(tokenService),
+  activityController.getAllPendings
+);
 
 export default router;

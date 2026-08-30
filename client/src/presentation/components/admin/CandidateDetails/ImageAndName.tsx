@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { type UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 import { adminService } from '../../../../services/api-services/adminService';
 import { useToast } from '../../../../shared/toast/use-toast';
+import { Phone,Mail,MapPin } from 'lucide-react';
 type Props = {
   candidate: UserProfileType;
   updateCandidate: (candidate: UserProfileType) => void;
@@ -133,11 +134,10 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
       </div>
       <div className="flex flex-wrap gap-4 text-sm text-slate-500 mt-2 ml-4">
         {[
-          { icon: '✉️', value: candidate.email },
-          { icon: '📞', value: candidate.phone },
-          { icon: '📍', value: candidate.address?.state },
-          { icon: '🔗', value: candidate.socialLinks?.linkedIn },
-          { icon: '🌐', value: candidate.socialLinks?.portfolio },
+          { icon: <Mail className='text-blue-600' size={20}/>, value: candidate.email },
+          { icon: <Phone className='text-green-600' size={20}/>, value: candidate.phone },
+          { icon: <MapPin className='text-blue-600' size={20}/>, value: candidate.address?.state },
+          
         ].map((item, i) => (
           <span key={i} className="flex items-center gap-1.5">
             <span>{item.icon}</span>

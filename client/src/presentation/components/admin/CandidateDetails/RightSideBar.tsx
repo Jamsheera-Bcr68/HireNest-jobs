@@ -2,9 +2,16 @@ import { Section } from './Section';
 import { StatCard } from '../../common/StateCards';
 import type { ResumeType } from '../../../../types/dtos/profile-types/resume.type';
 import type { ReactNode } from 'react';
-import { Eye, NotepadText } from 'lucide-react';
+import {
+  Eye,
+  NotepadText,
+  LayoutDashboard,
+  FileUser,
+  Contact2,
+} from 'lucide-react';
 import { adminService } from '../../../../services/api-services/adminService';
 import { useToast } from '../../../../shared/toast/use-toast';
+import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 
 export type ContactDataType = {
   label: string;
@@ -15,18 +22,20 @@ export type ContactDataType = {
 function RightSideBar({
   contactLinkes,
   resumes,
+  isLoading,
+  candidate,
 }: {
   contactLinkes: ContactDataType[];
   resumes: ResumeType[];
+  isLoading: boolean;
+  candidate: UserProfileType;
 }) {
- // console.log('from side bar', contactLinkes);
   const { showToast } = useToast();
   const checkResumeExist = async (url: string) => {
     try {
-     // console.log('resume url', url);
-
+      
       const data = await adminService.checkExist(url);
-     // console.log(data);
+
       if (data.isExist) {
         window.open(`${baseUrl}${url}`, '_blank');
       } else {
@@ -44,37 +53,43 @@ function RightSideBar({
     }
   };
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
- // console.log('backend', baseUrl);
- // console.log(resumes);
 
   return (
     <div className="space-y-6 mt-4">
       {/* Stats */}
-      <Section title="Summary" icon="📊">
+      <Section title="Summary" icon={LayoutDashboard}>
         <div className="grid  grid-cols-2 gap-3">
           <StatCard
-            label="Total Applications"
+            isLoading={isLoading}
+            key={candidate.applicationCount ?? 0}
             //candidate?.stats.totalApplications
-            value={0}
+            value={candidate.applicationCount ?? 0}
+            label="Total Applications"
             color="border-indigo-100 bg-indigo-50 text-indigo-700"
           />
           <StatCard
+            isLoading={isLoading}
+            key={candidate.applicationCount ?? 0}
             label="Interviews Attended"
             //candidate.stats.totalInterviews
-            value={0}
+            value={candidate.interviewsCount ?? 0}
             color="border-violet-100 bg-violet-50 text-violet-700"
           />
           <StatCard
+            isLoading={isLoading}
+            key={candidate.shortListedCount ?? 0}
             label="Shortlisted"
             //candidate.stats.shortlisted
-            value={0}
+            value={candidate.shortListedCount ?? 0}
             color="border-emerald-100 bg-emerald-50 text-emerald-700"
           />
 
           <StatCard
+            isLoading={isLoading}
+            key={candidate.offeredCount ?? 0}
             label="Pending"
             //   value={candidate.stats.pending}
-            value={0}
+            value={candidate.offeredCount ?? 0}
             color="border-amber-100 bg-amber-50 text-amber-700"
           />
         </div>
@@ -82,7 +97,7 @@ function RightSideBar({
 
       {/* Resumes */}
 
-      <Section title="Resumes " icon="📄">
+      <Section title="Resumes " icon={FileUser}>
         {resumes.length > 0 ? (
           <div className="space-y-2">
             {resumes.map((resume, ind) => (
@@ -113,7 +128,7 @@ function RightSideBar({
       </Section>
 
       {/* Contact Info */}
-      <Section title="Contact Details" icon="📬">
+      <Section title="Contact Details" icon={Contact2}>
         {contactLinkes.length > 0 ? (
           <div className="space-y-3 text-sm">
             {contactLinkes.map((item) => (

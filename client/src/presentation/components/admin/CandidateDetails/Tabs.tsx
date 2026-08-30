@@ -1,4 +1,4 @@
-const tabs = ['Overview', 'Applications', 'Interviews'];
+const tabs = ['Overview'];
 type Props = {
   handleTabChange: (tab: string) => void;
   activeTab: string;
