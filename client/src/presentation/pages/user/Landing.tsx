@@ -7,14 +7,11 @@ import {
   Working,
   Properties,
   HighLights,
-  FinalCTA,
+ 
 } from '../../components/candidate/landing/Sections';
 import HeroHome from '../../components/candidate/landing/Hero';
-import Status from '../../components/candidate/landing/Status';
-import Industries from '../../components/candidate/landing/Industries';
-import FeaturedJobs from '../../components/candidate/landing/FeaturedJobs';
-//import ForEmployers from '../../components/candidate/home/ForEmployers';
-//import Working from '../../components/candidate/home/Working';
+
+
 import Footer from '../../components/common/Footer';
 import { candidateService } from '../../../services/api-services/candidateService';
 import { useToast } from '../../../shared/toast/use-toast';
@@ -45,7 +42,7 @@ const Landing = () => {
       try {
         const data = await candidateService.getHomeData();
         setHomeData(data.data);
-        //console.log('after gettinhg home data', data);
+     
       } catch (error: any) {
         showToast({
           msg: error?.response?.data.message || error.message,

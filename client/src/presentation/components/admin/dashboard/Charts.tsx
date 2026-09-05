@@ -119,7 +119,7 @@ type UserDataProps = {
 };
 export function UserDistributionChart({ userData }: UserDataProps) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6  duration-300 hover:-translate-y-1 hover:border-slate-300     hover:shadow-lg">
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg">
       <h3 className="font-display text-lg text-slate-900">User distribution</h3>
       <p className="text-sm text-slate-400 mb-2">Companies vs. candidates</p>
       <div className="h-56">

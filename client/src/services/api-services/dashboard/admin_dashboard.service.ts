@@ -50,9 +50,9 @@ export const adminDashboardService = {
     );
     return res.data;
   },
-  async getReportedJobs() {
+  async getDashboardPendings() {
     const res = await axiosInstance.get(
-      API_ENDPOINTS.ADMIN_DASHBOARD.REPORTED_JOBS
+      API_ENDPOINTS.ADMIN_DASHBOARD.ACTION_PENDING
     );
     return res.data;
   },

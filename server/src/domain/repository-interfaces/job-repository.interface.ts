@@ -23,6 +23,7 @@ export interface IJobRepository extends IBaseRepository<Job> {
     search?: { job: string; location: string },
     sortBy?: string
   ): Promise<JobListDto>;
+
   getSavedJobs(
     savedJobIds: string[],
     filter: JobFilter,

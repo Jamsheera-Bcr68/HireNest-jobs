@@ -15,7 +15,7 @@ export interface IGetPendingUsecase {
     userId: string,
     role: string,
     item: 'jobs' | 'companies' | '',
-    limit: number
+    limit: number,search?:string
   ): Promise<{ totalDocs: number; activities: PendingActivityDto[] }>;
 }
 export class GetPendingUsecase implements IGetPendingUsecase {
@@ -29,8 +29,9 @@ export class GetPendingUsecase implements IGetPendingUsecase {
     userId: string,
     role: UserRole,
     item: 'jobs' | 'companies' | '',
-    limit: number
+    limit: number,search?:string
   ): Promise<{ totalDocs: number; activities: PendingActivityDto[] }> {
+
     if (role !== UserRole.ADMIN)
       throw new AppError(
         generalMessages.errors.FORBIDDEN,
@@ -48,9 +49,12 @@ export class GetPendingUsecase implements IGetPendingUsecase {
       totalJobs: number;
     }> => {
       const query: ReportedJobFilter = {};
+      if(search)query.search=search
       query.isReported = true;
       query.limit = limit;
       const jobs = await this._jobRepository.getReportedJobs(query);
+      console.log('searched jobs',jobs);
+      
       const totalJobs = await this._jobRepository.count({ isReported: true });
       const mappedJobs = jobs.map((j) =>
         PendingActivityMapper.mapToReportedJob(j)
@@ -64,7 +68,7 @@ export class GetPendingUsecase implements IGetPendingUsecase {
     }> => {
       const companies = await this._companyRepository.getCompanies(
         {
-          status: StatusEnum.PENDING,
+          status: StatusEnum.PENDING,search
         },
         limit
       );

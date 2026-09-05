@@ -55,6 +55,7 @@ export const API_END_POINTS = {
     INTERVIEW_DATA: '/dashboard/interview-data',
     PENDING_COMPANIES: '/dashboard/pending-companies',
     REPORTED_JOBS: '/dashboard/reported-jobs',
+    ACTION_PENDING:'/dashboard/action-pending'
   },
   CANDIDATE_DASHBOARD: {
     APP_DATA: '/dashboard/application-details',

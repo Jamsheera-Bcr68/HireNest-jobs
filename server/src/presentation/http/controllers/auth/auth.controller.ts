@@ -82,13 +82,15 @@ export class AuthController {
       appliedJobs,
     } = await this._loginUseCase.execute(payload);
     const userDto = UserMapper.toDto(user,name);
+    console.log('refresh token from auth controller',refreshToken);
+    
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: '/auth/refresh-token',
+      path: '/api/auth/refresh-token',
     });
 
     console.log('login success full access,',accessToken);

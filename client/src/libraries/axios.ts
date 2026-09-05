@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { store } from '../redux/store';
-import { logout, setAccessToken} from '../redux/slices/auth.slice'
+import { logout, setAccessToken } from '../redux/slices/auth.slice';
 import { parseApiError } from '../utils/error-parsor';
 
 import { showGlobalToast } from '../utils/toast.service';
@@ -8,17 +8,17 @@ import { showGlobalToast } from '../utils/toast.service';
 //console.log('VITE_BACKEND_URL', import.meta.env.VITE_BACKEND_URL);
 
 const axiosInstance = axios.create({
-  baseURL: "/api",
+  baseURL: '/api',
   withCredentials: true,
   // headers: {
   //   'Content-Type': ' application/json',
   // },
 });
 const refreshAxios = axios.create({
-  baseURL: "/api",
+  baseURL: '/api',
   withCredentials: true,
   headers: {
-    'Content-Type': ' application/json',
+    'Content-Type': 'application/json',
   },
 });
 //if token is available attach
@@ -116,15 +116,18 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-       // const res = await refreshAxios.post('/auth/refresh-token', {});
+        // const res = await refreshAxios.post('/auth/refresh-token', {});
+        console.log('this is the time to send refresh request');
 
-        const newAccessToken =await handleRefreshTokenApi()
+        const newAccessToken = await handleRefreshTokenApi();
 
         if (!newAccessToken) {
           throw new Error('accessToken not in refresh response');
         }
 
-        store.dispatch(setAccessToken({ accessToken: newAccessToken.toString() }));
+        store.dispatch(
+          setAccessToken({ accessToken: newAccessToken.toString() })
+        );
 
         originalRequest.headers = {
           ...originalRequest.headers,

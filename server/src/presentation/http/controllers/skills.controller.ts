@@ -214,7 +214,7 @@ export class SkillsController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    if (skillId)
+    if (!skillId)
       throw new AppError(
         skillMessages.error.SKILL_ID_NOTfOUND,
         statusCodes.NOTFOUND

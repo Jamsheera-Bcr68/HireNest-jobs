@@ -37,9 +37,13 @@ const ProfilePart = () => {
 
               <button
                 onClick={() =>
+                {
+                  console.log('from rejected company',user.company);
+                  
                   navigate(
                     `/company/register?companyId=${user.company?.id}&reapply=true`
                   )
+                }
                 }
                 className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition"
               >

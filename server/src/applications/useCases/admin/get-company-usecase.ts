@@ -12,6 +12,8 @@ export class AdminGetCompanyUseCase implements IAdminGetCompanyUseCase {
   constructor(private companyRepository: ICompanyRepository) {}
   async execute(id: string): Promise<Company> {
     const company = await this.companyRepository.findById(id);
+    console.log('comapny',company);
+    
     if (!company)
       throw new AppError(
         adminMessages.error.COMPANY_NOTFOUND,

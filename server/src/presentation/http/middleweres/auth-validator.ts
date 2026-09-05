@@ -38,6 +38,7 @@ export function authValidator(tokenService: ITokenService) {
       next();
     } catch (error) {
       if (error instanceof TokenExpiredError) {
+        
         return next(
           new AppError(
             authMessages.error.ACCESSTOKEN_EXPIRED,

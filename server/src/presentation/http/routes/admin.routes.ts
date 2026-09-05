@@ -116,9 +116,9 @@ router.get(
   adminDashboarController.getPendingCompanies
 );
 router.get(
-  API_END_POINTS.ADMIN_DASHBOARD.REPORTED_JOBS,
+  API_END_POINTS.ADMIN_DASHBOARD.ACTION_PENDING,
   authValidator(tokenService),
-  adminDashboarController.getReportedJobs
+  adminDashboarController.getDashboardPendingData
 );
 router.get(
   API_END_POINTS.PENDINGS_STATUS,

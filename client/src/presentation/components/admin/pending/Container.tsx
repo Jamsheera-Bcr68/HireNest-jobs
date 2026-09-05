@@ -1,6 +1,8 @@
 import SummaryCards from './SummaryCards';
 import HeroSection from '../HeroSection';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ActivityModal } from './ActivityModal';
 import {
   type LucideIcon,
   Building2,
@@ -25,11 +27,12 @@ const tabs = [
   { label: 'Jobs', value: 'jobs' },
   { label: 'Companies', value: 'companies' },
 ];
- export type Filter = {
-  status?: 'jobs' | 'companies'|'';
+export type Filter = {
+  status?: 'jobs' | 'companies' | '';
+  search?:string
 };
 
-interface PendingActivityDto {
+export interface PendingActivityDto {
   id: string;
   title: string;
   subTitle: string;
@@ -46,7 +49,10 @@ export default function PendingActivitiesContainer() {
   const [filter, setFilter] = useState<Filter>({});
   const [activities, setActivities] = useState<PendingActivityDto[]>([]);
   const [statusCards, setStatusCards] = useState<CardType[]>([]);
-  const [activeTab, setActiveTab] = useState('companies');
+  const [selected, setSelected] = useState<PendingActivityDto | null>(null);
+  const [activityModal, setActivityModalOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
+
   const [totalDocs, setTotalDocs] = useState<number>(0);
   //   const [search, setSearch] = useState("");
   //   const [severity, setSeverity] = useState("all");
@@ -136,13 +142,15 @@ export default function PendingActivitiesContainer() {
   }, [filter]);
 
   const updateFilter = (data: Partial<Filter>) => {
-    console.log('from update filter',data);
-    
+    console.log('from update filter', data);
+
     setFilter({ ...filter, ...data });
   };
+
   const onResetfilter = () => {
     setFilter({});
   };
+
   const pendingActivityColumns = [
     {
       key: 'type',
@@ -287,7 +295,9 @@ export default function PendingActivitiesContainer() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => console.log('Review', row.id)}
+            onClick={() => {
+              onviewClick(row);
+            }}
             className="
             inline-flex
             items-center
@@ -304,7 +314,7 @@ export default function PendingActivitiesContainer() {
           "
           >
             <Eye className="h-4 w-4" />
-            Review
+            View
           </button>
 
           <button
@@ -318,13 +328,23 @@ export default function PendingActivitiesContainer() {
             hover:text-slate-600
           "
           >
-            <MoreHorizontal className="h-5 w-5" />
+           
           </button>
         </div>
       ),
     },
   ];
- return (
+
+  const onviewClick = (act: PendingActivityDto) => {
+    if (act.type === 'Company Registration')
+      navigate(`/admin/companies/${act.id}`);
+    else if (act.type === 'Reported Job') navigate(`/admin/jobs/${act.id}`,{state:{tab:'reports'}});
+    return;
+    // console.log('from onveiwclick');
+    // setSelected(act);
+    // setActivityModalOpen(true);
+  };
+  return (
     <>
       <div className="mt-6">
         <HeroSection
@@ -356,6 +376,14 @@ export default function PendingActivitiesContainer() {
           sort={sort}
           onSort={setSort}
         /> */}
+        <ActivityModal
+          open={activityModal}
+          onClose={() => {
+            setSelected(null);
+            setActivityModalOpen(false);
+          }}
+          activity={selected}
+        />
       </div>
 
       {/* <div className="mt-6">

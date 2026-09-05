@@ -371,6 +371,8 @@ function SkillsContainer() {
             updateFilter={handleFilterChange}
             entities={skills}
             filterOptions={[]}
+            item='Skills'
+            onResetfilter={()=>handleFilterChange({})}
             totalDocs={totalDocs}
             sortOption={sortOption}
             setSortBy={setSortBy}

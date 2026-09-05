@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 type ModalProps = {
   open: boolean;
   onClose: () => void;
+  title:string
 };
-function SuccessModal({ open, onClose }: ModalProps) {
+function SuccessModal({ open, onClose ,title}: ModalProps) {
   const navigate = useNavigate();
   return (
     <div>
@@ -40,7 +41,7 @@ function SuccessModal({ open, onClose }: ModalProps) {
 
             {/* Title */}
             <Dialog.Title className="text-2xl font-bold text-gray-900 text-center">
-              Company Created!
+              {title}!
             </Dialog.Title>
 
             {/* Message */}

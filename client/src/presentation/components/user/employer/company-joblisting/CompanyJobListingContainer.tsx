@@ -372,6 +372,28 @@ function CompanyJobListingContainer() {
               tagline=" Manage all Posts of your Company"
             />
             <StatusCards stats={stats} />
+            <div className="flex justify-end p-4">
+          {' '}
+          <button
+            onClick={() => navigate('/company/jobs/create')}
+            className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition shadow-sm"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add Post
+          </button>
+        </div>
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable

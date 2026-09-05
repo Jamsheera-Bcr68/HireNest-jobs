@@ -21,24 +21,24 @@ import { ICompanyAboutUpdateUseCase } from '../../../applications/useCases/compa
 
 export class CompanyProfileController {
   constructor(
-    private companyRegisterUseCase: ICompanyRegisterUseCase,
-    private addFileUseCase: IAddLogoUseCase,
-    private addDocumentUseCasez: IAddLogoUseCase,
-    private getCompanyUseCase: IGetCompanyUseCase,
-    private changeLogoUseCase: IChangeLogogUseCase,
-    private removeLogoUseCase: ILogoRemoveUseCase,
-    private compantProfieUpdateUseCase: ICompanyUpdateProfileUseCase,
-    private companyAboutUpdateUseCase: ICompanyAboutUpdateUseCase
+    private _companyRegisterUseCase: ICompanyRegisterUseCase,
+    private _addFileUseCase: IAddLogoUseCase,
+    private _addDocumentUseCasez: IAddLogoUseCase,
+    private _getCompanyUseCase: IGetCompanyUseCase,
+    private _changeLogoUseCase: IChangeLogogUseCase,
+    private _removeLogoUseCase: ILogoRemoveUseCase,
+    private _compantProfieUpdateUseCase: ICompanyUpdateProfileUseCase,
+    private _companyAboutUpdateUseCase: ICompanyAboutUpdateUseCase
   ) {}
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
-   // console.log('from company controller');
+   console.log('from company controller');
     const user = req.user;
 
     if (!user || !user.userId) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
-    const company = await this.getCompanyUseCase.execute(user.userId);
+    const company = await this._getCompanyUseCase.execute(user.userId);
     console.log('company from controoleler',company);
     
     return res.status(statusCodes.OK).json({
@@ -60,7 +60,7 @@ export class CompanyProfileController {
       payload,
       user.userId
     );
-    const company =await this.companyRegisterUseCase.execute(
+    const company =await this._companyRegisterUseCase.execute(
       companyData,
       user.userId, 
       user.role
@@ -93,7 +93,7 @@ export class CompanyProfileController {
       mimetype: file.mimetype,
       originalName: file.originalname,
     };
-    const imageUrl = await this.addFileUseCase.execute(
+    const imageUrl = await this._addFileUseCase.execute(
       user.userId,
       user.role,
       payload
@@ -125,7 +125,7 @@ export class CompanyProfileController {
       originalName: file.originalname,
     };
 
-    const updated = await this.changeLogoUseCase.execute(
+    const updated = await this._changeLogoUseCase.execute(
       user.userId,
       user.role,
       payload
@@ -156,7 +156,7 @@ export class CompanyProfileController {
       mimetype: file.mimetype,
       originalName: file.originalname,
     };
-    const docUrl = await this.addDocumentUseCasez.execute(
+    const docUrl = await this._addDocumentUseCasez.execute(
       user.userId,
       user.role,
       payload
@@ -174,7 +174,7 @@ export class CompanyProfileController {
     if (!user || !user.userId) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
-    const updated = await this.removeLogoUseCase.execute(user.userId);
+    const updated = await this._removeLogoUseCase.execute(user.userId);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.LOGO_REMOVED,
@@ -190,7 +190,7 @@ export class CompanyProfileController {
     }
     const payload: CompanyUpdateDto =
       CompanyMapper.CompanyProfileEditTypeToCompanyDto(req.body);
-    const updated = await this.compantProfieUpdateUseCase.execute(
+    const updated = await this._compantProfieUpdateUseCase.execute(
       payload,
       user.userId
     );
@@ -217,7 +217,7 @@ export class CompanyProfileController {
     //  payload
     //);
 
-    const data = await this.companyAboutUpdateUseCase.execute(
+    const data = await this._companyAboutUpdateUseCase.execute(
       payload,
       user.userId
     );

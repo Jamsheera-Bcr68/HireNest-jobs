@@ -137,9 +137,9 @@ export const adminService = {
     return res.data;
   },
   async getAllPendings(filter:Filter){
-    const {status}=filter
-    console.log('from admin pending data');
-    const res= await axiosInstance.get(ADMIN_API_ENDPOINTS.PENDINGS,{params:{item:status}});
+    const {status,search}=filter
+    console.log('from admin pending data fillter',filter);
+    const res= await axiosInstance.get(ADMIN_API_ENDPOINTS.PENDINGS,{params:{item:status,search}});
     return res.data;
   }
 };

@@ -263,13 +263,14 @@ export class CompanyRepository
   }
 
   async getCompanies(
-    filter: { status: StatusEnum },
+    filter: { status: StatusEnum,search?:string },
     limit: number
   ): Promise<Company[]> {
    
+    const {status,search=''}=filter
 
     const companies = await this._model
-      .find(filter)
+      .find({status, companyName: { $regex: `^${search}`, $options: 'i' }})
       .sort({createdAt:-1})
       .limit(limit);
     return companies.map(c=>this.mapToEntity(c))

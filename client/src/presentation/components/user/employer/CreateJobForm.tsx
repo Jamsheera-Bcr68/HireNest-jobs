@@ -589,7 +589,7 @@ const CreateJobPost = () => {
 
             <button
               type="submit"
-              className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+              className="px-6 py-2 rounded-lg bg-fuchsia-800 text-white hover:bg-fuchsia-600 transition"
             >
               Post Job
             </button>

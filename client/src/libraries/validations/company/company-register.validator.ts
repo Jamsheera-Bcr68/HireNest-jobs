@@ -49,8 +49,11 @@ const selectVal = <T extends readonly [string, ...string[]]>(
       .optional()
   );
 export const companyRegisterSchema = z.object({
-  companyName: stringValMand('Company Name', 3, 30).regex(/^[A-Za-z\s]+$/, `Company Name should contain only letters`),
-  tagLine: stringValOpt('Tagline', 3, 30).nullable().optional(),
+companyName: stringValMand('Company Name', 3, 40).regex(
+  /^[A-Za-z0-9\s.&'-]+$/,
+  'Company Name contains invalid characters'
+),
+  tagLine: stringValOpt('Tagline', 3, 50).nullable().optional(),
   website: websiteValOpt('Website', 6, 50),
   industry: selectVal('Industry', Industry_Type),
   size: selectVal('Company size', Company_Size),

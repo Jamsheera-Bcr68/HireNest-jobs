@@ -77,11 +77,11 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
     const skills = await this._skillRepository.getAll({
       status: SkillStatus.APPROVED,
     });
-    if (!skills.length)
-      throw new AppError(
-        jobMessages.error.SKILL_NOT_FOUND,
-        statusCodes.NOTFOUND
-      );
+    // if (!skills.length)
+    //   throw new AppError(
+    //     jobMessages.error.SKILL_NOT_FOUND,
+    //     statusCodes.NOTFOUND
+    //   );
 
     const skillIds = new Set(job.skills.map(String));
 

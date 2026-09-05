@@ -3,34 +3,35 @@ import { CompanyDataDto } from '../dtos/company.dto';
 
 export class CompanyMapper {
   static toCompanyDataDto(company: Company): CompanyDataDto {
-    return {
-      companyName: company.companyName,
+    return {...company}
+    // return {
+    //   companyName: company.companyName,
 
-      logoUrl: company.logoUrl,
-      tagLine: company.tagLine,
+    //   logoUrl: company.logoUrl,
+    //   tagLine: company.tagLine,
 
-      website: company.website,
+    //   website: company.website,
 
-      about: company.about,
-      mission: company.mission,
-      vision: company.vision,
-      culture: company.culture,
+    //   about: company.about,
+    //   mission: company.mission,
+    //   vision: company.vision,
+    //   culture: company.culture,
 
-      benefits: company.benefits,
+    //   benefits: company.benefits,
 
-      startedIn: company.startedIn,
+    //   startedIn: company.startedIn,
+    //   document: company.document,
+    //   industry: company.industry,
+    //   size: company.size,
 
-      industry: company.industry,
-      size: company.size,
+    //   address:
+    //     company.address.place +
+    //     ' ' +
+    //     company.address.state +
+    //     ' ' +
+    //     company.address.country,
 
-      address:
-        company.address.place +
-        ' ' +
-        company.address.state +
-        ' ' +
-        company.address.country,
-
-      socialMediaLinks: company.socialMediaLinks,
-    };
+    //   socialMediaLinks: company.socialMediaLinks,
+    // };
   }
 }

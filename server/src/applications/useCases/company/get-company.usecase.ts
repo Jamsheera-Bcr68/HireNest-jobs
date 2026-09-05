@@ -16,14 +16,14 @@ export interface IGetCompanyUseCase {
 
 export class GetCompanyUseCase implements IGetCompanyUseCase {
   constructor(
-    private companyRepository: ICompanyRepository,
+    private _companyRepository: ICompanyRepository,
     private _jobRepository: IJobRepository,
     private _applicationRepository: IApplicationRepository,
     private _interviewRepository: IInterviewRepository
   ) {}
   async execute(userId: string): Promise<CompanyDataDto> {
-    const company = await this.companyRepository.findByUserId(userId);
-    // console.log('companyUserId', userId);
+    const company = await this._companyRepository.findByUserId(userId);
+     console.log('companyUserId', userId,company);
 
     if (!company)
       throw new AppError(

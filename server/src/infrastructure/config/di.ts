@@ -116,7 +116,7 @@ import { GenerateMeetlinkUsecase } from '../../applications/useCases/interviews/
 import { GetInterviewByMeetingIdUsecase } from '../../applications/useCases/meetings/get-meeting.usecase';
 import { UpdateMissedInterviews } from '../../applications/useCases/interviews/mark-missed-interviews.usecase';
 import { GetPendingStatusUsecase } from '../../applications/useCases/admin/pendings/get-pending-status.usecase';
-
+import { DashboardPendingsUsecase } from '../../applications/useCases/admin/dashoard/dashboard-pendings.usecase';
 import { GetPendingUsecase } from '../../applications/useCases/admin/pendings/get-pendings.usecase';//==Controllers
 //==Controllers
 //==Controllers
@@ -660,6 +660,7 @@ const generateMeetlinkUsecase=new GenerateMeetlinkUsecase(cryptoService)
 const getInterviewByMeetingIdUsecase=new GetInterviewByMeetingIdUsecase(interviewRepository,companyRepository,userRepository,jobRepository)
 const getPendingStatusUsecase=new GetPendingStatusUsecase(jobRepository,companyRepository,adminRepository)
 const getPendingsUsecase=new GetPendingUsecase(adminRepository,companyRepository,jobRepository)
+const dashboardPendingsUsecase=new DashboardPendingsUsecase(companyRepository,jobRepository,adminRepository,)
 
 //controller
 //controller
@@ -805,7 +806,7 @@ export const adminDashboarController = new AdminDashboardController(
   applcationDistributionUsecase,
   interviewDataUsecase,
   getPendingCompaniesUsecase,
-  getReportedJobsUsecase
+  getReportedJobsUsecase,dashboardPendingsUsecase
 );
 
 export const candidateDashboardController = new CandidateDashboardController(

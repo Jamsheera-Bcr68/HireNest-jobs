@@ -22,6 +22,7 @@ import PendingCompany from './PendingCompany';
 import ReportedJobs from './ReportedJobs';
 import type { JobType } from '../../../../types/dtos/job.dto';
 import ActionPending from './ActionPending';
+import { adminService } from '../../../../services/api-services/adminService';
 
 type StatusCardType = {
   icon: LucideIcon;
@@ -92,7 +93,7 @@ export type PendingJobs = {
 };
 
 const InterivewConfig: Record<Status, { color: string; label: string }> = {
-  completed: { label: 'Completed', color:  '#10a99c' },
+  completed: { label: 'Completed', color: '#10a99c' },
   scheduled: { label: 'Interview Scheduled', color: '#f59e0b' },
   passed: { label: 'Passed ', color: 'green' },
   failed: { label: 'Failed', color: 'red' },
@@ -104,6 +105,8 @@ export default function AdminDashbordContainer() {
   const [industyJobs, setIndustryJobs] = useState<IndustryPostCount[]>([]);
   const [industryApps, setIndustryApps] = useState<AppData[]>([]);
   const [interviewData, setInterviewData] = useState<InterviewData[]>([]);
+  const [totalPendingCompany, setTotalPendingcompany] = useState<number>(0);
+  const [totalReportedJobs, setTotalReportedJobs] = useState<number>(0);
 
   const [pendingJobs, setPendingJobs] = useState<PendingJobs[]>([]);
   const [comp_job_chartData, setComp_job_chartData] = useState<
@@ -193,6 +196,7 @@ export default function AdminDashbordContainer() {
           }))
         );
       };
+
       getUserData();
 
       const getAppData = async () => {
@@ -218,24 +222,20 @@ export default function AdminDashbordContainer() {
       };
       getInterviewData();
 
-      const getPendingCompanies = async () => {
-        const data = await adminDashboardService.getPendingCompanies();
-        console.log('pending company data', data);
-        setPendingCompanies(data.companies);
-      };
-
-      getPendingCompanies();
-
-      const getReportedJobs = async () => {
-        const data = await adminDashboardService.getReportedJobs();
-
+      const getPendings = async () => {
+        const data = await adminDashboardService.getDashboardPendings();
+        console.log('pending dashboard data', data);
         const jobs: {
           id: string;
           title: string;
           type: JobType;
           companyName: string;
           count: number;
-        }[] = data.jobs;
+        }[] = data.pendings.jobs;
+        const { companies, jobCount, companyCount } = data.pendings;
+        setPendingCompanies(companies);
+        setTotalPendingcompany(companyCount);
+        setTotalReportedJobs(jobCount);
         setPendingJobs(
           jobs.map((j) => ({
             ...j,
@@ -245,10 +245,14 @@ export default function AdminDashbordContainer() {
         );
       };
 
-      getReportedJobs();
+      getPendings();
     } catch (error) {}
   }, []);
 
+  const hasCompanyData = comp_job_chartData.length > 0;
+  const hasIndustryData = industyJobs.length > 0;
+  const hasBothData = hasCompanyData && hasIndustryData;
+  const hasNeitherData = !hasCompanyData && !hasIndustryData;
   return (
     <div>
       <main className="p-4 lg:p-8">
@@ -256,44 +260,94 @@ export default function AdminDashbordContainer() {
           {/* status cards */}
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {statusData.map((card, i) => {
-              return <DashboardStatCard card={card} />;
+              return <DashboardStatCard key={i} card={card} />;
             })}
           </div>
-          {pendingCompanies.length || pendingJobs.length ? (
-            <ActionPending companies={pendingCompanies} jobs={pendingJobs} />
-          ) : null}
-          {/* job category+chart */}
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-            {comp_job_chartData.length > 0 && (
-              <div
-                className={
-                  industyJobs.length > 0 ? 'xl:col-span-2' : 'xl:col-span-3'
-                }
-              >
-                <Company_Job_chart chartData={comp_job_chartData} />
-              </div>
-            )}
 
-            {industyJobs.length > 0 && (
-              <div
-                className={
-                  comp_job_chartData.length > 0
-                    ? 'xl:col-span-1'
-                    : 'xl:col-span-3'
-                }
-              >
+          <ActionPending
+            companies={pendingCompanies}
+            jobs={pendingJobs}
+            totalCompanies={totalPendingCompany}
+            totalJobs={totalReportedJobs}
+          />
+
+          {/* job category+chart */}
+
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3"></div>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {/* Company */}
+            <div
+              className={
+                hasCompanyData && hasIndustryData
+                  ? 'lg:col-span-2'
+                  : hasCompanyData
+                    ? 'lg:col-span-3'
+                    : hasNeitherData
+                      ? 'lg:col-span-2'
+                      : 'hidden'
+              }
+            >
+              {hasCompanyData ? (
+                <Company_Job_chart chartData={comp_job_chartData} />
+              ) : hasNeitherData ? (
+                <EmptyState
+                  title="No company job data"
+                  description="Company job statistics will appear here."
+                />
+              ) : null}
+            </div>
+
+            {/* Industry */}
+            <div
+              className={
+                hasCompanyData && hasIndustryData
+                  ? 'lg:col-span-1'
+                  : hasIndustryData
+                    ? 'lg:col-span-3'
+                    : hasNeitherData
+                      ? 'lg:col-span-1'
+                      : 'hidden'
+              }
+            >
+              {hasIndustryData ? (
                 <CategorywisePosts postData={industyJobs} />
-              </div>
-            )}
+              ) : hasNeitherData ? (
+                <EmptyState
+                  title="No industry data"
+                  description="Industry statistics will appear here."
+                />
+              ) : null}
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 mt-10 xl:grid-cols-3 gap-6">
-          <UserDistributionChart userData={userData} />
-          <ApplicationByIndustry appData={industryApps} />
-          <InterviewStatusChart interviewData={interviewData} />
-        </div> 
-        
+          {userData.length ? (
+            <UserDistributionChart userData={userData} />
+          ) : (
+            <EmptyState
+              title="No users available"
+              description="There is no user data to display yet."
+            />
+          )}
+          {industryApps.length ? (
+            <ApplicationByIndustry appData={industryApps} />
+          ) : (
+            <EmptyState
+              title="No Applications available"
+              description="There is no Applications data to display yet."
+            />
+          )}
+          {interviewData.length ? (
+            <InterviewStatusChart interviewData={interviewData} />
+          ) : (
+            <EmptyState
+              title="No Interviews Shceduled"
+              description="There is no Interview data to display yet."
+            />
+          )}
+        </div>
+
         <div className="grid grid-cols-1 mt-10 xl:grid-cols-2 gap-6">
           {/* <PendingCompany companies={pendingCompanies} /> */}
           {/* <ReportedJobs jobs={pendingJobs} /> */}
@@ -303,106 +357,30 @@ export default function AdminDashbordContainer() {
   );
 }
 
-// function OverviewView({ pendingTotal, pendingJobs, pendingCompanies, employers, seekers, goTo }) {
-//   return (
-//     <div className="space-y-6">
-//       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-//         <StatCard icon={Briefcase} label="Total Active Jobs" value="1,248" delta="8.2%" positive accent="bg-amber-50 text-amber-600" />
-//         <StatCard icon={Clock} label="Pending Approvals" value={pendingTotal} delta="Needs review" positive={false} accent="bg-rose-50 text-rose-600" />
-//         <StatCard icon={Building2} label="Verified Companies" value={employers.length + "12"} delta="4.1%" positive accent="bg-sky-50 text-sky-600" />
-//         <StatCard icon={Users} label="Registered Seekers" value="9,532" delta="12.6%" positive accent="bg-emerald-50 text-emerald-600" />
-//       </div>
+import { Inbox } from 'lucide-react';
 
-//       <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-//         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-2">
-//           <div className="flex items-center justify-between">
-//             <div>
-//               <h3 className="font-bold text-slate-900" style={{ fontFamily: "'Sora', sans-serif" }}>Postings Trend</h3>
-//               <p className="text-sm text-slate-500">Jobs & companies onboarded per month</p>
-//             </div>
-//             <div className="flex items-center gap-4 text-xs">
-//               <span className="flex items-center gap-1.5 text-slate-500"><span className="h-2 w-2 rounded-full bg-amber-400" /> Jobs</span>
-//               <span className="flex items-center gap-1.5 text-slate-500"><span className="h-2 w-2 rounded-full bg-slate-300" /> Companies</span>
-//             </div>
-//           </div>
-//           <div className="mt-4 h-64">
-//             <ResponsiveContainer width="100%" height="100%">
-//               <AreaChart data={trendData} margin={{ left: -20, top: 10 }}>
-//                 <defs>
-//                   <linearGradient id="jobsFill" x1="0" y1="0" x2="0" y2="1">
-//                     <stop offset="0%" stopColor="#fbbf24" stopOpacity={0.35} />
-//                     <stop offset="100%" stopColor="#fbbf24" stopOpacity={0} />
-//                   </linearGradient>
-//                 </defs>
-//                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-//                 <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
-//                 <YAxis tick={{ fontSize: 12, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
-//                 <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid #e2e8f0", fontSize: 13 }} />
-//                 <Area type="monotone" dataKey="jobs" stroke="#f59e0b" strokeWidth={2.5} fill="url(#jobsFill)" />
-//                 <Area type="monotone" dataKey="companies" stroke="#cbd5e1" strokeWidth={2} fill="transparent" />
-//               </AreaChart>
-//             </ResponsiveContainer>
-//           </div>
-//         </div>
+type EmptyStateProps = {
+  title?: string;
+  description?: string;
+  icon?: React.ReactNode;
+  className?: string;
+};
 
-//         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-//           <h3 className="font-bold text-slate-900" style={{ fontFamily: "'Sora', sans-serif" }}>Jobs by Category</h3>
-//           <p className="text-sm text-slate-500">Share of active listings</p>
-//           <div className="mt-5 space-y-4">
-//             {categoryData.map((c) => (
-//               <div key={c.label}>
-//                 <div className="mb-1 flex items-center justify-between text-xs font-medium text-slate-600">
-//                   <span>{c.label}</span>
-//                   <span>{c.value}%</span>
-//                 </div>
-//                 <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
-//                   <div className={`h-full ${c.color} rounded-full`} style={{ width: `${c.value}%` }} />
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
+export const EmptyState = ({
+  title = 'No data available',
+  description = 'There is no data to display yet.',
+  icon = <Inbox className="h-8 w-8" />,
+  className = '',
+}: EmptyStateProps) => {
+  return (
+    <div
+      className={`flex min-h-[300px] flex-col items-center justify-center rounded-2xl border border-slate-100 bg-white p-6 text-center shadow-sm ${className}`}
+    >
+      <div className="mb-3 text-slate-400">{icon}</div>
 
-//       <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-//         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-//           <div className="flex items-center justify-between">
-//             <h3 className="font-bold text-slate-900" style={{ fontFamily: "'Sora', sans-serif" }}>Jobs Awaiting Review</h3>
-//             <button onClick={() => goTo("jobs")} className="text-xs font-semibold text-amber-600 hover:underline">View all</button>
-//           </div>
-//           <ul className="mt-4 divide-y divide-slate-100">
-//             {pendingJobs.slice(0, 4).map((j) => (
-//               <li key={j.id} className="flex items-center gap-3 py-3">
-//                 <Avatar initials={j.initials} tone="slate" />
-//                 <div className="min-w-0 flex-1">
-//                   <p className="truncate text-sm font-semibold text-slate-800">{j.title}</p>
-//                   <p className="truncate text-xs text-slate-500">{j.company} · {j.location}</p>
-//                 </div>
-//                 <Badge tone="pending">Pending</Badge>
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
+      <h3 className="text-base font-semibold text-slate-700">{title}</h3>
 
-//         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-//           <div className="flex items-center justify-between">
-//             <h3 className="font-bold text-slate-900" style={{ fontFamily: "'Sora', sans-serif" }}>Companies Awaiting Verification</h3>
-//             <button onClick={() => goTo("companies")} className="text-xs font-semibold text-amber-600 hover:underline">View all</button>
-//           </div>
-//           <ul className="mt-4 divide-y divide-slate-100">
-//             {pendingCompanies.map((c) => (
-//               <li key={c.id} className="flex items-center gap-3 py-3">
-//                 <Avatar initials={c.initials} tone="sky" />
-//                 <div className="min-w-0 flex-1">
-//                   <p className="truncate text-sm font-semibold text-slate-800">{c.name}</p>
-//                   <p className="truncate text-xs text-slate-500">{c.industry} · {c.docs} documents</p>
-//                 </div>
-//                 <Badge tone="info">New</Badge>
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+      <p className="mt-1 max-w-sm text-sm text-slate-400">{description}</p>
+    </div>
+  );
+};

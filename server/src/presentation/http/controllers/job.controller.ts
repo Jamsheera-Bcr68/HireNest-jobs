@@ -38,7 +38,7 @@ export class JobController {
     const payload: JobReqDto = req.body;
 
     const user = req.user;
-    //  console.log('user from job controller', user);
+      console.log('user from job controller', user);
 
     if (!user || !user.userId || user.role !== UserRole.COMPANY) {
       throw new AppError(
@@ -180,6 +180,8 @@ export class JobController {
 
   getJobStatus = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
+    console.log('user from post controller status',user);
+    
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     const statusData = await this.companyPostStatusUseCase.execute(

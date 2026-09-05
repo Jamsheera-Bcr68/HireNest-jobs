@@ -43,6 +43,9 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
 
     const { status } = data;
     if (!status) return company;
+
+
+    
     if (status == 'rejected') {
       data.reasonForReject = reason;
     }

@@ -16,6 +16,7 @@ import {
 import { chartDataDto } from '../../domain/types/chart.data.type';
 import { IndustryType } from '../../domain/types/company-profile.types';
 import { ReportedJobFilter } from '../../applications/types/pending.type';
+import { JobType } from '../../domain/types/job.types';
 
 interface JobQuery {
   status?: StatusEnum;
@@ -33,6 +34,7 @@ interface AggregatedReportedJob {
   count: number;
   status: StatusEnum;
   createdAt: Date;
+  type: JobType;
   reason: string;
 }
 export interface MappedAggregatedReportedJob {
@@ -42,8 +44,10 @@ export interface MappedAggregatedReportedJob {
   role: string;
   count: number;
   status: StatusEnum;
+
   createdAt: string;
   reason: string;
+  type: JobType;
 }
 export class JobRepository
   extends GenericRepository<Job, IJobDocument>
@@ -773,7 +777,7 @@ export class JobRepository
   async getReportedJobs(
     filter: Partial<ReportedJobFilter>
   ): Promise<MappedAggregatedReportedJob[]> {
-    const { isReported, limit = 5 } = filter;
+    const { isReported, limit = 5, search } = filter;
 
     const matchStage: PipelineStage.Match['$match'] = {};
 
@@ -781,11 +785,17 @@ export class JobRepository
       matchStage.isReported = isReported;
     }
 
-    const documents: AggregatedReportedJob[] = await this._model.aggregate([
-      {
-        $match: matchStage,
-      },
+    if (search) {
+      matchStage.$or = [
+        {
+          company: { $regex: `^${search}`, $options: 'i' },
+          
+        },
+        {title: { $regex: search, $options: 'i' },}
+      ];
+    }
 
+    const documents: AggregatedReportedJob[] = await this._model.aggregate([
       {
         $lookup: {
           from: 'companies',
@@ -794,12 +804,15 @@ export class JobRepository
           as: 'company',
         },
       },
+      {
+        $match: matchStage,
+      },
 
       {
         $project: {
           _id: 1,
           role: '$title',
-
+          type: '$jobType',
           company: {
             $arrayElemAt: ['$company.companyName', 0],
           },
@@ -823,7 +836,6 @@ export class JobRepository
         $unwind: '$reportDetails',
       },
 
-      // Count how many times each reason occurs for each job
       {
         $group: {
           _id: {
@@ -851,7 +863,6 @@ export class JobRepository
         },
       },
 
-      // Put the job back together and take the first reason
       {
         $group: {
           _id: '$_id.jobId',
@@ -895,6 +906,7 @@ export class JobRepository
       status: doc.status,
       createdAt: doc.createdAt.toDateString(),
       reason: doc.reason,
+      type: doc.type,
     };
   }
 }

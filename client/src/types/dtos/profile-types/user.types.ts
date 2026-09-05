@@ -71,11 +71,14 @@ export interface CompanyProfileType {
   mission: string;
   vision: string;
   jobCount?: string;
+  reapplyCount:number
+  reapplyDetails:ReApplyType[]
   culture: string;
   status: StatusType;
   benefits: string[] | [];
   about: string;
   createdAt: string;
+  reasonForReject:string
   joinedAt?: string;
   socialMediaLinks: ISocialLinks;
   document: { type: string; file: string };
@@ -91,3 +94,11 @@ export type CompanyFieldUpdateType = {
   culture?: string;
   benefits?: string[] | [];
 };
+
+ export type ReApplyType={
+
+  date: Date;
+  status: StatusType;
+  rejectedReason?: string;
+}
+

@@ -17,6 +17,7 @@ import Company from '../../user/employer/job-details/Company';
 import { Reports } from './ReporData';
 import type { RootState } from '../../../../redux/store';
 
+
 const tabs = [
   { id: 'overview', label: 'Overview' },
   { id: 'responsibilities', label: 'Responsibilities' },
@@ -24,7 +25,8 @@ const tabs = [
   { id: 'company', label: 'Company' },
   { id: 'reports', label: 'Reports' },
 ];
-function AdminJobDetailscontainer({ jobId }: { jobId: string }) {
+function AdminJobDetailscontainer({ jobId,activeTab }: { jobId: string,activeTab?:string }) {
+
   const { showToast } = useToast();
   const user = useSelector((state: RootState) => state.auth.user);
   console.log('job id from details is role is admin', jobId);
@@ -34,7 +36,7 @@ function AdminJobDetailscontainer({ jobId }: { jobId: string }) {
   const [showSuspendReasonModal, setShowSuspendReasonModal] =
     useState<boolean>(false);
 
-  const [tab, setTab] = useState<string>('overview');
+  const [tab, setTab] = useState<string>(activeTab?activeTab:'overview');
   useEffect(() => {
     const getJobDetails = async () => {
       try {

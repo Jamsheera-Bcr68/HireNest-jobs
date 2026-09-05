@@ -13,13 +13,13 @@ export interface IGetPostSatusUseCase {
 
 export class GetPostSatusUseCase implements IGetPostSatusUseCase {
   constructor(
-    private jobRepository: IJobRepository,
-    private companyRepository: ICompanyRepository
+    private _jobRepository: IJobRepository,
+    private _companyRepository: ICompanyRepository
   ) {}
   async execute(userId: string, role: UserRole): Promise<JobStatusCardDto> {
     let filter = {};
-    if (role == UserRole.CANDIDATE) {
-      const company = await this.companyRepository.findByUserId(userId);
+    if (role == UserRole.COMPANY) {
+      const company = await this._companyRepository.findByUserId(userId);
       if (!company || !company.id) {
         throw new AppError(
           userMessages.error.COMPANY_NOT_FOUND,
@@ -29,27 +29,21 @@ export class GetPostSatusUseCase implements IGetPostSatusUseCase {
       filter = { companyId: company.id };
     }
 
-    // const company = await this.companyRepository.findByUserId(userId);
-    // if (!company || !company.id) {
-    //   throw new AppError(
-    //     userMessages.error.COMPANY_NOT_FOUND,
-    //     statusCodes.NOTFOUND
-    //   );
-    // }
-    const total = await this.jobRepository.count(filter);
-    const active = await this.jobRepository.count({
+   
+    const total = await this._jobRepository.count(filter);
+    const active = await this._jobRepository.count({
       ...filter,
       status: StatusEnum.ACTIVE,
     });
-    const suspended = await this.jobRepository.count({
+    const suspended = await this._jobRepository.count({
       ...filter,
       status: StatusEnum.SUSPENDED,
     });
-    const expired = await this.jobRepository.count({
+    const expired = await this._jobRepository.count({
       ...filter,
       status: StatusEnum.EXPIRED,
     });
-    const reported = await this.jobRepository.count({
+    const reported = await this._jobRepository.count({
       ...filter,
       isReported: true,
     });

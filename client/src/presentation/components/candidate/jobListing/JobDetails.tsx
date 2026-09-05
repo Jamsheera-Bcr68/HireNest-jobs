@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
-import { MapPinIcon, CheckIcon, Bookmark } from 'lucide-react';
+import { MapPinIcon, CheckIcon, Bookmark, Briefcase } from 'lucide-react';
 import { formatSalary } from '../../../../utils/salary-format';
 import { useToast } from '../../../../shared/toast/use-toast';
 import { useSelector } from 'react-redux';
@@ -92,6 +92,7 @@ function JobDetails({
                       e.stopPropagation();
                       handleUnSave(activeJob.id);
                     }}
+                    title='UnSave'
                     className="text-gray-300 hover:bg-gray-200 p-2 rounded-full hover:text-red-400 transition-colors text-lg leading-none mt-0.5"
                   >
                     <Bookmark size={18} className="text-red-700" />
@@ -102,6 +103,7 @@ function JobDetails({
                       e.stopPropagation();
                       handleSave(activeJob.id);
                     }}
+                    title='Save'
                     className="text-gray-300 hover:bg-gray-200 p-2 rounded-full hover:text-red-400 transition-colors text-lg leading-none mt-0.5"
                   >
                     <Bookmark size={18} className="text-gray-400" />
@@ -116,8 +118,8 @@ function JobDetails({
                     icon: <MapPinIcon size={16} className="text-red-400" />,
                     text: `${activeJob.location.place ?? ''},${activeJob.location.state},${activeJob.location.country}`,
                   },
-                  { icon: '💼', text: activeJob.jobType },
-                  { icon: '⭐', text: activeJob.mode },
+                  { icon: <Briefcase size={18}/>, text: `${activeJob.jobType==='partTime'?"Part Time":"Full Time"}` },
+                  { icon: '⭐', text: `${activeJob.mode=='remote'?"Remote":activeJob.mode=='hybrid'?"Hybrid":"Onsite"}` },
                   { icon: '🏢', text: activeJob.industry },
                 ].map((m) => (
                   <span
@@ -141,7 +143,7 @@ function JobDetails({
                     onApply(activeJob.id);
                   }}
                   disabled={user?.appliedJobs?.includes(activeJob.id)}
-                  className={`apply-btn flex-1 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[13px] font-medium rounded-lg transition-colors ${user?.appliedJobs?.includes(activeJob.id) ? 'b-slate-400' : ''}`}
+                  className={`apply-btn flex-1 px-4 py-3 bg-fuchsia-800 hover:bg-fuchsia-600 text-white text-[13px] font-medium rounded-lg transition-colors ${user?.appliedJobs?.includes(activeJob.id) ? 'b-slate-400' : ''}`}
                 >
                   {user?.appliedJobs?.includes(activeJob.id) ? (
                     <span className="inline-flex items-center gap-1">
@@ -187,7 +189,7 @@ function JobDetails({
                 },
               ].map((s) => (
                 <div key={s.label} className="p-4 text-center">
-                  <div className="text-sm font-extrabold text-indigo-600">
+                  <div className="text-sm font-extrabold text-fuchsia-600">
                     {s.value}
                   </div>
                   <div className="text-xs text-slate-400 font-medium mt-0.5">
@@ -220,7 +222,7 @@ function JobDetails({
                     >
                       <span
                         className="mt-1 w-4 h-4 rounded-full flex items-center justify-center shrink-0 text-white text-xs"
-                        style={{ background: '#4f46e5' }}
+                        style={{ background: '#cb46e5' }}
                       >
                         <CheckIcon />
                       </span>
@@ -329,7 +331,7 @@ function JobDetails({
                 <p className="text-xs text-slate-500 leading-relaxed">
                   {activeJob.aboutCompany}
                 </p>
-                <button className="mt-3 text-xs font-bold text-indigo-500 hover:text-indigo-700 transition-colors">
+                <button className="mt-3 text-xs font-bold text-fuchsia-800 hover:text-fuchsia-600 transition-colors">
                   View company profile →
                 </button>
               </div>

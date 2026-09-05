@@ -113,7 +113,7 @@ const JobCard = ({ job, handleSave, handleUnSave, onApply }: JobCardProps) => {
             {job.skills.map((skill, index) => (
               <span
                 key={index}
-                className="text-[12px] px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 font-medium"
+                className="text-[12px] px-3 py-1 rounded-full bg-fuchsia-50 text-fuchsia-700 font-medium"
               >
                 {skill}
               </span>
@@ -166,7 +166,7 @@ const JobCard = ({ job, handleSave, handleUnSave, onApply }: JobCardProps) => {
         ? 'bg-gray-400 cursor-not-allowed'
         : user?.appliedJobs?.includes(job.id)
           ? 'bg-slate-400 cursor-not-allowed'
-          : 'bg-indigo-600 hover:bg-indigo-700'
+          : 'bg-fuchsia-800 hover:bg-fuchsia-600'
     }
   `}
             >

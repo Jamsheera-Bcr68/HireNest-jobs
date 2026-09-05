@@ -15,17 +15,22 @@ export class AdminAuthController {
 
   login = asyncHandler(async (req: Request, res: Response) => {
     const payload: AdminloginInput = req.body;
-  //  console.log('from admin controller,role', req.body.role);
+   console.log('from admin auth controller,role', req.body.role);
 
     const { admin, refreshToken, accessToken } =
       await this._loginUsecase.execute(payload, UserRole.ADMIN);
+      console.log('refresh token',refreshToken);
+      
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: '/auth/refresh-token',
+      path: '/api/auth/refresh-token',
     });
+
+    console.log('res.cookie',res.getHeader('Set-Cookie'));
+    
 
     const adminDto = AdminMapper.toDto(admin);
     return res.status(statusCodes.OK).json({

@@ -21,6 +21,7 @@ import { IGetAllJobsUseCase } from '../../../../applications/useCases/candidate/
 import { StatusEnum } from '../../../../domain/enums/status.enum';
 import { IGetPendingCompaniesUsecase } from '../../../../applications/useCases/admin/dashoard/pending-companies.usecase';
 import { IGetReportedJobsUsecase } from '../../../../domain/get-reported-jobs.usecase';
+import { IDashboardPendingsUsecase } from '../../../../applications/useCases/admin/dashoard/dashboard-pendings.usecase';
 
 export class AdminDashboardController {
   constructor(
@@ -31,7 +32,8 @@ export class AdminDashboardController {
     private _appDistributionDataUsecase: IDashboardDataListUsecase<ApplcationDistributionChartData>,
     private _interviewDataUsecase: IDashboardDataListUsecase<InterviewData>,
     private _getPendingCompaniesUsecase: IGetPendingCompaniesUsecase,
-    private _getReportedJobsUsecase: IGetReportedJobsUsecase
+    private _getReportedJobsUsecase: IGetReportedJobsUsecase,
+    private _getDashboardPendingsUsecase: IDashboardPendingsUsecase
   ) {}
 
   getStatusCardData = asyncHandler(async (req: Request, res: Response) => {
@@ -146,7 +148,7 @@ export class AdminDashboardController {
   );
 
   getInterviewData = asyncHandler(async (req: Request, res: Response) => {
-  //  console.log('from interview distribution');
+    //  console.log('from interview distribution');
     const user = req.user;
 
     if (!user)
@@ -199,8 +201,7 @@ export class AdminDashboardController {
       );
 
     const jobs = await this._getReportedJobsUsecase.execute(user.role);
-   // console.log('controlle pending jobs',jobs);
-    
+    // console.log('controlle pending jobs',jobs);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -208,4 +209,28 @@ export class AdminDashboardController {
       jobs,
     });
   });
+
+  getDashboardPendingData = asyncHandler(
+    async (req: Request, res: Response) => {
+      const user = req.user;
+      if (!user)
+        throw new AppError(
+          authMessages.error.UNAUTHORIZED,
+          statusCodes.NOTFOUND
+        );
+
+     
+
+      const activities = await this._getDashboardPendingsUsecase.execute(
+        user.userId,
+        user.role
+      );
+
+      return res.status(statusCodes.OK).json({
+        success: true,
+        message: generalMessages.success.ENTITIES_FETCHED,
+        pendings: activities,
+      });
+    }
+  );
 }

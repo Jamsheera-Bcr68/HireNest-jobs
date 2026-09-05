@@ -11,7 +11,7 @@ function AboutAndDocuments({
     <div className="lg:col-span-2 space-y-6">
       {/* About */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-slate-800 mb-3">
+        <h2 className="text-lg font-semibold  text-indigo-700 mb-3">
           About Company
         </h2>
 
@@ -22,7 +22,7 @@ function AboutAndDocuments({
 
       {/* Company Information */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-slate-800 mb-5">
+        <h2 className="text-lg font-semibold  text-indigo-700 mb-5">
           Company Information
         </h2>
 
@@ -65,7 +65,7 @@ function AboutAndDocuments({
 
       {/* Documents */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-slate-800 mb-5">
+        <h2 className="text-lg font-semibold  text-indigo-700 mb-5">
           Company Documents
         </h2>
 

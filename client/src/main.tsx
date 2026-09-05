@@ -8,8 +8,11 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ToastProvider } from './shared/toast/ToastContext.tsx';
 
-
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Missing #root element');
+}
+createRoot(rootElement).render(
   <StrictMode>
     <ToastProvider>
       <BrowserRouter>

@@ -128,7 +128,7 @@ export const useRegisterCompany = (isReapply?: boolean) => {
   const [verify_file, setVerify_file] = useState<File | null>(null);
 
   useEffect(() => {
-    console.log('form use register reapply s ', isReapply);
+    console.log('form use register reapply  ', isReapply);
 
     const fetchCompany = async () => {
       try {
@@ -136,6 +136,8 @@ export const useRegisterCompany = (isReapply?: boolean) => {
         console.log('data after fetching company from useregster', data);
 
         if (data.company)
+          console.log('data .company s present');
+          
           setFormData({
             ...formData,
             companyName: data.company.companyName,
@@ -168,7 +170,10 @@ export const useRegisterCompany = (isReapply?: boolean) => {
             isAgreed: data.company.isAgreed,
             isConsent: data.company.isConsent,
           });
-      } catch (error) {}
+      } catch (error) {
+        console.log('error',error);
+        
+      }
     };
     if (isReapply) fetchCompany();
   }, [isReapply]);

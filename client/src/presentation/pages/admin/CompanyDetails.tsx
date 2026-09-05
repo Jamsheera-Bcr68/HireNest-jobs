@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import LogoAndName from '../../components/admin/companyDetails/LogoAndName';
 import type { CompanyProfileType } from '../../../types/dtos/profile-types/user.types';
-
+import { RegistrationDetails } from '../../components/admin/companyDetails/RegistrationDetails';
 import AboutAndDocuments from '../../components/admin/companyDetails/AboutAndDocuments';
 import ContactDetails from '../../components/admin/companyDetails/ContactDetails';
 import { adminService } from '../../../services/api-services/adminService';
@@ -39,6 +39,7 @@ export default function CompanyDetails() {
           {/* RIGHT SECTION */}
           <div className="space-y-6">
             {/* Contact Info */}
+            <RegistrationDetails company={company} />
             <ContactDetails company={company} />
             {/* Admin Insights */}
             {company?.isVerified && <Activity />}

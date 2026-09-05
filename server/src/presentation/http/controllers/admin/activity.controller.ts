@@ -29,19 +29,25 @@ export class ActivityController {
     });
   });
 
+ 
+
   getAllPendings = asyncHandler(async (req: Request, res: Response) => {
     console.log('from pending actiivity controoler');
     const user = req.user;
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
-   const item = (req.query.item as 'jobs' | 'companies' | '') || '';
-    console.log('item', item);
-    console.log(req);
+    const item = (req.query.item as 'jobs' | 'companies' | '') || '';
+    const { search } = req.query;
+
+    console.log('search', search);
+    // console.log(req);
 
     const { activities, totalDocs } = await this._getPendingsUsecase.execute(
       user.userId,
-      user.role,item,
-      10
+      user.role,
+      item,
+      10,
+      search as string
     );
 
     return res.status(statusCodes.OK).json({

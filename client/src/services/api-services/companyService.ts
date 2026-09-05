@@ -8,6 +8,8 @@ import { API_ENDPOINTS } from '../../constants/api-end-points/general';
 export const companyService = {
   async getCompany() {
     const res = await axiosInstance.get(API_ENDPOINTS.COMPANY);
+    console.log('res',res);
+    
     return res.data;
   },
 

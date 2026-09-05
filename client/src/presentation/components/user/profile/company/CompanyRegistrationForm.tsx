@@ -192,7 +192,7 @@ const Checkbox = ({ children, checked, handleChange, name }: CheckboxProps) => (
       type="checkbox"
       checked={checked}
       onChange={handleChange}
-      className={`mt-2 ${ checked ? "accent-fuchsia-600" : "accent-gray-400"}`}
+      className={`mt-2 ${checked ? 'accent-fuchsia-600' : 'accent-gray-400'}`}
     />
 
     <span className="text-sm text-slate-600 leading-relaxed block">
@@ -203,8 +203,9 @@ const Checkbox = ({ children, checked, handleChange, name }: CheckboxProps) => (
 
 type Props = {
   isReapply?: boolean;
+  companyId?: string;
 };
-export default function CompanyRegistration({ isReapply }: Props) {
+export default function CompanyRegistration({ companyId, isReapply }: Props) {
   const {
     formData,
     handleChange,
@@ -712,8 +713,6 @@ export default function CompanyRegistration({ isReapply }: Props) {
                       setVerify_file(e.target.files?.[0] || null)
                     }
                   />
-
-                  
                 </label>
 
                 {error?.documents?.file && (
@@ -806,6 +805,7 @@ export default function CompanyRegistration({ isReapply }: Props) {
         />
 
         <SuccessModal
+          title={isReapply ? 'Reapplication Submitted' : 'Company Created'}
           open={isSuccessOpen}
           onClose={() => setIsSuccessOpen(false)}
         />

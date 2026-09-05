@@ -138,7 +138,7 @@ function ImageCropModal({
                     saveCroppedImage();
                     setIsCropping(false);
                   }}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                  className="px-4 py-2 bg-fuchsia-800 hover:bg-fuchsia-600 text-white rounded-md"
                 >
                   Save
                 </button>
@@ -155,7 +155,7 @@ function ImageCropModal({
             ) : (
               <button
                 onClick={() => setIsCropping(true)}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-md"
+                className="px-4 py-2 bg-fuchsia-800 hover:bg-fuchsia-600 text-white rounded-md"
               >
                 Crop Image
               </button>

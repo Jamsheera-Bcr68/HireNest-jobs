@@ -4,7 +4,7 @@ function ContactDetails({ company }: { company: CompanyProfileType | null }) {
   if (!company) return null;
   return (
     <div className="bg-white rounded-xl shadow-sm p-6">
-      <h2 className="text-lg font-semibold text-slate-800 mb-4">
+      <h2 className="text-lg font-semibold  text-indigo-700 mb-4">
         Contact Information
       </h2>
 

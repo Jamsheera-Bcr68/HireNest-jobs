@@ -10,10 +10,10 @@ export const getToken = (userId: string, email: string, role: UserRole) => {
   if (!jwt_secret) throw new Error(authMessages.error.ACCESS_SECRET_NOT_FOUND);
 
   const verify = jwt.sign({ userId, email, role }, jwt_secret, {
-    expiresIn: '30m',
+    expiresIn: '15m',
   });
 
-  return jwt.sign({ userId, email, role }, jwt_secret, { expiresIn: '30m' });
+  return jwt.sign({ userId, email, role }, jwt_secret, { expiresIn: '15m' });
 };
 export const getRefreshToken = (
   userId: string,

@@ -1,5 +1,7 @@
-import { InterviewStatusEnum } from "../../domain/enums/status.enum";
-import { IndustryType } from "../../domain/types/company-profile.types";
+import { InterviewStatusEnum } from '../../domain/enums/status.enum';
+import { IndustryType } from '../../domain/types/company-profile.types';
+import { PendingCompany } from '../dtos/company.dto';
+import { AdminDashboardReportedJob } from '../dtos/job.dto';
 
 export interface AdminDashboardCardsDto {
   totalActiveJobs: {
@@ -22,41 +24,45 @@ export interface AdminDashboardCardsDto {
   };
 }
 
-export interface AdminCompanyJobChartDto{
-  month:string
-  jobs:number
-  companies:number
-
+export interface AdminCompanyJobChartDto {
+  month: string;
+  jobs: number;
+  companies: number;
 }
 export const monthNames = [
-  "",
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
+  '',
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
 ];
 
-export interface UserDistributionChartData{
-  role:string,
-  value:number
+export interface UserDistributionChartData {
+  role: string;
+  value: number;
 }
-export interface ApplcationDistributionChartData{
-  industry:IndustryType,
-  count:number
+export interface ApplcationDistributionChartData {
+  industry: IndustryType;
+  count: number;
 }
-export interface InterviewData{
- status:string
- value:number
-  count:number
+export interface InterviewData {
+  status: string;
+  value: number;
+  count: number;
 }
 
-
-
+export interface DashboardPendingsDto {
+  companies: PendingCompany[];
+  jobs: AdminDashboardReportedJob[];
+  
+companyCount:number
+jobCount:number
+}

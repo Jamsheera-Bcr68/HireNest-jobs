@@ -68,10 +68,10 @@ export const useApplications = (setPage?: (page?: number) => void) => {
       showToast({ msg: 'You are not allowed to apply job', type: 'error' });
       return;
     }
-    if (user.isProfileCompleted == false) {
-      showToast({ msg: 'Please complete your profile', type: 'error' });
-      return;
-    }
+    // if (user.isProfileCompleted == false) {
+    //   showToast({ msg: 'Please complete your profile', type: 'error' });
+    //   return;
+    // }
     if (!applyJobId) {
       showToast({ msg: 'Job id is not found', type: 'error' });
       return;

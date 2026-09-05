@@ -97,7 +97,7 @@ const ResetPasswordForm = () => {
           <button
             type="submit"
             className="w-full bg-fuchsia-800 text-white py-2 rounded-lg
-                     hover:bg-blue-700 transition duration-200"
+                     hover:bg-fuchsia-600 transition duration-200"
           >
             Reset
           </button>
@@ -107,7 +107,7 @@ const ResetPasswordForm = () => {
             onClick={() =>
               navigate(role == 'admin' ? '/admin/login' : '/login')
             }
-            className="text-sm text-fuchsia-800 hover:underline"
+            className="text-sm text-fuchsia-800  hover:underline"
           >
             Back to Login
           </button>

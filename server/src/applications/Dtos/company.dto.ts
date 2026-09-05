@@ -78,7 +78,7 @@ export type CompanyDataDto = {
   totalInterviews?:number
   totalApps?:number
   website?: string;
-
+ document: VerificationDocType;
   about: string;
   mission: string;
   vision: string;
@@ -91,7 +91,7 @@ export type CompanyDataDto = {
   industry: IndustryType;
   size: CompanySize;
 
-  address: string;
+  address: IAddress;
 
   socialMediaLinks: ISocialMediaLinks;
 };

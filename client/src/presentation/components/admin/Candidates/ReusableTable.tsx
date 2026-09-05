@@ -108,7 +108,7 @@ function ReusableTable<T extends { id: string }>({
             onClick={updateFilter}
             className="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 text-slate-600 hover:bg-slate-100"
           >
-            Clear filters
+            Clear 
           </button>
         </div>
 

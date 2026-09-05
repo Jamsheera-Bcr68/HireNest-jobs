@@ -30,7 +30,7 @@ export const AdminRoutes = () => {
         />
         <Route path={ADMIN_ROUTES.CANDIDATES} element={<Candidates />} />
         <Route path={ADMIN_ROUTES.JOBS} element={<Jobs />} />
-        <Route path="/pendings" element={<PendingPage />} />
+       
         <Route
           path={ADMIN_ROUTES.CANDIDATE_DETAILS}
           element={<CandidateDetails />}

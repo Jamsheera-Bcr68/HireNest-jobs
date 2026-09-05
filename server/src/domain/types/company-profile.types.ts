@@ -8,6 +8,8 @@ export const Industry_Type = [
   'Retail And E-commerce',
   'Education',
   'Media And Communication',
+'Travel & Tourism',
+'Water & Environmental Services',
   'Logistics',
   'Other',
 ] as const;

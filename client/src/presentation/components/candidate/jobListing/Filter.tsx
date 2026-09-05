@@ -69,7 +69,7 @@ function Filter({ filter, onFilterChange }: Props) {
             {totalFilters > 0 && (
               <button
                 onClick={clearAll}
-                className="text-xs font-bold text-indigo-500 hover:text-indigo-700"
+                className="text-xs font-bold text-fuchsia-800 hover:text-fuchsia-600"
               >
                 Clear({totalFilters})
               </button>

@@ -21,4 +21,5 @@ export interface ReportedJobFilter {
   limit?: number;
   status?: StatusEnum;
   sortBy?: 'newest';
+  search?:string
 }

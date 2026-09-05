@@ -11,10 +11,11 @@ type Card={
 
 type Props = {
   card:Card
+ 
 }
 export function DashboardStatCard({card }: Props) {
   return (
-  <div className="group  relative z-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
+  <div  className="group  relative z-0 overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
     {/* Decorative background glow */}
     <div
       className={`absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-10 blur-2xl transition-all duration-300 group-hover:opacity-20 ${card.classname}`}
