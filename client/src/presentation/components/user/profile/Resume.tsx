@@ -3,11 +3,14 @@ import { type ResumeType } from '../../../../types/dtos/profile-types/resume.typ
 import { profileService } from '../../../../services/api-services/candidateService';
 import { useToast } from '../../../../shared/toast/use-toast';
 import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
-import { Upload } from 'lucide-react';
+import { Upload, User } from 'lucide-react';
 import { Trash, X, LucideLoader } from 'lucide-react';
 import { FormatDate } from '../../../../utils/date-conversion';
 import DeleteConfirmationModal from '../../../modals/DeleteConfirmationModal';
 import DuplicateResumeModal from './RenameModal';
+import { updateUser } from '../../../../redux/slices/auth.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../../../redux/store';
 
 type ResumeProps = {
   onUserUpdate: React.Dispatch<
@@ -19,12 +22,14 @@ type ResumeProps = {
 function Resume({ onUserUpdate, resumes }: ResumeProps) {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [nameErr,setNameErr]=useState<string>('')
+  const [nameErr, setNameErr] = useState<string>('');
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [renameModal, setRenameModal] = useState<boolean>(false);
   const { showToast } = useToast();
+  const dispatch = useDispatch();
+  const reduxUser = useSelector((state: RootState) => state.auth.user);
 
   const handleUpload = async () => {
     if (isUploading) return;
@@ -58,6 +63,9 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
             }
           : prev
       );
+
+      dispatch(updateUser({ resumeCount: (reduxUser.resumeCount || 0) + 1 }));
+
       showToast({ msg: data.message, type: 'success' });
 
       setFile(null);
@@ -79,7 +87,18 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
     }
     try {
       const data = await profileService.removeResume(deleteId);
-      onUserUpdate(data.user);
+
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          resumes: prev.resumes?.filter((r) => r.id !== deleteId) ?? [],
+        };
+      });
+      dispatch(
+        updateUser({ resumeCount: Math.max(reduxUser.resumeCount - 1, 0) })
+      );
       showToast({ msg: data.message, type: 'success' });
       setDeleteId(null);
       setIsOpen(false);
@@ -95,7 +114,6 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
 
   const onRenameFile = (name: string) => {
     console.log('new nae from rename ', name);
-    
 
     setFile((prev) => {
       if (!prev) return null;
@@ -242,7 +260,7 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
         }}
         fileName={file?.name ?? ''}
         isOpen={renameModal}
-        setError={(err:string)=>setNameErr(err) }
+        setError={(err: string) => setNameErr(err)}
       />
     </div>
   );

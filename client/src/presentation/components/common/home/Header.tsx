@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { MessageSquareText } from 'lucide-react';
+import { MessageSquareText, Moon, Sun } from 'lucide-react';
 import { useHeader } from '../../../hooks/user/useHeader';
 import { BellRing } from 'lucide-react';
 import { type NotificationType } from '../../../../types/notification.type';
@@ -11,7 +11,10 @@ import { type RootState } from '../../../../redux/store';
 import { setChatrooms } from '../../../../redux/slices/chatroom.slice';
 import { setNotifications } from '../../../../redux/slices/notification.slice';
 
+import { cx } from '../../candidate/jobListing/ListingContainter';
+
 import { chatService } from '../../../../services/api-services/chat.service';
+import { useTheme } from '../../../../contexts/ThemeContext'
 const Header = ({ title }: { title?: string }) => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
   const notifications = useSelector(
@@ -27,10 +30,10 @@ const Header = ({ title }: { title?: string }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(user?.role, 'from header');
+    //console.log(user?.role, 'from header');
 
     const loadNotifications = async () => {
-      console.log('from useeffect');
+    //  console.log('from useeffect');
 
       const nots = await getNotifications('all');
       dispatch(setNotifications(nots));
@@ -41,7 +44,7 @@ const Header = ({ title }: { title?: string }) => {
   useEffect(() => {
     const getChatrooms = async () => {
       const data = await chatService.getConversations();
-      console.log('chatroms afrer getting chatroom', data);
+    //  console.log('chatroms afrer getting chatroom', data);
       dispatch(setChatrooms(data.chatrooms));
     };
 
@@ -63,7 +66,7 @@ const Header = ({ title }: { title?: string }) => {
   }, [notifications, notificationOpen]);
 
   const tabChange = (tab: 'new' | 'all') => {
-    console.log('from tabChange', tab);
+    //console.log('from tabChange', tab);
     if (tab == 'all') setNots(notifications);
     else setNots(notifications.filter((n) => n.isRead === false));
   };
@@ -77,7 +80,7 @@ const Header = ({ title }: { title?: string }) => {
   };
 
   const deleteHandle = async (id: string) => {
-    console.log('from delete notifivation', id);
+  //  console.log('from delete notifivation', id);
 
     await deleteNotification(id);
     const updated = notifications.filter((n) => n.id !== id);
@@ -87,7 +90,7 @@ const Header = ({ title }: { title?: string }) => {
   const navigate = useNavigate();
 
   const onMarkRead = async (id: string) => {
-    console.log('form mark as read', id);
+   // console.log('form mark as read', id);
     await markAsRead(id);
     const updated = notifications.map((n) =>
       n.id !== id ? n : { ...n, isRead: true }
@@ -96,7 +99,7 @@ const Header = ({ title }: { title?: string }) => {
   };
 
   const onMarkAll = async () => {
-    console.log('form mark as read');
+  //  console.log('form mark as read');
     await markAllAsRead();
     dispatch(
       setNotifications(notifications.map((n) => ({ ...n, isRead: true })))
@@ -203,7 +206,7 @@ const Header = ({ title }: { title?: string }) => {
                 )}
               </div>
             </div>
-
+          {user.role==='candidate'&&  <ThemeToggle />}
             {/* Auth Buttons */}
             {user && (
               <button
@@ -264,6 +267,7 @@ const Header = ({ title }: { title?: string }) => {
                   </span>
                 )}
               </div>
+              <ThemeToggle/>
             </div>
 
             {/* Menu Button */}
@@ -370,3 +374,32 @@ const Header = ({ title }: { title?: string }) => {
 };
 
 export default Header;
+
+function ThemeToggle() {
+  const { mode, toggle } = useTheme();
+  const isDark = mode === 'dark';
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+      className={cx(
+        'relative h-7 w-14 rounded-full border transition-colors duration-300 flex items-center px-1',
+        isDark
+          ? 'bg-slate-400 border-slate-700'
+          : 'bg-purple-50 border-purple-100'
+      )}
+    >
+      <span
+        className={cx(
+          'h-5 w-5 rounded-full flex items-center justify-center shadow-md transition-transform duration-300',
+          isDark
+            ? 'translate-x-7 bg-slate-900 text-purple-300'
+            : 'translate-x-0 bg-white text-purple-600'
+        )}
+      >
+        {isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+      </span>
+    </button>
+  );
+}

@@ -10,6 +10,7 @@ import {
  
 } from '../../components/candidate/landing/Sections';
 import HeroHome from '../../components/candidate/landing/Hero';
+import { BottomNav } from '../../components/common/Footer';
 
 
 import Footer from '../../components/common/Footer';
@@ -109,6 +110,7 @@ const Landing = () => {
       <Working />
       <Properties />
       <HighLights />
+      <BottomNav/>
       <Footer />
     </div>
   );

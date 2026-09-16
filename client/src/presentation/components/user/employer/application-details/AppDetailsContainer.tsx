@@ -21,12 +21,14 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
   );
   const [showRejectReason, setShowRejectReason] = useState<boolean>(false);
   const [showInterview, setShowInterview] = useState<boolean>(false);
+  const [chatroomId, setChatroomId] = useState<string | null>(null);
 
   useEffect(() => {
     const getApplication = async () => {
       try {
         const data = await applicationService.getApplicationDetails(id);
         setApplication(data.application);
+        setChatroomId(data.application?.chatroomId ?? null);
       } catch (error: any) {
         showToast({
           msg: error?.response?.data.message || error.message,
@@ -38,8 +40,6 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
   }, []);
 
   const onSchedule = (status: ApplicationStatusType) => {
-    console.log('from onschedule', status);
-
     setApplication((prev) => {
       if (prev) {
         return { ...prev, status: status };
@@ -90,6 +90,8 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
   };
 
   if (!application) return null;
+  console.log('application', application);
+
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <CandidateData
@@ -97,6 +99,8 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
         role={role}
         updateStatus={updateAppStatus}
         application={application}
+        chatroomId={chatroomId}
+        onViewClick={setShowInterview}
       />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-3 gap-5">
         <LeftComponent application={application} />
@@ -115,16 +119,19 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
         item="Application"
       />
       <InterviewModal
+        setChatroomId={setChatroomId}
         jobTitle={application.job.title}
         appId={application.id}
         isOpen={showInterview}
         onClose={() => setShowInterview(false)}
         onSchedule={onSchedule}
+
         candidate={{
           name: application.candidate.candidateName,
           email: application.candidate.email,
           applied: application.appliedAt,
           status: application.status,
+          profileImg: application.candidate.profileImg,
           initials: application.candidate.candidateName.charAt(0).toUpperCase(),
         }}
       />

@@ -1,1184 +1,1026 @@
-import React, { useState, useMemo, useCallback, createContext, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Search,
-  MapPin,
-  Bookmark,
-  Briefcase,
-  Clock,
-  Users,
-  CalendarClock,
-  SlidersHorizontal,
-  ChevronDown,
-  X,
-  ArrowRight,
-  Building2,
-  AlertTriangle,
-  FolderSearch,
-  ChevronLeft,
-  ChevronRight,
   Bell,
-  User,
-  Sun,
-  Moon,
+  ChevronDown,
+  Building2,
+  Briefcase,
+  Users,
+  ClipboardList,
+  Star,
+  CalendarClock,
+  AlertCircle,
+  CalendarCheck,
+  CalendarPlus,
+  Hourglass,
+  XCircle,
+  ArrowRight,
+  Sparkles,
+  Eye,
+  FileText,
+  CalendarDays,
+  Video,
+  MapPin,
+  Phone,
+  CalendarX2,
+  Workflow,
+  MapPinned,
+  Sparkle,
+  CheckCircle2,
+  History,
+  BellRing,
 } from "lucide-react";
 
-/* ------------------------------------------------------------------ */
-/*  Theme system — plain color-token map, not Tailwind's dark: variant */
-/*  (safe regardless of how the host project's Tailwind is configured) */
-/* ------------------------------------------------------------------ */
+// ============================================================================
+// HireNest — Company Dashboard (single-file version)
+// ============================================================================
+// Everything a recruiter needs at first login, in one file:
+//   Header → Overview stats → Needs Your Attention → Recent Applications
+//   → Recent Activity → Upcoming Interviews → Hiring Pipeline
+//   → Active Job Openings (summary cards, not full management) → Reminders
+//
+// Deliberately excludes deep management flows (editing a job, running an
+// interview, full application review) — those belong on their own pages.
+// Buttons here (`onManageJob`, `onViewInterview`, etc.) are hooks to navigate
+// into those pages from your router.
+//
+// Swap `mockDashboardData` for a real API response — types are designed to
+// match a typical REST payload shape 1:1.
+// ============================================================================
 
-const THEME_TOKENS = {
-  light: {
-    pageBg: "bg-slate-50",
-    pageText: "text-slate-900",
-    navBg: "bg-white",
-    navBorder: "border-slate-100",
-    navMuted: "text-slate-500",
-    navActive: "text-purple-600",
-    navIconBg: "hover:bg-slate-100",
-    navAvatarBg: "bg-purple-50 border border-purple-100 text-purple-600",
-    heroGradient: "bg-gradient-to-b from-purple-50 via-white to-white",
-    blobA: "bg-purple-100",
-    blobB: "bg-violet-100",
-    heading: "text-slate-900",
-    subheading: "text-slate-500",
-    surface: "bg-white",
-    surfaceBorder: "border-slate-200",
-    inputFocus: "focus-within:bg-purple-50",
-    inputText: "text-slate-700",
-    placeholder: "placeholder:text-slate-400",
-    dividerV: "bg-slate-200",
-    dividerH: "bg-slate-100",
-    iconMuted: "text-slate-400",
-    cardBg: "bg-white",
-    cardBorder: "border-slate-200",
-    cardHoverBorder: "hover:border-purple-200",
-    cardTitle: "text-slate-900",
-    cardTitleHover: "group-hover:text-purple-700",
-    companyName: "text-slate-700",
-    verifiedText: "text-slate-400",
-    metaBadgeBg: "bg-purple-50",
-    metaBadgeText: "text-purple-700",
-    metaBadgeBorder: "border-purple-100",
-    skillChipBg: "bg-slate-50",
-    skillChipText: "text-slate-600",
-    skillChipBorder: "border-slate-200",
-    salaryText: "text-slate-800",
-    footerText: "text-slate-500",
-    dropdownBg: "bg-white",
-    dropdownBorder: "border-slate-200",
-    dropdownHover: "hover:bg-purple-50",
-    filterBg: "bg-white",
-    filterText: "text-slate-600",
-    filterBorder: "border-slate-200",
-    filterHover: "hover:border-purple-200 hover:text-purple-700",
-    filterActiveBg: "bg-purple-50",
-    filterActiveText: "text-purple-700",
-    filterActiveBorder: "border-purple-200",
-    dashedBorder: "border-slate-300",
-    chipBg: "bg-purple-50",
-    chipText: "text-purple-700",
-    chipBorder: "border-purple-100",
-    resultsMuted: "text-slate-500",
-    resultsStrong: "text-slate-800",
-    sortHover: "hover:bg-slate-50",
-    skeletonBg: "bg-slate-100",
-    emptyIconBg: "bg-purple-50",
-    emptyIconBorder: "border-purple-100",
-    emptyIconText: "text-purple-500",
-    errorIconBg: "bg-rose-50",
-    errorIconBorder: "border-rose-100",
-    errorIconText: "text-rose-500",
-    warnText: "text-amber-600",
-    paginationText: "text-slate-500",
-    paginationHover: "hover:bg-purple-50",
-    toastBg: "bg-slate-900",
-    toastText: "text-white",
-    overlay: "bg-slate-900",
+// ---- Types ------------------------------------------------------------------
+
+type ApplicationStatus =
+  | "pending"
+  | "reviewed"
+  | "shortlisted"
+  | "interview_scheduled"
+  | "interview_completed"
+  | "hired"
+  | "rejected"
+  | "withdrawn";
+
+type JobStatus = "active" | "closing_soon" | "paused" | "closed";
+type JobType = "Full-time" | "Part-time" | "Contract" | "Internship";
+type WorkMode = "Remote" | "Hybrid" | "On-site";
+type InterviewType = "Online" | "Offline" | "Phone Screen";
+type InterviewStatus = "upcoming" | "today" | "completed" | "missed" | "cancelled";
+
+interface Candidate {
+  id: string;
+  name: string;
+  avatarInitials: string;
+  avatarColor: string; // tailwind gradient classes
+}
+
+interface JobOpening {
+  id: string;
+  title: string;
+  vacancies: number;
+  totalApplicants: number;
+  newApplicants: number;
+  deadline: string; // ISO date
+  jobType: JobType;
+  workMode: WorkMode;
+  status: JobStatus;
+}
+
+interface Application {
+  id: string;
+  candidate: Candidate;
+  jobTitle: string;
+  jobId: string;
+  appliedAt: string; // ISO datetime
+  status: ApplicationStatus;
+}
+
+interface Interview {
+  id: string;
+  candidate: Candidate;
+  jobTitle: string;
+  date: string; // ISO date
+  time: string;
+  type: InterviewType;
+  location?: string;
+  status: InterviewStatus;
+}
+
+type AttentionItemKind =
+  | "new_applications"
+  | "needs_scheduling"
+  | "interview_today"
+  | "deadline_approaching"
+  | "interview_missed";
+
+interface AttentionItem {
+  id: string;
+  kind: AttentionItemKind;
+  title: string;
+  subtitle: string;
+  meta?: string;
+  actionLabel: string;
+  urgent?: boolean;
+}
+
+interface PipelineStage {
+  key: ApplicationStatus;
+  label: string;
+  count: number;
+}
+
+interface ActivityEvent {
+  id: string;
+  description: string;
+  timestamp: string;
+}
+
+interface HiringOverviewStats {
+  activeJobs: number;
+  totalApplicants: number;
+  pendingApplications: number;
+  shortlisted: number;
+  upcomingInterviews: number;
+}
+
+export interface DashboardData {
+  companyName: string;
+  overview: HiringOverviewStats;
+  attentionItems: AttentionItem[];
+  recentApplications: Application[];
+  upcomingInterviews: Interview[];
+  pipeline: PipelineStage[];
+  activeJobs: JobOpening[];
+  recentActivity: ActivityEvent[];
+}
+
+// ---- Mock data (replace with API response) ----------------------------------
+
+export const mockDashboardData: DashboardData = {
+  companyName: "Nimbus Technologies",
+
+  overview: {
+    activeJobs: 5,
+    totalApplicants: 62,
+    pendingApplications: 12,
+    shortlisted: 8,
+    upcomingInterviews: 4,
   },
-  dark: {
-    pageBg: "bg-slate-950",
-    pageText: "text-slate-100",
-    navBg: "bg-slate-900",
-    navBorder: "border-slate-800",
-    navMuted: "text-slate-400",
-    navActive: "text-purple-400",
-    navIconBg: "hover:bg-slate-800",
-    navAvatarBg: "bg-purple-950 border border-purple-800 text-purple-300",
-    heroGradient: "bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950",
-    blobA: "bg-purple-950",
-    blobB: "bg-violet-950",
-    heading: "text-white",
-    subheading: "text-slate-400",
-    surface: "bg-slate-900",
-    surfaceBorder: "border-slate-800",
-    inputFocus: "focus-within:bg-slate-800",
-    inputText: "text-slate-100",
-    placeholder: "placeholder:text-slate-500",
-    dividerV: "bg-slate-800",
-    dividerH: "bg-slate-800",
-    iconMuted: "text-slate-500",
-    cardBg: "bg-slate-900",
-    cardBorder: "border-slate-800",
-    cardHoverBorder: "hover:border-purple-700",
-    cardTitle: "text-white",
-    cardTitleHover: "group-hover:text-purple-400",
-    companyName: "text-slate-300",
-    verifiedText: "text-slate-500",
-    metaBadgeBg: "bg-purple-950",
-    metaBadgeText: "text-purple-300",
-    metaBadgeBorder: "border-purple-900",
-    skillChipBg: "bg-slate-800",
-    skillChipText: "text-slate-300",
-    skillChipBorder: "border-slate-700",
-    salaryText: "text-slate-100",
-    footerText: "text-slate-400",
-    dropdownBg: "bg-slate-900",
-    dropdownBorder: "border-slate-800",
-    dropdownHover: "hover:bg-slate-800",
-    filterBg: "bg-slate-900",
-    filterText: "text-slate-300",
-    filterBorder: "border-slate-800",
-    filterHover: "hover:border-purple-700 hover:text-purple-300",
-    filterActiveBg: "bg-purple-950",
-    filterActiveText: "text-purple-300",
-    filterActiveBorder: "border-purple-800",
-    dashedBorder: "border-slate-700",
-    chipBg: "bg-purple-950",
-    chipText: "text-purple-300",
-    chipBorder: "border-purple-900",
-    resultsMuted: "text-slate-400",
-    resultsStrong: "text-slate-100",
-    sortHover: "hover:bg-slate-800",
-    skeletonBg: "bg-slate-800",
-    emptyIconBg: "bg-purple-950",
-    emptyIconBorder: "border-purple-900",
-    emptyIconText: "text-purple-400",
-    errorIconBg: "bg-rose-950",
-    errorIconBorder: "border-rose-900",
-    errorIconText: "text-rose-400",
-    warnText: "text-amber-400",
-    paginationText: "text-slate-400",
-    paginationHover: "hover:bg-slate-800",
-    toastBg: "bg-slate-100",
-    toastText: "text-slate-900",
-    overlay: "bg-black",
-  },
+
+  attentionItems: [
+    {
+      id: "att-1",
+      kind: "new_applications",
+      title: "5 new applications need review",
+      subtitle: "React Developer",
+      meta: "Received today",
+      actionLabel: "Review applications",
+      urgent: true,
+    },
+    {
+      id: "att-2",
+      kind: "interview_today",
+      title: "1 interview is scheduled today",
+      subtitle: "Sarah Thomas — React Developer",
+      meta: "3:00 PM",
+      actionLabel: "View interview",
+      urgent: true,
+    },
+    {
+      id: "att-3",
+      kind: "needs_scheduling",
+      title: "2 shortlisted candidates need interview scheduling",
+      subtitle: "Backend Developer",
+      actionLabel: "Schedule now",
+    },
+    {
+      id: "att-4",
+      kind: "deadline_approaching",
+      title: "React Developer applications close in 3 days",
+      subtitle: "24 applicants so far",
+      meta: "Deadline: Sep 25",
+      actionLabel: "View job",
+    },
+    {
+      id: "att-5",
+      kind: "interview_missed",
+      title: "1 interview was missed",
+      subtitle: "Michael Chen — UI Developer",
+      meta: "Yesterday, 11:00 AM",
+      actionLabel: "Reschedule",
+    },
+  ],
+
+  recentApplications: [
+    { id: "app-1", candidate: { id: "c1", name: "Alex Johnson", avatarInitials: "AJ", avatarColor: "from-fuchsia-500 to-purple-600" }, jobTitle: "React Developer", jobId: "job-1", appliedAt: "2026-09-15T09:50:00", status: "pending" },
+    { id: "app-2", candidate: { id: "c2", name: "Rahul Kumar", avatarInitials: "RK", avatarColor: "from-indigo-500 to-blue-600" }, jobTitle: "Backend Developer", jobId: "job-2", appliedAt: "2026-09-15T09:00:00", status: "shortlisted" },
+    { id: "app-3", candidate: { id: "c3", name: "Anu Thomas", avatarInitials: "AT", avatarColor: "from-rose-500 to-fuchsia-600" }, jobTitle: "UI Developer", jobId: "job-3", appliedAt: "2026-09-15T07:30:00", status: "reviewed" },
+    { id: "app-4", candidate: { id: "c4", name: "Priya Nair", avatarInitials: "PN", avatarColor: "from-amber-500 to-orange-600" }, jobTitle: "React Developer", jobId: "job-1", appliedAt: "2026-09-14T16:10:00", status: "pending" },
+    { id: "app-5", candidate: { id: "c5", name: "David Wilson", avatarInitials: "DW", avatarColor: "from-emerald-500 to-teal-600" }, jobTitle: "DevOps Engineer", jobId: "job-4", appliedAt: "2026-09-14T13:45:00", status: "interview_scheduled" },
+    { id: "app-6", candidate: { id: "c6", name: "Meera Pillai", avatarInitials: "MP", avatarColor: "from-fuchsia-500 to-purple-600" }, jobTitle: "Backend Developer", jobId: "job-2", appliedAt: "2026-09-14T10:20:00", status: "rejected" },
+  ],
+
+  upcomingInterviews: [
+    { id: "int-1", candidate: { id: "c7", name: "Sarah Thomas", avatarInitials: "ST", avatarColor: "from-fuchsia-500 to-purple-600" }, jobTitle: "React Developer", date: "2026-09-15", time: "3:00 PM", type: "Online", status: "today" },
+    { id: "int-2", candidate: { id: "c8", name: "John Mathew", avatarInitials: "JM", avatarColor: "from-indigo-500 to-blue-600" }, jobTitle: "Backend Developer", date: "2026-09-16", time: "11:30 AM", type: "Online", status: "upcoming" },
+    { id: "int-3", candidate: { id: "c9", name: "Fathima Rasheed", avatarInitials: "FR", avatarColor: "from-rose-500 to-fuchsia-600" }, jobTitle: "UI Developer", date: "2026-09-17", time: "2:00 PM", type: "Offline", location: "Nimbus HQ, 4th Floor", status: "upcoming" },
+    { id: "int-4", candidate: { id: "c10", name: "Karthik Iyer", avatarInitials: "KI", avatarColor: "from-amber-500 to-orange-600" }, jobTitle: "DevOps Engineer", date: "2026-09-18", time: "10:00 AM", type: "Phone Screen", status: "upcoming" },
+  ],
+
+  pipeline: [
+    { key: "pending", label: "Pending", count: 24 },
+    { key: "reviewed", label: "Reviewed", count: 15 },
+    { key: "shortlisted", label: "Shortlisted", count: 8 },
+    { key: "interview_scheduled", label: "Interview", count: 4 },
+    { key: "hired", label: "Hired", count: 1 },
+  ],
+
+  activeJobs: [
+    { id: "job-1", title: "React Developer", vacancies: 3, totalApplicants: 24, newApplicants: 5, deadline: "2026-09-25", jobType: "Full-time", workMode: "Hybrid", status: "closing_soon" },
+    { id: "job-2", title: "Backend Developer", vacancies: 2, totalApplicants: 15, newApplicants: 3, deadline: "2026-10-02", jobType: "Full-time", workMode: "Remote", status: "active" },
+    { id: "job-3", title: "UI Developer", vacancies: 1, totalApplicants: 11, newApplicants: 1, deadline: "2026-10-05", jobType: "Full-time", workMode: "On-site", status: "active" },
+  ],
+
+  recentActivity: [
+    { id: "act-1", description: "Sarah was shortlisted for React Developer", timestamp: "10 minutes ago" },
+    { id: "act-2", description: "Interview scheduled with John Mathew", timestamp: "1 hour ago" },
+    { id: "act-3", description: "New application received from Priya Nair", timestamp: "2 hours ago" },
+    { id: "act-4", description: "Backend Developer job published", timestamp: "Yesterday" },
+  ],
 };
 
-const ThemeContext = createContext({ mode: "light", t: THEME_TOKENS.light, toggle: () => {} });
-const useTheme = () => useContext(ThemeContext);
+// ---- Small shared utils -------------------------------------------------------
 
-function cx(...parts) {
-  return parts.filter(Boolean).join(" ");
+function cn(...classes: Array<string | false | null | undefined>): string {
+  return classes.filter(Boolean).join(" ");
 }
 
-/* ------------------------------------------------------------------ */
-/*  Mock data — shaped exactly like the JobCardDto from the backend    */
-/* ------------------------------------------------------------------ */
-
-const MOCK_JOBS = [
-  {
-    id: "job_1",
-    companyLogo: "",
-    companyName: "TechNova Solutions",
-    location: { city: "Kochi", state: "Kerala" },
-    title: "Senior MERN Stack Developer",
-    jobType: "Full Time",
-    experience: "2-5 Years",
-    mode: "Remote",
-    min_salary: 600000,
-    max_salary: 1000000,
-    createdAt: daysAgo(2),
-    lastDate: daysFromNow(15),
-    skills: ["React", "Node.js", "MongoDB", "TypeScript", "Redux"],
-    vacancyCount: "5",
-    status: "active",
-  },
-  {
-    id: "job_2",
-    companyLogo: "",
-    companyName: "Northwind Labs",
-    location: { city: "Bengaluru", state: "Karnataka" },
-    title: "Frontend Developer",
-    jobType: "Full Time",
-    experience: "1-3 Years",
-    mode: "Hybrid",
-    min_salary: 500000,
-    max_salary: 800000,
-    createdAt: daysAgo(0),
-    lastDate: daysFromNow(2),
-    skills: ["React", "Tailwind CSS", "JavaScript"],
-    vacancyCount: "3",
-    status: "active",
-  },
-  {
-    id: "job_3",
-    companyLogo: "",
-    companyName: "Orbit Systems",
-    location: { city: "Pune", state: "Maharashtra" },
-    title: "Backend Developer",
-    jobType: "Full Time",
-    experience: "3-6 Years",
-    mode: "On-site",
-    min_salary: 700000,
-    max_salary: 1200000,
-    createdAt: daysAgo(5),
-    lastDate: daysFromNow(20),
-    skills: ["Node.js", "Express", "MongoDB", "Docker", "AWS", "Redis"],
-    vacancyCount: "2",
-    status: "active",
-  },
-  {
-    id: "job_4",
-    companyLogo: "",
-    companyName: "Bluepeak Digital",
-    location: { city: "Kochi", state: "Kerala" },
-    title: "Full Stack Developer",
-    jobType: "Full Time",
-    experience: "2-4 Years",
-    mode: "Remote",
-    min_salary: 650000,
-    max_salary: 950000,
-    createdAt: daysAgo(1),
-    lastDate: daysFromNow(30),
-    skills: ["React", "Node.js", "MongoDB", "GraphQL"],
-    vacancyCount: "4",
-    status: "active",
-  },
-  {
-    id: "job_5",
-    companyLogo: "",
-    companyName: "Studio Loom",
-    location: { city: "Remote", state: "" },
-    title: "UI/UX Designer",
-    jobType: "Contract",
-    experience: "2-5 Years",
-    mode: "Remote",
-    min_salary: 450000,
-    max_salary: 700000,
-    createdAt: daysAgo(7),
-    lastDate: daysFromNow(10),
-    skills: ["Figma", "Design Systems", "Prototyping"],
-    vacancyCount: "1",
-    status: "active",
-  },
-  {
-    id: "job_6",
-    companyLogo: "",
-    companyName: "Cirrus Cloud Co.",
-    location: { city: "Hyderabad", state: "Telangana" },
-    title: "DevOps Engineer",
-    jobType: "Full Time",
-    experience: "3-7 Years",
-    mode: "Hybrid",
-    min_salary: 900000,
-    max_salary: 1500000,
-    createdAt: daysAgo(3),
-    lastDate: daysFromNow(1),
-    skills: ["AWS", "Kubernetes", "Docker", "Terraform", "CI/CD"],
-    vacancyCount: "2",
-    status: "active",
-  },
-  {
-    id: "job_7",
-    companyLogo: "",
-    companyName: "Vertex Analytics",
-    location: { city: "Chennai", state: "Tamil Nadu" },
-    title: "MERN Stack Developer",
-    jobType: "Full Time",
-    experience: "0-2 Years",
-    mode: "On-site",
-    min_salary: 400000,
-    max_salary: 650000,
-    createdAt: daysAgo(10),
-    lastDate: daysFromNow(25),
-    skills: ["React", "Express", "MongoDB", "Node.js"],
-    vacancyCount: "6",
-    status: "active",
-  },
-  {
-    id: "job_8",
-    companyLogo: "",
-    companyName: "Paperplane Ventures",
-    location: { city: "Kochi", state: "Kerala" },
-    title: "Frontend Engineer",
-    jobType: "Part Time",
-    experience: "1-3 Years",
-    mode: "Remote",
-    min_salary: 350000,
-    max_salary: 550000,
-    createdAt: daysAgo(4),
-    lastDate: daysFromNow(12),
-    skills: ["React", "TypeScript", "Tailwind CSS"],
-    vacancyCount: "2",
-    status: "active",
-  },
-  {
-    id: "job_9",
-    companyLogo: "",
-    companyName: "Ledger & Co",
-    location: { city: "Mumbai", state: "Maharashtra" },
-    title: "Backend Engineer (Node.js)",
-    jobType: "Full Time",
-    experience: "4-8 Years",
-    mode: "On-site",
-    min_salary: 1100000,
-    max_salary: 1800000,
-    createdAt: daysAgo(14),
-    lastDate: daysFromNow(18),
-    skills: ["Node.js", "PostgreSQL", "MongoDB", "Microservices"],
-    vacancyCount: "1",
-    status: "active",
-  },
-];
-
-function daysAgo(n) {
-  const d = new Date();
-  d.setDate(d.getDate() - n);
-  return d.toISOString();
-}
-function daysFromNow(n) {
-  const d = new Date();
-  d.setDate(d.getDate() + n);
-  return d.toISOString();
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
 }
 
-/* ------------------------------------------------------------------ */
-/*  Formatting helpers                                                  */
-/* ------------------------------------------------------------------ */
-
-function formatSalary(min, max) {
-  const fmt = (n) => {
-    if (n >= 100000) return `₹${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)}L`;
-    return `₹${n.toLocaleString("en-IN")}`;
-  };
-  return `${fmt(min)} – ${fmt(max)} / yr`;
+function timeAgo(isoDate: string): string {
+  const diffMs = Date.now() - new Date(isoDate).getTime();
+  const minutes = Math.floor(diffMs / 60000);
+  if (minutes < 1) return "Just now";
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  const days = Math.floor(hours / 24);
+  if (days === 1) return "Yesterday";
+  return `${days} days ago`;
 }
 
-function formatRelativeDate(iso) {
-  const diffMs = Date.now() - new Date(iso).getTime();
-  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  if (days <= 0) return "Posted today";
-  if (days === 1) return "Posted yesterday";
-  if (days < 7) return `Posted ${days} days ago`;
-  const weeks = Math.floor(days / 7);
-  if (weeks === 1) return "Posted 1 week ago";
-  if (weeks < 5) return `Posted ${weeks} weeks ago`;
-  return `Posted ${Math.floor(days / 30)} month${days > 60 ? "s" : ""} ago`;
+function formatShortDate(isoDate: string): string {
+  return new Date(isoDate).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-function formatDeadline(iso) {
-  const diffMs = new Date(iso).getTime() - Date.now();
-  const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  const label = new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  if (days <= 0) return { text: "Closed", urgent: true };
-  if (days <= 3) return { text: `${days} day${days > 1 ? "s" : ""} left`, urgent: true };
-  return { text: `Apply before ${label}`, urgent: false };
+function daysUntil(isoDate: string): number {
+  const target = new Date(isoDate).setHours(0, 0, 0, 0);
+  const today = new Date().setHours(0, 0, 0, 0);
+  return Math.round((target - today) / 86400000);
 }
 
-function formatLocation(location) {
-  if (!location) return "Location not specified";
-  if (location.city === "Remote" && !location.state) return "Remote";
-  return [location.city, location.state].filter(Boolean).join(", ");
-}
+const applicationStatusStyles: Record<ApplicationStatus, { label: string; badgeClass: string; dotClass: string }> = {
+  pending: { label: "Pending", badgeClass: "bg-amber-50 text-amber-700 ring-1 ring-amber-200", dotClass: "bg-amber-500" },
+  reviewed: { label: "Reviewed", badgeClass: "bg-slate-100 text-slate-700 ring-1 ring-slate-200", dotClass: "bg-slate-500" },
+  shortlisted: { label: "Shortlisted", badgeClass: "bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-200", dotClass: "bg-fuchsia-500" },
+  interview_scheduled: { label: "Interview Scheduled", badgeClass: "bg-purple-50 text-purple-700 ring-1 ring-purple-200", dotClass: "bg-purple-500" },
+  interview_completed: { label: "Interview Completed", badgeClass: "bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200", dotClass: "bg-indigo-500" },
+  hired: { label: "Hired", badgeClass: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200", dotClass: "bg-emerald-500" },
+  rejected: { label: "Rejected", badgeClass: "bg-rose-50 text-rose-700 ring-1 ring-rose-200", dotClass: "bg-rose-400" },
+  withdrawn: { label: "Withdrawn", badgeClass: "bg-slate-50 text-slate-500 ring-1 ring-slate-200", dotClass: "bg-slate-400" },
+};
 
-/* ------------------------------------------------------------------ */
-/*  Theme toggle                                                        */
-/* ------------------------------------------------------------------ */
+const jobStatusStyles: Record<JobStatus, { label: string; badgeClass: string }> = {
+  active: { label: "Active", badgeClass: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200" },
+  closing_soon: { label: "Closing Soon", badgeClass: "bg-amber-50 text-amber-700 ring-1 ring-amber-200" },
+  paused: { label: "Paused", badgeClass: "bg-slate-100 text-slate-600 ring-1 ring-slate-200" },
+  closed: { label: "Closed", badgeClass: "bg-rose-50 text-rose-600 ring-1 ring-rose-200" },
+};
 
-function ThemeToggle() {
-  const { mode, toggle } = useTheme();
-  const isDark = mode === "dark";
-  return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      className={cx(
-        "relative h-9 w-16 rounded-full border transition-colors duration-300 flex items-center px-1",
-        isDark ? "bg-slate-800 border-slate-700" : "bg-purple-50 border-purple-100"
-      )}
-    >
-      <span
-        className={cx(
-          "h-7 w-7 rounded-full flex items-center justify-center shadow-md transition-transform duration-300",
-          isDark ? "translate-x-7 bg-slate-900 text-purple-300" : "translate-x-0 bg-white text-purple-600"
-        )}
-      >
-        {isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-      </span>
-    </button>
-  );
-}
+const interviewStatusStyles: Record<InterviewStatus, { label: string; badgeClass: string }> = {
+  today: { label: "Today", badgeClass: "bg-fuchsia-50 text-fuchsia-700 ring-1 ring-fuchsia-200" },
+  upcoming: { label: "Upcoming", badgeClass: "bg-slate-100 text-slate-600 ring-1 ring-slate-200" },
+  completed: { label: "Completed", badgeClass: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200" },
+  missed: { label: "Missed", badgeClass: "bg-rose-50 text-rose-600 ring-1 ring-rose-200" },
+  cancelled: { label: "Cancelled", badgeClass: "bg-slate-50 text-slate-400 ring-1 ring-slate-200" },
+};
 
-/* ------------------------------------------------------------------ */
-/*  Small reusable pieces                                              */
-/* ------------------------------------------------------------------ */
+// ---- Shared small pieces ------------------------------------------------------
 
-function CompanyLogo({ src, name }) {
-  const { t } = useTheme();
-  const [broken, setBroken] = useState(false);
-  const initials = name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-
-  if (src && !broken) {
-    return (
-      <img
-        src={src}
-        alt={name}
-        onError={() => setBroken(true)}
-        className={cx(
-          "h-11 w-11 sm:h-12 sm:w-12 rounded-xl object-cover ring-1 shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5",
-          t.surface,
-          t.surfaceBorder
-        )}
-      />
-    );
-  }
+const Avatar: React.FC<{ initials: string; gradientClass: string; size?: "sm" | "md" }> = ({
+  initials,
+  gradientClass,
+  size = "md",
+}) => {
+  const sizeClass = size === "sm" ? "h-8 w-8 text-xs" : "h-10 w-10 text-sm";
   return (
     <div
-      className={cx(
-        "h-11 w-11 sm:h-12 sm:w-12 shrink-0 rounded-xl flex items-center justify-center font-semibold text-sm shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5",
-        t.metaBadgeBg,
-        t.metaBadgeText,
-        "ring-1",
-        t.metaBadgeBorder
+      className={cn(
+        "flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br font-semibold text-white shadow-sm ring-2 ring-white",
+        gradientClass,
+        sizeClass
       )}
     >
       {initials}
     </div>
   );
-}
+};
 
-function SkillChip({ label }) {
-  const { t } = useTheme();
-  return (
-    <span className={cx("inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium", t.skillChipBg, t.skillChipText, t.skillChipBorder)}>
-      {label}
-    </span>
-  );
-}
-
-function JobMetaBadge({ icon: Icon, label }) {
-  const { t } = useTheme();
-  return (
-    <span className={cx("inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium border", t.metaBadgeBg, t.metaBadgeText, t.metaBadgeBorder)}>
-      {Icon && <Icon className="h-3.5 w-3.5" />}
-      {label}
-    </span>
-  );
-}
-
-function SalaryDisplay({ min, max }) {
-  const { t } = useTheme();
-  return <p className={cx("text-base font-semibold", t.salaryText)}>{formatSalary(min, max)}</p>;
-}
-
-function DeadlineBadge({ lastDate }) {
-  const { t } = useTheme();
-  const { text, urgent } = formatDeadline(lastDate);
-  return <span className={cx("text-xs font-medium", urgent ? t.warnText : t.footerText)}>{text}</span>;
-}
-
-function BookmarkButton({ saved, onToggle }) {
-  const { t } = useTheme();
-  return (
-    <button
-      type="button"
-      aria-pressed={saved}
-      aria-label={saved ? "Remove from saved jobs" : "Save job"}
-      onClick={(e) => {
-        e.stopPropagation();
-        onToggle();
-      }}
-      className={cx(
-        "h-9 w-9 sm:h-8 sm:w-8 shrink-0 rounded-lg flex items-center justify-center transition-all duration-200",
-        saved ? "bg-purple-600 text-white shadow-md" : cx(t.surface, t.iconMuted, "border", t.surfaceBorder, "hover:text-purple-600 hover:border-purple-300")
-      )}
-    >
-      <Bookmark className="h-4 w-4" fill={saved ? "currentColor" : "none"} />
-    </button>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Job card                                                           */
-/* ------------------------------------------------------------------ */
-
-const VISIBLE_SKILLS = 3;
-
-function JobCard({ job, saved, onToggleSave, onView }) {
-  const { t } = useTheme();
-  const extraSkills = Math.max(0, job.skills.length - VISIBLE_SKILLS);
-  const isNew = (Date.now() - new Date(job.createdAt).getTime()) / (1000 * 60 * 60 * 24) < 1;
-
-  return (
-    <div
-      role="link"
-      tabIndex={0}
-      onClick={() => onView(job.id)}
-      onKeyDown={(e) => (e.key === "Enter" ? onView(job.id) : null)}
-      className={cx(
-        "group relative rounded-2xl border p-4 sm:p-5 flex flex-col gap-3.5 sm:gap-4 cursor-pointer min-w-0",
-        "transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-2xl transform-gpu",
-        t.cardBg,
-        t.cardBorder,
-        t.cardHoverBorder
-      )}
-    >
-      {/* top row */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-start gap-3 min-w-0">
-          <CompanyLogo src={job.companyLogo} name={job.companyName} />
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <p className={cx("text-sm font-medium truncate max-w-40 sm:max-w-36", t.companyName)}>{job.companyName}</p>
-              {isNew && (
-                <span className={cx("text-xs font-semibold tracking-wide rounded-full px-1.5 py-0.5 border", t.metaBadgeText, t.metaBadgeBg, t.metaBadgeBorder)}>
-                  New
-                </span>
-              )}
-            </div>
-            <p className={cx("text-xs", t.verifiedText)}>Verified company</p>
-          </div>
-        </div>
-        <BookmarkButton saved={saved} onToggle={() => onToggleSave(job.id)} />
-      </div>
-
-      {/* title */}
-      <div className="min-w-0">
-        <h3 className={cx("text-base sm:text-lg font-semibold leading-snug break-words", t.cardTitle, t.cardTitleHover, "transition-colors")}>
-          {job.title}
-        </h3>
-        <p className={cx("mt-1 flex items-center gap-1 text-sm", t.subheading)}>
-          <MapPin className="h-3.5 w-3.5 shrink-0" />
-          <span className="truncate">{formatLocation(job.location)}</span>
-        </p>
-      </div>
-
-      {/* meta badges */}
-      <div className="flex flex-wrap gap-1.5">
-        <JobMetaBadge icon={Briefcase} label={job.jobType} />
-        <JobMetaBadge icon={Building2} label={job.mode} />
-        <JobMetaBadge icon={Clock} label={job.experience} />
-      </div>
-
-      {/* salary */}
-      <SalaryDisplay min={job.min_salary} max={job.max_salary} />
-
-      {/* skills */}
-      <div className="flex flex-wrap gap-1.5">
-        {job.skills.slice(0, VISIBLE_SKILLS).map((s) => (
-          <SkillChip key={s} label={s} />
-        ))}
-        {extraSkills > 0 && <SkillChip label={`+${extraSkills}`} />}
-      </div>
-
-      <div className={cx("h-px", t.dividerH)} />
-
-      {/* footer */}
-      <div className={cx("flex items-center justify-between text-xs", t.footerText)}>
-        <span className="flex items-center gap-1">
-          <Users className="h-3.5 w-3.5" />
-          {job.vacancyCount} openings
-        </span>
-        <span>{formatRelativeDate(job.createdAt)}</span>
-      </div>
-
-      <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-1 text-xs min-w-0">
-          <CalendarClock className={cx("h-3.5 w-3.5 shrink-0", t.iconMuted)} />
-          <DeadlineBadge lastDate={job.lastDate} />
-        </span>
-        <span className="flex items-center gap-1 text-sm font-medium text-purple-600 group-hover:gap-2 transition-all shrink-0">
-          View job <ArrowRight className="h-4 w-4" />
-        </span>
-      </div>
+const EmptyState: React.FC<{
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  actionLabel?: string;
+  onAction?: () => void;
+}> = ({ icon: Icon, title, description, actionLabel, onAction }) => (
+  <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/60 px-6 py-10 text-center">
+    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-fuchsia-50 to-purple-50 ring-1 ring-fuchsia-100">
+      <Icon className="h-6 w-6 text-fuchsia-500" strokeWidth={1.75} />
     </div>
-  );
-}
-
-function JobCardSkeleton() {
-  const { t } = useTheme();
-  return (
-    <div className={cx("rounded-2xl border p-4 sm:p-5 flex flex-col gap-4 animate-pulse", t.cardBg, t.cardBorder)}>
-      <div className="flex items-center gap-3">
-        <div className={cx("h-12 w-12 rounded-xl", t.skeletonBg)} />
-        <div className="flex-1 space-y-2">
-          <div className={cx("h-3 w-28 rounded", t.skeletonBg)} />
-          <div className={cx("h-2 w-16 rounded", t.skeletonBg)} />
-        </div>
-        <div className={cx("h-8 w-8 rounded-lg", t.skeletonBg)} />
-      </div>
-      <div className="space-y-2">
-        <div className={cx("h-4 w-3/4 rounded", t.skeletonBg)} />
-        <div className={cx("h-3 w-1/2 rounded", t.skeletonBg)} />
-      </div>
-      <div className="flex gap-1.5">
-        <div className={cx("h-5 w-16 rounded-lg", t.skeletonBg)} />
-        <div className={cx("h-5 w-16 rounded-lg", t.skeletonBg)} />
-        <div className={cx("h-5 w-16 rounded-lg", t.skeletonBg)} />
-      </div>
-      <div className={cx("h-4 w-28 rounded", t.skeletonBg)} />
-      <div className="flex gap-1.5">
-        <div className={cx("h-5 w-14 rounded-full", t.skeletonBg)} />
-        <div className={cx("h-5 w-14 rounded-full", t.skeletonBg)} />
-        <div className={cx("h-5 w-10 rounded-full", t.skeletonBg)} />
-      </div>
-      <div className={cx("h-px", t.dividerH)} />
-      <div className="flex justify-between">
-        <div className={cx("h-3 w-16 rounded", t.skeletonBg)} />
-        <div className={cx("h-3 w-16 rounded", t.skeletonBg)} />
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Empty / error states                                               */
-/* ------------------------------------------------------------------ */
-
-function EmptyJobsState({ onClear }) {
-  const { t } = useTheme();
-  return (
-    <div className="col-span-full flex flex-col items-center justify-center text-center py-16 sm:py-20 px-6">
-      <div className={cx("h-16 w-16 rounded-2xl border flex items-center justify-center mb-5", t.emptyIconBg, t.emptyIconBorder)}>
-        <FolderSearch className={cx("h-7 w-7", t.emptyIconText)} />
-      </div>
-      <h3 className={cx("text-lg font-semibold", t.cardTitle)}>No jobs found</h3>
-      <p className={cx("mt-1.5 text-sm max-w-sm", t.subheading)}>Try adjusting your search or removing some filters.</p>
+    <h3 className="text-sm font-semibold text-slate-800">{title}</h3>
+    <p className="mt-1 max-w-xs text-sm text-slate-500">{description}</p>
+    {actionLabel && (
       <button
-        onClick={onClear}
-        className="mt-5 inline-flex items-center gap-1.5 rounded-xl bg-purple-600 text-white text-sm font-medium px-4 py-2.5 hover:bg-purple-700 transition-colors shadow-md"
+        onClick={onAction}
+        className="mt-4 rounded-xl bg-gradient-to-b from-fuchsia-500 to-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-sm shadow-fuchsia-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-fuchsia-300"
       >
-        Clear all filters
+        {actionLabel}
       </button>
-    </div>
-  );
-}
+    )}
+  </div>
+);
 
-function JobErrorState({ onRetry }) {
-  const { t } = useTheme();
-  return (
-    <div className="col-span-full flex flex-col items-center justify-center text-center py-16 sm:py-20 px-6">
-      <div className={cx("h-16 w-16 rounded-2xl border flex items-center justify-center mb-5", t.errorIconBg, t.errorIconBorder)}>
-        <AlertTriangle className={cx("h-7 w-7", t.errorIconText)} />
+const shimmer = "animate-pulse bg-slate-100";
+
+const StatCardSkeleton: React.FC = () => (
+  <div className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+    <div className={cn(shimmer, "mb-4 h-10 w-10 rounded-xl")} />
+    <div className={cn(shimmer, "mb-2 h-3 w-20 rounded-md")} />
+    <div className={cn(shimmer, "mb-2 h-7 w-16 rounded-md")} />
+    <div className={cn(shimmer, "h-3 w-24 rounded-md")} />
+  </div>
+);
+
+const ApplicationRowSkeleton: React.FC = () => (
+  <div className="flex items-center gap-4 rounded-xl border border-slate-100 bg-white p-4">
+    <div className={cn(shimmer, "h-10 w-10 rounded-full")} />
+    <div className="flex-1 space-y-2">
+      <div className={cn(shimmer, "h-3.5 w-32 rounded-md")} />
+      <div className={cn(shimmer, "h-3 w-24 rounded-md")} />
+    </div>
+    <div className={cn(shimmer, "h-6 w-20 rounded-full")} />
+  </div>
+);
+
+const InterviewCardSkeleton: React.FC = () => (
+  <div className="rounded-2xl border border-slate-100 bg-white p-4">
+    <div className="mb-3 flex items-center gap-3">
+      <div className={cn(shimmer, "h-10 w-10 rounded-full")} />
+      <div className="flex-1 space-y-2">
+        <div className={cn(shimmer, "h-3.5 w-28 rounded-md")} />
+        <div className={cn(shimmer, "h-3 w-20 rounded-md")} />
       </div>
-      <h3 className={cx("text-lg font-semibold", t.cardTitle)}>Unable to load jobs</h3>
-      <p className={cx("mt-1.5 text-sm max-w-sm", t.subheading)}>Something went wrong while fetching job opportunities.</p>
-      <button
-        onClick={onRetry}
-        className="mt-5 inline-flex items-center gap-1.5 rounded-xl bg-purple-600 text-white text-sm font-medium px-4 py-2.5 hover:bg-purple-700 transition-colors shadow-md"
-      >
-        Try again
-      </button>
     </div>
-  );
-}
+    <div className={cn(shimmer, "h-8 w-full rounded-lg")} />
+  </div>
+);
 
-/* ------------------------------------------------------------------ */
-/*  Navbar                                                              */
-/* ------------------------------------------------------------------ */
+const JobCardSkeleton: React.FC = () => (
+  <div className="rounded-2xl border border-slate-100 bg-white p-5">
+    <div className={cn(shimmer, "mb-3 h-4 w-36 rounded-md")} />
+    <div className={cn(shimmer, "mb-2 h-3 w-full rounded-md")} />
+    <div className={cn(shimmer, "mb-4 h-3 w-2/3 rounded-md")} />
+    <div className={cn(shimmer, "h-8 w-full rounded-lg")} />
+  </div>
+);
 
-function CandidateNavbar() {
-  const { t } = useTheme();
-  return (
-    <header className={cx("sticky top-0 z-30 border-b", t.navBg, t.navBorder)}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-8">
-          <span className={cx("text-lg font-bold", t.cardTitle)}>
-            Hire<span className="text-purple-600">Nest</span>
+const PipelineStageSkeleton: React.FC = () => (
+  <div className="rounded-2xl border border-slate-100 bg-white p-4 text-center">
+    <div className={cn(shimmer, "mx-auto mb-2 h-6 w-10 rounded-md")} />
+    <div className={cn(shimmer, "mx-auto h-3 w-16 rounded-md")} />
+  </div>
+);
+
+// ---- Dashboard Header ---------------------------------------------------------
+
+const DashboardHeader: React.FC<{ companyName: string; notificationCount?: number }> = ({
+  companyName,
+  notificationCount = 0,
+}) => (
+  <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 className="text-xl font-semibold tracking-tight text-slate-800 sm:text-2xl">
+        {getGreeting()}, <span className="text-fuchsia-600">{companyName}</span>
+      </h1>
+      <p className="mt-1 text-sm text-slate-500">Here&apos;s an overview of your hiring activity.</p>
+    </div>
+
+    <div className="flex items-center gap-3 self-end sm:self-auto">
+      <button
+        aria-label="Notifications"
+        className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:text-fuchsia-600 hover:shadow-md"
+      >
+        <Bell className="h-[18px] w-[18px]" strokeWidth={1.75} />
+        {notificationCount > 0 && (
+          <span className="absolute -right-1 -top-1 flex h-4.5 min-w-[18px] items-center justify-center rounded-full bg-fuchsia-500 px-1 text-[10px] font-semibold text-white ring-2 ring-white">
+            {notificationCount}
           </span>
-          <nav className={cx("hidden md:flex items-center gap-6 text-sm font-medium", t.navMuted)}>
-            <a className={t.navActive} href="#">Jobs</a>
-            <a className="hover:text-purple-600 transition-colors" href="#">Companies</a>
-            <a className="hover:text-purple-600 transition-colors" href="#">My Applications</a>
-            <a className="hover:text-purple-600 transition-colors" href="#">Saved Jobs</a>
-          </nav>
-        </div>
-        <div className="flex items-center gap-2 sm:gap-3">
-          <ThemeToggle />
-          <button className={cx("h-9 w-9 rounded-full hidden sm:flex items-center justify-center transition-colors", t.navMuted, t.navIconBg)}>
-            <Bell className="h-5 w-5" />
-          </button>
-          <button className={cx("h-9 w-9 rounded-full flex items-center justify-center", t.navAvatarBg)}>
-            <User className="h-5 w-5" />
-          </button>
-        </div>
-      </div>
-    </header>
-  );
+        )}
+      </button>
+
+      <button className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white py-1.5 pl-1.5 pr-3 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-fuchsia-500 to-purple-600 text-white">
+          <Building2 className="h-4 w-4" strokeWidth={1.75} />
+        </span>
+        <span className="hidden text-sm font-medium text-slate-700 sm:inline">{companyName}</span>
+        <ChevronDown className="h-3.5 w-3.5 text-slate-400" strokeWidth={2} />
+      </button>
+    </div>
+  </header>
+);
+
+// ---- Hiring Overview Cards ------------------------------------------------------
+
+interface StatDefinition {
+  key: keyof HiringOverviewStats;
+  label: string;
+  description: string;
+  icon: React.ElementType;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Hero + search bar                                                   */
-/* ------------------------------------------------------------------ */
-
-function JobSearchHero({ keyword, setKeyword, location, setLocation, onSearch }) {
-  const { t } = useTheme();
-  return (
-    <section className={cx("relative overflow-hidden", t.heroGradient)}>
-      <div className={cx("pointer-events-none absolute -top-24 -left-16 h-72 w-72 rounded-full blur-3xl", t.blobA)} />
-      <div className={cx("pointer-events-none absolute top-10 right-0 h-64 w-64 rounded-full blur-3xl", t.blobB)} />
-
-      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-8 sm:pb-10 text-center">
-        <h1 className={cx("text-2xl sm:text-4xl font-bold tracking-tight", t.heading)}>Find your next opportunity</h1>
-        <p className={cx("mt-3 max-w-xl mx-auto text-sm sm:text-base", t.subheading)}>
-          Discover jobs that match your skills, experience, and career goals.
-        </p>
-
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSearch();
-          }}
-          className={cx("mt-7 sm:mt-8 rounded-2xl border shadow-xl p-2 flex flex-col sm:flex-row gap-2", t.surface, t.surfaceBorder)}
-        >
-          <div className={cx("flex items-center gap-2 flex-1 px-3 py-3 sm:py-2.5 rounded-xl transition-colors", t.inputFocus)}>
-            <Search className={cx("h-4 w-4 shrink-0", t.iconMuted)} />
-            <input
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              placeholder="Job title, skills, or keywords"
-              className={cx("w-full bg-transparent outline-none text-sm min-w-0", t.inputText, t.placeholder)}
-            />
-          </div>
-          <div className={cx("hidden sm:block w-px my-2", t.dividerV)} />
-          <div className={cx("flex items-center gap-2 flex-1 px-3 py-3 sm:py-2.5 rounded-xl transition-colors", t.inputFocus)}>
-            <MapPin className={cx("h-4 w-4 shrink-0", t.iconMuted)} />
-            <input
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="City, state, or remote"
-              className={cx("w-full bg-transparent outline-none text-sm min-w-0", t.inputText, t.placeholder)}
-            />
-          </div>
-          <button
-            type="submit"
-            className="shrink-0 rounded-xl bg-purple-600 text-white text-sm font-medium px-6 py-3 sm:py-2.5 hover:bg-purple-700 active:scale-95 transition-all shadow-md"
-          >
-            Search Jobs
-          </button>
-        </form>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Filter controls (desktop row + mobile drawer)                       */
-/* ------------------------------------------------------------------ */
-
-const FILTER_DEFS = [
-  { key: "jobType", label: "Job Type", options: ["Full Time", "Part Time", "Contract"] },
-  { key: "mode", label: "Work Mode", options: ["Remote", "Hybrid", "On-site"] },
-  { key: "experience", label: "Experience", options: ["0-2 Years", "1-3 Years", "2-5 Years", "3-7 Years", "4-8 Years"] },
+const STAT_DEFINITIONS: StatDefinition[] = [
+  { key: "activeJobs", label: "Active Jobs", description: "Currently hiring", icon: Briefcase },
+  { key: "totalApplicants", label: "Total Applicants", description: "Across all openings", icon: Users },
+  { key: "pendingApplications", label: "Pending Applications", description: "Needs your review", icon: ClipboardList },
+  { key: "shortlisted", label: "Shortlisted", description: "Ready for interview", icon: Star },
+  { key: "upcomingInterviews", label: "Upcoming Interviews", description: "Scheduled ahead", icon: CalendarClock },
 ];
 
-function FilterDropdown({ label, options, active, onToggle }) {
-  const { t } = useTheme();
-  const [open, setOpen] = useState(false);
-  const count = active.length;
-  return (
-    <div className="relative">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        className={cx(
-          "inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-sm font-medium transition-colors",
-          count > 0 ? cx(t.filterActiveBorder, t.filterActiveBg, t.filterActiveText) : cx(t.filterBorder, t.filterBg, t.filterText, t.filterHover)
-        )}
-      >
-        {label}
-        {count > 0 && <span className="text-purple-500">({count})</span>}
-        <ChevronDown className="h-3.5 w-3.5" />
-      </button>
-      {open && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className={cx("absolute z-20 mt-2 w-52 rounded-xl border shadow-lg p-2", t.dropdownBg, t.dropdownBorder)}>
-            {options.map((opt) => (
-              <label key={opt} className={cx("flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm cursor-pointer", t.filterText, t.dropdownHover)}>
-                <input type="checkbox" checked={active.includes(opt)} onChange={() => onToggle(opt)} className="accent-purple-600 h-3.5 w-3.5" />
-                {opt}
-              </label>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
-function JobFilterControls({ filters, onToggleFilter, onOpenMobileFilters }) {
-  const { t } = useTheme();
-  const activeCount = Object.values(filters).reduce((sum, arr) => sum + arr.length, 0);
-
-  return (
-    <>
-      {/* desktop / tablet row */}
-      <div className="hidden sm:flex flex-wrap items-center gap-2">
-        {FILTER_DEFS.map((f) => (
-          <FilterDropdown key={f.key} label={f.label} options={f.options} active={filters[f.key]} onToggle={(opt) => onToggleFilter(f.key, opt)} />
+const HiringOverviewCards: React.FC<{ stats: HiringOverviewStats; isLoading?: boolean }> = ({ stats, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        {STAT_DEFINITIONS.map((s) => (
+          <StatCardSkeleton key={s.key} />
         ))}
-        <button
-          className={cx(
-            "inline-flex items-center gap-1.5 rounded-xl border border-dashed px-3.5 py-2 text-sm font-medium transition-colors",
-            t.dashedBorder,
-            t.footerText,
-            "hover:border-purple-300 hover:text-purple-600"
-          )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      {STAT_DEFINITIONS.map(({ key, label, description, icon: Icon }) => (
+        <div
+          key={key}
+          className="group relative overflow-hidden rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-200/60"
         >
-          <SlidersHorizontal className="h-3.5 w-3.5" />
-          More Filters
-        </button>
-      </div>
-
-      {/* mobile: single "Filters" button */}
-      <button
-        onClick={onOpenMobileFilters}
-        className={cx("sm:hidden inline-flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-sm font-medium", t.filterBorder, t.filterBg, t.filterText)}
-      >
-        <SlidersHorizontal className="h-4 w-4" />
-        Filters
-        {activeCount > 0 && <span className="text-purple-600">({activeCount})</span>}
-      </button>
-    </>
-  );
-}
-
-function MobileFilterDrawer({ open, onClose, filters, onToggleFilter, onClearAll }) {
-  const { t } = useTheme();
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-40 sm:hidden">
-      <div className={cx("absolute inset-0 opacity-40", t.overlay)} onClick={onClose} />
-      <div className={cx("absolute bottom-0 left-0 right-0 rounded-t-2xl border-t max-h-screen overflow-y-auto", t.surface, t.surfaceBorder)}>
-        <div className="flex items-center justify-between px-5 pt-5 pb-3">
-          <h3 className={cx("text-base font-semibold", t.cardTitle)}>Filters</h3>
-          <button onClick={onClose} className={cx("h-8 w-8 rounded-lg flex items-center justify-center", t.footerText, t.dropdownHover)}>
-            <X className="h-4 w-4" />
-          </button>
+          <div className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-gradient-to-br from-fuchsia-50 to-purple-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          <div className="relative mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-fuchsia-50 to-purple-50 ring-1 ring-fuchsia-100">
+            <Icon className="h-5 w-5 text-fuchsia-600" strokeWidth={1.75} />
+          </div>
+          <p className="relative text-[13px] font-medium text-slate-500">{label}</p>
+          <p className="relative mt-1 text-2xl font-semibold text-slate-800">{stats[key]}</p>
+          <p className="relative mt-0.5 text-xs text-slate-400">{description}</p>
         </div>
-        <div className="px-5 pb-6 space-y-5">
-          {FILTER_DEFS.map((f) => (
-            <div key={f.key}>
-              <p className={cx("text-sm font-medium mb-2", t.cardTitle)}>{f.label}</p>
-              <div className="flex flex-wrap gap-2">
-                {f.options.map((opt) => {
-                  const active = filters[f.key].includes(opt);
-                  return (
-                    <button
-                      key={opt}
-                      onClick={() => onToggleFilter(f.key, opt)}
-                      className={cx(
-                        "rounded-full border px-3 py-2 text-sm font-medium transition-colors",
-                        active ? cx(t.filterActiveBorder, t.filterActiveBg, t.filterActiveText) : cx(t.filterBorder, t.filterBg, t.filterText)
-                      )}
-                    >
-                      {opt}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className={cx("sticky bottom-0 flex gap-3 px-5 py-4 border-t", t.surface, t.surfaceBorder)}>
-          <button onClick={onClearAll} className={cx("flex-1 rounded-xl border py-3 text-sm font-medium", t.filterBorder, t.filterText)}>
-            Clear all
-          </button>
-          <button onClick={onClose} className="flex-1 rounded-xl bg-purple-600 text-white py-3 text-sm font-medium hover:bg-purple-700 transition-colors">
-            Show results
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ActiveFilterChips({ chips, onRemove, onClearAll }) {
-  const { t } = useTheme();
-  if (chips.length === 0) return null;
-  return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className={cx("text-xs font-medium", t.footerText)}>Active filters:</span>
-      {chips.map((c) => (
-        <span key={c} className={cx("inline-flex items-center gap-1 rounded-full border text-xs font-medium pl-2.5 pr-1.5 py-1", t.chipBg, t.chipBorder, t.chipText)}>
-          {c}
-          <button onClick={() => onRemove(c)} className={cx("rounded-full p-0.5", t.dropdownHover)}>
-            <X className="h-3 w-3" />
-          </button>
-        </span>
       ))}
-      <button onClick={onClearAll} className={cx("text-xs font-medium ml-1 hover:text-purple-600", t.footerText)}>
-        Clear all
-      </button>
     </div>
   );
-}
+};
 
-/* ------------------------------------------------------------------ */
-/*  Results header                                                      */
-/* ------------------------------------------------------------------ */
+// ---- Needs Your Attention -------------------------------------------------------
 
-const SORT_OPTIONS = ["Most Relevant", "Newest", "Salary: High to Low", "Salary: Low to High"];
+const KIND_ICON: Record<AttentionItemKind, React.ElementType> = {
+  new_applications: AlertCircle,
+  needs_scheduling: CalendarPlus,
+  interview_today: CalendarCheck,
+  deadline_approaching: Hourglass,
+  interview_missed: XCircle,
+};
 
-function JobResultsHeader({ count, sort, setSort }) {
-  const { t } = useTheme();
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="flex items-center justify-between flex-wrap gap-3">
-      <p className={cx("text-sm", t.resultsMuted)}>
-        <span className={cx("font-semibold", t.resultsStrong)}>{count.toLocaleString("en-IN")}</span> jobs found
-      </p>
-      <div className="relative">
-        <button onClick={() => setOpen((o) => !o)} className={cx("inline-flex items-center gap-1.5 text-sm font-medium hover:text-purple-600", t.filterText)}>
-          Sort by: <span className={t.resultsStrong}>{sort}</span>
-          <ChevronDown className="h-3.5 w-3.5" />
-        </button>
-        {open && (
-          <>
-            <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-            <div className={cx("absolute right-0 z-20 mt-2 w-52 rounded-xl border shadow-lg p-1.5", t.dropdownBg, t.dropdownBorder)}>
-              {SORT_OPTIONS.map((o) => (
-                <button
-                  key={o}
-                  onClick={() => {
-                    setSort(o);
-                    setOpen(false);
-                  }}
-                  className={cx(
-                    "w-full text-left px-2.5 py-2 rounded-lg text-sm transition-colors",
-                    o === sort ? cx(t.filterActiveBg, t.filterActiveText, "font-medium") : cx(t.filterText, t.sortHover)
+const AttentionSection: React.FC<{ items: AttentionItem[] }> = ({ items }) => (
+  <section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
+    <div className="mb-4 flex items-center gap-2">
+      <Sparkles className="h-4 w-4 text-fuchsia-500" strokeWidth={2} />
+      <h2 className="text-sm font-semibold text-slate-800">Needs Your Attention</h2>
+    </div>
+
+    {items.length === 0 ? (
+      <EmptyState icon={Sparkles} title="You're all caught up" description="New hiring tasks will show up here as they come in." />
+    ) : (
+      <ul className="space-y-3">
+        {items.map((item) => {
+          const Icon = KIND_ICON[item.kind];
+          return (
+            <li
+              key={item.id}
+              className="group flex flex-col gap-3 rounded-xl border border-slate-100 bg-slate-50/60 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-fuchsia-100 hover:bg-white hover:shadow-md sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div className="flex items-start gap-3">
+                <span
+                  className={cn(
+                    "mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ring-1",
+                    item.urgent ? "bg-fuchsia-50 text-fuchsia-600 ring-fuchsia-100" : "bg-slate-100 text-slate-500 ring-slate-200"
                   )}
                 >
-                  {o}
-                </button>
+                  <Icon className="h-4 w-4" strokeWidth={1.75} />
+                </span>
+                <div>
+                  <p className="text-sm font-medium text-slate-800">{item.title}</p>
+                  <p className="text-xs text-slate-500">
+                    {item.subtitle}
+                    {item.meta && <span className="text-slate-400"> · {item.meta}</span>}
+                  </p>
+                </div>
+              </div>
+
+              <button className="flex shrink-0 items-center justify-center gap-1.5 self-start rounded-lg bg-white px-3.5 py-2 text-xs font-semibold text-fuchsia-600 ring-1 ring-fuchsia-200 transition-all duration-300 hover:bg-fuchsia-50 sm:self-auto">
+                {item.actionLabel}
+                <ArrowRight className="h-3.5 w-3.5" strokeWidth={2} />
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    )}
+  </section>
+);
+
+// ---- Recent Applications ---------------------------------------------------------
+
+const StatusBadge: React.FC<{ status: ApplicationStatus }> = ({ status }) => {
+  const style = applicationStatusStyles[status];
+  return (
+    <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium", style.badgeClass)}>
+      <span className={cn("h-1.5 w-1.5 rounded-full", style.dotClass)} />
+      {style.label}
+    </span>
+  );
+};
+
+const RecentApplications: React.FC<{
+  applications: Application[];
+  isLoading?: boolean;
+  onView?: (id: string) => void;
+}> = ({ applications, isLoading, onView }) => (
+  <section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
+    <div className="mb-4 flex items-center justify-between">
+      <h2 className="text-sm font-semibold text-slate-800">Recent Applications</h2>
+      <button className="text-xs font-medium text-fuchsia-600 hover:text-fuchsia-700">View all</button>
+    </div>
+
+    {isLoading ? (
+      <div className="space-y-3">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <ApplicationRowSkeleton key={i} />
+        ))}
+      </div>
+    ) : applications.length === 0 ? (
+      <EmptyState icon={FileText} title="No applications yet" description="Applications will appear here when candidates apply to your job openings." />
+    ) : (
+      <>
+        <div className="hidden overflow-hidden rounded-xl border border-slate-100 sm:block">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="border-b border-slate-100 bg-slate-50/70 text-xs font-medium uppercase tracking-wide text-slate-400">
+                <th className="px-4 py-3 font-medium">Candidate</th>
+                <th className="px-4 py-3 font-medium">Job Title</th>
+                <th className="px-4 py-3 font-medium">Applied</th>
+                <th className="px-4 py-3 font-medium">Status</th>
+                <th className="px-4 py-3 font-medium text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {applications.map((app) => (
+                <tr key={app.id} className="border-b border-slate-50 transition-colors duration-200 last:border-0 hover:bg-slate-50/60">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <Avatar initials={app.candidate.avatarInitials} gradientClass={app.candidate.avatarColor} size="sm" />
+                      <span className="font-medium text-slate-800">{app.candidate.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-slate-600">{app.jobTitle}</td>
+                  <td className="px-4 py-3 text-slate-500">{timeAgo(app.appliedAt)}</td>
+                  <td className="px-4 py-3">
+                    <StatusBadge status={app.status} />
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={() => onView?.(app.id)}
+                      aria-label={`View ${app.candidate.name}'s application`}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition-all duration-200 hover:bg-fuchsia-50 hover:text-fuchsia-600"
+                    >
+                      <Eye className="h-4 w-4" strokeWidth={1.75} />
+                    </button>
+                  </td>
+                </tr>
               ))}
+            </tbody>
+          </table>
+        </div>
+
+        <ul className="space-y-3 sm:hidden">
+          {applications.map((app) => (
+            <li key={app.id} className="flex items-center gap-3 rounded-xl border border-slate-100 p-3 transition-all duration-200 active:scale-[0.99]">
+              <Avatar initials={app.candidate.avatarInitials} gradientClass={app.candidate.avatarColor} />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-slate-800">{app.candidate.name}</p>
+                <p className="truncate text-xs text-slate-500">{app.jobTitle}</p>
+                <p className="mt-1 text-[11px] text-slate-400">{timeAgo(app.appliedAt)}</p>
+              </div>
+              <div className="flex shrink-0 flex-col items-end gap-2">
+                <StatusBadge status={app.status} />
+                <button onClick={() => onView?.(app.id)} className="text-[11px] font-medium text-fuchsia-600">
+                  View
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </section>
+);
+
+// ---- Recent Activity ---------------------------------------------------------
+
+const HiringActivity: React.FC<{ events: ActivityEvent[] }> = ({ events }) => (
+  <section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
+    <div className="mb-4 flex items-center gap-2">
+      <History className="h-4 w-4 text-fuchsia-500" strokeWidth={2} />
+      <h2 className="text-sm font-semibold text-slate-800">Recent Activity</h2>
+    </div>
+
+    {events.length === 0 ? (
+      <EmptyState icon={History} title="No recent activity" description="Hiring updates will show up here as they happen." />
+    ) : (
+      <ul className="space-y-4">
+        {events.map((event, i) => (
+          <li key={event.id} className="relative flex gap-3 pl-1">
+            <div className="flex flex-col items-center">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-fuchsia-50 ring-1 ring-fuchsia-100">
+                <CheckCircle2 className="h-3 w-3 text-fuchsia-500" strokeWidth={2} />
+              </span>
+              {i !== events.length - 1 && <span className="mt-1 h-full w-px flex-1 bg-slate-100" />}
             </div>
-          </>
-        )}
+            <div className="pb-1">
+              <p className="text-sm text-slate-700">{event.description}</p>
+              <p className="text-xs text-slate-400">{event.timestamp}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+);
+
+// ---- Upcoming Interviews ---------------------------------------------------------
+
+const TYPE_ICON: Record<InterviewType, React.ElementType> = {
+  Online: Video,
+  Offline: MapPin,
+  "Phone Screen": Phone,
+};
+
+const UpcomingInterviews: React.FC<{
+  interviews: Interview[];
+  isLoading?: boolean;
+  onView?: (id: string) => void;
+}> = ({ interviews, isLoading, onView }) => (
+  <section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
+    <div className="mb-4 flex items-center justify-between">
+      <h2 className="text-sm font-semibold text-slate-800">Upcoming Interviews</h2>
+      <button className="text-xs font-medium text-fuchsia-600 hover:text-fuchsia-700">View all</button>
+    </div>
+
+    {isLoading ? (
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <InterviewCardSkeleton key={i} />
+        ))}
+      </div>
+    ) : interviews.length === 0 ? (
+      <EmptyState icon={CalendarX2} title="No upcoming interviews" description="Scheduled interviews will appear here." />
+    ) : (
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {interviews.map((interview) => {
+          const TypeIcon = TYPE_ICON[interview.type];
+          const statusStyle = interviewStatusStyles[interview.status];
+          return (
+            <div
+              key={interview.id}
+              className="group flex flex-col rounded-2xl border border-slate-100 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-fuchsia-100 hover:shadow-lg hover:shadow-slate-200/60"
+            >
+              <div className="mb-3 flex items-start justify-between gap-2">
+                <div className="flex items-center gap-3">
+                  <Avatar initials={interview.candidate.avatarInitials} gradientClass={interview.candidate.avatarColor} />
+                  <div>
+                    <p className="text-sm font-medium text-slate-800">{interview.candidate.name}</p>
+                    <p className="text-xs text-slate-500">{interview.jobTitle}</p>
+                  </div>
+                </div>
+                <span className={cn("shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium", statusStyle.badgeClass)}>
+                  {statusStyle.label}
+                </span>
+              </div>
+
+              <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-500">
+                <span className="flex items-center gap-1.5">
+                  <CalendarDays className="h-3.5 w-3.5 text-slate-400" strokeWidth={1.75} />
+                  {formatShortDate(interview.date)} · {interview.time}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <TypeIcon className="h-3.5 w-3.5 text-fuchsia-500" strokeWidth={1.75} />
+                  {interview.type === "Offline" && interview.location ? interview.location : interview.type}
+                </span>
+              </div>
+
+              <button
+                onClick={() => onView?.(interview.id)}
+                className="mt-auto rounded-xl bg-slate-50 py-2 text-xs font-semibold text-slate-700 ring-1 ring-slate-200 transition-all duration-300 group-hover:bg-fuchsia-50 group-hover:text-fuchsia-700 group-hover:ring-fuchsia-200"
+              >
+                View Interview
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    )}
+  </section>
+);
+
+// ---- Hiring Pipeline ---------------------------------------------------------
+
+const HiringPipeline: React.FC<{ stages: PipelineStage[]; isLoading?: boolean }> = ({ stages, isLoading }) => {
+  const maxCount = Math.max(...stages.map((s) => s.count), 1);
+
+  return (
+    <section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
+      <div className="mb-4 flex items-center gap-2">
+        <Workflow className="h-4 w-4 text-fuchsia-500" strokeWidth={2} />
+        <h2 className="text-sm font-semibold text-slate-800">Hiring Pipeline</h2>
+      </div>
+
+      {isLoading ? (
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <PipelineStageSkeleton key={i} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+          {stages.map((stage, i) => {
+            const isLast = i === stages.length - 1;
+            const barWidth = Math.max((stage.count / maxCount) * 100, 6);
+            return (
+              <div
+                key={stage.key}
+                className="flex flex-col items-center rounded-xl border border-slate-100 bg-slate-50/50 p-3 text-center transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-md"
+              >
+                <p className={cn("text-xl font-semibold", isLast ? "text-fuchsia-600" : "text-slate-800")}>{stage.count}</p>
+                <p className="mt-0.5 text-[11px] font-medium text-slate-500">{stage.label}</p>
+                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+                  <div
+                    className={cn("h-full rounded-full", isLast ? "bg-gradient-to-r from-fuchsia-500 to-purple-600" : "bg-fuchsia-300")}
+                    style={{ width: `${barWidth}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+};
+
+// ---- Active Job Openings (summary cards) -------------------------------------
+
+const ActiveJobs: React.FC<{
+  jobs: JobOpening[];
+  isLoading?: boolean;
+  onManage?: (id: string) => void;
+  onCreateJob?: () => void;
+}> = ({ jobs, isLoading, onManage, onCreateJob }) => (
+  <section className="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
+    <div className="mb-4 flex items-center justify-between">
+      <h2 className="text-sm font-semibold text-slate-800">Active Job Openings</h2>
+      <button
+        onClick={onCreateJob}
+        className="flex items-center gap-1.5 rounded-lg bg-gradient-to-b from-fuchsia-500 to-fuchsia-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm shadow-fuchsia-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+      >
+        View All Jobs
+      </button>
+    </div>
+
+    {isLoading ? (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <JobCardSkeleton key={i} />
+        ))}
+      </div>
+    ) : jobs.length === 0 ? (
+      <EmptyState
+        icon={Briefcase}
+        title="No active job openings"
+        description="Create a job opening to start hiring candidates."
+        actionLabel="Create Job"
+        onAction={onCreateJob}
+      />
+    ) : (
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {jobs.map((job) => {
+          const statusStyle = jobStatusStyles[job.status];
+          const remaining = daysUntil(job.deadline);
+          return (
+            <div
+              key={job.id}
+              className="flex flex-col rounded-2xl border border-slate-100 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-fuchsia-100 hover:shadow-lg hover:shadow-slate-200/60"
+            >
+              <div className="mb-2 flex items-start justify-between gap-2">
+                <h3 className="text-sm font-semibold text-slate-800">{job.title}</h3>
+                <span className={cn("shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium", statusStyle.badgeClass)}>
+                  {statusStyle.label}
+                </span>
+              </div>
+
+              <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
+                <span className="flex items-center gap-1">
+                  <Briefcase className="h-3.5 w-3.5 text-slate-400" strokeWidth={1.75} />
+                  {job.vacancies} vacanc{job.vacancies === 1 ? "y" : "ies"}
+                </span>
+                <span className="flex items-center gap-1">
+                  <MapPinned className="h-3.5 w-3.5 text-slate-400" strokeWidth={1.75} />
+                  {job.workMode}
+                </span>
+                <span>{job.jobType}</span>
+              </div>
+
+              <div className="mb-4 grid grid-cols-2 gap-3 rounded-xl bg-slate-50/70 p-3">
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4 text-fuchsia-500" strokeWidth={1.75} />
+                  <div>
+                    <p className="text-sm font-semibold text-slate-800">{job.totalApplicants}</p>
+                    <p className="text-[10px] text-slate-400">Applicants</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Sparkle className="h-4 w-4 text-fuchsia-500" strokeWidth={1.75} />
+                  <div>
+                    <p className="text-sm font-semibold text-slate-800">{job.newApplicants}</p>
+                    <p className="text-[10px] text-slate-400">New</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-4 flex items-center gap-1.5 text-xs text-slate-500">
+                <CalendarClock className="h-3.5 w-3.5 text-slate-400" strokeWidth={1.75} />
+                Deadline: {formatShortDate(job.deadline)}
+                {remaining >= 0 && remaining <= 5 && (
+                  <span className="font-medium text-amber-600"> · {remaining} day{remaining === 1 ? "" : "s"} left</span>
+                )}
+              </div>
+
+              <button
+                onClick={() => onManage?.(job.id)}
+                className="mt-auto rounded-xl bg-slate-50 py-2 text-xs font-semibold text-slate-700 ring-1 ring-slate-200 transition-all duration-300 hover:bg-fuchsia-50 hover:text-fuchsia-700 hover:ring-fuchsia-200"
+              >
+                Manage Job
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    )}
+  </section>
+);
+
+// ---- Hiring Reminders ---------------------------------------------------------
+
+interface Reminder {
+  id: string;
+  text: string;
+}
+
+const HiringReminders: React.FC<{ reminders: Reminder[] }> = ({ reminders }) => {
+  if (reminders.length === 0) return null;
+  return (
+    <section className="rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50/70 to-purple-50/40 p-4 sm:p-5">
+      <div className="mb-3 flex items-center gap-2">
+        <BellRing className="h-4 w-4 text-fuchsia-500" strokeWidth={2} />
+        <h2 className="text-sm font-semibold text-slate-800">Hiring Reminders</h2>
+      </div>
+      <ul className="space-y-2">
+        {reminders.map((r) => (
+          <li key={r.id} className="flex items-start gap-2 text-sm text-slate-600">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-fuchsia-400" />
+            {r.text}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+};
+
+function buildReminders(data: DashboardData): Reminder[] {
+  const reminders: Reminder[] = [];
+
+  const todayInterview = data.upcomingInterviews.find((i) => i.status === "today");
+  if (todayInterview) {
+    reminders.push({ id: "r-today", text: `Interview with ${todayInterview.candidate.name} is today at ${todayInterview.time}.` });
+  }
+
+  if (data.overview.pendingApplications > 0) {
+    reminders.push({
+      id: "r-pending",
+      text: `${data.overview.pendingApplications} application${data.overview.pendingApplications === 1 ? "" : "s"} require review.`,
+    });
+  }
+
+  data.activeJobs
+    .filter((j) => j.status === "closing_soon")
+    .forEach((job) => reminders.push({ id: `r-close-${job.id}`, text: `${job.title} applications are closing soon.` }));
+
+  data.attentionItems
+    .filter((a) => a.kind === "needs_scheduling")
+    .forEach((item) =>
+      reminders.push({ id: `r-sched-${item.id}`, text: item.title.charAt(0).toLowerCase() + item.title.slice(1) + "." })
+    );
+
+  return reminders.slice(0, 4);
+}
+
+// ---- Top-level Company Dashboard ------------------------------------------------
+
+interface CompanyDashboardProps {
+  data: DashboardData;
+  isLoading?: boolean;
+  onViewApplication?: (id: string) => void;
+  onViewInterview?: (id: string) => void;
+  onManageJob?: (id: string) => void;
+  onCreateJob?: () => void;
+}
+
+export const CompanyDashboard: React.FC<CompanyDashboardProps> = ({
+  data,
+  isLoading = false,
+  onViewApplication,
+  onViewInterview,
+  onManageJob,
+  onCreateJob,
+}) => {
+  const reminders = buildReminders(data);
+
+  return (
+    <div className="min-h-screen bg-slate-50/50">
+      <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <DashboardHeader companyName={data.companyName} notificationCount={data.overview.pendingApplications} />
+
+        <HiringOverviewCards stats={data.overview} isLoading={isLoading} />
+
+        {!isLoading && <HiringReminders reminders={reminders} />}
+
+        <AttentionSection items={data.attentionItems} />
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <RecentApplications applications={data.recentApplications} isLoading={isLoading} onView={onViewApplication} />
+          </div>
+          <div className="lg:col-span-1">
+            <HiringActivity events={data.recentActivity} />
+          </div>
+        </div>
+
+        <UpcomingInterviews interviews={data.upcomingInterviews} isLoading={isLoading} onView={onViewInterview} />
+
+        <HiringPipeline stages={data.pipeline} isLoading={isLoading} />
+
+        <ActiveJobs jobs={data.activeJobs} isLoading={isLoading} onManage={onManageJob} onCreateJob={onCreateJob} />
       </div>
     </div>
   );
-}
+};
 
-/* ------------------------------------------------------------------ */
-/*  Pagination                                                          */
-/* ------------------------------------------------------------------ */
+// ---- Demo entry point (remove when integrating into your app) ------------------
 
-function Pagination({ page, totalPages, setPage }) {
-  const { t } = useTheme();
-  if (totalPages <= 1) return null;
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-  return (
-    <div className="flex items-center justify-center flex-wrap gap-1.5 pt-4">
-      <button
-        onClick={() => setPage(Math.max(1, page - 1))}
-        disabled={page === 1}
-        className={cx("inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium disabled:opacity-40", t.paginationText, "hover:text-purple-600")}
-      >
-        <ChevronLeft className="h-4 w-4" /> <span className="hidden sm:inline">Previous</span>
-      </button>
-      {pages.map((p) => (
-        <button
-          key={p}
-          onClick={() => setPage(p)}
-          className={cx("h-9 w-9 rounded-lg text-sm font-medium transition-colors", p === page ? "bg-purple-600 text-white shadow-md" : cx(t.paginationText, t.paginationHover))}
-        >
-          {p}
-        </button>
-      ))}
-      <button
-        onClick={() => setPage(Math.min(totalPages, page + 1))}
-        disabled={page === totalPages}
-        className={cx("inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium disabled:opacity-40", t.paginationText, "hover:text-purple-600")}
-      >
-        <span className="hidden sm:inline">Next</span> <ChevronRight className="h-4 w-4" />
-      </button>
-    </div>
-  );
-}
+export default function App() {
+  const [data, setData] = useState<DashboardData | null>(null);
 
-/* ------------------------------------------------------------------ */
-/*  Page                                                                */
-/* ------------------------------------------------------------------ */
-
-const PAGE_SIZE = 6;
-const emptyFilters = { jobType: [], mode: [], experience: [] };
-
-function JobListingPageInner() {
-  const { t } = useTheme();
-  const [keyword, setKeyword] = useState("");
-  const [location, setLocation] = useState("");
-  const [filters, setFilters] = useState(emptyFilters);
-  const [sort, setSort] = useState("Newest");
-  const [page, setPage] = useState(1);
-  const [saved, setSaved] = useState(() => new Set());
-  const [toast, setToast] = useState("");
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-
-  // demo-only view state so loading / empty / error states can be inspected
-  const [viewState, setViewState] = useState("loaded"); // loaded | loading | empty | error
-
-  const toggleFilter = useCallback((key, opt) => {
-    setPage(1);
-    setFilters((prev) => {
-      const has = prev[key].includes(opt);
-      return { ...prev, [key]: has ? prev[key].filter((o) => o !== opt) : [...prev[key], opt] };
-    });
+  useEffect(() => {
+    const timer = setTimeout(() => setData(mockDashboardData), 900);
+    return () => clearTimeout(timer);
   }, []);
-
-  const removeChip = useCallback((chip) => {
-    setPage(1);
-    setFilters((prev) => {
-      const next = { ...prev };
-      for (const k of Object.keys(next)) next[k] = next[k].filter((v) => v !== chip);
-      return next;
-    });
-  }, []);
-
-  const clearAll = useCallback(() => {
-    setFilters(emptyFilters);
-    setKeyword("");
-    setLocation("");
-    setPage(1);
-    setViewState("loaded");
-  }, []);
-
-  const toggleSave = useCallback((id) => {
-    setSaved((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  }, []);
-
-  const handleView = useCallback((id) => {
-    setToast(`Navigating to /jobs/${id}`);
-    window.clearTimeout(handleView._t);
-    handleView._t = window.setTimeout(() => setToast(""), 1800);
-  }, []);
-
-  const filteredJobs = useMemo(() => {
-    if (viewState === "empty") return [];
-    let result = MOCK_JOBS.filter((job) => {
-      const kw = keyword.trim().toLowerCase();
-      const matchesKeyword =
-        !kw || job.title.toLowerCase().includes(kw) || job.companyName.toLowerCase().includes(kw) || job.skills.some((s) => s.toLowerCase().includes(kw));
-
-      const loc = location.trim().toLowerCase();
-      const matchesLocation = !loc || formatLocation(job.location).toLowerCase().includes(loc);
-
-      const matchesJobType = filters.jobType.length === 0 || filters.jobType.includes(job.jobType);
-      const matchesMode = filters.mode.length === 0 || filters.mode.includes(job.mode);
-      const matchesExperience = filters.experience.length === 0 || filters.experience.includes(job.experience);
-
-      return matchesKeyword && matchesLocation && matchesJobType && matchesMode && matchesExperience;
-    });
-
-    switch (sort) {
-      case "Newest":
-        result = [...result].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        break;
-      case "Salary: High to Low":
-        result = [...result].sort((a, b) => b.max_salary - a.max_salary);
-        break;
-      case "Salary: Low to High":
-        result = [...result].sort((a, b) => a.min_salary - b.min_salary);
-        break;
-      default:
-        break; // Most Relevant — keep natural order
-    }
-    return result;
-  }, [keyword, location, filters, sort, viewState]);
-
-  const totalPages = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
-  const pagedJobs = filteredJobs.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-  const activeChips = [...filters.jobType, ...filters.mode, ...filters.experience];
-
-  const simulateLoading = () => {
-    setViewState("loading");
-    window.setTimeout(() => setViewState("loaded"), 1200);
-  };
 
   return (
-    <div className={cx("min-h-screen transition-colors duration-300", t.pageBg, t.pageText)} style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
-      <CandidateNavbar />
-
-      <JobSearchHero keyword={keyword} setKeyword={setKeyword} location={location} setLocation={setLocation} onSearch={() => setPage(1)} />
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
-        <div className="flex flex-col gap-4 -mt-1 sm:-mt-2 mb-6">
-          <div className="flex items-center justify-between flex-wrap gap-3">
-            <JobFilterControls filters={filters} onToggleFilter={toggleFilter} onOpenMobileFilters={() => setMobileFiltersOpen(true)} />
-
-            {/* demo controls — not part of the real product, just for showcasing states */}
-            <div className="hidden md:flex items-center gap-1.5 text-xs">
-              <button onClick={simulateLoading} className={cx("px-2.5 py-1.5 rounded-lg border", t.filterBorder, t.footerText, "hover:text-purple-600")}>
-                Preview loading
-              </button>
-              <button onClick={() => setViewState("empty")} className={cx("px-2.5 py-1.5 rounded-lg border", t.filterBorder, t.footerText, "hover:text-purple-600")}>
-                Preview empty
-              </button>
-              <button onClick={() => setViewState("error")} className={cx("px-2.5 py-1.5 rounded-lg border", t.filterBorder, t.footerText, "hover:text-purple-600")}>
-                Preview error
-              </button>
-            </div>
-          </div>
-          <ActiveFilterChips chips={activeChips} onRemove={removeChip} onClearAll={clearAll} />
-        </div>
-
-        <div className="mb-5">
-          <JobResultsHeader count={filteredJobs.length} sort={sort} setSort={setSort} />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {viewState === "loading" && Array.from({ length: 6 }).map((_, i) => <JobCardSkeleton key={i} />)}
-
-          {viewState === "error" && <JobErrorState onRetry={() => setViewState("loaded")} />}
-
-          {viewState === "loaded" && pagedJobs.length === 0 && <EmptyJobsState onClear={clearAll} />}
-
-          {viewState === "loaded" &&
-            pagedJobs.map((job) => <JobCard key={job.id} job={job} saved={saved.has(job.id)} onToggleSave={toggleSave} onView={handleView} />)}
-        </div>
-
-        {viewState === "loaded" && pagedJobs.length > 0 && (
-          <div className="mt-8">
-            <Pagination page={page} totalPages={totalPages} setPage={setPage} />
-          </div>
-        )}
-      </main>
-
-      <MobileFilterDrawer
-        open={mobileFiltersOpen}
-        onClose={() => setMobileFiltersOpen(false)}
-        filters={filters}
-        onToggleFilter={toggleFilter}
-        onClearAll={clearAll}
-      />
-
-      {toast && (
-        <div className={cx("fixed bottom-6 left-1/2 -translate-x-1/2 text-sm px-4 py-2.5 rounded-xl shadow-lg z-50", t.toastBg, t.toastText)}>{toast}</div>
-      )}
-    </div>
-  );
-}
-
-export default function JobListingPage() {
-  const [mode, setMode] = useState("light");
-  const toggle = useCallback(() => setMode((m) => (m === "light" ? "dark" : "light")), []);
-  const value = useMemo(() => ({ mode, t: THEME_TOKENS[mode], toggle }), [mode, toggle]);
-
-  return (
-    <ThemeContext.Provider value={value}>
-      <JobListingPageInner />
-    </ThemeContext.Provider>
+    <CompanyDashboard
+      data={data ?? mockDashboardData}
+      isLoading={!data}
+      onViewApplication={(id) => console.log("view application", id)}
+      onViewInterview={(id) => console.log("view interview", id)}
+      onManageJob={(id) => console.log("manage job", id)}
+      onCreateJob={() => console.log("create job")}
+    />
   );
 }

@@ -1,3 +1,4 @@
+import { ChevronDown } from 'lucide-react';
 import type { JobCardDto } from '../../../../types/dtos/job.dto';
 
 type Props = {
@@ -109,4 +110,40 @@ function ToolBar({
   );
 }
 
+
 export default ToolBar;
+
+// export function FilterDropdown({ label, options, active, onToggle }:{label:string,options:}) {
+//   //const { t } = useTheme();
+//   const { t } ='light'
+//   const [open, setOpen] = useState(false);
+//   const count = active.length;
+//   return (
+//     <div className="relative">
+//       <button
+//         onClick={() => setOpen((o) => !o)}
+//         className={cx(
+//           "inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-sm font-medium transition-colors",
+//           count > 0 ? cx(t.filterActiveBorder, t.filterActiveBg, t.filterActiveText) : cx(t.filterBorder, t.filterBg, t.filterText, t.filterHover)
+//         )}
+//       >
+//         {label}
+//         {count > 0 && <span className="text-purple-500">({count})</span>}
+//         <ChevronDown className="h-3.5 w-3.5" />
+//       </button>
+//       {open && (
+//         <>
+//           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+//           <div className={cx("absolute z-20 mt-2 w-52 rounded-xl border shadow-lg p-2", t.dropdownBg, t.dropdownBorder)}>
+//             {options.map((opt) => (
+//               <label key={opt} className={cx("flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm cursor-pointer", t.filterText, t.dropdownHover)}>
+//                 <input type="checkbox" checked={active.includes(opt)} onChange={() => onToggle(opt)} className="accent-purple-600 h-3.5 w-3.5" />
+//                 {opt}
+//               </label>
+//             ))}
+//           </div>
+//         </>
+//       )}
+//     </div>
+//   );
+// }

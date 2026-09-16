@@ -1,9 +1,9 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import MeetPage from '../presentation/pages/user/MeetPage';
 
 import ProtectedRoutes from './PrivateRoutes';
 import { CandidateRoutes } from './user.routes/candidate.route';
-
+import ViewCompanyPage from '../presentation/pages/user/candidate/ViewCompanyPage';
 import NotFound from '../presentation/pages/NotFound';
 import Landing from '../presentation/pages/user/Landing';
 import PublicRoutes from './PublicOnlyRoutes';
@@ -18,9 +18,10 @@ import { CompanyRoutes } from './user.routes/company.routes';
 import { AdminRoutes } from './admin.routes';
 import { AdminProtectedRoute } from './PrivateRoutes';
 import JobListing from '../presentation/pages/user/JobListing';
-import JobDetailsPage from '../presentation/components/candidate/jobListing/JobDetailsWrapper';
+
 import Home from '../presentation/pages/user/Home';
 import type { RootState } from '../redux/store';
+import JobDetailsPage from '../presentation/pages/user/candidate/JobDetailsPage';
 import JobListingPage from './Sample';
 
 export const AppRoutes = () => {
@@ -28,10 +29,46 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={user ? <Home /> : <Landing />} />
-      <Route path="/job" element={<JobListingPage/>} />
-
+      <Route path="/job" element={<JobListingPage />} />
+{/* 
       <Route path="/jobs" element={<JobListing />} />
-      <Route path="/jobs/:id" element={<JobDetailsPage />} />
+      <Route path="/jobs/:jobId" element={<JobDetailsPage />} /> */}
+       <Route
+        path="/jobs"
+        element={
+          user?.role === 'candidate' ? (
+            <JobListing />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+
+      <Route
+        path="/jobs/:jobId"
+        element={
+          user?.role === 'candidate' ? (
+            <JobDetailsPage />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+     
+
+      {/* Public routes */}
+      <Route element={<PublicRoutes />}>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/otp" element={<Otp />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/reset-password/:resetToken"
+          element={<ResetPassword />}
+        />
+      </Route>
+
 
       <Route element={<PublicRoutes />}>
         {' '}

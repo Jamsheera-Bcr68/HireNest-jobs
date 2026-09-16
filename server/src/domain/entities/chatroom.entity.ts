@@ -1,5 +1,5 @@
 export interface Chatroom {
-  id?: string;
+  id: string;
   companyId: string;
   candidateId: string;
   jobId: string;

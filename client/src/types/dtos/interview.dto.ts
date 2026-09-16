@@ -18,7 +18,7 @@ export type InterviewDto = {
   jobTitle: string;
   scheduledAt: { date: string; time: string };
   isRescheduleRequested: boolean;
-  status: string;
+  status: InterviewStatusType;
   mode: InterviewMode;
   result?: string;
   company: string;

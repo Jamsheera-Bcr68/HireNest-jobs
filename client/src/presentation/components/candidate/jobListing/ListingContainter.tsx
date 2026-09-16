@@ -1,26 +1,33 @@
 import { useEffect, useState } from 'react';
-import SelectResumeContent from '../applications/ResumeModal';
 
+import {
+  ActiveFilterChips,
+  JobFilterControls,
+  JobResultsHeader,
+  MobileFilterDrawer,
+} from './Filter';
+
+import Pagination from '../../common/Pagination';
 import { useApplications } from '../../../hooks/user/candidate/profile/useApplication';
 import Header from '../../common/home/Header';
 import SearchBar from './SearchBar';
-import Filter from './Filter';
-import ToolBar from './ToolBar';
+
+import { EmptyJobsState, JobCardSkeleton, JobErrorState } from './JobCards';
 import { updateUser } from '../../../../redux/slices/auth.slice';
 import {
   type JobCardDto,
   type JobDetailsDto,
-  type JobDto,
 } from '../../../../types/dtos/job.dto';
 
 import { useToast } from '../../../../shared/toast/use-toast';
 import { jobService } from '../../../../services/api-services/jobService';
-import JobCards from './JobCards';
-import JobDetails from './JobDetails';
+
 import { reportFormSchema } from '../../../../libraries/validations/company/job-form.validation';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import type { StateType } from '../../../../constants/types/user';
+import JobCard from '../Cards';
+import { useTheme } from '../../../../contexts/ThemeContext';
 
 export type ReportFormType = {
   jobId: string;
@@ -42,7 +49,7 @@ export type JobFilterType = {
   companyId?: string;
   status?: string;
 };
-const limit = 9;
+const limit = 12;
 type Props = {
   mode?: 'all' | 'saved';
 };
@@ -56,13 +63,7 @@ function JobListingContainer({ mode }: Props) {
   const industryFilter = searchParams.get('industry');
 
   console.log('job,location,industry', job, location, industryFilter);
-  const {
-    handleApplyClick,
-    showResumeModal,
-    setShowResumeModal,
-    resumes,
-    applyJob,
-  } = useApplications();
+ 
   const { showToast } = useToast();
   const [filter, setFilter] = useState<JobFilterType>({
     search: {
@@ -77,14 +78,37 @@ function JobListingContainer({ mode }: Props) {
     info: '',
   };
 
+  const removeChip = (value: string) => {
+    setFilter((prev) => ({
+      ...prev,
+      jobType: prev.jobType?.filter((item) => item !== value) ?? [],
+      mode: prev.mode?.filter((item) => item !== value) ?? [],
+      experience: prev.experience?.filter((item) => item !== value) ?? [],
+      industry: prev.industry?.filter((item) => item !== value) ?? [],
+      salary: prev.salary?.filter((item) => item !== value) ?? [],
+    }));
+    setSelectedLevels([]);
+    setSelectedTypes((prev) => prev.filter((item) => item !== value));
+    setSelectedModes((prev) => prev.filter((item) => item !== value));
+    setSelectedLevels((prev) => prev.filter((item) => item !== value));
+    setSelectedIndustries((prev) => prev.filter((item) => item !== value));
+    setSelectedSalary((prev) => prev.filter((item) => item !== value));
+
+    setPage(1);
+  };
+
   const [jobs, setJobs] = useState<JobCardDto[]>([]);
   const [totalDocs, setTotalDocs] = useState(0);
   const [page, setPage] = useState(1);
-  const [viewMode, setViewMode] = useState<'split' | 'grid'>('grid');
+
   const [sortBy, setSortBy] = useState('Newest');
   const [activeJobId, setActiveJobId] = useState<string>('');
   const [activeJob, setActiveJob] = useState<JobDetailsDto | null>(null);
   const [error, setError] = useState<ReportFormType>(initialReportForm);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [viewState, setViewState] = useState<
+    'loading' | 'loaded' | 'empty' | 'error'
+  >('loaded');
 
   const user = useSelector((state: StateType) => state.auth.user);
   const dispatch = useDispatch();
@@ -94,6 +118,7 @@ function JobListingContainer({ mode }: Props) {
 
   useEffect(() => {
     async function fetchJobs() {
+      setViewState('loading');
       try {
         let data;
         if (mode === 'saved') {
@@ -105,7 +130,7 @@ function JobListingContainer({ mode }: Props) {
           );
         } else {
           data = await jobService.getJobs(
-            { ...filter, status: 'active' },
+            { ...filter},
             sortBy,
             limit,
             page
@@ -113,9 +138,9 @@ function JobListingContainer({ mode }: Props) {
         }
 
         console.log('after fetching jobs', data);
-       
+
         setJobs(data.jobs);
-        setTotalDocs(jobs.length);
+        setTotalDocs(data.totalDocs);
         if (data.jobs.length > 0 && !activeJobId) {
           setActiveJobId(data.jobs[0].id);
         }
@@ -124,12 +149,16 @@ function JobListingContainer({ mode }: Props) {
           msg: error?.response?.data.message || error.message,
           type: 'error',
         });
+      } finally {
+        setViewState('loaded');
       }
     }
     fetchJobs();
   }, [filter, page, sortBy, mode]);
 
   const handleFilterChange = (data: Partial<JobFilterType>) => {
+    console.log('from filter change');
+
     console.log('data', data);
 
     setFilter((prev) => ({
@@ -302,79 +331,280 @@ function JobListingContainer({ mode }: Props) {
     }
   };
 
-  useEffect(() => {
-    if (window.innerWidth < 1024) {
-      setViewMode('grid');
-    }
-  }, []);
+  const { t } = useTheme();
+  let activeChips: string[] = [];
+  if (filter.jobType) {
+    activeChips = [...activeChips, ...filter.jobType];
+  }
+  if (filter.mode) {
+    activeChips = [...activeChips, ...filter.mode];
+  }
+  if (filter.experience) {
+    activeChips = [...activeChips, ...filter.experience];
+  }
+  if (filter.salary) {
+    activeChips = [...activeChips, ...filter.salary];
+  }
+  if (filter.industry) {
+    activeChips = [...activeChips, ...filter.industry];
+  }
 
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedModes, setSelectedModes] = useState<string[]>([]);
+  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>(
+    filter.industry || []
+  );
+  const [selectedSalary, setSelectedSalary] = useState<string[]>([]);
+
+  const SORT_OPTIONS = [
+    { label: 'Newest', value: 'newest' },
+    { label: 'Salary: High to Low', value: 'salary-high-low' },
+    { label: 'Salary: Low to High', value: 'salary-low-high' },
+    { label: 'Vacancy:high-low', value: 'vacancy-high-low' },
+    { label: 'Last Date', value: 'deadline' },
+  ];
+
+  const clearAll = () => {
+    setSelectedTypes([]);
+    setSelectedLevels([]);
+    setSelectedIndustries([]);
+    setSelectedSalary([]);
+    setSelectedModes([]);
+  }
+  
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800">
+    <div
+      className={cx(
+        'min-h-screen transition-colors duration-300',
+        t.pageBg,
+        t.pageText
+      )}
+      style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+    >
+      {/* <CandidateNavbar /> */}
       {mode === 'all' && <Header />}
       <SearchBar filter={filter} handleFilterChange={handleFilterChange} />
-      <div className="max-w-7xl mx-auto px-6 py-6 flex gap-6">
-        {mode == 'all' && (
-          <Filter filter={filter} onFilterChange={handleFilterChange} />
-        )}
+      {/* <JobSearchHero keyword={keyword} setKeyword={setKeyword} location={location} setLocation={setLocation} onSearch={() => setPage(1)} /> */}
 
-        <div className="flex-1 min-w-0">
-          <ToolBar
-            sortBy={sortBy}
-            search={filter.search.job}
-            location={filter.search.location}
-            jobs={jobs}
-            totalFilters={5}
-            viewMode={viewMode}
-            changeView={setViewMode}
-            setSortBy={setSortBy}
-          />
-          <div
-            className={`flex gap-5 ${
-              viewMode === 'split' ? 'flex-col lg:flex-row' : 'flex-col'
-            }`}
-          >
-            <JobCards
-              onApply={handleApplyClick}
-              handleSave={saveJobHandle}
-              handleUnSave={unSaveJobHandle}
-              mode={mode!}
-              paginationData={{
-                totalDocs,
-                limit,
-                item: 'Jobs',
-                currentPage: page,
-                setPage: setPage,
-                count: jobs.length,
-                page: page,
-              }}
-              setViewMode={setViewMode}
-              setActiveJobId={setActiveJobId}
-              viewMode={viewMode}
-              jobs={jobs}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
+        <div className="flex flex-col gap-4 -mt-1 sm:-mt-2 mb-6">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <JobFilterControls
+              selectedTypes={selectedTypes}
+              filters={filter}
+              onToggleFilter={handleFilterChange}
+              onOpenMobileFilters={() => setMobileFiltersOpen(true)}
+              selectedSalary={selectedSalary}
+              setSelectedSalary={setSelectedSalary}
+              selectedIndustries={selectedIndustries}
+              setSelectedIndustries={setSelectedIndustries}
+              selectedModes={selectedModes}
+              setSelectedModes={setSelectedModes}
+              selectedLevels={selectedLevels}
+              setSelectedLevels={setSelectedLevels}
+              setSelectedTypes={setSelectedTypes}
             />
-            <JobDetails
-              handleSave={saveJobHandle}
-              handleUnSave={unSaveJobHandle}
-              error={error}
-              onApply={handleApplyClick}
-              handleChange={handleReportFormChange}
-              onReportSumbit={reportHandle}
-              viewMode={viewMode}
-              activeJob={activeJob}
-              reportForm={reportForm}
+
+            {/* demo controls — not part of the real product, just for showcasing states */}
+            {/* <div className="hidden md:flex items-center gap-1.5 text-xs">
+              <button
+                onClick={simulateLoading}
+                className={cx(
+                  'px-2.5 py-1.5 rounded-lg border',
+                  t.filterBorder,
+                  t.footerText,
+                  'hover:text-purple-600'
+                )}
+              >
+                Preview loading
+              </button>
+              <button
+                onClick={() => setViewState('empty')}
+                className={cx(
+                  'px-2.5 py-1.5 rounded-lg border',
+                  t.filterBorder,
+                  t.footerText,
+                  'hover:text-purple-600'
+                )}
+              >
+                Preview empty
+              </button>
+              <button
+                onClick={() => setViewState('error')}
+                className={cx(
+                  'px-2.5 py-1.5 rounded-lg border',
+                  t.filterBorder,
+                  t.footerText,
+                  'hover:text-purple-600'
+                )}
+              >
+                Preview error
+              </button>
+            </div> */}
+          </div>
+          <ActiveFilterChips
+            chips={activeChips}
+            onRemove={removeChip}
+            onClearAll={clearAll}
+          />
+        </div>
+
+        <div className="mb-5">
+          <JobResultsHeader
+            count={jobs.length}
+            sort={sortBy}
+            setSort={setSortBy}
+            sortOptions={SORT_OPTIONS}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {viewState === 'loading' &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <JobCardSkeleton key={i} />
+            ))}
+
+          {viewState === 'error' && (
+            <JobErrorState onRetry={() => setViewState('loaded')} />
+          )}
+
+          {viewState === 'loaded' && jobs.length === 0 && (
+            <EmptyJobsState onClear={clearAll} />
+          )}
+
+          {viewState === 'loaded' &&
+            jobs.map((job) => (
+              <JobCard
+                key={job.id}
+                job={job}
+                handleSave={saveJobHandle}
+                handleUnSave={unSaveJobHandle}
+               
+                // saved={saved.has(job.id)}
+                // onToggleSave={toggleSave}
+                // onView={handleView}
+              />
+            ))}
+        </div>
+
+        {viewState === 'loaded' && jobs.length > 0 && (
+          <div className="mt-8">
+            <Pagination
+              currentPage={page}
+              totalPages={Math.ceil(totalDocs / limit)}
+              item="Jobs"
+              count={jobs.length}
+              totalItem={totalDocs}
+              onPageChange={setPage}
             />
           </div>
-        </div>
-      </div>
+        )}
+      </main>
 
-      <SelectResumeContent
-        resumes={resumes}
-        isOpen={showResumeModal}
-        onClose={() => setShowResumeModal(false)}
-        onApply={(resumeId: string) => applyJob(resumeId)}
+      <MobileFilterDrawer
+        open={mobileFiltersOpen}
+        onClose={() => setMobileFiltersOpen(false)}
+        filters={filter}
+        onToggleFilter={handleFilterChange}
+        onClearAll={clearAll}
+        selectedSalary={selectedSalary}
+        setSelectedSalary={setSelectedSalary}
+        selectedIndustries={selectedIndustries}
+        setSelectedIndustries={setSelectedIndustries}
+        selectedModes={selectedModes}
+        setSelectedModes={setSelectedModes}
+        selectedLevels={selectedLevels}
+        setSelectedLevels={setSelectedLevels}
+        selectedTypes={selectedTypes}
+        setSelectedTypes={setSelectedTypes}
       />
+
+      {/* {toast && (
+        <div
+          className={cx(
+            'fixed bottom-6 left-1/2 -translate-x-1/2 text-sm px-4 py-2.5 rounded-xl shadow-lg z-50',
+            t.toastBg,
+            t.toastText
+          )}
+        >
+          {toast}
+        </div>
+      )} */}
     </div>
   );
+
+  // return (
+  //   <div className="min-h-screen bg-slate-50 text-slate-800">
+  //     {mode === 'all' && <Header />}
+  //     <SearchBar filter={filter} handleFilterChange={handleFilterChange} />
+  //     <div className="max-w-7xl mx-auto px-6 py-6 flex gap-6">
+  //       {mode == 'all' && (
+  //         <Filter filter={filter} onFilterChange={handleFilterChange} />
+  //       )}
+
+  //       <div className="flex-1 min-w-0">
+  //         <ToolBar
+  //           sortBy={sortBy}
+  //           search={filter.search.job}
+  //           location={filter.search.location}
+  //           jobs={jobs}
+  //           totalFilters={5}
+  //           viewMode={viewMode}
+  //           changeView={setViewMode}
+  //           setSortBy={setSortBy}
+  //         />
+  //         <div
+  //           className={`flex gap-5 ${
+  //             viewMode === 'split' ? 'flex-col lg:flex-row' : 'flex-col'
+  //           }`}
+  //         >
+  //           <JobCards
+  //             onApply={handleApplyClick}
+  //             handleSave={saveJobHandle}
+  //             handleUnSave={unSaveJobHandle}
+  //             mode={mode!}
+  //             paginationData={{
+  //               totalDocs,
+  //               limit,
+  //               item: 'Jobs',
+  //               currentPage: page,
+  //               setPage: setPage,
+  //               count: jobs.length,
+  //               page: page,
+  //             }}
+  //             setViewMode={setViewMode}
+  //             setActiveJobId={setActiveJobId}
+  //             viewMode={viewMode}
+  //             jobs={jobs}
+  //           />
+  //           <JobDetails
+  //             handleSave={saveJobHandle}
+  //             handleUnSave={unSaveJobHandle}
+  //             error={error}
+  //             onApply={handleApplyClick}
+  //             handleChange={handleReportFormChange}
+  //             onReportSumbit={reportHandle}
+  //             viewMode={viewMode}
+  //             activeJob={activeJob}
+  //             reportForm={reportForm}
+  //           />
+  //         </div>
+  //       </div>
+  //     </div>
+
+  //     <SelectResumeContent
+  //       resumes={resumes}
+  //       isOpen={showResumeModal}
+  //       onClose={() => setShowResumeModal(false)}
+  //       onApply={(resumeId: string) => applyJob(resumeId)}
+  //     />
+  //   </div>
+  // );
 }
 
 export default JobListingContainer;
+
+export function cx(...parts: string[]) {
+  return parts.filter(Boolean).join(' ');
+}

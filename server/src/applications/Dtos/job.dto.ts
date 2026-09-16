@@ -58,13 +58,14 @@ export interface JobCardDto {
   title: string;
   id: string;
   mode: WorkMode;
-  createdAt:Date,
-  appCount?:number
+  createdAt: Date;
+  appCount?: number;
   min_salary: string;
   jobType: JobType;
   skills: string[];
+  pendingAppCount:number
   max_salary: string;
- // postedDate: Date;
+  // postedDate: Date;
   lastDate: Date;
   experience: ExperienceType;
   status: StatusEnum;
@@ -120,8 +121,9 @@ export type JobFilter = {
   companyId?: string;
   status?: StatusEnum;
   isReported?: boolean;
-  skills?:string[]
-  appliedJobIds?:string[]
+  skills?: string[];
+  appliedJobIds?: string[];
+  title?:string[]
 };
 export const SalaryRange = [
   { label: '₹0 - ₹10k', min_salary: 0, max_salary: 10000 },
@@ -149,7 +151,7 @@ export type JobReportType = {
   reportedDate?: Date;
 };
 export interface JobCountFilter {
-  companyId?:string
+  companyId?: string;
   startDate?: Date;
   endDate?: Date;
   status?: StatusEnum;

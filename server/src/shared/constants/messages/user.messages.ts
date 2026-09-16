@@ -23,6 +23,7 @@ export const userMessages = {
     HOME_DATA_FETCHED: 'Hoem  data fetched successfully',
     COMPANY_UPDATED: 'Company Updated successfully',
     LOGO_REMOVED: 'Company removed successfully',
+    COMPANY_POSTS: 'Company Posts fetched successfully',
   },
   error: {
     NOT_FOUND: 'User Not found',

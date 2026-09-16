@@ -15,7 +15,7 @@ router.post(
   jobValidator,
   jobController.create
 );
-router.get(API_END_POINTS.JOBS, jobController.getJobs);
+router.get(API_END_POINTS.JOBS,authValidator(tokenService), jobController.getJobs);
 router.get(API_END_POINTS.SAVED_JOBS, authValidator(tokenService), jobController.getSavedJobs);
 router.get(API_END_POINTS.JOB, jobController.getJobDetails);
 router.post(

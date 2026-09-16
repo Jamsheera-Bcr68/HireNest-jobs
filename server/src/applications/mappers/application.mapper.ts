@@ -51,13 +51,13 @@ export class ApplicationMapper {
     company: Company,
     candidate: User,
     skills: Skill[],
-    resume: IResume
+    resume: IResume,chatroomId?:string
   ): ApplicationDetailsDto {
     return {
       id: app.id,
       status: app.status,
       resume: resume,
-
+chatroomId:chatroomId,
       appliedAt: new Date(app.appliedAt).toDateString(),
 
       reviewedAt: app.reviewedAt

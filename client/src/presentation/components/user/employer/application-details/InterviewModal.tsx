@@ -6,6 +6,7 @@ import {
   Durations,
   type InterviewMode,
 } from '../../../../../types/dtos/interview.dto';
+import { url } from 'zod';
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const GlobeIcon = () => (
@@ -113,8 +114,8 @@ const Label = ({
 const Input = ({ className = '', ...props }) => (
   <input
     className={`w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-white text-slate-800
-      placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20
-      focus:border-indigo-400 transition-all duration-150 ${className}`}
+      placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/20
+      focus:border-fuchsia-400 transition-all duration-150 ${className}`}
     {...props}
   />
 );
@@ -125,7 +126,7 @@ type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 const Select = ({ children, className = '', ...props }: SelectProps) => (
   <select
     className={`w-full px-3 py-2 text-sm rounded-lg border border-slate-200 bg-white text-slate-800
-      focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400
+      focus:outline-none focus:ring-2 focus:ring-fuchsia-500/20 focus:border-fuchsia-400
       transition-all duration-150 appearance-none cursor-pointer ${className}`}
     {...props}
   >
@@ -142,10 +143,12 @@ type Props = {
     applied: string;
     status: ApplicationStatusType;
     initials: string;
+    profileImg?: string;
   };
   jobTitle: string;
   appId: string;
   onSchedule: (status: ApplicationStatusType) => void;
+  setChatroomId: React.Dispatch<React.SetStateAction<string | null>>;
 };
 export default function InterviewModal({
   isOpen,
@@ -154,19 +157,30 @@ export default function InterviewModal({
   jobTitle,
   appId,
   onSchedule,
+  setChatroomId,
 }: Props) {
-  const { formData, updateFormdata, submitInterviewForm, error,generateMeetLink } =
-    useInterviews();
+  const {
+    formData,
+    updateFormdata,
+    submitInterviewForm,
+    error,
+    generateMeetLink,
+  } = useInterviews();
 
   const handleSchedule = async () => {
-    const updated = await submitInterviewForm('add', { applicationId: appId });
-    if (!updated) return;
+    const { interviewId, chatroomId } = await submitInterviewForm('add', {
+      applicationId: appId,
+    });
+    console.log('chatroomId', chatroomId, 'interviewId', interviewId);
+    setChatroomId(chatroomId);
+    if (!interviewId || !chatroomId) return;
     updateFormdata(initialData);
     onSchedule('interviewScheduled');
   };
 
-
   if (!isOpen) return null;
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  console.log('candidate', candidate);
 
   return (
     <div
@@ -198,8 +212,16 @@ export default function InterviewModal({
         <div className="overflow-y-auto flex-1 px-5 py-4 flex flex-col gap-4">
           {/* Candidate Chip */}
           <div className="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-100">
-            <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-xs font-semibold flex-shrink-0">
-              {candidate.initials}
+            <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-xs font-semibold flex-shrink-0 overflow-hidden">
+              {candidate.profileImg ? (
+                <img
+                  src={`${baseUrl}${candidate.profileImg}`}
+                  alt={candidate.initials}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                candidate.initials
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[13px] font-medium text-slate-800 truncate">
@@ -228,7 +250,7 @@ export default function InterviewModal({
                   className={`flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-medium transition-all duration-150
                     ${
                       formData.mode === val
-                        ? 'bg-indigo-50 border-indigo-300 text-indigo-700 shadow-sm'
+                        ? 'bg-fuchsia-50 border-fuchsia-300 text-fuchsia-700 shadow-sm'
                         : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300 hover:bg-slate-50'
                     }`}
                 >
@@ -339,7 +361,7 @@ export default function InterviewModal({
                       className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all
       ${
         formData.isAddlinkLater === val
-          ? 'border-indigo-500 bg-indigo-500'
+          ? 'border-fuchsia-800 bg-fuchsia-600'
           : 'border-slate-300 group-hover:border-slate-400'
       }`}
                       onClick={() => updateFormdata({ isAddlinkLater: val })}
@@ -368,7 +390,10 @@ export default function InterviewModal({
                       className="flex-1"
                     />
 
-                    <button onClick={generateMeetLink} className="flex-shrink-0 px-3 py-2 text-xs font-medium rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-colors whitespace-nowrap">
+                    <button
+                      onClick={generateMeetLink}
+                      className="flex-shrink-0 px-3 py-2 text-xs font-medium rounded-lg border border-fuchsia-800 bg-white text-fuchsia-600 hover:bg-fuchsia-50  transition-colors whitespace-nowrap"
+                    >
                       Generate
                     </button>
                   </div>
@@ -414,7 +439,7 @@ export default function InterviewModal({
                 updateFormdata({ notes: e.currentTarget.value })
               }
               placeholder="Additional instructions (parking, entrance, etc.)"
-              className="w-full rounded border p-2"
+              className="w-full rounded border p-2 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/20"
             />
             {error && error.notes && (
               <p className="text-red-600 text-sm">* {error.notes}</p>
@@ -436,7 +461,7 @@ export default function InterviewModal({
             </button>
             <button
               onClick={handleSchedule}
-              className="flex-1 sm:flex-none px-5 py-2.5 text-sm font-semibold rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-sm shadow-indigo-200"
+              className="flex-1 sm:flex-none px-5 py-2.5 text-sm font-semibold rounded-xl bg-fuchsia-800 text-white hover:bg-fuchsia-600 active:scale-[0.98] transition-all shadow-sm shadow-fuchsia-200"
             >
               Send Invite
             </button>

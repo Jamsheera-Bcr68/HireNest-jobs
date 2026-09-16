@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../redux/store';
 
 export type ColumnType<T> = {
   key: string;
@@ -44,7 +46,7 @@ function ReusableTable<T extends { id: string }>({
 }: Props<T>) {
   const [searchInput, setSearchInput] = useState('');
   const [activeTab, setActiveTab] = useState('All');
-
+const role=useSelector((state:RootState)=>state.auth.user?.role)
   useEffect(() => {
     const timer = setTimeout(() => {
       updateFilter({ search: searchInput });
@@ -142,14 +144,14 @@ function ReusableTable<T extends { id: string }>({
               }}
               className={`px-4 py-2 text-sm font-medium rounded-t-lg transition border-b-2 -mb-px  ${
                 activeTab === tab.label
-                  ? 'border-indigo-600 text-indigo-600'
+                  ? `${role==='admin'?'border-indigo-600 text-indigo-600':'border-fuchsia-600 text-fuchsia-600'}`
                   : 'border-transparent text-slate-500 hover:text-slate-700'
               } `}
             >
               {tab.label}
               {tab.label == activeTab && (
                 <span
-                  className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${activeTab === tab.label ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-500'}`}
+                  className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${activeTab === tab.label ? `${role==='admin'?'bg-indigo-100 text-indigo-600':'bg-fuchsia-100 text-fuchsia-600'}` : 'bg-slate-100 text-slate-500'}`}
                 >
                   {totalDocs}
                 </span>

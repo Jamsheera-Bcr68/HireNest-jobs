@@ -11,7 +11,7 @@ export const useNotifications = () => {
     if (!user) return [];
     try {
       const data = await notificationService.getNotifications(tab);
-      console.log('data after getting notifications', data);
+      //console.log('data after getting notifications', data);
 
       return data.notifications ?? [];
     } catch (error) {

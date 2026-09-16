@@ -17,13 +17,14 @@ function Chip({
   variant = 'gray',
 }: {
   label: string;
-  variant: 'gray' | 'blue' | 'green' | 'violet';
+  variant: 'fuchsia' | 'gray' | 'blue' | 'green' | 'violet';
 }) {
   const styles = {
     gray: 'bg-gray-100 text-gray-600',
     blue: 'bg-blue-50 text-blue-700 border border-blue-100',
     green: 'bg-emerald-50 text-emerald-700 border border-emerald-100',
     violet: 'bg-violet-50 text-violet-700 border border-violet-100',
+    fuchsia: 'bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-100',
   };
   return (
     <span
@@ -60,20 +61,25 @@ function HeroPart({ job, role }: Props) {
         </div>
 
         {/* Core info */}
+
         <div className="flex-1 min-w-0">
-          {/* Company + title */}
-          <p className="text-xs font-semibold text-blue-500 uppercase tracking-wide mb-1">
+          {/* Company */}
+          <p className="text-xs font-semibold text-fuchsia-700 uppercase tracking-wide mb-1">
             {job.companyName}
           </p>
 
-          <h1 className="text-2xl font-bold text-gray-900 leading-tight mb-3">
-            {job.title}
-          </h1>
-          <span
-            className={`text-xs rounded-full p-1 ${statusStyles[job.status]}`}
-          >
-            {job?.status}
-          </span>
+          {/* Title + Status */}
+          <div className="flex items-center gap-3 flex-wrap mb-3">
+            <h1 className="text-2xl font-bold text-gray-900 leading-tight">
+              {job.title}
+            </h1>
+
+            <span
+              className={`text-xs font-medium rounded-full px-2.5 py-1 ${statusStyles[job.status]}`}
+            >
+              {job.status}
+            </span>
+          </div>
 
           {/* Meta row */}
           <div className="flex flex-wrap gap-x-5 gap-y-2 mb-4 text-sm text-slate-600">
@@ -85,37 +91,33 @@ function HeroPart({ job, role }: Props) {
             </div>
 
             <div className="flex items-center gap-1">
-              <BriefcaseBusiness className="text-slate-400" size={16} />
-              <span>
-                {job.jobType == 'partTime' ? 'Part Time' : 'Full Time'}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-1">
-              <Clock className="text-slate-400" size={16} />
-              <span>{job.experience} years</span>
-            </div>
-
-            <div className="flex items-center gap-1">
               <TvMinimal className="text-slate-400" size={16} />
               <span>{job.industry}</span>
             </div>
-
-            <div className="flex items-center gap-1">
-              <Calendar className="text-slate-400" size={16} />
-              <span>
-                Posted on: {new Date(job.createdAt).toLocaleDateString()}
-              </span>
-            </div>
           </div>
+
+          {/* Posted date */}
+          <div className="flex items-center gap-1 mb-4">
+            <Calendar className="text-slate-400" size={16} />
+            <span>
+              Posted on: {new Date(job.createdAt).toLocaleDateString()}
+            </span>
+          </div>
+
           {/* Chips row */}
           <div className="flex flex-wrap gap-2">
-            <Chip label={job.mode} variant="blue" />
             <Chip
-              label={job.jobType == 'partTime' ? 'Part Time' : 'Full Time'}
+              label={job.mode.charAt(0).toUpperCase() + job.mode.slice(1)}
+              variant="fuchsia"
+            />
+
+            <Chip
+              label={job.jobType === 'partTime' ? 'Part Time' : 'Full Time'}
               variant="gray"
             />
+
             <Chip label={job.experience + ' years'} variant="gray" />
+
             <Chip label={`${job.vacancyCount} Openings`} variant="green" />
           </div>
         </div>
@@ -130,7 +132,9 @@ function HeroPart({ job, role }: Props) {
             </p>
           </div>
           {role !== 'admin' && (
-            <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-blue-700 transition-colors text-sm font-semibold text-white">
+            <button
+              className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl  transition-colors text-sm font-semibold text-white bg-fuchsia-800 hover:bg-fuchsia-600`}
+            >
               <Users size={15} color="white" />
               Applicants
               <span className="bg-white/25 text-white text-xs font-bold px-1.5 py-0.5 rounded-md">

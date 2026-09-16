@@ -74,7 +74,7 @@ export default function InterviewDetailsModal({
               onClick={() => setActiveTab(tab.value)}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === tab.value
-                  ? 'border-blue-600 text-blue-600'
+                  ? 'border-fuchsia-600 text-fuchsia-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -95,7 +95,7 @@ export default function InterviewDetailsModal({
             !interview.isRescheduleRequested && (
               <button
                 onClick={() => handleConirmClick(interview.id)}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg transition"
+                className="bg-fuchsia-800 hover:bg-fuchsia-600 text-white text-sm px-4 py-2 rounded-lg transition"
               >
                 Confirm Interview
               </button>

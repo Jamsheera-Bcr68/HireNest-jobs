@@ -28,7 +28,14 @@ export const StatusCards = ({ stats }: { stats: StatsCardType[] }) => {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm"
+          className="
+  bg-white rounded-xl border border-gray-100 p-4
+  shadow-sm
+  transition-all duration-300 ease-out
+  hover:-translate-y-1
+  hover:shadow-lg
+  hover:border-fuchsia-200
+"
         >
           <p className="text-xs text-gray-400 mb-1 uppercase tracking-wide">
             {stat.label}

@@ -8,7 +8,7 @@ import { type StateType } from '../../../../constants/types/user';
 import JobReportForm from './JobReportForm';
 import { Check } from 'lucide-react';
 import { type ErrorType, type ReportFormType } from './ListingContainter';
-import { useApplications } from '../../../hooks/user/candidate/profile/useApplication';
+
 
 type Props = {
   reportForm: ReportFormType;

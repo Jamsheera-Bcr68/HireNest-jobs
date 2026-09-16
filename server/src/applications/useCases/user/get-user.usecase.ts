@@ -21,7 +21,7 @@ export class GetUserUseCase implements IGetUserUseCase {
     userRepository: IUserRepository,
     companyRepository: ICompanyRepository,
     applicationRepository: IApplicationRepository,
-    interviewRepository: IInterviewRepository,
+    interviewRepository: IInterviewRepository
   ) {
     this._userRepository = userRepository;
     this._companyRepository = companyRepository;
@@ -31,25 +31,28 @@ export class GetUserUseCase implements IGetUserUseCase {
 
   async execute(userId: string, role: UserRole): Promise<userProfileDto> {
     const user = await this._userRepository.findById(userId);
-    if (!user || user.role !== role)
+    if (!user )
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-   // console.log('user from getuser ', user);
+    // console.log('user from getuser ', user);
     let company: Company | null = null;
-    const interviewsCount=await this._interviewRepository.count({candidateId:userId})
-    const applicationCount=await this._applicationRepository.count({candidateId:userId})
+    const interviewsCount = await this._interviewRepository.count({
+      candidateId: userId,
+    });
+    const applicationCount = await this._applicationRepository.count({
+      candidateId: userId,
+    });
     if (user.isRequested) {
-   //   console.log('use is requested');
+      //   console.log('use is requested');
 
       company = await this._companyRepository.findByUserId(userId);
-      
     }
 
-   // console.log(
+    // console.log(
     //   'company to client',
     //   UserMapper.toUserProfileDto(user, company)
     // );
 
-    const mapped= UserMapper.toUserProfileDto(user, company);
-    return{...mapped,interviewsCount,applicationCount}
+    const mapped = UserMapper.toUserProfileDto(user, company);
+    return { ...mapped, interviewsCount, applicationCount };
   }
 }

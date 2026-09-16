@@ -54,7 +54,7 @@ import { AdminUpdateCandidateUseCase } from '../../applications/useCases/admin/a
 import { AdminGetEntityUseCase } from '../../applications/useCases/admin/admin-get-candidate.usecase';
 import { GetFileExistUseCase } from '../../applications/useCases/admin/file-exist.usecase';
 import { GetHomeDataUseCase } from '../../applications/useCases/candidate/get-homedata.usecase';
-import { GetAllJobssUseCase } from '../../applications/useCases/candidate/get-jobs.usecase';
+import { GetAllJobssUseCase } from '../../applications/useCases/job/get-jobs.usecase';
 import { GetJobDetailsUseCase } from '../../applications/useCases/candidate/get-job.usecase';
 import { ReportJobUseCase } from '../../applications/useCases/candidate/report-job.usecase';
 import { SaveJobUseCase } from '../../applications/useCases/candidate/save-job.usecase';
@@ -350,7 +350,7 @@ const adminGetCompanyUseCase = new AdminGetCompanyUseCase(companyRepository);
 const adminUpdateCompanyUseCase = new AdminUpdateCompanyUseCase(
   companyRepository,
   userRepository,
-  notificatinService
+  notificatinService,emailService
 );
 const getCompnayStatusUseCase = new GetCompanyStatusUseCase(companyRepository);
 const getCandidateStatusUseCase = new GetCandidateStatusUseCase(userRepository);
@@ -370,7 +370,7 @@ const getHomeDataUseCase = new GetHomeDataUseCase(
 );
 const getAllJobsUsecase = new GetAllJobssUseCase(
   jobRepository,
-  skillRepository
+  skillRepository,userRepository
 );
 const getJobDetailsUseCase = new GetJobDetailsUseCase(
   jobRepository,
@@ -418,8 +418,7 @@ const getApplicationDetailsUsecase = new GetApplicationDetailUsecase(
   jobRepository,
   companyRepository,
   userRepository,
-  skillRepository
-);
+  skillRepository,chatromRepository)
 const getCompanyDataUsecase = new GetCompanyDataUseCase(companyRepository);
 const getCandidateResumesUsecase = new GetCandidateResumesUsecase(
   userRepository
@@ -430,7 +429,7 @@ const scheduleInterviewUsecase = new ScheduleInterviewUsecase(
   notificatinService,
   companyRepository,
   jobRepository,
-  chatromRepository
+  chatromRepository,emailService,userRepository
 );
 const getInterviewStatusUsecase = new GetInterviewStatusUseCase(
   interviewRepository,
@@ -759,7 +758,7 @@ export const adminJobcontroller = new AdminJobController(
 export const userControlller = new UserController(
   getHomeDataUseCase,
   getCompanyDataUsecase,
-  reapplyUsecase
+  reapplyUsecase,getAllJobsUsecase
 );
 
 export const applicationController = new ApplicationController(

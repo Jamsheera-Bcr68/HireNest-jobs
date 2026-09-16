@@ -1,4 +1,4 @@
-import { ChevronRight, TrendingUp, Inbox } from 'lucide-react';
+import { ChevronRight, TrendingUp, Inbox, FilePenLine } from 'lucide-react';
 import { SkeletonBlock } from './StatusCards';
 import { EmptyState } from './Common';
 import { useMemo } from 'react';
@@ -122,7 +122,7 @@ const onViewAllClick=()=>{
                 ))}
               </div>
               <div className="mt-4 pt-3 border-t border-slate-100 flex items-start gap-2">
-                <TrendingUp
+                {ap?(<><TrendingUp
                   size={14}
                   className="text-teal-600 mt-0.5 shrink-0"
                 />
@@ -132,7 +132,7 @@ const onViewAllClick=()=>{
                     {`${ap?.label}`}
                   </span>{' '}
                  
-                </p>
+                </p></>):(<><FilePenLine/><p className="text-[11.5px] text-slate-500 leading-relaxed">You don't have any applications</p></>)}
               </div>
             </div>
           </div>

@@ -252,8 +252,12 @@ export class JobRepository
       companyId,
       status = 'active',
       appliedJobIds,
+      title,
       ...rest
     } = filter;
+    console.log('skills form repor', skills);
+    console.log('titles from repo', title);
+
     const salaryLookup = Object.fromEntries(
       SalaryRange.map((range) => [range.label, range])
     );
@@ -282,18 +286,6 @@ export class JobRepository
             max_salary: { $gte: range.min_salary },
           };
         }
-        if (skills && skills.length) {
-          const skillIds = skills
-            .filter(mongoose.Types.ObjectId.isValid)
-            .map((id) => new mongoose.Types.ObjectId(id));
-          matchStage.skills = { $in: skillIds };
-        }
-        if (appliedJobIds && appliedJobIds.length) {
-          const jobIds = appliedJobIds
-            .filter(mongoose.Types.ObjectId.isValid)
-            .map((id) => new mongoose.Types.ObjectId(id));
-          matchStage._id = { $nin: jobIds };
-        }
 
         return {
           $and: [
@@ -306,6 +298,39 @@ export class JobRepository
       matchStage.$and = [...(matchStage.$and || []), { $or: salaryConditions }];
     }
 
+    if (skills?.length || title?.length) {
+      const recommendationConditions: any[] = [];
+
+      if (skills?.length) {
+        const skillIds = skills
+          .filter(mongoose.Types.ObjectId.isValid)
+          .map((id) => new mongoose.Types.ObjectId(id));
+
+        if (skillIds.length) {
+          recommendationConditions.push({
+            skills: { $in: skillIds },
+          });
+        }
+      }
+
+      if (title?.length) {
+        title.forEach((word) => {
+          recommendationConditions.push({
+            title: { $regex: word, $options: 'i' },
+          });
+        });
+      }
+
+      if (recommendationConditions.length) {
+        matchStage.$or = recommendationConditions;
+      }
+    }
+    if (appliedJobIds && appliedJobIds.length) {
+      const jobIds = appliedJobIds
+        .filter(mongoose.Types.ObjectId.isValid)
+        .map((id) => new mongoose.Types.ObjectId(id));
+      matchStage._id = { $nin: jobIds };
+    }
     if (search?.job) {
       matchStage.title = {
         $regex: search.job,
@@ -404,6 +429,17 @@ export class JobRepository
               reportDetails: 1,
 
               appCount: { $size: '$applications' },
+              pendingAppCount: {
+                $size: {
+                  $filter: {
+                    input: '$applications',
+                    as: 'application',
+                    cond: {
+                      $eq: ['$$application.status', 'pending'],
+                    },
+                  },
+                },
+              },
               companyName: '$companyData.companyName',
               companyLogo: '$companyData.logoUrl',
               location: '$companyData.address',
@@ -789,9 +825,8 @@ export class JobRepository
       matchStage.$or = [
         {
           company: { $regex: `^${search}`, $options: 'i' },
-          
         },
-        {title: { $regex: search, $options: 'i' },}
+        { title: { $regex: search, $options: 'i' } },
       ];
     }
 

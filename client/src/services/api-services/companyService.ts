@@ -8,8 +8,8 @@ import { API_ENDPOINTS } from '../../constants/api-end-points/general';
 export const companyService = {
   async getCompany() {
     const res = await axiosInstance.get(API_ENDPOINTS.COMPANY);
-    console.log('res',res);
-    
+    console.log('res', res);
+
     return res.data;
   },
 
@@ -27,7 +27,7 @@ export const companyService = {
   },
 
   async registerCompany(data: CompanyRegisterType) {
-  //  console.log('from services', data);
+    //  console.log('from services', data);
 
     const res = await axiosInstance.post(API_ENDPOINTS.COMPANY, data);
     return res.data;
@@ -91,7 +91,7 @@ export const companyService = {
   },
 
   async getCompanyDetails(id: string) {
-   // console.log('company id', id);
+    // console.log('company id', id);
 
     const res = await axiosInstance.get(API_ENDPOINTS.COMPANY_DATA(id));
     return res.data;
@@ -101,6 +101,12 @@ export const companyService = {
     //console.log('from update services', data);
 
     const res = await axiosInstance.put(API_ENDPOINTS.COMPANY, data);
+    return res.data;
+  },
+  async getOpenPositions(companyId: string) {
+    //console.log('from update services', data);
+
+    const res = await axiosInstance.get(API_ENDPOINTS.COMPANY_POSTS(companyId));
     return res.data;
   },
 };

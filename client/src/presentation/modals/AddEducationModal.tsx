@@ -258,7 +258,7 @@ const AddEducationModal: React.FC<AddEducationModalProps> = ({
 
               <button
                 type="submit"
-                className="px-4 py-2 rounded-lg bg-fuchsia-800 text-white hover:bg-blue-700"
+                className="px-4 py-2 rounded-lg bg-fuchsia-800 text-white hover:bg-fuchsia-600"
               >
                 {editEdu ? 'Update' : 'Save'}
               </button>

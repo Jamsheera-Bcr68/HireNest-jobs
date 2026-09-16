@@ -11,7 +11,7 @@ function InterviewDetails({ interview }: Props) {
       <div className="flex items-center justify-between">
         <span className="text-sm text-gray-500">Interview Status</span>
 
-        <span className="capitalize text-xs font-medium bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+        <span className="capitalize text-xs font-medium bg-fuchsia-100 text-fuchsia-700 px-3 py-1 rounded-full">
           {interview.status}
         </span>
       </div>
@@ -54,7 +54,7 @@ function InterviewDetails({ interview }: Props) {
       <div className="border rounded-xl p-4 bg-gray-50">
         <div className="flex items-center gap-2 mb-2">
           {interview.mode === 'online' ? (
-            <Video size={18} className="text-blue-600" />
+            <Video size={18} className="text-fuchsia-600" />
           ) : (
             <MapPin size={18} className="text-red-500" />
           )}
@@ -68,17 +68,17 @@ function InterviewDetails({ interview }: Props) {
         {interview.mode === 'online' && (
           <>
             {interview.meetLink ? (
-              <span className="p-1.5 border text-sm rounded-xl hover:bg-50-blue">
+              <button className="p-1.5 border border-fuchsia-700 text-sm rounded-xl hover:bg-fuchsia-50">
                 {' '}
                 <a
                   href={`/meeting/${interview.meetLink}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm text-blue-600 text-center break-all"
+                  className="text-xm text-fuchsia-600  text-center break-all"
                 >
                   Join Meeting
                 </a>
-              </span>
+              </button>
             ) : (
               <p className="text-sm text-amber-600">
                 Meeting link not added yet

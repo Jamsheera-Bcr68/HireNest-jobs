@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Upload, X } from 'lucide-react';
 import { profileService } from '../../../../services/api-services/candidateService';
 import { useToast } from '../../../../shared/toast/use-toast';
+import DuplicateResumeModal from '../../user/profile/RenameModal';
+import { fi } from 'zod/locales';
 
 type Props = {
   resumes: ResumeType[];
@@ -23,6 +25,7 @@ export default function SelectResumeModal({
   const [selectedResumeId, setSelectedResumeId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [dupResumeOpen, setDupResumeOpen] = useState<boolean>(false);
   const { showToast } = useToast();
 
   const handleApplyClick = async () => {
@@ -48,23 +51,42 @@ export default function SelectResumeModal({
       return;
     }
     setError('');
-    try {
-      const formData = new FormData();
-      formData.append('resume', file);
-      const data = await profileService.uploadResume(formData);
-      console.log('after uploading resume', data);
-      setSelectedResumeId(data.resume.id);
-      setFile(null);
-      return data.resume.id;
-    } catch (error: any) {
-      showToast({
-        msg: error?.response?.data.message || error.message,
-        type: 'error',
-      });
+    const nameExist = resumes.find((r) => r.name == file?.name);
+    if (nameExist) {
+      setDupResumeOpen(true);
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append('resume', file);
+        const data = await profileService.uploadResume(formData);
+        console.log('after uploading resume', data);
+        setSelectedResumeId(data.resume.id);
+        setFile(null);
+        return data.resume.id;
+      } catch (error: any) {
+        showToast({
+          msg: error?.response?.data.message || error.message,
+          type: 'error',
+        });
+      }
     }
   };
   useLockBodyScroll(isOpen);
   if (!isOpen) return null;
+
+  const onRenameFile = (name: string) => {
+    console.log('new nae from rename ', name);
+
+    setFile((prev) => {
+      if (!prev) return null;
+
+      return new File([prev], name, {
+        type: prev.type,
+        lastModified: prev.lastModified,
+      });
+    });
+    setDupResumeOpen(false);
+  };
 
   return (
     <div
@@ -78,11 +100,13 @@ export default function SelectResumeModal({
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">Select Resume</h2>
+          <h2 className="text-xl text-fuchsia-800 font-semibold ">
+            Select Resume
+          </h2>
 
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 text-lg"
+            className="text-fuchsia-800 hover:bg-slate-50 hover:text-fuchsia-600 text-lg px-3 rounded-full py-2 transition-colors hover:shadow-md"
           >
             ✕
           </button>
@@ -97,7 +121,7 @@ export default function SelectResumeModal({
                 className={`flex items-center justify-between border rounded-xl px-4 py-3 cursor-pointer transition
                 ${
                   selectedResumeId === resume.id
-                    ? 'border-blue-500 bg-blue-50'
+                    ? 'border-fuchsia-500 bg-fuchsia-50'
                     : 'border-gray-200 hover:border-gray-400'
                 }
               `}
@@ -123,7 +147,7 @@ export default function SelectResumeModal({
                 <a
                   href={`${baseUrl}${resume.url}`}
                   target="_blank"
-                  className="text-blue-500 text-sm hover:underline"
+                  className="text-fuchsia-700 text-sm hover:underline"
                 >
                   View
                 </a>
@@ -137,7 +161,7 @@ export default function SelectResumeModal({
         </div>
 
         {/* Upload new resume */}
-        <label className="mt-4 text-blue-600 hover:underline text-sm font-medium cursor-pointer inline-block">
+        <label className="mt-4 text-fuchsia-600 hover:underline text-sm font-medium cursor-pointer inline-block">
           <input
             type="file"
             className="hidden"
@@ -181,12 +205,23 @@ export default function SelectResumeModal({
           <button
             disabled={!selectedResumeId && !file}
             onClick={handleApplyClick}
-            className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+            className="px-5 py-2 rounded-lg bg-fuchsia-800 text-white hover:bg-fuchsia-600 disabled:opacity-50"
           >
             Apply Now
           </button>
         </div>
       </div>
+      <DuplicateResumeModal
+        setError={setError}
+        onRename={onRenameFile}
+        error={error}
+        onCancel={() => {
+          setFile(null);
+          setDupResumeOpen(false);
+        }}
+        fileName={file?.name ?? ''}
+        isOpen={dupResumeOpen}
+      />
     </div>
   );
 }

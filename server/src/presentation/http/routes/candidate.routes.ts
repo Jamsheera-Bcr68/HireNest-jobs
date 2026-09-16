@@ -5,7 +5,10 @@ import {
   experienceFormValidator,
 } from '../middleweres/validatores/profile-validator';
 import { authValidator } from '../middleweres/auth-validator';
-import { tokenService,candidateDashboardController } from '../../../infrastructure/config/di';
+import {
+  tokenService,
+  candidateDashboardController,
+} from '../../../infrastructure/config/di';
 import {
   candidateProfileController,
   userControlller,
@@ -72,14 +75,14 @@ router.put(
 );
 
 router.patch(
- API_END_POINTS.EXPERIENCE,
+  API_END_POINTS.EXPERIENCE,
   authValidator(tokenService),
 
   candidateProfileController.removeExperience
 );
 
 router.post(
- API_END_POINTS.EDUCATIONS,
+  API_END_POINTS.EDUCATIONS,
   authValidator(tokenService),
   educationValidator,
   candidateProfileController.addEducation
@@ -93,14 +96,14 @@ router.put(
 );
 
 router.patch(
- API_END_POINTS.EDUCATION,
+  API_END_POINTS.EDUCATION,
   authValidator(tokenService),
   educationValidator,
   candidateProfileController.deleteEducation
 );
 
 router.post(
-API_END_POINTS.RESUMES,
+  API_END_POINTS.RESUMES,
   authValidator(tokenService),
   fileUpload.single('resume'),
   candidateProfileController.addResume
@@ -141,6 +144,17 @@ router.get(
   API_END_POINTS.CANDIDATE_DASHBOARD.RECOMENTED_JOBS,
   authValidator(tokenService),
   candidateDashboardController.getRecomentedJobs
+);
+
+router.get(
+  API_END_POINTS.COMPANY,
+  authValidator(tokenService),
+  userControlller.getCompany
+);
+router.get(
+  API_END_POINTS.COMPANY_POSTS,
+  authValidator(tokenService),
+  userControlller.getCompanyPosts
 );
 
 router.get(API_END_POINTS.HOME, userControlller.getHomeData);

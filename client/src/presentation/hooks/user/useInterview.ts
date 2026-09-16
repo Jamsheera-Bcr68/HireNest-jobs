@@ -137,9 +137,11 @@ export const useInterviews = (setPage?: (page: number) => void) => {
           result.data,
           ids.applicationId
         );
+        console.log('after scheduling interivew',data);
+        
 
         showToast({ msg: data.message, type: 'success' });
-        return data.interview;
+        return data.data;
       }
 
       if (mode === 'edit') {

@@ -27,17 +27,19 @@ router.post(
 );
 
 router.patch(
-API_END_POINTS.LOGO,
+  API_END_POINTS.LOGO,
   authValidator(tokenService),
   upload.single('logo'),
   companyProfileController.logoUpdate
 );
+
 router.patch(
- API_END_POINTS.PROFILE_LOGO,
+  API_END_POINTS.PROFILE_LOGO,
   authValidator(tokenService),
   upload.single('logo'),
   companyProfileController.changeLogo
 );
+
 router.patch(
   API_END_POINTS.DOCUMENT,
   authValidator(tokenService),
@@ -45,7 +47,7 @@ router.patch(
   companyProfileController.addDocument
 );
 router.delete(
-API_END_POINTS.PROFILE_LOGO,
+  API_END_POINTS.PROFILE_LOGO,
   authValidator(tokenService),
 
   companyProfileController.removeLogo
@@ -95,11 +97,35 @@ router.put(
   authValidator(tokenService),
   userControlller.updateCompany
 );
-router.get(API_END_POINTS.COMPANY_DASHBOARD.STATUS_DATA,authValidator(tokenService),companyDashboardController.getStatusData)
-router.get(API_END_POINTS.COMPANY_DASHBOARD.APPDATA,authValidator(tokenService),companyDashboardController.getApplicationData)
-router.get(API_END_POINTS.COMPANY_DASHBOARD.JOB_DATA,authValidator(tokenService),companyDashboardController.getJobData)
-router.get(API_END_POINTS.COMPANY_DASHBOARD.INTERVIEW_DATA,authValidator(tokenService),companyDashboardController.getInterviewData)
-router.get(API_END_POINTS.COMPANY_DASHBOARD.RECENT_ACTIVITIES,authValidator(tokenService),companyDashboardController.getRecentActivities)
-router.get(API_END_POINTS.COMPANY_DASHBOARD.PENDING_ACTION,authValidator(tokenService),companyDashboardController.getPendingActivities)
+router.get(
+  API_END_POINTS.COMPANY_DASHBOARD.STATUS_DATA,
+  authValidator(tokenService),
+  companyDashboardController.getStatusData
+);
+router.get(
+  API_END_POINTS.COMPANY_DASHBOARD.APPDATA,
+  authValidator(tokenService),
+  companyDashboardController.getApplicationData
+);
+router.get(
+  API_END_POINTS.COMPANY_DASHBOARD.JOB_DATA,
+  authValidator(tokenService),
+  companyDashboardController.getJobData
+);
+router.get(
+  API_END_POINTS.COMPANY_DASHBOARD.INTERVIEW_DATA,
+  authValidator(tokenService),
+  companyDashboardController.getInterviewData
+);
+router.get(
+  API_END_POINTS.COMPANY_DASHBOARD.RECENT_ACTIVITIES,
+  authValidator(tokenService),
+  companyDashboardController.getRecentActivities
+);
+router.get(
+  API_END_POINTS.COMPANY_DASHBOARD.PENDING_ACTION,
+  authValidator(tokenService),
+  companyDashboardController.getPendingActivities
+);
 
 export default router;

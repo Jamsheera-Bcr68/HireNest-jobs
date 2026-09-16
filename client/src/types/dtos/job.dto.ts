@@ -20,15 +20,15 @@ export type JobDto = {
   min_salary: number;
   max_salary: number;
   lastDate: Date;
-  languages: string[] | [];
+  languages: string[];
   status?: StatusType;
   education: string;
-  responsibilities: string[] | [];
-  skills: string[] | [];
+  responsibilities: string[];
+  skills: string[];
   description: string;
 };
 export type JobCardDto = {
-  reportDetails: JobReportType[] | [];
+  reportDetails: JobReportType[];
   companyLogo: string;
   companyName: string;
   location: AddressType;
@@ -39,11 +39,13 @@ export type JobCardDto = {
   mode: WorkMode;
   min_salary: number;
   max_salary: number;
+  appCount:number
   createdAt: string;
   lastDate: string;
   skills: string[];
   vacancyCount: string;
   status: StatusType;
+  pendingAppCount: number;
 };
 
 export type JobDetailsDto = {
@@ -62,8 +64,8 @@ export type JobDetailsDto = {
   skills: SkillDto[];
   languages: string;
   requirements: string[];
-  reportDetails: JobReportType[] | [];
-  education: EducationType;
+  reportDetails: JobReportType[];
+  education: string;
   isReported: boolean;
   reportedBy: string[];
   status: StatusType;

@@ -12,7 +12,9 @@ const Skills = ({
 }: {
   user: UserProfileType | undefined;
   skills: SkillType[];
-  onUserUpdate: (user: UserProfileType) => void;
+  onUserUpdate: React.Dispatch<
+    React.SetStateAction<UserProfileType | undefined>
+  >;
 }) => {
   const { showToast } = useToast();
   const {

@@ -5,16 +5,23 @@ import type { UserProfileType } from '../../../../../types/dtos/profile-types/us
 
 import { type SkillType } from '../../../../../types/dtos/profile-types/skill.types';
 import { profileService } from '../../../../../services/api-services/candidateService';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../../../../redux/store';
+import { updateUser } from '../../../../../redux/slices/auth.slice';
 
 export const useEditProfileDetails = (
   showToast: (data: typeOfToast) => void,
-  onUserUpdate: (user: UserProfileType) => void,
+  onUserUpdate: React.Dispatch<
+    React.SetStateAction<UserProfileType | undefined>
+  >,
   user: UserProfileType | undefined,
   skills: SkillType[] | []
 ) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
   const textref = useRef<HTMLTextAreaElement | null>(null);
+  const dispatch = useDispatch();
+  const reduxUser = useSelector((state: RootState) => state.auth.user);
 
   //skills component
   const [isAddSkill, setIsAddSkill] = useState<boolean>(false);
@@ -68,7 +75,14 @@ export const useEditProfileDetails = (
   const selectSkill = async (skillId: string) => {
     try {
       const data = await profileService.addSkill(skillId);
-      onUserUpdate(data.user);
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          skills: data.user.skills,
+        };
+      });
+      dispatch(updateUser({ skillCount: (reduxUser.skillCount || 0) + 1 }));
       showToast({
         msg: data.message,
         type: 'success',
@@ -88,9 +102,19 @@ export const useEditProfileDetails = (
     try {
       const data = await profileService.removeSkill(skillId);
       console.log('data ', data);
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          skills: prev.skills.filter((s) => s.id !== skillId),
+        };
+      });
+
+      dispatch(
+        updateUser({ skillCount: Math.max(reduxUser.skillCount - 1, 0) })
+      );
 
       showToast({ msg: data.message, type: 'success' });
-      onUserUpdate(data.user);
     } catch (error: any) {
       console.log(error);
       showToast({
@@ -110,6 +134,7 @@ export const useEditProfileDetails = (
         (skill) => !user?.skills.some((uskills) => uskills.id == skill.id)
       );
   }, [skillName, skills, user]);
+
   return {
     isEditing,
     handleChange,

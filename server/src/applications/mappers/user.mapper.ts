@@ -16,6 +16,7 @@ export class UserMapper {
       imageUrl: user.imageUrl,
       isblocked: user.isBlocked,
       savedJobs: user.savedJobs,
+    
     };
 
     return returnData;

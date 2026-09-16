@@ -12,6 +12,7 @@ import { ApplicationDetailsDto } from '../../dtos/application.dto';
 import { IGetEntityDetailsUsecase } from '../../interfaces/usecases/get-entity-details.usecase.inerface';
 import { ApplicationMapper } from '../../mappers/application.mapper';
 import { IExperienseRepository } from '../../../domain/repository-interfaces/experience-repository.interface';
+import { IChatroomRepository } from '../../../domain/repository-interfaces/chatroom.repository.interface';
 
 export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<ApplicationDetailsDto> {
   constructor(
@@ -19,7 +20,8 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
     private _jobRepository: IJobRepository,
     private _companyRepository: ICompanyRepository,
     private _userRepository: IUserRepository,
-    private _skillRepository: ISkillRepository
+    private _skillRepository: ISkillRepository,
+    private _chatroomRepository: IChatroomRepository
   ) {}
   async execute(
     applicationId: string,
@@ -62,6 +64,21 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
         generalMessages.errors.NOT_FOUND('Resume'),
         statusCodes.NOTFOUND
       );
+   
+      let chatroomId:string|undefined
+    if (
+      !['pending', 'rejected', 'reviewed', 'shortListed'].includes(
+        application.status
+      )
+    ) {
+      const chatroom = await this._chatroomRepository.findOne({
+        companyId: application.companyId,
+        candidateId: application.candidateId,
+        jobId: application.jobId,
+      });
+      chatroomId=chatroom?.id
+     
+    }
 
     const skills = await this._skillRepository.findByIds(job.skills);
     return ApplicationMapper.toApplicationDetailDto(
@@ -70,7 +87,8 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
       company,
       candidate,
       skills,
-      resume
+      resume,
+     chatroomId
     );
   }
 }

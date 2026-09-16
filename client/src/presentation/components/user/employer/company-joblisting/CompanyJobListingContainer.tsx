@@ -131,17 +131,24 @@ function CompanyJobListingContainer() {
 
   const postColumns = [
     {
-      key: 'title',
-      label: 'Title',
-      render: (j: JobCardDto) => (
-        <>
-          {' '}
-          <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
-            <span className="font-semibold text-slate-800">{j.title}</span>
-          </div>
-        </>
-      ),
-    },
+  key: 'title',
+  label: 'Title',
+  render: (j: JobCardDto) => (
+    <div className="relative inline-block">
+      <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm">
+        <span className="font-semibold text-slate-800">
+          {j.title}
+        </span>
+      </div>
+
+      {j.pendingAppCount > 0 && (
+        <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-4 h-4 px-1 rounded-full bg-fuchsia-600 text-white text-[9px] font-bold shadow-sm">
+          New {j.pendingAppCount}
+        </span>
+      )}
+    </div>
+  ),
+},
     {
       key: 'type',
       label: 'Type',
@@ -156,10 +163,15 @@ function CompanyJobListingContainer() {
         </>
       ),
     },
+    // {
+    //   key: 'mode',
+    //   label: 'Mode',
+    //   render: (j: JobCardDto) => j.mode,
+    // },
     {
-      key: 'mode',
-      label: 'Mode',
-      render: (j: JobCardDto) => j.mode,
+      key: 'app-count',
+      label: 'App-Count',
+      render: (j: JobCardDto) => j.appCount,
     },
     {
       key: 'salary',

@@ -46,12 +46,12 @@ export type AggregatedApplication = {
   status: ApplicationStatusEnum;
   logo: string;
 
-  applicant:{
-    name:string,
-    email:string,
-    address:IAddress
-    imageUrl:string
-  }
+  applicant: {
+    name: string;
+    email: string;
+    address: IAddress;
+    imageUrl: string;
+  };
 };
 
 export type ApplicationStatsCardType = {
@@ -72,8 +72,8 @@ export type ApplicationFilterDto = {
   limit?: number;
   sortBy?: string;
   jobType?: JobType;
-  startDate?:Date
-  endDate?:Date
+  startDate?: Date;
+  endDate?: Date;
 };
 export type TimelineStatus = 'done' | 'active' | 'pending';
 
@@ -95,7 +95,7 @@ export type ApplicationDetailsDto = {
   interviewAt?: string;
   offeredAt?: string;
   timeline: ApplicationTimelineItemDTO[];
-
+  chatroomId?: string;
   candidate: {
     about: string;
     profileImg?: string;

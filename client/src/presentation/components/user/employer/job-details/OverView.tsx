@@ -10,13 +10,15 @@ import {
   Users,
 } from 'lucide-react';
 import { formatSalary } from '../../../../../utils/salary-format';
+import type { UserRole } from '../../../../../constants/types/user';
 
 type Props = {
   tab: string;
   job: JobDetailsDto;
+  role: UserRole;
 };
 
-function OverView({ tab, job }: Props) {
+function OverView({ tab, job, role }: Props) {
   if (!job || tab !== 'overview') return null;
 
   const jobDetails = [
@@ -69,7 +71,7 @@ function OverView({ tab, job }: Props) {
           {job.skills.map((skill) => (
             <span
               key={skill.id}
-              className="px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold"
+              className={`px-3 py-1.5 rounded-lg  text-xs font-semibold ${role == 'admin' ? 'bg-blue-50 border border-blue-100 text-blue-700' : 'bg-fuchsia-50 border border-fuchsia-100 text-fuchsia-700'}`}
             >
               {skill.skillName}
             </span>

@@ -1,7 +1,7 @@
 import React, { type ReactNode } from 'react';
 import { appStatusStyles } from '../../../candidate/applications/ApplicationCard';
 import type { ApplicationDetailsDto } from '../../../../../types/dtos/application.dto';
-import { File, Mail, Phone } from 'lucide-react';
+import { File, Mail, MapPin, Phone } from 'lucide-react';
 
 export function Section({
   title,
@@ -38,61 +38,76 @@ function LeftComponent({ application }: Props) {
             alt={application.candidate.candidateName.charAt(0).toUpperCase()}
           />
         </div>
-        <div className="flex-1 w-full">
-          <div className="flex items-start sm:items-center justify-between flex-col sm:flex-row gap-2">
-            <div className="flex items-center gap-3 flex-wrap">
-              <h2 className="text-xl font-semibold text-gray-900">
-                {application.candidate.candidateName}
-              </h2>
-              <span
-                className={`text-xs font-medium px-2.5 py-1 rounded-full ${appStatusStyles[application.status]}`}
-              >
-                {application.status}
-              </span>
-            </div>
-            <div className="text-xs text-gray-400 shrink-0">
-              Applied {application.appliedAt}
-            </div>
-          </div>
-          <p className="text-sm text-gray-500 mt-0.5">
-            {application.job.title}
-          </p>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-gray-500">
-            <span className="flex items-center gap-1">
-              📍 {application.candidate.location}
-            </span>
+       <div className="flex-1 w-full min-w-0">
+  {/* Name + Status + Applied Date */}
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+    <div className="flex items-center gap-3 flex-wrap min-w-0">
+      <h2 className="text-xl font-semibold text-gray-900 truncate">
+        {application.candidate.candidateName}
+      </h2>
 
-            <span className="flex items-center gap-1">
-              <Mail size={14} className="text-blue-500" />
-              <a
-                href={`mailto:${application.candidate.email}`}
-                className="text-indigo-600 hover:underline"
-              >
-                {application.candidate.email}
-              </a>
-            </span>
+      <span
+        className={`text-xs font-medium px-2.5 py-1 rounded-full shrink-0 ${
+          appStatusStyles[application.status]
+        }`}
+      >
+        {application.status}
+      </span>
+    </div>
 
-            <span className="flex items-center gap-1">
-              <Phone size={14} className="text-green-500" />
-              {application.candidate.phone}
-            </span>
-          </div>
-          <div className="flex gap-3 mt-2 text-sm">
-            <a href="#" className="text-indigo-500 hover:underline">
-              🔗 LinkedIn
-            </a>
-            <a href="#" className="text-indigo-500 hover:underline">
-              🌐 Portfolio
-            </a>
-          </div>
-        </div>
+    <span className="text-xs text-gray-400 shrink-0">
+      Applied {application.appliedAt}
+    </span>
+  </div>
+
+  {/* Job title */}
+  <p className="text-sm text-gray-500 mt-1">
+    Applied for <span className="font-medium text-gray-700">
+      {application.job.title}
+    </span>
+  </p>
+
+  {/* Candidate information */}
+  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-sm text-gray-500">
+
+    {/* Location */}
+    <span className="flex items-center gap-1.5">
+      <MapPin size={15} className="text-red-400 shrink-0" />
+      <span>{application.candidate.location}</span>
+    </span>
+
+    {/* Email */}
+    <span className="flex items-center gap-1.5 min-w-0">
+      <Mail size={15} className="text-blue-500 shrink-0" />
+
+      <a
+        href={`mailto:${application.candidate.email}`}
+        className="text-slate-600 hover:text-fuchsia-700 hover:underline truncate"
+      >
+        {application.candidate.email}
+      </a>
+    </span>
+
+    {/* Phone */}
+    <span className="flex items-center gap-1.5">
+      <Phone size={15} className="text-green-500 shrink-0" />
+
+      <a
+        href={`tel:${application.candidate.phone}`}
+        className="text-gray-600 hover:text-fuchsia-700 "
+      >
+        {application.candidate.phone}
+      </a>
+    </span>
+  </div>
+</div>
       </div>
 
       {/* Resume + Cover Letter */}
       <Section title="Resume ">
         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 text-xs font-bold">
+            <div className="w-9 h-9 bg-fuchsia-100 rounded-lg flex items-center justify-center text-fuchsia-600 text-xs font-bold">
               <File size={14} />
             </div>
             <div>
@@ -127,7 +142,7 @@ function LeftComponent({ application }: Props) {
           {application.job.skills.map((s) => (
             <span
               key={s}
-              className="bg-indigo-50 text-indigo-700 text-sm px-3 py-1 rounded-full font-medium"
+              className="bg-fuchsia-50 text-fuchsia-800 text-sm px-3 py-1 rounded-full font-medium"
             >
               {s}
             </span>

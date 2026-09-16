@@ -126,7 +126,7 @@ function NavPart({
               <button
                 onClick={onEditClick}
                 disabled={!['active', 'paused', 'expired'].includes(job.status)}
-                className={`h-8 px-4 gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-xs font-semibold text-white transition-colors flex items-center ${!['active', 'paused', 'expired'].includes(job.status) ? 'bg-slate-300 cursor-not-allowed' : ''}`}
+                className={`h-8 px-4 gap-1.5 rounded-lg bg-fuchsia-800 hover:bg-fuchsia-600 text-xs font-semibold text-white transition-colors flex items-center ${!['active', 'paused', 'expired'].includes(job.status) ? 'bg-slate-300 cursor-not-allowed' : ''}`}
               >
                 <SquarePenIcon className="text-white" size={13} color="white" />{' '}
                 Edit Job

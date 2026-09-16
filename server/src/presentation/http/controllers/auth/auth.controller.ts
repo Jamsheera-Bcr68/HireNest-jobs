@@ -33,7 +33,6 @@ export class AuthController {
   }
 
   register = asyncHandler(async (req: Request, res: Response) => {
-
     const payload = req.body;
     const pendingUser = await this._registerUseCase.execute(payload);
 
@@ -47,7 +46,7 @@ export class AuthController {
 
   verifyOtp = asyncHandler(async (req: Request, res: Response) => {
     const payload = req.body;
-  //  console.log('from auth  controller verify otp');
+    //  console.log('from auth  controller verify otp');
 
     await this._verifyOtpService.execute(payload.email, payload.otp);
 
@@ -58,7 +57,7 @@ export class AuthController {
 
   resendOtp = asyncHandler(async (req: Request, res: Response) => {
     const { email } = req.body;
-  //  console.log('from auth controller email is ', email);
+    //  console.log('from auth controller email is ', email);
 
     const otp_expiry = await this._sendOtpService.execute(email);
 
@@ -70,20 +69,20 @@ export class AuthController {
   });
 
   login = asyncHandler(async (req: Request, res: Response) => {
-      console.log('from login controller');
+    console.log('from login controller');
 
     const payload: IloginInput = req.body;
     const {
-      user,name,
+      user,
+      name,
       refreshToken,
       accessToken,
       companyId,
       isProfileCompleted,
       appliedJobs,
     } = await this._loginUseCase.execute(payload);
-    const userDto = UserMapper.toDto(user,name);
-    console.log('refresh token from auth controller',refreshToken);
-    
+    const userDto = UserMapper.toDto(user, name);
+    console.log('refresh token from auth controller', refreshToken);
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -93,14 +92,19 @@ export class AuthController {
       path: '/api/auth/refresh-token',
     });
 
-    console.log('login success full access,',accessToken);
-    console.log('login success full refreshToken,',refreshToken);
-    
     return res.status(statusCodes.OK).json({
       success: true,
       message: authMessages.success.LOGIN_SUCCESS,
       data: {
-        user: { ...userDto, companyId, isProfileCompleted, appliedJobs },
+        user: {
+          ...userDto,
+          companyId,
+          isProfileCompleted,
+          appliedJobs,
+          skillCount: user.skills?.length ?? 0,
+          educationCount: user.education.length,
+          resumeCount: user.resumes.length ?? 0,
+        },
         accessToken,
       },
     });

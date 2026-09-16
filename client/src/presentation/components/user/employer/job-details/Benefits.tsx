@@ -1,12 +1,14 @@
+import type { UserRole } from '../../../../../constants/types/user';
 import SectionTitle from './SectionTitle';
 import { Check } from 'lucide-react';
 
 type Props = {
   benefits: string[];
   tab: string;
+  role: UserRole;
 };
 
-function Benefits({ benefits, tab }: Props) {
+function Benefits({ benefits, tab, role }: Props) {
   if (tab !== 'benefits') return null;
 
   return (
@@ -20,7 +22,7 @@ function Benefits({ benefits, tab }: Props) {
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="flex items-center gap-3 p-3.5 rounded-xl border border-gray-100 hover:border-blue-100 hover:bg-blue-50/40 transition"
+              className={`flex items-center gap-3 p-3.5 rounded-xl border border-gray-100 transition ${role == 'admin' ? 'hover:border-blue-100 hover:bg-blue-50/40 ' : 'hover:border-fuchsia-100 hover:bg-fuchsia-50/40 '}`}
             >
               <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0">
                 <Check

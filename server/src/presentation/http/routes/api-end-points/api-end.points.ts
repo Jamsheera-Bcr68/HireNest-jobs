@@ -36,6 +36,8 @@ export const API_END_POINTS = {
   RESUME: '/profile/resume/:resumeId',
   HOME: '/home',
   LOGO: '/logo',
+  COMPANY:'/company/:companyId',
+  COMPANY_POSTS:'/company/:companyId/jobs',
   PROFILE_LOGO: '/profile/logo',
   DOCUMENT: '/profle/document',
   SAVED_JOBS: '/saved',

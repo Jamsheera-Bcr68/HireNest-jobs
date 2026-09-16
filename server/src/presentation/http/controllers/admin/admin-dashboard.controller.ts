@@ -17,7 +17,7 @@ import { IDashboardDataListUsecase } from '../../../../applications/interfaces/d
 import { IIndustryWiseJobCountUsecase } from '../../../../applications/useCases/admin/dashoard/job-count-by-industry.usecase';
 import { ApplcationDistributionUsecase } from '../../../../applications/useCases/admin/dashoard/application-distributiion.usecase';
 import { IGetCompaniesUseCase } from '../../../../applications/useCases/admin/get-companies.usecase';
-import { IGetAllJobsUseCase } from '../../../../applications/useCases/candidate/get-jobs.usecase';
+import { IGetAllJobsUseCase } from '../../../../applications/useCases/job/get-jobs.usecase';
 import { StatusEnum } from '../../../../domain/enums/status.enum';
 import { IGetPendingCompaniesUsecase } from '../../../../applications/useCases/admin/dashoard/pending-companies.usecase';
 import { IGetReportedJobsUsecase } from '../../../../domain/get-reported-jobs.usecase';

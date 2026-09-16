@@ -127,7 +127,7 @@ export function CandidateInterviewList({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => onViewClick(interview.id)}
-                  className="text-xs border text-blue-600 border-blue-300 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition"
+                  className="text-xs border text-fuchsia-600 border-fuchsia-300 px-3 py-1.5 rounded-lg hover:bg-fuchsia-100 transition"
                 >
                   View
                 </button>

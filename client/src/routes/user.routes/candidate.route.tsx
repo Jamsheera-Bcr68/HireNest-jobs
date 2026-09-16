@@ -11,11 +11,13 @@ import Chat from '../../presentation/pages/user/Chat';
 import CandidateDashboardPage from '../../presentation/pages/user/candidate/CandidateDashboardPage';
 import CandidateDashboard1 from '../../presentation/components/candidate/dashboard/Sample';
 import MeetPage from '../../presentation/pages/user/MeetPage';
-import InterviewRoom from '../../presentation/InterviewRoom';
+import ViewCompanyPage from '../../presentation/pages/user/candidate/ViewCompanyPage';
+
 
 export const CandidateRoutes = () => {
   return (
     <Routes>
+
       <Route path="/" element={<CandidateLayout />}>
         <Route path={CANDIDATE_ROUTES.PROFILE} element={<CandidateProfile />} />
         <Route
@@ -44,6 +46,11 @@ export const CandidateRoutes = () => {
         
         <Route path={'/messagess'} element={<Chat />} />
       </Route>
+       <Route 
+        path="/company/:companyId"
+        element={<ViewCompanyPage />}
+      />
+
     </Routes>
   );
 };

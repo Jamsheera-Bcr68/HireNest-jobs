@@ -77,12 +77,13 @@ export class InterviewController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    const interview = await this._scheduleInterviewUsecase.execute(req.body);
+    const { interviewId, chatroomId } =
+      await this._scheduleInterviewUsecase.execute(req.body);
 
     return res.status(statusCodes.OK).json({
       success: true,
       message: generalMessages.success.ENTITY_CREATED('Interview', 'Scheduled'),
-      interview,
+      data: { interviewId, chatroomId },
     });
   });
 

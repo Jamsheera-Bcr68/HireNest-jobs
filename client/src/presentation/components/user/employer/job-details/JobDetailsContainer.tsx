@@ -16,6 +16,8 @@ import { jobService } from '../../../../../services/api-services/jobService';
 import UpdateLastDateModal from './UpdateLastDateModal';
 import EditJobModal from '../Modal';
 import JobForm from '../JobForm';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../../redux/store';
 const tabs = [
   { id: 'overview', label: 'Overview' },
   { id: 'responsibilities', label: 'Responsibilities' },
@@ -24,6 +26,7 @@ const tabs = [
 ];
 function JobDetailsContainer() {
   const { jobId } = useParams();
+  const role=useSelector((state:RootState)=>state.auth.user?.role)
 
   const { showToast } = useToast();
   const [job, setJob] = useState<JobDetailsDto | null>(null);
@@ -103,21 +106,21 @@ function JobDetailsContainer() {
         <HeroPart job={job} />
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 items-start">
           <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-            <Tabs tab={tab} tabs={tabs} setTab={setTab} />
+            <Tabs tab={tab} tabs={tabs} setTab={setTab} role={role}/>
             <div className="p-6 lg:p-7 space-y-6">
-              {tab == 'overview' && <OverView tab={tab} job={job} />}
+              {tab == 'overview' && <OverView tab={tab} job={job} role={role}/>}
               {tab == 'responsibilities' && (
-                <Responsibilities job={job} tab={tab} />
+                <Responsibilities job={job} tab={tab} role={role} />
               )}
 
               {tab == 'benefits' && (
-                <Benefits benefits={job.benefits} tab={tab} />
+                <Benefits benefits={job.benefits} tab={tab} role={role} />
               )}
               {tab == 'company' && <Company job={job} />}
             </div>
           </div>
           <div className="space-y-4">
-            <RightSideBar updateStatus={handleUpdateStatus} job={job} role='company' />
+            <RightSideBar role={role} updateStatus={handleUpdateStatus} job={job}  />
           </div>
         </div>
       </div>

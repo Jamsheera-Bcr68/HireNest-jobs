@@ -6,13 +6,19 @@ import { PenIcon, Trash } from 'lucide-react';
 import DeleteConfirmationModal from '../../../modals/DeleteConfirmationModal';
 import { useToast } from '../../../../shared/toast/use-toast';
 import { profileService } from '../../../../services/api-services/candidateService';
-
+import { updateUser } from '../../../../redux/slices/auth.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../../../redux/store';
 type EducationProps = {
-  onUserUpdate: (user: UserProfileType) => void;
+  onUserUpdate: React.Dispatch<
+    React.SetStateAction<UserProfileType | undefined>
+  >;
   educations: EducationType[] | [];
 };
 type ModalOpen = { type: 'edit' | 'delete' | 'add'; isOpen: boolean };
 const Education = ({ onUserUpdate, educations }: EducationProps) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
   const [isOpen, setIsOpen] = useState<ModalOpen | null>(null);
   const [editEdu, setEditEdu] = useState<EducationType | null>(null);
   const [deleteEduId, setDeleteEduId] = useState<string>('');
@@ -24,10 +30,24 @@ const Education = ({ onUserUpdate, educations }: EducationProps) => {
     }
     try {
       const data = await profileService.deleteEducation(deleteEduId);
+
+      dispatch(
+        updateUser({
+          educationCount: Math.max((user.educationCount ?? 0) - 1, 0),
+        })
+      );
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          education: prev.education?.filter((e) => e.id !== deleteEduId) ?? [],
+        };
+      });
       setDeleteEduId('');
       setIsOpen(null);
       showToast({ msg: data.message, type: 'success' });
-      onUserUpdate(data.user);
+      // if(data.user.education.lemgth)
     } catch (error: any) {
       showToast({
         msg: error.response?.data?.message || error.message,

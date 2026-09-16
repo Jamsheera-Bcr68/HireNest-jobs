@@ -9,7 +9,7 @@ import { ICrateJobUseCase } from '../../../applications/useCases/job/create-job.
 import { IGetJobDetailsUseCase } from '../../../applications/useCases/candidate/get-job.usecase';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { IGetAllJobsUseCase } from '../../../applications/useCases/candidate/get-jobs.usecase';
+import { IGetAllJobsUseCase } from '../../../applications/useCases/job/get-jobs.usecase';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { IReportJobUseCase } from '../../../applications/useCases/candidate/report-job.usecase';
 import { ISaveJobUseCase } from '../../../applications/useCases/candidate/save-job.usecase';
@@ -22,16 +22,16 @@ import { JobUpdateDto } from '../../../applications/dtos/job.dto';
 
 export class JobController {
   constructor(
-    private createJobUseCase: ICrateJobUseCase,
-    private getAllJobsUseCase: IGetAllJobsUseCase,
-    private getJobDetailsUseCase: IGetJobDetailsUseCase,
-    private reportJobUseCase: IReportJobUseCase,
-    private saveJobUseCase: ISaveJobUseCase,
-    private removeSavedJobUseCase: IRemoveSavedJobUseCase,
-    private getSavedJobsUseCase: IGetSavedJobsUseCase,
-    private companyPostStatusUseCase: IGetPostSatusUseCase,
-    private updateJobStatusUseCase: IUpdateJobStatusUseCase,
-    private updateJobUseCase: IUpdateJobUseCase
+    private _createJobUseCase: ICrateJobUseCase,
+    private _getAllJobsUseCase: IGetAllJobsUseCase,
+    private _getJobDetailsUseCase: IGetJobDetailsUseCase,
+    private _reportJobUseCase: IReportJobUseCase,
+    private _saveJobUseCase: ISaveJobUseCase,
+    private _removeSavedJobUseCase: IRemoveSavedJobUseCase,
+    private _getSavedJobsUseCase: IGetSavedJobsUseCase,
+    private _companyPostStatusUseCase: IGetPostSatusUseCase,
+    private _updateJobStatusUseCase: IUpdateJobStatusUseCase,
+    private _updateJobUseCase: IUpdateJobUseCase
   ) {}
   create = asyncHandler(async (req: Request, res: Response) => {
     // console.log('from jobcontroller');
@@ -47,7 +47,7 @@ export class JobController {
       );
     }
     const jobData = JobMapper.toJobDto(payload);
-    const job = await this.createJobUseCase.execute(
+    const job = await this._createJobUseCase.execute(
       jobData,
       user.userId,
       user.role
@@ -59,9 +59,13 @@ export class JobController {
 
   getJobs = asyncHandler(async (req: Request, res: Response) => {
     let { search, page, limit, sortBy, ...rest } = req.query;
+      const user = req.user;
+    if (!user || !user.userId) {
+      throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
+    }
    // console.log('from getjob controller', rest);
 
-    const jobRes = await this.getAllJobsUseCase.execute(
+    const jobRes = await this._getAllJobsUseCase.execute(user.userId,user.role,
       rest,
 
       Number(limit),
@@ -85,7 +89,7 @@ export class JobController {
     }
     let { search, page, limit, sortBy, ...rest } = req.query;
 
-    const jobRes = await this.getSavedJobsUseCase.execute(
+    const jobRes = await this._getSavedJobsUseCase.execute(
       user.userId,
       rest,
 
@@ -107,7 +111,7 @@ export class JobController {
     const {jobId} = req.params;
     //console.log('job id id ', jobId);
 
-    const jobDetails = await this.getJobDetailsUseCase.execute(jobId);
+    const jobDetails = await this._getJobDetailsUseCase.execute(jobId);
     return res.status(statusCodes.OK).json({
       success: true,
       message: jobMessages.success.JOB_DETAILS_FETCHED,
@@ -129,7 +133,7 @@ export class JobController {
         jobMessages.error.JOBID_NOT_FOUND,
         statusCodes.BADREQUEST
       );
-    await this.reportJobUseCase.execute(jobId, data, user.userId);
+    await this._reportJobUseCase.execute(jobId, data, user.userId);
     return res
       .status(statusCodes.OK)
       .json({ success: true, message: jobMessages.success.JOB_REPORTED });
@@ -147,7 +151,7 @@ export class JobController {
         jobMessages.error.JOBID_NOT_FOUND,
         statusCodes.BADREQUEST
       );
-    const savedJobs = await this.saveJobUseCase.execute(jobId, user.userId);
+    const savedJobs = await this._saveJobUseCase.execute(jobId, user.userId);
     return res.status(statusCodes.OK).json({
       success: true,
       message: jobMessages.success.JOB_SAVED,
@@ -167,7 +171,7 @@ export class JobController {
         jobMessages.error.JOBID_NOT_FOUND,
         statusCodes.BADREQUEST
       );
-    const savedJobs = await this.removeSavedJobUseCase.execute(
+    const savedJobs = await this._removeSavedJobUseCase.execute(
       jobId,
       user.userId
     );
@@ -184,7 +188,7 @@ export class JobController {
     
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
-    const statusData = await this.companyPostStatusUseCase.execute(
+    const statusData = await this._companyPostStatusUseCase.execute(
       user.userId,
       user.role
     );
@@ -208,7 +212,7 @@ export class JobController {
         statusCodes.UNAUTHERIZED
       );
   //  console.log('from update status', jobId, data);
-    await this.updateJobStatusUseCase.execute(jobId, user.userId, user.role, data);
+    await this._updateJobStatusUseCase.execute(jobId, user.userId, user.role, data);
     return res.status(statusCodes.OK).json({
       success: true,
       message: jobMessages.success.JOB_STATUS_UPDATED(data.status),
@@ -232,7 +236,7 @@ export class JobController {
       );
     const payload = req.body;
     //console.log('from update job', jobId, payload);
-    const updated = await this.updateJobUseCase.execute(
+    const updated = await this._updateJobUseCase.execute(
       jobId,
 
       user.role,

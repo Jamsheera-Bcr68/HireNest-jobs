@@ -43,7 +43,6 @@ export type ApplicationFilterType = {
   status?: ApplicationStatusType;
   jobType?: string;
   sortBy?: string;
-  
 };
 
 export const useApplications = (setPage?: (page?: number) => void) => {
@@ -68,10 +67,16 @@ export const useApplications = (setPage?: (page?: number) => void) => {
       showToast({ msg: 'You are not allowed to apply job', type: 'error' });
       return;
     }
-    // if (user.isProfileCompleted == false) {
-    //   showToast({ msg: 'Please complete your profile', type: 'error' });
-    //   return;
-    // }
+    if (!user.skillCount  || !user.educationCount) {
+      if (!user.skillCount) {
+        showToast({ msg: 'Your Profile is missing skills', type: 'error' });
+      } else 
+  if (!user.educationCount) {
+        showToast({ msg: 'Your Profile is missing Educations', type: 'error' });
+      }
+
+      return;
+    }
     if (!applyJobId) {
       showToast({ msg: 'Job id is not found', type: 'error' });
       return;
@@ -84,12 +89,15 @@ export const useApplications = (setPage?: (page?: number) => void) => {
       setResumes(datta.resumes);
       setShowResumeModal(true);
     } catch (error: any) {
+      console.log(error);
+
       showToast({
         msg: error.response?.data?.message || error.message,
         type: 'error',
       });
     }
   };
+
   const applyJob = async (resumeId: string) => {
     //  console.log('jobid,resumeid', jobId, resumeId);
 

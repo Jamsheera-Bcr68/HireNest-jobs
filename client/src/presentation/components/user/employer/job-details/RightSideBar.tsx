@@ -75,20 +75,20 @@ function RightSideBar({ job, updateStatus, role }: Props) {
         <SectionTitle>Applications</SectionTitle>
 
         <div className="flex items-end gap-3 mb-5">
-          <p className="text-4xl font-extrabold text-indigo-600">
+          <p className={`text-4xl font-extrabold ${role=='admin'?'text-indigo-600':'text-fuchsia-600'}`}>
             {job.totalApplicants}
           </p>
 
           <p className="text-sm text-gray-600 text-bold mb-1.5">Total Applicants</p>
         </div>
 
-        <button
+        <button 
           onClick={() =>{
             if(role==='company') navigate(`/company/jobs/${job.id}/applications`)
               else  navigate(`/admin/jobs/${job.id}/applications`)
           }}
-          className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 transition
-          text-sm font-semibold text-white flex items-center justify-center gap-2"
+          className={`w-full py-2.5 rounded-xl  transition
+          text-sm font-semibold text-white flex items-center justify-center gap-2 ${role==='admin'?'bg-indigo-600 hover:bg-indigo-700':'bg-fuchsia-800 hover:bg-fuchsia-600'}`}
         >
           <Users size={15} />
           {role=='admin'?'Show':'Manage'}  Applications

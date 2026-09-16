@@ -11,12 +11,14 @@ export default function ReportJobModal({
 }: {
   handleChange: (data: Partial<ReportFormType>) => void;
   formData: ReportFormType;
-  error: ErrorType;
+  error: ErrorType|null;
   onSubmit: () => void;
   open: boolean;
   onClose: () => void;
 }) {
   if (!open) return null;
+  console.log('onSubmit',onSubmit);
+  
 
   return (
     <div
@@ -35,7 +37,7 @@ export default function ReportJobModal({
             </div>
 
             <div>
-              <h2 className="text-[17px] font-bold text-slate-900">
+              <h2 className="text-[17px] font-bold text-fuchsia-800">
                 Report this job
               </h2>
 
@@ -66,7 +68,7 @@ export default function ReportJobModal({
                 className={`flex items-start gap-3 px-3.5 py-3 rounded-xl border cursor-pointer transition-all
                 ${
                   formData.reason === reason
-                    ? 'border-indigo-500 bg-indigo-50'
+                    ? 'border-fuchsia-500 bg-fuchsia-50'
                     : 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-white'
                 }`}
               >
@@ -84,12 +86,12 @@ export default function ReportJobModal({
                   className={`w-[18px] h-[18px] rounded-full border-2 mt-0.5 flex items-center justify-center transition-colors
                   ${
                     formData.reason === reason
-                      ? 'border-indigo-500'
+                      ? 'border-fuchsia-500'
                       : 'border-slate-300'
                   }`}
                 >
                   {formData.reason === reason && (
-                    <div className="w-2 h-2 rounded-full bg-indigo-500" />
+                    <div className="w-2 h-2 rounded-full bg-fuchsia-500" />
                   )}
                 </div>
 
@@ -97,7 +99,7 @@ export default function ReportJobModal({
                   <span
                     className={`text-sm font-semibold ${
                       formData.reason === reason
-                        ? 'text-indigo-700'
+                        ? 'text-fuchsia-700'
                         : 'text-slate-800'
                     }`}
                   >
@@ -111,7 +113,7 @@ export default function ReportJobModal({
           </div>
 
           {/* reason error */}
-          {error.reason && (
+          {error?.reason && (
             <p className="text-xs text-red-500 mt-2">{error.reason}</p>
           )}
 
@@ -131,7 +133,7 @@ export default function ReportJobModal({
             />
 
             {/* info error */}
-            {error.info && (
+            {error?.info && (
               <p className="text-xs text-red-500 mt-1">{error.info}</p>
             )}
           </div>
@@ -155,8 +157,8 @@ export default function ReportJobModal({
             className={`px-5 py-2 rounded-xl text-sm font-semibold text-white
               ${
                 formData.reason
-                  ? 'bg-indigo-500 hover:bg-indigo-600'
-                  : 'bg-indigo-200 cursor-not-allowed'
+                  ? 'bg-fuchsia-800 hover:bg-fuchsia-600'
+                  : 'bg-fuchsia-200 cursor-not-allowed'
               }`}
           >
             Submit report

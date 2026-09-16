@@ -36,12 +36,19 @@ export class RecomentedJobUsecase implements IRecomentedJobsUsecase {
         generalMessages.errors.NOT_FOUND('Candidate'),
         statusCodes.NOTFOUND
       );
-    const applied = await this._appRepository.getDocsByUserId(userId)
-    const jobIds=applied.map(app=>app.jobId)
+    const applied = await this._appRepository.getDocsByUserId(userId);
+    const jobIds = applied.map((app) => app.jobId);
     const skillIds = candidate.skills?.map((s) => s.id);
-
+    
+    const normalisedTitles=candidate.title?.split(' ').map(t=>t.toLowerCase())
+  if (
+  (!skillIds || skillIds.length === 0) &&
+  (!normalisedTitles || normalisedTitles.length === 0)
+) {
+  return [];
+}
     const { jobs } = await this._jobRepository.getJobs(
-      { skills: skillIds, status: StatusEnum.ACTIVE,appliedJobIds:jobIds },
+      { skills: skillIds, status: StatusEnum.ACTIVE, appliedJobIds: jobIds,title:[...new Set(normalisedTitles)] },
       3,
       1,
       { job: '', location: '' },

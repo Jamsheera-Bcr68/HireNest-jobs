@@ -19,9 +19,14 @@ import { NotificationInputDto } from '../../dtos/notification.dto';
 import { getIO } from '../../../infrastructure/socket';
 import { IChatroomRepository } from '../../../domain/repository-interfaces/chatroom.repository.interface';
 import { ChatroomInputDto } from '../../dtos/chatroom.dto';
+import { Chatroom } from '../../../domain/entities/chatroom.entity';
+import { IEmailService } from '../../interfaces/services/email.service';
+import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 
 export interface IScheduleInterviewUsecase {
-  execute(data: interviewInputDto): Promise<string>;
+  execute(
+    data: interviewInputDto
+  ): Promise<{ chatroomId: string; interviewId: string }>;
 }
 
 export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
@@ -31,9 +36,13 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
     private _notificationService: INotificationService,
     private _companyRepository: ICompanyRepository,
     private _jobRepository: IJobRepository,
-    private _chatroomRepository: IChatroomRepository
+    private _chatroomRepository: IChatroomRepository,
+    private _emailService: IEmailService,
+    private _userRepository: IUserRepository
   ) {}
-  async execute(data: interviewInputDto): Promise<string> {
+  async execute(
+    data: interviewInputDto
+  ): Promise<{ chatroomId: string; interviewId: string }> {
     const { applicationId } = data;
 
     const application =
@@ -91,6 +100,15 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
         generalMessages.errors.NOT_FOUND('Company'),
         statusCodes.NOTFOUND
       );
+    const candidate = await this._userRepository.findById(
+      application.candidateId
+    );
+    if (!candidate) {
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Company'),
+        statusCodes.NOTFOUND
+      );
+    }
 
     const notificationData: NotificationInputDto = {
       userId: newInterview.candidateId,
@@ -108,23 +126,45 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
     };
 
     // console.log('notification data',notificationData);
-    const chatroomExist = await this._chatroomRepository.findOne({
+    let chatroom = await this._chatroomRepository.findOne({
       jobId: newInterview.jobId,
       candidateId: newInterview.candidateId,
     });
-    if (!chatroomExist) {
+
+    if (!chatroom) {
       const chatroomData: ChatroomInputDto = {
         companyId: newInterview.companyId,
         candidateId: newInterview.candidateId,
         jobId: newInterview.jobId,
       };
 
-      await this._chatroomRepository.create(chatroomData);
+      chatroom = await this._chatroomRepository.create(chatroomData);
     }
-
+    if (!chatroom)
+      throw new AppError(
+        generalMessages.errors.NOT_FOUND('Chatroom'),
+        statusCodes.NOTFOUND
+      );
     const notification =
       await this._notificationService.create(notificationData);
     getIO().to(newInterview.candidateId).emit('notification', notification);
-    return newInterview.id;
+    const interviewTime = new Date(newInterview.scheduledAt).toLocaleTimeString(
+      'en-IN',
+      {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }
+    );
+    await this._emailService.sendInterviewScheduledEmail(candidate.email,
+      candidate.name ?? 'Candidate',
+      job.title,
+      company.companyName,
+      new Date(newInterview.scheduledAt).toLocaleString(),
+      interviewTime,
+      newInterview.mode
+    );
+
+    return { interviewId: newInterview.id, chatroomId: chatroom.id };
   }
 }

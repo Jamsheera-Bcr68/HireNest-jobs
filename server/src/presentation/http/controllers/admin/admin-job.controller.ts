@@ -6,7 +6,7 @@ import { authMessages } from '../../../../shared/constants/messages/auth.mesages
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { jobMessages } from '../../../../shared/constants/messages/job.messages';
 import { IGetPostSatusUseCase } from '../../../../applications/useCases/company/company-post-status.usecase';
-import { IGetAllJobsUseCase } from '../../../../applications/useCases/candidate/get-jobs.usecase';
+import { IGetAllJobsUseCase } from '../../../../applications/useCases/job/get-jobs.usecase';
 import { IGetJobDetailsUseCase } from '../../../../applications/useCases/candidate/get-job.usecase';
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 
@@ -37,8 +37,12 @@ export class AdminJobController {
   getJobs = asyncHandler(async (req: Request, res: Response) => {
     let { search, page, limit, sortBy, ...rest } = req.query;
    // console.log('from getjob controller', rest);
+     const user = req.user;
+    if (!user || !user.userId) {
+      throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
+    }
 
-    const jobRes = await this.getAllJobsUseCase.execute(
+    const jobRes = await this.getAllJobsUseCase.execute(user.userId,user.role,
       rest,
 
       Number(limit),

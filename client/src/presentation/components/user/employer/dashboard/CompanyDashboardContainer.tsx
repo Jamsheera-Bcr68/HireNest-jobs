@@ -1,37 +1,37 @@
 import { useEffect, useState } from 'react';
 import { StatCard } from './Cards';
-import { ChartCard } from './ChartCard';
-import { ApplicationTrendChart } from './ChartCard';
+
 import { SkeletonBlock } from '../../../candidate/dashboard/StatusCards';
-import { TopJobsChart, HiringFunnelChart } from './ChartCard';
+
 import { useNavigate } from 'react-router-dom';
+import { HiringPipeline } from './Components';
 import {
   SectionHeading,
   InterviewCard,
-  EmptyState,
+  AppEmptyState,
   SkeletonCard,
   ApplicationRow,
   JobSummaryCard,
-  RecentActivity,
+
   QuickActionCard,
-  PendingActionsList,
+  HiringReminders,
+  RecentActivities,
 } from './Components';
 
 import {
   Briefcase,
   CheckCircle2,
   FileText,
-
   Plus,
   CalendarClock,
   ClipboardList,
   Send,
   Users,
-  
   type LucideIcon,
   Lightbulb,
   Bell,
   User,
+  Eye,
 } from 'lucide-react';
 import WelcomeSection from '../../../common/dashboard/WelcomeSection';
 
@@ -87,6 +87,15 @@ const RECENT_CONFIG: Record<RecentItemType, LucideIcon> = {
   application: FileText,
   interview: CheckCircle2,
 };
+
+const PIPELINE_STAGES: ApplicationStatusType[] = [
+  'pending',
+  'reviewed',
+  'shortListed',
+  'interviewScheduled',
+  'interviewCompleted',
+  'hired',
+];
 const APP_STATUS_CONFIG: Record<
   ApplicationStatusType,
   { label: string; bg: string; style: string }
@@ -133,14 +142,17 @@ const APP_STATUS_CONFIG: Record<
   },
 };
 
-export type QuickAction = { label: string; icon: LucideIcon,path:string };
- const quickActions:QuickAction[]= [
-    {  label: 'Post a job', icon: Plus,path:'/company/jobs/create' },
-    {  label: 'Schedule interview', icon: CalendarClock,path:'/company/interviews' },
-    { label: 'Review applications', icon: ClipboardList ,path:'/'},
-    {  label: 'Message candidates', icon: Send ,path:'/company/messages'},
-  ]
-
+export type QuickAction = { label: string; icon: LucideIcon; path: string };
+const quickActions: QuickAction[] = [
+  { label: 'Post a job', icon: Plus, path: '/company/jobs/create' },
+  {
+    label: 'Schedule interview',
+    icon: CalendarClock,
+    path: '/company/interviews',
+  },
+  { label: 'Review applications', icon: ClipboardList, path: '/' },
+  { label: 'Message candidates', icon: Send, path: '/company/messages' },
+];
 
 export type StatType = {
   id: Field;
@@ -233,6 +245,7 @@ export type ActiveJob = {
   style: string;
   status: StatusType;
 };
+
 export type Interview = {
   id: string;
   name: string;
@@ -242,6 +255,7 @@ export type Interview = {
   type: InterviewMode;
   imageUrl?: string;
 };
+
 export type Application = {
   id: string | number;
   name: string;
@@ -251,6 +265,8 @@ export type Application = {
   imageUrl?: string;
   style: string;
 };
+const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
 function CompanyDashboardContainer() {
   const [statusData, setStatusData] = useState<StatType[]>([]);
   const [pendingActions, setPendingActions] = useState<PendingActions[]>([]);
@@ -395,15 +411,29 @@ function CompanyDashboardContainer() {
           }))
         );
         setAppChartData(applicationsData.appData.chartData);
-        setAppStatusData(
-          applicationsData.appData.appStatusData.map(
-            (st: { stage: ApplicationStatusType; applicants: number }) => ({
-              ...st,
-              label: APP_STATUS_CONFIG[st.stage].label,
-              bg: APP_STATUS_CONFIG[st.stage].bg,
-            })
-          )
+        const backendStatusData: {
+          stage: ApplicationStatusType;
+          count: number;
+        }[] = applicationsData.appData.appStatusData;
+        console.log('applicationsData.appData.appStatusData;',applicationsData.appData.appStatusData);
+        
+
+        const completeStatusData: AppStatusData[] = PIPELINE_STAGES.map(
+          (stage) => {
+            const status = backendStatusData.find(
+              (item) => item.stage === stage
+            );
+
+            return {
+              stage,
+              count: status?.count ?? 0,
+              label: APP_STATUS_CONFIG[stage].label,
+              bg: APP_STATUS_CONFIG[stage].bg,
+            };
+          }
         );
+
+        setAppStatusData(completeStatusData);
         setInterviews(interviewData.data);
         const latestApps: Omit<Application, 'style'>[] =
           applicationsData.appData.latestApplications;
@@ -435,136 +465,137 @@ function CompanyDashboardContainer() {
     };
     getDashboardata();
   }, []);
-const navigate=useNavigate()
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <div
-        className="min-h-screen bg-stone-50"
-        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-      >
-        {' '}
-        <style>{`@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');`}</style>
-        <main className="max-w-7xl mx-auto px-6 md:px-10 py-8 space-y-8">
-          <WelcomeSection greeting={greeting} today={today} name={name} />
-          <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {isLoading
-              ? Array.from({ length: 6 }).map((_, i) => (
+    <div className="min-h-screen bg-slate-50/50">
+      <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <WelcomeSection greeting={greeting} today={today} name={name} />
+        <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="rise card-hover bg-white rounded-2xl p-4 ring-1 ring-slate-900/[0.05]"
+                >
+                  <SkeletonBlock className="w-8 h-8 rounded-lg mb-3" />
+                  <SkeletonBlock className="w-12 h-6 mb-2" />
+                  <SkeletonBlock className="w-20 h-3" />
+                </div>
+              ))
+            : statusData.map((card, i) => (
+                <StatCard key={i} isLoading={false} stat={card} />
+              ))}
+        </section>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-5">
+          <HiringReminders reminders={pendingActions} isLoading={isLoading} />
+      
+
+          <RecentActivities
+            activities={recentActivities}
+            isLoading={isLoading}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Upcoming Interviews */}
+          <div className="rounded-3xl border border-stone-100 bg-white p-6 shadow-sm">
+            <SectionHeading
+              eyebrow="Calendar"
+              title="Upcoming interviews"
+              action={{
+                label: 'View all',
+                onclick: () => navigate('/company/interviews'),
+              }}
+            />
+
+            {isLoading ? (
+              <div className="space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => (
                   <div
                     key={i}
-                    className="rise card-hover bg-white rounded-2xl p-4 ring-1 ring-slate-900/[0.05]"
-                  >
-                    <SkeletonBlock className="w-8 h-8 rounded-lg mb-3" />
-                    <SkeletonBlock className="w-12 h-6 mb-2" />
-                    <SkeletonBlock className="w-20 h-3" />
-                  </div>
-                ))
-              : statusData.map((card, i) => (
-                  <StatCard key={i} isLoading={false} stat={card} />
+                    className="h-14 animate-pulse rounded-2xl bg-stone-50"
+                  />
                 ))}
-          </section>
-          <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <ChartCard
-              title="Application trend"
-              subtitle="Applications vs. hires, last 6 months"
-              className="lg:col-span-1"
-            >
-              {isLoading ? (
-                <div className="h-[230px] animate-pulse rounded-2xl bg-stone-50" />
-              ) : (
-                <ApplicationTrendChart data={appChartData} />
-              )}
-            </ChartCard>
-            <ChartCard
-              title="Top performing jobs"
-              subtitle="By total applicants"
-              className="lg:col-span-1"
-            >
-              {isLoading ? (
-                <div className="h-[230px] animate-pulse rounded-2xl bg-stone-50" />
-              ) : (
-                <TopJobsChart data={topJobs} />
-              )}
-            </ChartCard>
-            <ChartCard
-              title="Hiring funnel"
-              subtitle="Candidates by pipeline stage"
-              className="lg:col-span-1"
-            >
-              {isLoading ? (
-                <div className="h-[230px] animate-pulse rounded-2xl bg-stone-50" />
-              ) : (
-                <HiringFunnelChart data={appStatusData} />
-              )}
-            </ChartCard>
-          </section>
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="rounded-3xl bg-white border border-stone-100 shadow-sm p-6">
-              <SectionHeading
-                eyebrow="Calendar"
-                title="Upcoming interviews"
-                action={{ label: 'View all',onclick:()=>navigate('/company/interviews') }}
+              </div>
+            ) : interviews.length ? (
+              <div className="divide-y divide-stone-50">
+                {interviews.map((iv) => (
+                  <InterviewCard key={iv.id} interview={iv} />
+                ))}
+              </div>
+            ) : (
+              <AppEmptyState
+                icon={CalendarClock}
+                title="No Interview scheduled"
+                subtitle="Interviews you book will show up here."
               />
-              {isLoading ? (
-                <div className="space-y-3">
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-14 animate-pulse rounded-2xl bg-stone-50"
-                    />
-                  ))}
-                </div>
-              ) : interviews.length ? (
-                <div className="divide-y divide-stone-50">
-                  {interviews.map((iv) => (
-                    <InterviewCard key={iv.id} interview={iv} />
-                  ))}
-                </div>
-              ) : (
-                <EmptyState
-                  icon={CalendarClock}
-                  title="No Interview scheduled"
-                  subtitle="Interviews you book will show up here."
-                />
-              )}
-            </div>
+            )}
+          </div>
 
-            <div className="rounded-3xl bg-white border border-stone-100 shadow-sm p-6">
-              <SectionHeading
-                eyebrow="Pipeline"
-                title="Latest applications"
-                action={{ label: 'View all',onclick:()=>navigate('/company/jobs') }}
+          {/* Latest Applications */}
+          {/* Latest Applications */}
+          <div className="rounded-3xl border border-stone-100 bg-white p-6 shadow-sm">
+            <SectionHeading
+              eyebrow="Pipeline"
+              title="Latest applications"
+              action={{
+                label: '',
+                onclick: () => navigate('/company/dashboard'),
+              }}
+            />
+
+            {isLoading ? (
+              <div className="space-y-3">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-14 animate-pulse rounded-2xl bg-stone-50"
+                  />
+                ))}
+              </div>
+            ) : latestApplications.length ? (
+              <div className="divide-y divide-stone-50">
+                {latestApplications.map((app) => (
+                  <div key={app.id} className="flex items-center gap-2 py-2">
+                    <div className="min-w-0 flex-1">
+                      <ApplicationRow app={app} />
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        navigate(`/company/applications/${app.id}`)
+                      }
+                      title="View application"
+                      aria-label="View application"
+                      className="shrink-0 rounded-lg bg-fuchsia-50 p-1.5 text-fuchsia-700 transition-all duration-200 hover:bg-fuchsia-700 hover:text-white hover:shadow-sm active:scale-95"
+                    >
+                      <Eye size={15} strokeWidth={2} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <AppEmptyState
+                icon={Users}
+                title="No applications yet"
+                subtitle="New candidates will appear here as they apply."
               />
-              {isLoading ? (
-                <div className="space-y-3">
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-14 animate-pulse rounded-2xl bg-stone-50"
-                    />
-                  ))}
-                </div>
-              ) : latestApplications.length ? (
-                <div className="divide-y divide-stone-50">
-                  {latestApplications.map((app) => (
-                    <ApplicationRow key={app.id} app={app} />
-                  ))}
-                </div>
-              ) : (
-                <EmptyState
-                  icon={Users}
-                  title="No applications yet"
-                  subtitle="New candidates will appear here as they apply."
-                />
-              )}
-            </div>
-          </section>
+            )}
+          </div>
+        </div>
 
-          {/* ACTIVE JOBS SUMMARY */}
-          <section className="rounded-3xl bg-white border border-stone-100 shadow-sm p-6">
+        <HiringPipeline stages={appStatusData} isLoading={isLoading} />
+ <section className="rounded-3xl bg-white border border-stone-100 shadow-sm p-6">
             <SectionHeading
               eyebrow="Active postings"
               title="Job performance summary"
-              action={{ label: 'Manage jobs',onclick:()=>navigate('/company/jobs' )}}
+              action={{
+                label: "Manage jobs",
+                onclick: () => navigate("/company/jobs"),
+              }}
             />
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -585,43 +616,17 @@ const navigate=useNavigate()
               </div>
             )}
           </section>
-          {/* ACTIVITY + Pendings + QUICK ACTIONS */}
-          <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-1 rounded-3xl bg-white border border-stone-100 shadow-sm p-6">
-              <SectionHeading
-                eyebrow="Timeline"
-                title="Recent activity"
-                
-              />
-              <RecentActivity items={recentActivities} />
-            </div>
-
-            <div className="lg:col-span-1 rounded-3xl bg-white border border-stone-100 shadow-sm p-6">
-              <SectionHeading
-                eyebrow="Attention"
-                title="Action Pending"
-             
-              />
-              <PendingActionsList items={pendingActions} />
-            </div>
-
-            <div className="lg:col-span-1 rounded-3xl bg-white border border-stone-100 shadow-sm p-6">
-              <SectionHeading
-                eyebrow="Shortcuts"
-                title="Quick actions"
-                
-              />
-              <div className="space-y-2.5">
-                {quickActions.map((a,i) => (
-                  <QuickActionCard key={i} action={a} />
-                ))}
-              </div>
-            </div>
-          </section>
-        </main>
+        {/* <ActiveJobs jobs={data.activeJobs} isLoading={isLoading} onManage={onManageJob} onCreateJob={onCreateJob} /> */}
       </div>
     </div>
   );
 }
 
 export default CompanyDashboardContainer;
+
+export interface PendingActions {
+  item: PendingActionItem;
+  desc: string;
+  title: string;
+  path: string;
+}

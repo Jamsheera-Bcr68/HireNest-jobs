@@ -9,7 +9,9 @@ import React, { useEffect, useState } from 'react';
 import { useToast } from '../../../../../shared/toast/use-toast';
 import { profileService } from '../../../../../services/api-services/candidateService';
 import type { UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
-
+import { updateUser } from '../../../../../redux/slices/auth.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../../../../redux/store';
 type FormData = {
   level: EducationLevel | '';
   institution: string;
@@ -51,13 +53,17 @@ const initialError: FormError = {
   cgpa: '',
 };
 export const useEducation = (
-  onUpdateUser: (updated: UserProfileType) => void,
+  onUserUpdate: React.Dispatch<
+    React.SetStateAction<UserProfileType | undefined>
+  >,
   onClose: () => void,
   editEdu: EducationType | null
 ) => {
   const { showToast } = useToast();
   const [formData, setFormData] = useState<FormData>(initialData);
   const [error, setError] = useState<FormError>(initialError);
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
   const handleChange = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
@@ -69,6 +75,7 @@ export const useEducation = (
       setFormData(mapToFormdata(editEdu));
     }
   }, [editEdu]);
+
   const mapToFormdata = (edu: EducationType): FormData => {
     return {
       level: editEdu?.level || '',
@@ -82,6 +89,7 @@ export const useEducation = (
       cgpa: edu.cgpa.toString() || '',
     };
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('fom data is ', formData);
@@ -112,8 +120,21 @@ export const useEducation = (
         : await profileService.addEducation(result.data);
       if (editEdu) console.log('after editing, result', data);
       else console.log('after adding, result', data);
+      console.log('data afa ter adding educations', data.user);
 
-      onUpdateUser(data.user);
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          education: data.user.education,
+        };
+      });
+      if (!editEdu) {
+        dispatch(
+          updateUser({ educationCount: (user.educationCount || 0) + 1 })
+        );
+      }
       showToast({ msg: data?.message, type: 'success' });
       setFormData(initialData);
       onClose();

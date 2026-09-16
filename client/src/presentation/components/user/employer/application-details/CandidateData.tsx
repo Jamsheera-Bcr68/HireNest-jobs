@@ -1,14 +1,18 @@
+import type { Dispatch } from '@reduxjs/toolkit';
 import type {
   ApplicationDetailsDto,
   ApplicationStatusType,
 } from '../../../../../types/dtos/application.dto';
 import { useNavigate } from 'react-router-dom';
+import type React from 'react';
 
 type Props = {
   application: ApplicationDetailsDto;
   updateStatus: (status: ApplicationStatusType) => Promise<void>;
   role: 'admin' | 'company';
   onScheduleClick: () => void;
+  chatroomId: string | null
+onViewClick: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function CandidateData({
@@ -16,6 +20,8 @@ function CandidateData({
   updateStatus,
   role,
   onScheduleClick,
+  chatroomId,
+  onViewClick
 }: Props) {
   const navigate = useNavigate();
   return (
@@ -34,12 +40,25 @@ function CandidateData({
       </div>
       {role == 'company' && (
         <div className="flex items-center gap-2 flex-wrap">
-          <button className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 font-medium transition">
-            Send Message
-          </button>
+          {application.status === 'interviewScheduled' && (
+            <button
+              onClick={() => {
+                console.log('from chat click',chatroomId);
+                
+                if (!chatroomId) return;
+
+                navigate('/company/messages', {
+                  state: { chatroomId },
+                });
+              }}
+              className="px-4 py-2 text-sm border border-fuchsia-300 rounded-lg hover:bg-fuchsia-50 text-fuchsia-700 font-medium transition"
+            >
+              Send Message
+            </button>
+          )}
           <button
-            onClick={onScheduleClick}
-            className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition"
+            onClick={!['pending','reviewed','shortListed','rejected'].includes(application.status)?()=>onViewClick(true):onScheduleClick}
+            className="px-4 py-2 text-sm bg-fuchsia-800 text-white rounded-lg hover:bg-fuchsia-600 font-medium transition"
           >
             {application.status === 'interviewScheduled'
               ? 'View Interview'

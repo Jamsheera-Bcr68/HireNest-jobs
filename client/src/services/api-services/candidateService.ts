@@ -141,4 +141,11 @@ export const candidateService = {
     const res = await axiosInstance.get(CANDIDATE_API_ENDPOINTS.RESUMES(id));
     return res.data;
   },
+
+  async getCompanyDetails(companyId: string) {
+    const res = await axiosInstance.get(CANDIDATE_API_ENDPOINTS.COMPANY(companyId));
+    return res.data;
+  },
+
+
 };

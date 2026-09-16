@@ -161,7 +161,7 @@ function ApplicationListingContainer({ role, jobId }: Props) {
                   : `/company/applications/${a.id}`;
               navigate(url);
             }}
-            className="text-indigo-600 hover:text-indigo-800"
+            className="text-fuchsia-600 hover:text-fuchsia-800"
             title="View"
           >
             <Eye size={18} />
@@ -256,6 +256,8 @@ function ApplicationListingContainer({ role, jobId }: Props) {
                 updateFilter={updateFilter}
                 entities={applications}
                 filterOptions={filterOptions}
+                item='Applications'
+                onResetfilter={()=>{}}
               />
               <Pagination
                 onPageChange={setPage}

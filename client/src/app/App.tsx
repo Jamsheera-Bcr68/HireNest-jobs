@@ -3,7 +3,7 @@ import { socket } from '../services/socket.ts';
 import { AppRoutes } from '../routes/index.tsx';
 import { useEffect } from 'react';
 import { type RootState } from '../redux/store.ts';
-
+import { ThemeContextProvider } from '../contexts/ThemeContext.tsx';
 import { addNotification } from '../redux/slices/notification.slice.ts';
 import { useSelector, useDispatch } from 'react-redux';
 import { handleRefreshTokenApi } from '../libraries/axios.ts';
@@ -16,7 +16,6 @@ function App() {
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => state.auth.accessToken);
 
-  
   useEffect(() => {
     if (token && !socket.connected) {
       socket.auth = { token };
@@ -57,7 +56,6 @@ function App() {
     socket.on('message', (data) => {
       console.log('message recieved', data);
 
-
       const updatedChatroom = data.updatedChatroom;
 
       console.log(
@@ -75,20 +73,21 @@ function App() {
 
         // updatedChatroom={...updatedChatroom,isRead:true}
         dispatch(addMessage(message));
-        socket.emit('mark_as_read', { chatroomId:activeChatroomId });
+        socket.emit('mark_as_read', { chatroomId: activeChatroomId });
       }
       dispatch(addChatroom(updatedChatroom));
     });
-
-   
-
 
     return () => {
       socket.off('notification');
       socket.off('message');
     };
   }, [dispatch, activeChatroomId]);
-  return <AppRoutes />;
+  return (
+    <ThemeContextProvider>
+      <AppRoutes />
+    </ThemeContextProvider>
+  );
 }
 
 export default App;

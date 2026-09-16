@@ -36,6 +36,8 @@ export class LoginUseCase implements IUserLoginUseCase {
     const user: User | null = await this._userRepository.findByEmail(
       input.email
     );
+    console.log('user fro login',user);
+    
     if (!user || !user.role || !user.id)
       throw new AppError(
         authMessages.error.USER_NOT_FOUND,
@@ -77,16 +79,22 @@ export class LoginUseCase implements IUserLoginUseCase {
       user.role
     );
     let isProfileCompleted;
+    let skills=[]
+    let resumeCount=0
+    let educations=[]
     if (user.role === UserRole.CANDIDATE) {
       if (user.education.length && user.skills?.length && user.resumes.length) {
         isProfileCompleted = true;
       } else isProfileCompleted = false;
+       skills=user.skills??[]
+      resumeCount=user.resumes.length
+      educations=user.education??[]
     }
     let applications;
     if (user.role == UserRole.CANDIDATE) {
       applications = await this._applicationRepository.getDocsByUserId(user.id);
     }
-    console.log('user',user,'name:',name);
+    console.log('profle is completed ',isProfileCompleted);
 
     return {
       user:user,
@@ -96,6 +104,7 @@ export class LoginUseCase implements IUserLoginUseCase {
       companyId,
       isProfileCompleted: isProfileCompleted,
       appliedJobs: applications ? applications.map((a) => a.jobId) : undefined,
+
     };
   }
 }

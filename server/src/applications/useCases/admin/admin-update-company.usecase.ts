@@ -11,6 +11,7 @@ import { getIO } from '../../../infrastructure/socket';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { NotificationInputDto } from '../../dtos/notification.dto';
 import { INotificationService } from '../../services/notification.service';
+import { IEmailService } from '../../interfaces/services/email.service';
 
 export interface IAdminUpdateCompanyUseCase {
   execute(
@@ -24,7 +25,8 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
   constructor(
     private _companyRepository: ICompanyRepository,
     private _userRepository: IUserRepository,
-    private _notificationService: INotificationService
+    private _notificationService: INotificationService,
+    private _emailService: IEmailService
   ) {}
   async execute(
     id: string,
@@ -32,7 +34,7 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     reason?: string
   ): Promise<Company> {
     const company = await this._companyRepository.findById(id);
-   // console.log('reason', reason);
+    // console.log('reason', reason);
 
     if (!company || !company.id) {
       throw new AppError(
@@ -44,8 +46,6 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     const { status } = data;
     if (!status) return company;
 
-
-    
     if (status == 'rejected') {
       data.reasonForReject = reason;
     }
@@ -53,7 +53,7 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
       data.reasonForSuspend = reason;
     }
     if (company.reapplyCount && status == 'rejected') {
-     // console.log('reapply details', company.reapplyDetails);
+      // console.log('reapply details', company.reapplyDetails);
 
       data.reapplyDetails = company.reapplyDetails.map((app) =>
         app.status == StatusEnum.PENDING
@@ -62,7 +62,7 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
       );
     }
     if (company.reapplyCount && status == 'active') {
-    //  console.log('reapply details', company.reapplyDetails);
+      //  console.log('reapply details', company.reapplyDetails);
 
       data.reapplyDetails = company.reapplyDetails.map((app) =>
         app.status == StatusEnum.PENDING
@@ -132,6 +132,26 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     }
 
     if (!not_type) return updated;
+    if (status === StatusEnum.REJECTED) {
+      if (!reason)
+        throw new AppError(
+          'Reason For Rejection is not added',
+          statusCodes.BADREQUEST
+        );
+      await this._emailService.sendCompanyRejectionMail(
+        user.email,
+        user.name ?? 'User',
+        company.companyName,
+        company.reapplyCount,
+        reason
+      );
+    } else if (status === StatusEnum.ACTIVE) {
+      await this._emailService.sendCompanyApprovalMail(
+        user.email,
+        user.name ?? 'User',
+        company.companyName
+      );
+    }
 
     const notificationData: NotificationInputDto = {
       title:
