@@ -3,7 +3,7 @@ import ApplicationListingContainer from '../../../components/user/employer/appli
 
 const ApplicationsPage = () => {
   const {jobId}=useParams<{jobId:string}>()
-console.log('job id from applications page',jobId);
+
 
 
  

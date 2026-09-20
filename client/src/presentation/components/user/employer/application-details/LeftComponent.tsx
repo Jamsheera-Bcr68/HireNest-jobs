@@ -2,6 +2,8 @@ import React, { type ReactNode } from 'react';
 import { appStatusStyles } from '../../../candidate/applications/ApplicationCard';
 import type { ApplicationDetailsDto } from '../../../../../types/dtos/application.dto';
 import { File, Mail, MapPin, Phone } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../../redux/store';
 
 export function Section({
   title,
@@ -22,9 +24,10 @@ export function Section({
 type Props = {
   application: ApplicationDetailsDto;
 };
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
 function LeftComponent({ application }: Props) {
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  const role = useSelector((state: RootState) => state.auth.user).role;
   return (
     <div className="lg:col-span-2 flex flex-col gap-5">
       {/* Candidate header */}
@@ -38,103 +41,113 @@ function LeftComponent({ application }: Props) {
             alt={application.candidate.candidateName.charAt(0).toUpperCase()}
           />
         </div>
-       <div className="flex-1 w-full min-w-0">
-  {/* Name + Status + Applied Date */}
-  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-    <div className="flex items-center gap-3 flex-wrap min-w-0">
-      <h2 className="text-xl font-semibold text-gray-900 truncate">
-        {application.candidate.candidateName}
-      </h2>
+        <div className="flex-1 w-full min-w-0">
+          {/* Name + Status + Applied Date */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div className="flex items-center gap-3 flex-wrap min-w-0">
+              <h2 className="text-xl font-semibold text-gray-900 truncate">
+                {application.candidate.candidateName}
+              </h2>
 
-      <span
-        className={`text-xs font-medium px-2.5 py-1 rounded-full shrink-0 ${
-          appStatusStyles[application.status]
-        }`}
-      >
-        {application.status}
-      </span>
-    </div>
+              <span
+                className={`text-xs font-medium px-2.5 py-1 rounded-full shrink-0 ${
+                  appStatusStyles[application.status]
+                }`}
+              >
+                {application.status}
+              </span>
+            </div>
 
-    <span className="text-xs text-gray-400 shrink-0">
-      Applied {application.appliedAt}
-    </span>
-  </div>
+            <span className="text-xs text-gray-400 shrink-0">
+              Applied {application.appliedAt}
+            </span>
+          </div>
 
-  {/* Job title */}
-  <p className="text-sm text-gray-500 mt-1">
-    Applied for <span className="font-medium text-gray-700">
-      {application.job.title}
-    </span>
-  </p>
+          {/* Job title */}
+          <p className="text-sm text-gray-500 mt-1">
+            Applied for{' '}
+            <span className="font-medium text-gray-700">
+              {application.job.title}
+            </span>
+          </p>
 
-  {/* Candidate information */}
-  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-sm text-gray-500">
+          {/* Candidate information */}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-sm text-gray-500">
+            {/* Location */}
+            <span className="flex items-center gap-1.5">
+              <MapPin size={15} className="text-red-400 shrink-0" />
+              <span>{application.candidate.location}</span>
+            </span>
 
-    {/* Location */}
-    <span className="flex items-center gap-1.5">
-      <MapPin size={15} className="text-red-400 shrink-0" />
-      <span>{application.candidate.location}</span>
-    </span>
+            {/* Email */}
+            <span className="flex items-center gap-1.5 min-w-0">
+              <Mail size={15} className="text-blue-500 shrink-0" />
 
-    {/* Email */}
-    <span className="flex items-center gap-1.5 min-w-0">
-      <Mail size={15} className="text-blue-500 shrink-0" />
+              <a
+                href={`mailto:${application.candidate.email}`}
+                className="text-slate-600 hover:text-fuchsia-700 hover:underline truncate"
+              >
+                {application.candidate.email}
+              </a>
+            </span>
 
-      <a
-        href={`mailto:${application.candidate.email}`}
-        className="text-slate-600 hover:text-fuchsia-700 hover:underline truncate"
-      >
-        {application.candidate.email}
-      </a>
-    </span>
+            {/* Phone */}
+            <span className="flex items-center gap-1.5">
+              <Phone size={15} className="text-green-500 shrink-0" />
 
-    {/* Phone */}
-    <span className="flex items-center gap-1.5">
-      <Phone size={15} className="text-green-500 shrink-0" />
-
-      <a
-        href={`tel:${application.candidate.phone}`}
-        className="text-gray-600 hover:text-fuchsia-700 "
-      >
-        {application.candidate.phone}
-      </a>
-    </span>
-  </div>
-</div>
+              <a
+                href={`tel:${application.candidate.phone}`}
+                className="text-gray-600 hover:text-fuchsia-700 "
+              >
+                {application.candidate.phone}
+              </a>
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Resume + Cover Letter */}
-      <Section title="Resume ">
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-fuchsia-100 rounded-lg flex items-center justify-center text-fuchsia-600 text-xs font-bold">
-              <File size={14} />
+      {application.resume ? (
+        <Section title="Resume ">
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 mb-4">
+            <div className="flex items-center gap-3">
+              <div className={`w-9 h-9  rounded-lg flex items-center justify-center text-xs font-bold ${role=='admin'?'bg-indigo-100 text-indigo-600 ':'bg-fuchsia-100 text-fuchsia-600 '}`} >
+                <File size={14} />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-800">
+                  {application.resume.name}
+                </p>
+                <p className="text-xs text-gray-400">Uploaded Apr 18, 2026</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-medium text-gray-800">
-                {application.resume.name}
-              </p>
-              <p className="text-xs text-gray-400">Uploaded Apr 18, 2026</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() =>
+                  window.open(
+                    `${import.meta.env.VITE_BACKEND_URL}${application.resume.url}`,
+                    '_blank'
+                  )
+                }
+                className={`text-sm px-3 py-1.5 border  rounded-lg  ${role==='admin'?'border-indigo-300 text-indigo-600 hover:bg-indigo-100':'border-fuchsia-300 text-fuchsia-600 hover:bg-fuchsia-100'}`}
+              >
+                Preview
+              </button>
             </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() =>
-                window.open(
-                  `${import.meta.env.VITE_BACKEND_URL}${application.resume.url}`,
-                  '_blank'
-                )
-              }
-              className="text-sm px-3 py-1.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100"
-            >
-              Preview
-            </button>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            {application.candidate.about}
+          </p>
+        </Section>
+      ) : (
+        <div className="flex items-center gap-3 rounded-lg border border-dashed border-gray-200 bg-white p-4">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-400">
+            <File size={14} />
           </div>
+
+          <p className="text-sm text-gray-500">Resume not found</p>
         </div>
-        <p className="text-sm text-gray-600 leading-relaxed">
-          {application.candidate.about}
-        </p>
-      </Section>
+      )}
 
       {/* Skills */}
       <Section title="Skills">
@@ -142,7 +155,7 @@ function LeftComponent({ application }: Props) {
           {application.job.skills.map((s) => (
             <span
               key={s}
-              className="bg-fuchsia-50 text-fuchsia-800 text-sm px-3 py-1 rounded-full font-medium"
+              className={` text-sm px-3 py-1 rounded-full font-medium ${role == 'admin' ? 'bg-indigo-50 text-indigo-800' : 'bg-fuchsia-50 text-fuchsia-800'}`}
             >
               {s}
             </span>

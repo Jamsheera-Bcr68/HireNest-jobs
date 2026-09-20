@@ -26,7 +26,7 @@ const tabs = [
   { id: 'reports', label: 'Reports' },
 ];
 function AdminJobDetailscontainer({ jobId,activeTab }: { jobId: string,activeTab?:string }) {
-
+const role=useSelector((state:RootState)=>state.auth.user).role
   const { showToast } = useToast();
   const user = useSelector((state: RootState) => state.auth.user);
   console.log('job id from details is role is admin', jobId);
@@ -102,24 +102,24 @@ function AdminJobDetailscontainer({ jobId,activeTab }: { jobId: string,activeTab
       <NavPart
         title="Jobs"
         onBackPath="/admin/jobs"
-        role="admin"
+       role={role} 
         job={job}
         handleUpdateStatus={handleUpdateStatus}
         handleDeactivateAction={updateStatus}
       />
       <div className="max-w-6xl mx-auto px-6 py-7 space-y-6">
-        <HeroPart job={job} role="admin" />
+        <HeroPart job={job}  role={role}  />
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 items-start">
           <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-            <Tabs tab={tab} tabs={tabs} setTab={setTab} />
+            <Tabs role={role} tab={tab} tabs={tabs} setTab={setTab} />
             <div className="p-6 lg:p-7 space-y-6">
-              {tab == 'overview' && <OverView tab={tab} job={job} />}
+              {tab == 'overview' && <OverView role={role} tab={tab} job={job} />}
               {tab == 'responsibilities' && (
-                <Responsibilities job={job} tab={tab} />
+                <Responsibilities  role={role}  job={job} tab={tab} />
               )}
 
               {tab == 'benefits' && (
-                <Benefits benefits={job.benefits} tab={tab} />
+                <Benefits  role={role}  benefits={job.benefits} tab={tab} />
               )}
               {tab == 'company' && <Company job={job} />}
               {tab == 'reports' && <Reports tab={tab} job={job} />}

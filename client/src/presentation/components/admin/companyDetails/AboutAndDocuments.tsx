@@ -1,4 +1,5 @@
 import type { CompanyProfileType } from '../../../../types/dtos/profile-types/user.types';
+import { Document, RegistrationDetails } from './RegistrationDetails';
 
 function AboutAndDocuments({
   company,
@@ -6,7 +7,7 @@ function AboutAndDocuments({
   company: CompanyProfileType | null;
 }) {
   if (!company) return null;
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
   return (
     <div className="lg:col-span-2 space-y-6">
       {/* About */}
@@ -62,9 +63,10 @@ function AboutAndDocuments({
           </div>
         </div>
       </div>
-
+      <RegistrationDetails company={company}/>
+{/* <Document document={company.document} /> */}
       {/* Documents */}
-      <div className="bg-white rounded-xl shadow-sm p-6">
+      {/* <div className="bg-white rounded-xl shadow-sm p-6">
         <h2 className="text-lg font-semibold  text-indigo-700 mb-5">
           Company Documents
         </h2>
@@ -90,7 +92,7 @@ function AboutAndDocuments({
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

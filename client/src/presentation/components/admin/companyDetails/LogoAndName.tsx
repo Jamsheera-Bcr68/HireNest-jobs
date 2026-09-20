@@ -7,6 +7,8 @@ import { useToast } from '../../../../shared/toast/use-toast';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import AddReasonModal from '../jobs/AddReasonModal';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Avatar } from '../../common/Avatar';
 
 const statusStyles = {
   active: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
@@ -26,7 +28,8 @@ function LogoAndName({
   company: CompanyProfileType | null;
   onUpdate: (updated: CompanyProfileType) => void;
 }) {
-  if (!company) return null;
+  const navigate = useNavigate();
+ 
 
   const [open, setOpen] = useState(false);
   const [rejectReasonOpen, setRejectReasonOpen] = useState(false);
@@ -35,18 +38,18 @@ function LogoAndName({
 
   const { showToast } = useToast();
 
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
- // console.log('logo url', `${baseUrl}${company.logoUrl}`);
-
+ 
+  
+ if (!company) return null;
   const approveCompany = async () => {
- //   console.log('approve company');
+    //   console.log('approve company');
     try {
       const data = await adminService.updateCompany(company.id, {
         isVerified: true,
         status: 'active',
       });
       const approved = data.company;
-    //  console.log('approved', approved);
+      //  console.log('approved', approved);
 
       onUpdate(approved);
       setOpen(false);
@@ -60,7 +63,7 @@ function LogoAndName({
   };
 
   const rejectCompany = async (status: StatusType, reason: string) => {
-  //  console.log('reject company');
+    //  console.log('reject company');
     try {
       const data = await adminService.updateCompany(
         company.id,
@@ -71,7 +74,7 @@ function LogoAndName({
         reason
       );
       const rejected = data.company;
-     // console.log('after rejecting', data);
+      // console.log('after rejecting', data);
 
       onUpdate(rejected);
       setRejectReasonOpen(false);
@@ -92,7 +95,7 @@ function LogoAndName({
         status: 'suspended',
       });
       const suspended = data.company;
-     // console.log('after suspending', data);
+      // console.log('after suspending', data);
 
       onUpdate(suspended);
       setSuspendOpen(false);
@@ -106,7 +109,7 @@ function LogoAndName({
   };
 
   const reactivateCompany = async () => {
-   // console.log('reactivate company');
+    // console.log('reactivate company');
     try {
       const data = await adminService.updateCompany(company.id, {
         isVerified: true,
@@ -130,13 +133,14 @@ function LogoAndName({
     <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div className="flex items-center gap-4">
         {/* Logo */}
-        <div className="w-16 h-16  rounded-lg flex items-center justify-center">
+        {/* <div className="w-16 h-16  rounded-lg flex items-center justify-center">
           <img
             className="w-full h-full border rounded-full object-contain"
             src={`${baseUrl}${company.logoUrl}`}
             alt="Company logo"
           />
-        </div>
+        </div> */}
+        <Avatar name={company.companyName} item='company' imageClassName='w-full h-full border rounded-full object-contain' logoUrl={company.logoUrl} className="w-16 h-16  rounded-full flex items-center justify-center"/>
 
         <div>
           <h1 className="text-xl md:text-2xl font-semibold text-slate-800">
@@ -164,7 +168,16 @@ function LogoAndName({
 
       {company.isVerified && company.status == 'active' && (
         <div className="flex gap-2 flex-wrap">
-          <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700">
+          <button
+            onClick={() =>
+              navigate('/admin/jobs', {
+                state: {
+                  companyId: company.id,
+                },
+              })
+            }
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700"
+          >
             View Jobs
           </button>
 

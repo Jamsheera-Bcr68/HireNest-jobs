@@ -86,7 +86,7 @@ function RegisterForm() {
             placeholder="Password"
             className="w-full  px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent outline-none transition"
           />{' '}
-          <button
+          <button type='button'
             className="absolute inset-y-0 right-3 flex items-center text-gray-500"
             onClick={() => setShowPassword((state) => !state)}
           >

@@ -13,8 +13,10 @@ const ProfilePart = () => {
   const navigate = useNavigate();
   console.log('from candidate profiel');
 
-  const { user, setUser, allSkills } = useProfile();
+  const { user, setUser} = useProfile();
   console.log('user', user);
+
+ 
 
   if (!user) return null;
   return (
@@ -65,7 +67,7 @@ const ProfilePart = () => {
         {/* Content */}
         <div className="lg:col-span-2 lg:overflow-y-auto space-y-6 pr-2">
           <AboutMe user={user} onUserUpdate={setUser} />
-          <Skills user={user} skills={allSkills} onUserUpdate={setUser} />
+          <Skills user={user}  onUserUpdate={setUser} />
           <Experience user={user} onUserUpdate={setUser} />
           <Education
             onUserUpdate={setUser}

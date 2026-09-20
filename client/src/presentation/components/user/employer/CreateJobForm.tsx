@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useJobs } from '../../../hooks/user/employer/useJobs';
 import { X, PlusIcon } from 'lucide-react';
 import { useToast } from '../../../../shared/toast/use-toast';
@@ -7,6 +7,8 @@ import { type SkillType } from '../../../../types/dtos/skill.types';
 import PermissionModal from '../../../modals/PermissionModal';
 import { useNavigate } from 'react-router-dom';
 import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
+import type { SkillFilter } from '../../../hooks/user/candidate/profile/useProfile';
+
 
 const workMode = ['hybrid', 'remote', 'onsite'];
 
@@ -18,12 +20,14 @@ const CreateJobPost = () => {
     useJobs();
   const [addSkill, setAddSkill] = useState(false);
   const [addRes, setAddRes] = useState(false);
-  const [skill, setSkill] = useState<string>('');
-  const [filteredSkills, setFilteredSkills] = useState<SkillType[] | []>([]);
-  const [allSkills, setAllSkills] = useState<SkillType[] | []>([]);
+ // const [skill, setSkill] = useState<string>('');
+  //const [filteredSkills, setFilteredSkills] = useState<SkillType[]>([]);
+  const [skills, setSkills] = useState<SkillType[]>([]);
+  const [filter] = useState<SkillFilter>({ status: 'approved' });
   const [res, setRes] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [search, setSearch] = useState<string>('');
 
   const ErrorText = ({ error }: { error: string }) => {
     return <p className="text-sm text-red-600"> * {error}</p>;
@@ -33,9 +37,9 @@ const CreateJobPost = () => {
     const skill_exist = formData.skills.find((s) => s.id == skill.id);
     if (skill_exist) {
       showToast({ msg: 'Already existing ', type: 'error' });
-      setFilteredSkills([]);
+      setSkills([]);
       setAddSkill(false);
-      setSkill('');
+      setSearch('');
       return;
     }
     setError((prev) => ({ ...prev, skills: '' }));
@@ -44,44 +48,55 @@ const CreateJobPost = () => {
       skills: [...prev.skills, skill],
     }));
     setAddSkill(false);
-    setSkill('');
-    setFilteredSkills([]);
+    setSearch('');
+    //setFilteredSkills([]);
   };
 
-  useEffect(() => {
-    async function fetchskill() {
-      try {
-        const data = await skillService.getSkills({ status: 'approved' });
-        console.log('skills ', data);
-        setAllSkills(data.data.skills);
-      } catch (error: any) {
-        console.log(error);
-        showToast({
-          msg: error?.response?.data?.message || error.message,
-          type: 'error',
-        });
-      }
-    }
-    fetchskill();
-  }, []);
+  const handlSkillInput = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    if (search.trim().length) {
+      filter.search = search;
+    }else{return}
+    const data = await skillService.getSkills({ ...filter });
+    console.log('data after getting skills',data);
+    
+    setSkills(data.data.skills);
+  },[filter,search])
 
-  const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError((prev) => ({ ...prev, skills: '' }));
-    const value = e.currentTarget.value;
-    setSkill(value);
+  // useEffect(() => {
+  //   async function fetchskill() {
+  //     try {
+  //       const data = await skillService.getSkills({ status: 'approved' });
+  //       console.log('skills ', data);
+  //       setSkills(data.data.skills);
+  //     } catch (error: any) {
+  //       console.log(error);
+  //       showToast({
+  //         msg: error?.response?.data?.message || error.message,
+  //         type: 'error',
+  //       });
+  //     }
+  //   }
+  //   fetchskill();
+  // }, [filter]);
 
-    if (!value.trim()) {
-      setFilteredSkills([]);
-      return;
-    }
+  // const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setError((prev) => ({ ...prev, skills: '' }));
+  //   const value = e.currentTarget.value;
+  //   setSkill(value);
 
-    const filtered = allSkills.filter((skill: SkillType) =>
-      skill.skillName.toLowerCase().includes(value.toLowerCase())
-    );
-    console.log('fil', filtered);
+  //   if (!value.trim()) {
+  //     setSkills(skills);
+  //     return;
+  //   }
 
-    setFilteredSkills(filtered);
-  };
+  //   const filtered = skills.filter((skill: SkillType) =>
+  //     skill.skillName.toLowerCase().includes(value.toLowerCase())
+  //   );
+  //   console.log('fil', filtered);
+
+  //   setSkills(filtered);
+  // };
 
   const removeSkill = (id: string | undefined) => {
     if (!id) return;
@@ -141,20 +156,22 @@ const CreateJobPost = () => {
   };
 
   const handleAddSkill = () => {
-    if (!skill.trim()) {
+    if (!search.trim()) {
       showToast({ msg: 'Nothing to add', type: 'error' });
       setAddSkill(false);
+      setSearch('')
       return;
     }
-    const normalized = skill.trim().toLowerCase();
+    const normalized = search.trim().toLowerCase();
     let skillExisInJob = formData.skills.find(
       (s) => s.skillName.toLowerCase() === normalized
     );
     if (skillExisInJob) {
       showToast({ msg: 'Skill aready exist', type: 'error' });
+      setSearch('')
       return;
     }
-    const skillExist = allSkills.find(
+    const skillExist = skills.find(
       (s) => s.skillName.toLowerCase() === normalized
     );
     if (skillExist) {
@@ -162,7 +179,7 @@ const CreateJobPost = () => {
         ...prev,
         skills: [...prev.skills, skillExist],
       }));
-      setSkill('');
+      setSearch('');
       setAddSkill(false);
     } else {
       setOpen(true);
@@ -172,18 +189,18 @@ const CreateJobPost = () => {
   const handleAddNewSkill = async () => {
     console.log('user confirmed');
     try {
-      if (!skill) {
+      if (!search) {
         setAddSkill(false);
-        setSkill('');
+        setSearch('');
         setOpen(false);
         return;
       }
-      const data = await skillService.addNewSkill(skill);
+      const data = await skillService.addNewSkill(search);
       console.log(data);
 
       console.log('skill created', data.skill);
       setOpen(false);
-      setSkill('');
+      setSearch('');
       setAddSkill(false);
       showToast({ msg: data.message, type: 'success' });
       setFormData((prev) => ({
@@ -432,7 +449,7 @@ const CreateJobPost = () => {
                     {formData.skills.map((skill, index) => (
                       <span
                         key={index}
-                        className="flex items-center bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-sm font-medium"
+                        className="flex items-center bg-fuchsia-100 text-fuchsia-800 px-3 py-1.5 rounded-full text-sm font-medium"
                       >
                         {skill.skillName}
                         <X
@@ -456,14 +473,14 @@ const CreateJobPost = () => {
               {addSkill && (
                 <div className="flex border border-gray-300 rounded-lg px-4 py-2 mt-2 justify-between items-center mb-2">
                   <input
-                    onChange={handleSkillChange}
-                    value={skill}
+                    onChange={handlSkillInput}
+                    value={search}
                     type="text"
                     name="skill"
                     placeholder="Enter a skill and press Enter"
                     className="w-full  focus:outline-none focus:ring-2 rounded-lg px-4 py-2 mt-2  focus:ring-blue-400"
                   />
-                  {!filteredSkills.length && (
+                  {!skills.length && (
                     <div>
                       <PlusIcon
                         onClick={handleAddSkill}
@@ -474,14 +491,16 @@ const CreateJobPost = () => {
                   )}
                 </div>
               )}
-              {filteredSkills.length > 0 && addSkill && !error?.skills && (
+              {skills.length > 0 && addSkill && !error?.skills && (
                 <div className="absolute bg-white shadow-md w-1/4 border rounded-md z-10">
-                  {filteredSkills.map((skill: SkillType) => (
+                  {skills.map((skill: SkillType) => (
                     <div
                       key={skill?.id}
                       onMouseDown={() => {
-                        setSkill(skill.skillName);
+                        setSearch(skill.skillName);
                         selectSkill(skill);
+                        setSearch('')
+                        setSkills([])
                       }}
                       className="p-2 hover:bg-gray-100 border cursor-pointer"
                     >
@@ -600,7 +619,7 @@ const CreateJobPost = () => {
         isOpen={open}
         onClose={() => {
           setAddSkill(false);
-          setSkill('');
+          setSearch('');
           setOpen(false);
         }}
         onConfirm={handleAddNewSkill}

@@ -32,7 +32,7 @@ function InerviewListingContainer() {
   const [interviewDetails, setInterviewDetils] =
     useState<interviewDetailDto | null>(null);
 
-  const { filter, statusFilter, updateFilter, sortFilter, resultFilter } =
+  const { filter, statusFilter,onResetFilter, updateFilter, sortFilter, resultFilter } =
     useInterviews();
   const { showToast } = useToast();
 
@@ -67,6 +67,7 @@ function InerviewListingContainer() {
 
     getStatusData();
   }, [interviews]);
+
 
   useEffect(() => {
     const getInterviews = async () => {
@@ -157,6 +158,7 @@ function InerviewListingContainer() {
           filterOptions={[statusFilter, resultFilter]}
           onFilterChange={updateFilter}
           sortOrder={sortFilter}
+          onResetFilter={onResetFilter}
         />
         <CandidateInterviewList
           onConfirmClick={handleConirmClick}

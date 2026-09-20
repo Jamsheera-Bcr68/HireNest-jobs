@@ -16,8 +16,9 @@ import {
   SquarePenIcon,
 } from 'lucide-react';
 const tabs = [
+    { label: 'Active', value: 'approved' },
   { label: 'All', value: '' },
-  { label: 'Approved', value: 'approved' },
+
   { label: 'Rejected', value: 'rejected' },
   { label: 'Removed', value: 'removed' },
   { label: 'Pending', value: 'pending' },
@@ -30,7 +31,9 @@ import ViewSkillModal from './ViewModal';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import AddReasonModal from '../jobs/AddReasonModal';
 
+
 export type SkillFilterType = {
+
   status?: SkillStatusType;
   createdBy?: 'admin' | 'company';
   search?: string;
@@ -39,7 +42,10 @@ const filterOptions = [
   {
     key: 'createdBy',
     label: 'Created By',
-    options: ['admin', 'company'],
+    options: [
+      { label: 'Admin', value: 'admin' },
+      { label: 'Company', value: 'company' },
+    ],
   },
 ];
 const sortOption = {
@@ -427,6 +433,10 @@ function SkillsContainer() {
     }
   };
 
+  const resetFilter = () => {
+    setFilter({ status: 'approved' });
+    setSortBy('Newest')
+  };
   return (
     <div className="min-h-screen w-full bg-gray-100">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -465,9 +475,12 @@ function SkillsContainer() {
             updateFilter={handleFilterChange}
             entities={skills}
             filterOptions={filterOptions}
+            filter={filter}
             totalDocs={totalDocs}
             sortOption={sortOption}
             setSortBy={setSortBy}
+            onResetfilter={resetFilter}
+            item='Skills'
           />
           <Pagination
             onPageChange={setPage}

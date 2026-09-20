@@ -51,6 +51,7 @@ export default function PendingActivitiesContainer() {
   const [statusCards, setStatusCards] = useState<CardType[]>([]);
   const [selected, setSelected] = useState<PendingActivityDto | null>(null);
   const [activityModal, setActivityModalOpen] = useState<boolean>(false);
+  
   const navigate = useNavigate();
 
   const [totalDocs, setTotalDocs] = useState<number>(0);
@@ -109,6 +110,7 @@ export default function PendingActivitiesContainer() {
         adminService.getPendingData(),
         adminService.getAllPendings(filter),
       ]);
+      
       console.log('activities', activityData);
       const total: CardType = {
         label: 'Total Pendings',

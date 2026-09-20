@@ -13,18 +13,18 @@ import { useApplications } from '../../../../hooks/user/candidate/profile/useApp
 import ReusableTable from '../../../admin/Candidates/ReusableTable';
 import Pagination from '../../../common/Pagination';
 
-const statusFilter = {
-  key: 'status',
-  label: ' Status',
-  options: [
-    { label: 'Pending', value: 'pending' },
-    { label: 'Reviewed', value: 'reviewed' },
+// const statusFilter = {
+//   key: 'status',
+//   label: ' Status',
+//   options: [
+//     { label: 'Pending', value: 'pending' },
+//     { label: 'Reviewed', value: 'reviewed' },
 
-    { label: 'ShortListed', value: 'shortListed' },
-    { label: 'Rejected', value: 'rejected' },
-    { label: 'Scheduled', value: 'interviewSheduled' },
-  ],
-};
+//     { label: 'ShortListed', value: 'shortListed' },
+//     { label: 'Rejected', value: 'rejected' },
+//     { label: 'Interview Scheduled', value: 'interviewSheduled' },
+//   ],
+// };
 
 const typeFilter = {
   key: 'jobType',
@@ -45,15 +45,16 @@ const sortOrder = {
 };
 
 const tabs = [
-  { label: 'All', value: '' },
+
   { label: 'Pending', value: 'pending' },
+    { label: 'All', value: '' },
   { label: 'Reviewed', value: 'reviewed' },
   { label: 'Short Listed', value: 'shortListed' },
   { label: 'Interview Scheduled', value: 'interviewScheduled' },
   { label: 'Rejected', value: 'rejected' },
 ];
 
-const filterOptions = [statusFilter, typeFilter, sortOrder];
+const filterOptions = [typeFilter, sortOrder];
 
 type Props = { role: 'company' | 'admin'; jobId?: string };
 
@@ -69,7 +70,7 @@ function ApplicationListingContainer({ role, jobId }: Props) {
 
   const [title, setTitle] = useState<string | null>(null);
 
-  const { filter, updateFilter } = useApplications((page?: number) => {
+  const { filter, updateFilter,setFilter } = useApplications((page?: number) => {
     if (page) {
       setPage(page);
     }
@@ -161,7 +162,7 @@ function ApplicationListingContainer({ role, jobId }: Props) {
                   : `/company/applications/${a.id}`;
               navigate(url);
             }}
-            className="text-fuchsia-600 hover:text-fuchsia-800"
+            className={`${role==='admin'?"text-indigo-600 hover:text-indigo-800":"text-fuchsia-600 hover:text-fuchsia-800"}`}
             title="View"
           >
             <Eye size={18} />
@@ -171,6 +172,9 @@ function ApplicationListingContainer({ role, jobId }: Props) {
     },
   ];
 
+   const resetFilter=()=>{
+    setFilter({status:'pending'})
+  }
   useEffect(() => {
     async function getStatusData() {
       if (!jobId) return null;
@@ -237,6 +241,7 @@ function ApplicationListingContainer({ role, jobId }: Props) {
     getApplications();
   }, [filter, page, limit]);
 
+ 
   return (
     <>
       <div>
@@ -257,7 +262,8 @@ function ApplicationListingContainer({ role, jobId }: Props) {
                 entities={applications}
                 filterOptions={filterOptions}
                 item='Applications'
-                onResetfilter={()=>{}}
+                filter={filter}
+                onResetfilter={resetFilter}
               />
               <Pagination
                 onPageChange={setPage}

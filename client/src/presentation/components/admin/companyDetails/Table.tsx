@@ -9,8 +9,8 @@ import { useToast } from '../../../../shared/toast/use-toast';
 import { adminService } from '../../../../services/api-services/adminService';
 import { type CompanyFilter } from '../../../pages/admin/Companies';
 import AddReasonModal from '../jobs/AddReasonModal';
-
-const tabs = ['All', 'Active', 'Pending', 'Suspended', 'Rejected'];
+import { Avatar } from '../../common/Avatar';
+const tabs = ['Active', 'All', 'Pending', 'Suspended', 'Rejected'];
 
 const statusStyles = {
   active: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
@@ -26,11 +26,21 @@ type Props = {
   companies: CompanyProfileType[] | [];
   onUpdate: (updated: CompanyProfileType) => void;
   updateFilter: (data: CompanyFilter) => void;
+  onClearfilter: () => void;
+  filter: CompanyFilter;
 };
 
-function Table({ companies, onUpdate, updateFilter }: Props) {
+function Table({
+  companies,
+  onUpdate,
+  updateFilter,
+  onClearfilter,
+  filter,
+}: Props) {
+  console.log('companies from admin table,', companies);
+
   const { showToast } = useToast();
-  const [activeTab, setActiveTab] = useState('All');
+  const [activeTab, setActiveTab] = useState('Active');
   const [showReasonModal, setShowReasonModal] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
 
@@ -48,7 +58,6 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
   }, [searchInput]);
 
   const approveCompany = async () => {
-    //console.log('approve company');
     if (!companyId) return;
     try {
       const data = await adminService.updateCompany(companyId, {
@@ -56,7 +65,6 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         status: 'active',
       });
       const approved = data.company;
-      //console.log('approved', approved);
 
       onUpdate(approved);
       setOpen(false);
@@ -71,13 +79,9 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
   };
 
   const rejectCompany = async (status: StatusType, reason: string) => {
-   // console.log('reject company');
-  //  console.log('company id', companyId);
-
     if (!companyId) return;
 
     setShowReasonModal(true);
-    //console.log('from reject company');
 
     try {
       const data = await adminService.updateCompany(
@@ -105,8 +109,6 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
   };
 
   const suspendCompany = async (status: StatusType, reason: string) => {
-  //  console.log('suspend company', companyId);
-
     if (!companyId) return;
     try {
       const data = await adminService.updateCompany(
@@ -118,7 +120,6 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         reason
       );
       const suspended = data.company;
-    //  console.log('after suspending', data);
 
       onUpdate(suspended);
       setSuspendOpen(false);
@@ -133,7 +134,6 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
   };
 
   const reactivateCompany = async () => {
-  //  console.log('reactivate company');
     if (!companyId) return;
     try {
       const data = await adminService.updateCompany(companyId, {
@@ -141,7 +141,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         status: 'active',
       });
       const activated = data.company;
-     // console.log('after activated', data);
+
       onUpdate(activated);
       setCompanyId(activated);
       setReactivateOpen(false);
@@ -155,7 +155,11 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
     }
   };
 
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  const handleReset = () => {
+    onClearfilter();
+    setActiveTab('Active');
+    setSearchInput('');
+  };
 
   return (
     <>
@@ -190,6 +194,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
         {/* Filters */}
         <div className="flex items-center gap-2 flex-wrap">
           <select
+            value={filter.industry ?? 'all'}
             onChange={(e) => updateFilter({ industry: e.target.value })}
             className="text-sm border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-slate-50 text-slate-600"
           >
@@ -201,6 +206,13 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
               </option>
             ))}
           </select>
+
+          <button
+            className="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 text-slate-600"
+            onClick={handleReset}
+          >
+            Reset Filter
+          </button>
         </div>
       </div>
       <div>
@@ -263,7 +275,7 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
               >
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-3">
-                    <div
+                    {/* <div
                       className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0`}
                     >
                       <img
@@ -271,7 +283,13 @@ function Table({ companies, onUpdate, updateFilter }: Props) {
                         src={`${baseUrl}${company.logoUrl}`}
                         alt="Logo"
                       />
-                    </div>
+                    </div> */}
+                    <Avatar
+                      item="company"
+                      logoUrl={company.logoUrl}
+                      name={company.companyName}
+                      className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0`}
+                    />
                     <div>
                       <div className="flex items-center gap-1.5">
                         <span className="font-semibold text-slate-800">

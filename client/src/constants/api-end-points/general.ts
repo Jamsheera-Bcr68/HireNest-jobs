@@ -1,5 +1,5 @@
 export const API_ENDPOINTS = {
-  JOB: '/jobs',
+  JOBS: '/jobs',
   JOB_DETAILS: (id: string) => `/jobs/${id}`,
   ALL_SKILLS: '/skills',
   REQUESTED_SKILLS: '/skills/requested',

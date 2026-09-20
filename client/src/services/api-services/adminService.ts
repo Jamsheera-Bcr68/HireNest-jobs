@@ -83,18 +83,20 @@ export const adminService = {
     return res.data;
   },
 
-  async getJobstatus() {
-    const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.JOB_STATUS);
+  async getJobstatus(companyId?:string) {
+    console.log('comapnay id from service',companyId);
+    
+    const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.JOB_STATUS,{params:{companyId}});
     return res.data;
   },
 
   async getJobs(
-    filter?: Partial<JobFilterType | {}>,
+    filter?: JobFilterType|{} ,
     sortBy?: string,
     limit?: number,
     page: number = 1
   ) {
-   // console.log('filter,', filter);
+   console.log('filter,admin jobservice', filter);
 
     const res = await axiosInstance.get(ADMIN_API_ENDPOINTS.JOBS, {
       params: { ...filter, sortBy, limit, page },
@@ -124,6 +126,7 @@ export const adminService = {
     );
     return res.data;
   },
+
   async getJobDetails(jobId:string) {
    /// console.log('from getdetaild admin service',jobId);
 
@@ -136,6 +139,7 @@ export const adminService = {
     const res= await axiosInstance.get(ADMIN_API_ENDPOINTS.PENDINGS_STATUS);
     return res.data;
   },
+
   async getAllPendings(filter:Filter){
     const {status,search}=filter
     console.log('from admin pending data fillter',filter);

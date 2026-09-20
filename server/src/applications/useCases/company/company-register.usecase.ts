@@ -57,7 +57,7 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
       );
 
     const nameExist = await this._companyRepository.findOne({
-      email: payload.companyName,
+      companyName: payload.companyName,
     });
     if (nameExist)
       throw new AppError(

@@ -71,6 +71,7 @@ function JobListingContainer({ mode }: Props) {
       location,
     },
     industry: industryFilter ? [industryFilter] : [],
+    status:'active'
   });
   const initialReportForm: ReportFormType = {
     jobId: '',

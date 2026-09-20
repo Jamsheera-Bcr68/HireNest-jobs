@@ -56,6 +56,10 @@ export class SkillRepository
     } else if (sortBy == 'countofusers') {
       sortStage = { candidateUsedCount: -1 };
     }
+    // const skillss=await this._model.aggregate([{$match:matchStage},{$lookup:{from:'companies',foreignField:'_id',localField:'userId',as:'data'}},{$project:{
+    //   skillName:1,
+
+    // }}])
     const skills = await this._model
       .find(matchStage)
       .skip(skip)

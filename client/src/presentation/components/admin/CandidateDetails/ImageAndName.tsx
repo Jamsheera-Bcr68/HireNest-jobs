@@ -4,6 +4,7 @@ import { type UserProfileType } from '../../../../types/dtos/profile-types/user.
 import { adminService } from '../../../../services/api-services/adminService';
 import { useToast } from '../../../../shared/toast/use-toast';
 import { Phone,Mail,MapPin } from 'lucide-react';
+import { Avatar } from '../../common/Avatar';
 type Props = {
   candidate: UserProfileType;
   updateCandidate: (candidate: UserProfileType) => void;
@@ -52,12 +53,14 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
       });
     }
   };
+
   return (
     <div className="bg-white rounded-xl">
       <div className="bg-white rounded-xl mt-5 shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center gap-4">
           {/* Logo */}
-          <div
+          <Avatar item='candidate' name={candidate.name??'Candidate'} logoUrl={candidate.imageUrl}  imageClassName="w-full h-full border rounded-full object-contain" className='w-16 h-16 border rounded-full flex items-center justify-center'/>
+          {/* <div
             className={`w-16 h-16 border rounded-full flex items-center justify-center  ${candidate.imageUrl ? '' : 'bg-gray-400'}`}
           >
             {candidate.imageUrl ? (
@@ -71,7 +74,7 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
                 {candidate?.name?.slice(0, 1) || 'image'}
               </h1>
             )}
-          </div>
+          </div> */}
 
           <div>
             <h1 className="text-xl md:text-xl font-bold text-slate-800">
@@ -140,7 +143,7 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
           
         ].map((item, i) => (
           <span key={i} className="flex items-center gap-1.5">
-            <span>{item.icon}</span>
+            <span>{item.value? item.icon:''}</span>
             <span className="text-slate-600">{item.value}</span>
           </span>
         ))}

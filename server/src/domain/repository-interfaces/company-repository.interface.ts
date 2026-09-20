@@ -24,8 +24,14 @@ export interface ICompanyRepository extends IBaseRepository<Company> {
 
   getStatus(): Promise<CompanyStatus>;
   countByFilter(data: CompanyFilterDto): Promise<number>;
+  getDuplicateCompany(
+    data: { companyName?: string; email?: string },
+    excludingId: string
+  ): Promise<Company | null>;
 
   getMonthlyCompanyCount(): Promise<chartDataDto[]>;
-getCompanies(filter: {status:StatusEnum,search?:string},limit:number):Promise<Company[]>
-
+  getCompanies(
+    filter: { status: StatusEnum; search?: string },
+    limit: number
+  ): Promise<Company[]>;
 }

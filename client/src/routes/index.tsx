@@ -22,14 +22,14 @@ import JobListing from '../presentation/pages/user/JobListing';
 import Home from '../presentation/pages/user/Home';
 import type { RootState } from '../redux/store';
 import JobDetailsPage from '../presentation/pages/user/candidate/JobDetailsPage';
-import JobListingPage from './Sample';
+
 
 export const AppRoutes = () => {
   const { user } = useSelector((state: RootState) => state?.auth);
   return (
     <Routes>
       <Route path="/" element={user ? <Home /> : <Landing />} />
-      <Route path="/job" element={<JobListingPage />} />
+      {/* <Route path="/job" element={<JobListingPage />} /> */}
 {/* 
       <Route path="/jobs" element={<JobListing />} />
       <Route path="/jobs/:jobId" element={<JobDetailsPage />} /> */}

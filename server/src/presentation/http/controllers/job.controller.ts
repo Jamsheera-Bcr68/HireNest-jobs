@@ -58,15 +58,18 @@ export class JobController {
   });
 
   getJobs = asyncHandler(async (req: Request, res: Response) => {
-    let { search, page, limit, sortBy, ...rest } = req.query;
+    let { search, page, limit, sortBy,mode, ...rest } = req.query;
       const user = req.user;
     if (!user || !user.userId) {
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     }
+    if(mode){
+      rest.mode=mode
+     }
    // console.log('from getjob controller', rest);
 
     const jobRes = await this._getAllJobsUseCase.execute(user.userId,user.role,
-      rest,
+    rest,
 
       Number(limit),
       Number(page),

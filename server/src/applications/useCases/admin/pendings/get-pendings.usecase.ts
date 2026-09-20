@@ -1,9 +1,12 @@
+import { Skill } from '../../../../domain/entities/skill.entity';
+import { SkillStatus } from '../../../../domain/enums/skill.enum';
 import { StatusEnum } from '../../../../domain/enums/status.enum';
 import { UserRole } from '../../../../domain/enums/user.enums';
 import { AppError } from '../../../../domain/errors/app-error';
 import { IAdminRepository } from '../../../../domain/repository-interfaces/admin.reporitory.interface';
 import { ICompanyRepository } from '../../../../domain/repository-interfaces/company-repository.interface';
 import { IJobRepository } from '../../../../domain/repository-interfaces/job-repository.interface';
+import { ISkillRepository } from '../../../../domain/repository-interfaces/skill-repository.interface';
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { PendingActivityMapper } from '../../../mappers/pending.mapper';
@@ -15,23 +18,25 @@ export interface IGetPendingUsecase {
     userId: string,
     role: string,
     item: 'jobs' | 'companies' | '',
-    limit: number,search?:string
+    limit: number,
+    search?: string
   ): Promise<{ totalDocs: number; activities: PendingActivityDto[] }>;
 }
 export class GetPendingUsecase implements IGetPendingUsecase {
   constructor(
     private _adminRepository: IAdminRepository,
     private _companyRepository: ICompanyRepository,
-    private _jobRepository: IJobRepository
+    private _jobRepository: IJobRepository,
+    private _skillRepository: ISkillRepository
   ) {}
 
   async execute(
     userId: string,
     role: UserRole,
     item: 'jobs' | 'companies' | '',
-    limit: number,search?:string
+    limit: number,
+    search?: string
   ): Promise<{ totalDocs: number; activities: PendingActivityDto[] }> {
-
     if (role !== UserRole.ADMIN)
       throw new AppError(
         generalMessages.errors.FORBIDDEN,
@@ -43,18 +48,29 @@ export class GetPendingUsecase implements IGetPendingUsecase {
         generalMessages.errors.NOT_FOUND('Admin'),
         statusCodes.NOTFOUND
       );
+    const getSkills = async (): Promise<Skill[]> => {
+      const skills = await this._skillRepository.getAllSkills({
+        status: SkillStatus.PENDING,
+      });
+    
+      return skills;
+    };
 
+    const pendingSkills =await getSkills();
+  console.log('pending sklls',pendingSkills);
+  
     const getJobs = async (): Promise<{
       jobs: PendingActivityDto[];
       totalJobs: number;
     }> => {
       const query: ReportedJobFilter = {};
-      if(search)query.search=search
+      if (search) query.search = search;
+
       query.isReported = true;
       query.limit = limit;
       const jobs = await this._jobRepository.getReportedJobs(query);
-      console.log('searched jobs',jobs);
-      
+      //console.log('searched jobs', jobs);
+
       const totalJobs = await this._jobRepository.count({ isReported: true });
       const mappedJobs = jobs.map((j) =>
         PendingActivityMapper.mapToReportedJob(j)
@@ -68,7 +84,8 @@ export class GetPendingUsecase implements IGetPendingUsecase {
     }> => {
       const companies = await this._companyRepository.getCompanies(
         {
-          status: StatusEnum.PENDING,search
+          status: StatusEnum.PENDING,
+          search,
         },
         limit
       );
@@ -94,17 +111,16 @@ export class GetPendingUsecase implements IGetPendingUsecase {
     } else if (item === 'companies') {
       const { companies, totalCompanies } = await getCompanies();
       totalDocs = totalDocs + totalCompanies;
-      activities =  companies;
+      activities = companies;
     } else {
       const { jobs, totalJobs } = await getJobs();
       const { companies, totalCompanies } = await getCompanies();
-     activities = [...companies, ...jobs]
-  .sort(
-    (a, b) =>
-      new Date(b.submitted).getTime() -
-      new Date(a.submitted).getTime()
-  )
-  .slice(0, limit);
+      activities = [...companies, ...jobs]
+        .sort(
+          (a, b) =>
+            new Date(b.submitted).getTime() - new Date(a.submitted).getTime()
+        )
+        .slice(0, limit);
 
       totalDocs = totalCompanies + totalJobs;
     }

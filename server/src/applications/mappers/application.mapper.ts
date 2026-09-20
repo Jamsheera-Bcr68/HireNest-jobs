@@ -51,7 +51,7 @@ export class ApplicationMapper {
     company: Company,
     candidate: User,
     skills: Skill[],
-    resume: IResume,chatroomId?:string
+    resume?: IResume,chatroomId?:string
   ): ApplicationDetailsDto {
     return {
       id: app.id,

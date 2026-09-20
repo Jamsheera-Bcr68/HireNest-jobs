@@ -10,7 +10,7 @@ export const useEditProfileDetails = (
   showToast: (data: typeOfToast) => void,
   onUserUpdate: (user: UserProfileType) => void,
   user: UserProfileType | undefined,
-  skills: SkillType[] | []
+  skills: SkillType[] 
 ) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');

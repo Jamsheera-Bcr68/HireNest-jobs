@@ -221,14 +221,14 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
         {/* Edit Profile Button */}
         <button
           onClick={handleEditProfile}
-          className="w-full mt-6 bg-gray-200 text-gray-700 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          className="w-full mt-6 bg-white text-fuchsia-700 hover:bg-fuchsia-300 border border-fuchsia-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
         >
           Edit Profile
         </button>
         <button
           onClick={handleChangePassword}
-          className="w-full mt-6 bg-gray-200 text-gray-700 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-        >
+          className="w-full mt-6 bg-white text-fuchsia-700 hover:bg-fuchsia-300 border border-fuchsia-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+         >
           Change Password
         </button>
       </div>

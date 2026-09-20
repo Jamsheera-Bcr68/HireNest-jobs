@@ -59,11 +59,11 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
         statusCodes.NOTFOUND
       );
     const resume = candidate.resumes.find((r) => r.id == application.resumeId);
-    if (!resume)
-      throw new AppError(
-        generalMessages.errors.NOT_FOUND('Resume'),
-        statusCodes.NOTFOUND
-      );
+    // if (!resume)
+    //   throw new AppError(
+    //     generalMessages.errors.NOT_FOUND('Resume'),
+    //     statusCodes.NOTFOUND
+    //   );
    
       let chatroomId:string|undefined
     if (

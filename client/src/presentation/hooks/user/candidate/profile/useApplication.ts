@@ -128,6 +128,8 @@ export const useApplications = (setPage?: (page?: number) => void) => {
     setPage(1);
   };
 
+ 
+
   return {
     handleApplyClick,
     filter,
@@ -136,5 +138,6 @@ export const useApplications = (setPage?: (page?: number) => void) => {
     showResumeModal,
     resumes,
     applyJob,
+    setFilter
   };
 };

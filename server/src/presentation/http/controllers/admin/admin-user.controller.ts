@@ -20,17 +20,17 @@ import { success } from 'zod';
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { asyncHandler } from '../../middleweres/async-handler';
 
-export class AdminUserController {
-  constructor(
-    private getCompaniesUseCase: IGetCompaniesUseCase,
-    private getCompanyUseCase: IAdminGetCompanyUseCase,
-    private adminUpdateCompanyUseCase: IAdminUpdateCompanyUseCase,
-    private getCompanyStatusUseCase: IGetCompanyStatusUseCase,
-    private getCandidateStatusUseCase: IGetEntityStatusUseCase<CandidateStatus>,
-    private adminGetCandidatesUseCase: IAdminGetEntitiesUseCase<User>,
-    private adminUpdateCandidateUseCase: IAdminUpdateCandidateUseCase,
-    private adminGetEntityUseCase: IAdminGetEntityUseCase,
-    private getFileExistUseCase: IGetFileExistUseCase
+export class AdminUserController { 
+  constructor(  
+    private _getCompaniesUseCase: IGetCompaniesUseCase,
+    private _getCompanyUseCase: IAdminGetCompanyUseCase,
+    private _adminUpdateCompanyUseCase: IAdminUpdateCompanyUseCase,
+    private _getCompanyStatusUseCase: IGetCompanyStatusUseCase,
+    private _getCandidateStatusUseCase: IGetEntityStatusUseCase<CandidateStatus>,
+    private _adminGetCandidatesUseCase: IAdminGetEntitiesUseCase<User>,
+    private _adminUpdateCandidateUseCase: IAdminUpdateCandidateUseCase,
+    private _adminGetEntityUseCase: IAdminGetEntityUseCase,
+    private _getFileExistUseCase: IGetFileExistUseCase
   ) {}
 
   getAllCompanies = asyncHandler(async (req: Request, res: Response) => {
@@ -53,7 +53,7 @@ export class AdminUserController {
     // console.log('page,rest,limit,search', page, rest, limit, search);
     const pagenumber = Number(page);
 
-    const paginated = await this.getCompaniesUseCase.execute(
+    const paginated = await this._getCompaniesUseCase.execute(user.userId,user.role,
       rest,
       pagenumber,
       String(search),
@@ -88,7 +88,7 @@ export class AdminUserController {
         statusCodes.UNAUTHERIZED
       );
     }
-    const company = await this.getCompanyUseCase.execute(companyId);
+    const company = await this._getCompanyUseCase.execute(companyId);
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.COMPANY_FETCHED,
@@ -111,7 +111,7 @@ export class AdminUserController {
       );
     }
     //console.log('data ', data);
-    const updated = await this.adminUpdateCompanyUseCase.execute(
+    const updated = await this._adminUpdateCompanyUseCase.execute(
       companyId,
       data,
       reason
@@ -143,7 +143,7 @@ export class AdminUserController {
       );
     }
 
-    const companyStatus = await this.getCompanyStatusUseCase.execute();
+    const companyStatus = await this._getCompanyStatusUseCase.execute();
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.STATUS_FETCHED,
@@ -161,7 +161,7 @@ export class AdminUserController {
       );
     }
 
-    const candidateStatus = await this.getCandidateStatusUseCase.execute(
+    const candidateStatus = await this._getCandidateStatusUseCase.execute(
       user.userId,
       user.role
     );
@@ -186,7 +186,7 @@ export class AdminUserController {
     }
 
     const { entities, totalDocs } =
-      await this.adminGetCandidatesUseCase.execute(
+      await this._adminGetCandidatesUseCase.execute(
         filter as CandidateFilterType
       );
     return res.status(statusCodes.OK).json({
@@ -213,7 +213,7 @@ export class AdminUserController {
       );
     }
 
-    const updated = await this.adminUpdateCandidateUseCase.execute(
+    const updated = await this._adminUpdateCandidateUseCase.execute(
       candidateId,
       data
     );
@@ -245,7 +245,7 @@ export class AdminUserController {
         statusCodes.UNAUTHERIZED
       );
     }
-    const candidate = await this.adminGetEntityUseCase.execute(candidateId);
+    const candidate = await this._adminGetEntityUseCase.execute(candidateId);
     console.log('admin candidate',candidate);
     
     return res.status(statusCodes.OK).json({
@@ -267,7 +267,7 @@ export class AdminUserController {
         statusCodes.UNAUTHERIZED
       );
     }
-    const fileExist = await this.getFileExistUseCase.execute(url as string);
+    const fileExist = await this._getFileExistUseCase.execute(url as string);
 
     if (fileExist)
       return res.status(statusCodes.OK).json({

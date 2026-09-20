@@ -87,7 +87,7 @@ export interface ApplicationTimelineItemDTO {
 export type ApplicationDetailsDto = {
   id: string;
   status: ApplicationStatusEnum;
-  resume: IResume;
+  resume?: IResume;
 
   appliedAt: string;
   reviewedAt?: string;

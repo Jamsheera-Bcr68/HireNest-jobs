@@ -8,7 +8,7 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { type JobStatusCardDto } from '../../dtos/job.dto';
 
 export interface IGetPostSatusUseCase {
-  execute(userId: string, role: UserRole): Promise<JobStatusCardDto>;
+  execute(userId: string, role: UserRole,companyId?:string): Promise<JobStatusCardDto>;
 }
 
 export class GetPostSatusUseCase implements IGetPostSatusUseCase {
@@ -16,7 +16,7 @@ export class GetPostSatusUseCase implements IGetPostSatusUseCase {
     private _jobRepository: IJobRepository,
     private _companyRepository: ICompanyRepository
   ) {}
-  async execute(userId: string, role: UserRole): Promise<JobStatusCardDto> {
+  async execute(userId: string, role: UserRole,companyId?:string): Promise<JobStatusCardDto> {
     let filter = {};
     if (role == UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(userId);
@@ -27,6 +27,8 @@ export class GetPostSatusUseCase implements IGetPostSatusUseCase {
         );
       }
       filter = { companyId: company.id };
+    }else if(role===UserRole.ADMIN&&companyId ){
+     filter={companyId}
     }
 
    

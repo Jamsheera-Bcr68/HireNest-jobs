@@ -22,12 +22,13 @@ const tabs = [
   { id: 'overview', label: 'Overview' },
   { id: 'responsibilities', label: 'Responsibilities' },
   { id: 'benefits', label: 'Benefits' },
-  { id: 'company', label: 'Company' },
+
 ];
+
 function JobDetailsContainer() {
   const { jobId } = useParams();
   const role=useSelector((state:RootState)=>state.auth.user?.role)
-
+if(role==='admin')tabs.push(  { id: 'company', label: 'Company' },)
   const { showToast } = useToast();
   const [job, setJob] = useState<JobDetailsDto | null>(null);
   const [tab, setTab] = useState<string>('overview');

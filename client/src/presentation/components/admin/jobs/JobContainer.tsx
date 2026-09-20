@@ -13,6 +13,7 @@ import { type ColumnType } from '../Candidates/ReusableTable';
 import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
 import { type JobFilterType } from '../../candidate/jobListing/ListingContainter';
 import Pagination from '../../common/Pagination';
+import { useLocation } from 'react-router-dom';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { type UpdateStatusType } from '../../user/employer/company-joblisting/CompanyJobListingContainer';
 import type { StatusType } from '../../../../types/dtos/profile-types/user.types';
@@ -52,6 +53,7 @@ const filterOptions = [
 ];
 
 function JobContainer() {
+
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [stats, setStats] = useState<StatusCardType[]>([]);
@@ -61,7 +63,7 @@ function JobContainer() {
   const [page, setPage] = useState(1);
   const [totalDocs, setTotalDocs] = useState(0);
   const [filter, setFilter] = useState<JobFilterType>({
-    search: { job: '', location: '' },
+    search: { job: '', location: '' },status:'active'
   });
 
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
@@ -71,11 +73,16 @@ function JobContainer() {
   const [showSuspendReasonModal, setShowSuspendReasonModal] =
     useState<boolean>(false);
 
+const location=useLocation()
+const companyId=location.state?.companyId
+console.log('comapny id frm jobs',companyId);
+
   //getting status cards
   useEffect(() => {
+
     async function getPostStatusData() {
       try {
-        const data = await adminService.getJobstatus();
+        const data = await adminService.getJobstatus(companyId);
         const statusData = data.statusData;
         console.log(`status data after fetching `, data);
 
@@ -114,7 +121,8 @@ function JobContainer() {
   useEffect(() => {
     const getJobs = async () => {
       try {
-        const data = await adminService.getJobs({ ...filter }, '', limit, page);
+       
+        const data = await adminService.getJobs({ ...filter,companyId }, '', limit, page);
         console.log('datas after fetching compnay jobs', data);
         setJobs(data.jobs);
         setTotalDocs(data.totalDocs);
@@ -257,20 +265,7 @@ function JobContainer() {
       ),
     },
   ];
-  //  const handleFilterChange = (data: Partial<JobFilterType>) => {
-  //     console.log('data', data);
-
-  //     setFilter((prev) => ({
-  //       ...prev,
-  //       ...data,
-  //       search: {
-  //         ...prev.search,
-  //         ...data.search,
-  //       },
-  //     }));
-
-  //     setPage(1);
-  //   };
+ 
 
   const handleFilterChange = (
     incomingFilter: Partial<JobFilterType> & { search?: string }
@@ -366,7 +361,11 @@ function JobContainer() {
       setSelectedJob(null);
     }
   };
-
+const onResetFilter=()=>{
+ 
+  
+  setFilter({ search: { job: '', location: '' },status:'active'})
+}
   return (
     <>
       <div>
@@ -380,6 +379,7 @@ function JobContainer() {
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable
+              filter={filter}
                 totalDocs={totalDocs}
                 columns={postColumns as ColumnType<JobCardDto>[]}
                 tabs={tabs}
@@ -387,9 +387,10 @@ function JobContainer() {
                 entities={jobs}
                 filterOptions={filterOptions}
                 item="Jobs"
-                onResetfilter={() => handleFilterChange({})}
+                onResetfilter={onResetFilter}
               />
               <Pagination
+             
                 onPageChange={setPage}
                 totalPages={Math.ceil(totalDocs / limit)}
                 count={jobs.length}

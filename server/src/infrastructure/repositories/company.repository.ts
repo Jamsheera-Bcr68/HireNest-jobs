@@ -3,7 +3,7 @@ import {
   companyModel,
   ICompanyDocument,
 } from '../database/models/company.model';
-import { PipelineStage } from 'mongoose';
+import { Mongoose, PipelineStage } from 'mongoose';
 import { StatusEnum } from '../../domain/enums/status.enum';
 import { IndustryType } from '../../domain/types/company-profile.types';
 import { GenericRepository } from './generic.repository';
@@ -97,12 +97,15 @@ export class CompanyRepository
             status: 1,
             createdAt: 1,
             industry: 1,
+            jobCount:1
           },
         },
       ])
       .sort(sortStage)
       .skip(skip)
       .limit(limit);
+
+   // console.log('comapnies list from repor', companies);
 
     const totalDocs = await this._model.countDocuments(query);
     return {
@@ -258,21 +261,41 @@ export class CompanyRepository
       { $sort: { _id: 1 } },
     ]);
 
-   // console.log('company data', companyData);
+    // console.log('company data', companyData);
     return companyData;
   }
 
   async getCompanies(
-    filter: { status: StatusEnum,search?:string },
+    filter: { status: StatusEnum; search?: string },
     limit: number
   ): Promise<Company[]> {
-   
-    const {status,search=''}=filter
+    const { status, search = '' } = filter;
 
     const companies = await this._model
-      .find({status, companyName: { $regex: `^${search}`, $options: 'i' }})
-      .sort({createdAt:-1})
+      .find({ status, companyName: { $regex: `^${search}`, $options: 'i' } })
+      .sort({ createdAt: -1 })
       .limit(limit);
-    return companies.map(c=>this.mapToEntity(c))
+    return companies.map((c) => this.mapToEntity(c));
+  }
+
+  async getDuplicateCompany(
+    data: { companyName?: string; email?: string },
+    excludingId: string
+  ): Promise<Company | null> {
+    const { companyName, email } = data;
+    let company: Company | null = null;
+    if (companyName) {
+      company = await this._model.findOne({
+        companyName,
+        _id: { $ne: new mongoose.Types.ObjectId(excludingId) },
+      });
+    }
+    if (email) {
+      company = await this._model.findOne({
+        email,
+        _id: { $ne: new mongoose.Types.ObjectId(excludingId) },
+      });
+    }
+    return company;
   }
 }

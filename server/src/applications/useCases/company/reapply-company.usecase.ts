@@ -43,10 +43,22 @@ export class ReApplyCompanyUsecase implements IReApplyCompanyUsecase {
         date: new Date(company.joinedAt),
         rejectedReason: company.reasonForReject,
         status: StatusEnum.REJECTED,
-      })
+      });
     }
-   
-   
+    const { companyName, email } = payload;
+    const nameExist = await this._comapnyRepository.getDuplicateCompany({ companyName },company.id);
+    if (nameExist)
+      throw new AppError(
+        generalMessages.errors.COMPANY_ALREADY_EXIST('Name'),
+        statusCodes.CONFLICT
+      );
+    const emailExist = await this._comapnyRepository.getDuplicateCompany({ email },company.id)
+
+    if (emailExist)
+      throw new AppError(
+        generalMessages.errors.COMPANY_ALREADY_EXIST('Email'),
+        statusCodes.CONFLICT
+      );
 
     const updated: Partial<Company> = {
       ...payload,

@@ -39,7 +39,7 @@ export class ActivityController {
     const item = (req.query.item as 'jobs' | 'companies' | '') || '';
     const { search } = req.query;
 
-    console.log('search', search);
+   
     // console.log(req);
 
     const { activities, totalDocs } = await this._getPendingsUsecase.execute(

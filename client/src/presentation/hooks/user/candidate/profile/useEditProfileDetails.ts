@@ -22,10 +22,12 @@ export const useEditProfileDetails = (
   const textref = useRef<HTMLTextAreaElement | null>(null);
   const dispatch = useDispatch();
   const reduxUser = useSelector((state: RootState) => state.auth.user);
+  
 
   //skills component
   const [isAddSkill, setIsAddSkill] = useState<boolean>(false);
   const [skillName, setSkillName] = useState<string>('');
+
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setIsEditing(true);
@@ -146,8 +148,7 @@ export const useEditProfileDetails = (
     onBlur,
     textref,
 
-    //skills
-    //error,
+    
     selectSkill,
     isAddSkill,
     skillName,

@@ -10,7 +10,7 @@ export const skillService = {
     page: number = 1,
     sortBy: string = 'newest'
   ) {
-    //console.log('skill filter,sortby', filter);
+  console.log('skill filter', filter);
     sortBy = sortBy.trim();
 
     const res = await axiosInstance.get(API_ENDPOINTS.ALL_SKILLS, {

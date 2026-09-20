@@ -47,8 +47,10 @@ const filterOptions = [
 ];
 
 const tabs = [
-  { label: 'All', value: '' },
+
+
   { label: 'Active', value: 'active' },
+    { label: 'All', value: '' },
   { label: 'Suspended', value: 'suspended' },
   { label: 'Expired', value: 'expired' },
   { label: 'Closed', value: 'closed' },
@@ -69,8 +71,9 @@ function CompanyJobListingContainer() {
   const [limit] = useState(10);
   const defaultFilter = {
     search: { job: '', location: '' },
-    companyId: user.companyId,
+    companyId: user.companyId,status:'active'
   };
+  const companyId:string=user.companyId
   const [filter, setFilter] = useState<JobFilterType>(defaultFilter);
 
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
@@ -131,24 +134,22 @@ function CompanyJobListingContainer() {
 
   const postColumns = [
     {
-  key: 'title',
-  label: 'Title',
-  render: (j: JobCardDto) => (
-    <div className="relative inline-block">
-      <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm">
-        <span className="font-semibold text-slate-800">
-          {j.title}
-        </span>
-      </div>
+      key: 'title',
+      label: 'Title',
+      render: (j: JobCardDto) => (
+        <div className="relative inline-block">
+          <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm">
+            <span className="font-semibold text-slate-800">{j.title}</span>
+          </div>
 
-      {j.pendingAppCount > 0 && (
-        <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-4 h-4 px-1 rounded-full bg-fuchsia-600 text-white text-[9px] font-bold shadow-sm">
-          New {j.pendingAppCount}
-        </span>
-      )}
-    </div>
-  ),
-},
+          {j.pendingAppCount > 0 && (
+            <span className="absolute -top-2 -right-2 flex items-center justify-center min-w-4 h-4 px-1 rounded-full bg-fuchsia-600 text-white text-[9px] font-bold shadow-sm">
+              New {j.pendingAppCount}
+            </span>
+          )}
+        </div>
+      ),
+    },
     {
       key: 'type',
       label: 'Type',
@@ -261,7 +262,6 @@ function CompanyJobListingContainer() {
     },
   ];
 
- 
   useEffect(() => {
     async function getPostStatusData() {
       try {
@@ -304,6 +304,9 @@ function CompanyJobListingContainer() {
   useEffect(() => {
     const getJobs = async () => {
       try {
+        if(companyId){
+          filter.companyId=companyId
+        }
         const data = await jobService.getJobs({ ...filter }, '', 10, page);
         console.log('datas after fetching compnay jobs', data);
         setJobs(data.jobs);
@@ -319,17 +322,17 @@ function CompanyJobListingContainer() {
   }, [filter, page]);
 
   const handleFilterChange = (
-   // incomingFilter: Partial<JobFilterType> & { search?: string }
+    // incomingFilter: Partial<JobFilterType> & { search?: string }
     incomingFilter: JobFilterUpdate
   ) => {
-    console.log('incoming filter',incomingFilter);
-    const {search,...rest}=incomingFilter
-    const updatedFilter: Partial<JobFilterType> = {...rest };
+    console.log('incoming filter', incomingFilter);
+    const { search, ...rest } = incomingFilter;
+    const updatedFilter: Partial<JobFilterType> = { ...rest };
 
     // convert search string → search object
     if (typeof search === 'string') {
       updatedFilter.search = {
-        job:search,
+        job: search,
         location: '',
       };
     }
@@ -369,10 +372,9 @@ function CompanyJobListingContainer() {
       }),
     };
   };
-   const onResetFilter=()=>{
-    handleFilterChange({search:''})
-    
-  }
+  const onResetFilter = () => {
+   setFilter({search:{job:'',location:''},status:'active'})
+  };
 
   return (
     <>
@@ -385,30 +387,31 @@ function CompanyJobListingContainer() {
             />
             <StatusCards stats={stats} />
             <div className="flex justify-end p-4">
-          {' '}
-          <button
-            onClick={() => navigate('/company/jobs/create')}
-            className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition shadow-sm"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Add Post
-          </button>
-        </div>
+              {' '}
+              <button
+                onClick={() => navigate('/company/jobs/create')}
+                className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition shadow-sm"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                Add Post
+              </button>
+            </div>
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable
+                filter={filter}
                 totalDocs={totalDocs}
                 columns={postColumns as ColumnType<JobCardDto>[]}
                 tabs={tabs}

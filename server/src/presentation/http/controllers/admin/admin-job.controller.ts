@@ -11,20 +11,25 @@ import { IGetJobDetailsUseCase } from '../../../../applications/useCases/candida
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 
 export class AdminJobController {
-  constructor(
-    private updateJobStatusUseCase: IUpdateJobStatusUseCase,
-    private getPostStatusUseCase: IGetPostSatusUseCase,
-    private getAllJobsUseCase: IGetAllJobsUseCase,
-    private getJobDetailsUseCase: IGetJobDetailsUseCase
+  constructor( 
+    private _updateJobStatusUseCase: IUpdateJobStatusUseCase,
+    private _getPostStatusUseCase: IGetPostSatusUseCase,
+    private _getAllJobsUseCase: IGetAllJobsUseCase,
+    private _getJobDetailsUseCase: IGetJobDetailsUseCase
   ) {}
 
   getJobStatus = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
-    const statusData = await this.getPostStatusUseCase.execute(
+
+    const {companyId}=req.query
+    
+    
+    const statusData = await this._getPostStatusUseCase.execute(
       user.userId,
-      user.role
+      user.role,
+      companyId as string
     );
    // console.log('status data', statusData);
     return res.status(statusCodes.OK).json({
@@ -35,14 +40,19 @@ export class AdminJobController {
   });
 
   getJobs = asyncHandler(async (req: Request, res: Response) => {
-    let { search, page, limit, sortBy, ...rest } = req.query;
-   // console.log('from getjob controller', rest);
+    let { search, page, limit, sortBy,mode, ...rest } = req.query;
+
      const user = req.user;
     if (!user || !user.userId) {
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     }
-
-    const jobRes = await this.getAllJobsUseCase.execute(user.userId,user.role,
+    console.log('mode is ',mode);
+    
+if(!mode){
+//  rest.mode=undefined
+}else rest.mode=mode
+console.log('rest is ',rest);
+    const jobRes = await this._getAllJobsUseCase.execute(user.userId,user.role,
       rest,
 
       Number(limit),
@@ -73,7 +83,7 @@ export class AdminJobController {
         statusCodes.UNAUTHERIZED
       );
    // console.log('from update status', jobId, data);
-    await this.updateJobStatusUseCase.execute(
+    await this._updateJobStatusUseCase.execute(
       jobId,
       user.userId,
       user.role,
@@ -93,7 +103,7 @@ export class AdminJobController {
         generalMessages.errors.ID_NOT_FOUND('Job'),
         statusCodes.BADREQUEST
       );
-    const jobDetails = await this.getJobDetailsUseCase.execute(jobId);
+    const jobDetails = await this._getJobDetailsUseCase.execute(jobId);
     return res.status(statusCodes.OK).json({
       success: true,
       message: jobMessages.success.JOB_DETAILS_FETCHED,

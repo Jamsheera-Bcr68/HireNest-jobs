@@ -232,6 +232,11 @@ export const useInterviews = (setPage?: (page: number) => void) => {
       });
     }
   };
+  const onResetFilter=()=>{
+    console.log('from reset filter')
+    setFilter({status:'scheduled'})
+    
+  }
 
   const getInterviewDetails = async (id: string) => {
     try {
@@ -281,6 +286,6 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     getInterviewDetails,
     statusFilter,
     resultFilter,
-    fetchMeeting,
+    fetchMeeting,onResetFilter
   };
 };

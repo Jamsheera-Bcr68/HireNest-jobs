@@ -12,8 +12,9 @@ import { useSelector } from 'react-redux';
 import { Eye, Trash, SquarePenIcon } from 'lucide-react';
 
 const tabs = [
-  { label: 'All', value: '' },
+
   { label: 'Approved', value: 'approved' },
+    { label: 'All', value: '' },
   { label: 'Rejected', value: 'rejected' },
   { label: 'Removed', value: 'removed' },
   { label: 'Pending', value: 'pending' },
@@ -366,16 +367,20 @@ function SkillsContainer() {
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           {' '}
           <ReusableTable
+          filter={filter}
             columns={skillColumns as ColumnType<SkillType>[]}
             tabs={tabs}
             updateFilter={handleFilterChange}
             entities={skills}
             filterOptions={[]}
             item='Skills'
-            onResetfilter={()=>handleFilterChange({})}
+            onResetfilter={()=>{
+              setFilter({status:'approved'})
+            }}
             totalDocs={totalDocs}
             sortOption={sortOption}
             setSortBy={setSortBy}
+            
           />
           <Pagination
             onPageChange={setPage}

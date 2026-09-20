@@ -4,6 +4,7 @@ import EditCompanyProfileModal from '../../../../modals/EditCompanyProfile';
 import type { CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import { Twitter } from 'lucide-react';
 import ChangePasswordModal from '../../../../modals/ChangePasswordModal';
+import { ContactLinks } from './Contact';
 
 type Props = {
   company: CompanyProfileType | null;
@@ -58,7 +59,7 @@ function BasicPart({ company, onUpdate }: Props) {
           </p>
         </div>
         {/* Quick Stats */}
-        <div className="mt-6 grid grid-cols-2 gap-4">
+        {/* <div className="mt-6 grid grid-cols-2 gap-4">
           <div className="bg-fuchsia-50 rounded-lg p-3 text-center">
             <p className="text-2xl font-bold text-fuchsia-600">
               {company?.totalJobs ?? 0}
@@ -72,11 +73,11 @@ function BasicPart({ company, onUpdate }: Props) {
             </p>
             <p className="text-gray-600 text-sm">Total Hires</p>
           </div>
-        </div>
+        </div> */}
 
         {/* Website */}
 
-        {company?.website && (
+        {/* {company?.website && (
           <div className="mt-6 text-center">
             <a
               href={company.website}
@@ -86,8 +87,8 @@ function BasicPart({ company, onUpdate }: Props) {
               Visit Website
             </a>
           </div>
-        )}
-        <div className="mt-6 space-y-3">
+        )} */}
+        {/* <div className="mt-6 space-y-3">
           <div className="flex items-center space-x-3">
             <svg
               className="w-5 h-5 text-fuchsia-500"
@@ -225,18 +226,19 @@ function BasicPart({ company, onUpdate }: Props) {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
+  
         {/* Edit Company Button */}
         <div className="flex gap-3">
           <button
             onClick={() => setOpenEdit(true)}
-            className="w-full mt-6 bg-gray-200 text-gray-700 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            className="w-full mt-6 bg-white text-fuchsia-800 hover:bg-fuchsia-200 text-xs border border-fuchsia-800 px-2 py-2 rounded-lg text-sm font-medium transition-colors"
           >
             Edit Profile
           </button>
           <button
             onClick={() => setOpenPwd(true)}
-            className="w-full mt-6 bg-gray-200 text-gray-700 hover:bg-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            className="w-full mt-6 bg-white text-fuchsia-800 hover:bg-fuchsia-200 text-xs border border-fuchsia-800 px-2 py-2 rounded-lg text-sm font-medium transition-colors"
           >
             Change password
           </button>

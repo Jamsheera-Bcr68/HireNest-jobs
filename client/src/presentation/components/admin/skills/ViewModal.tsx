@@ -68,6 +68,8 @@ export default function ViewSkillModal({ isOpen, skill, onClose }: Props) {
         {/* Body */}
         <div className="px-6 py-5 space-y-3 text-sm">
           <DetailRow label="Skill Name" value={skill.skillName} />
+         {skill.status=='removed'&& <DetailRow label="Reason for Remove" value={skill.reasonForRemove??'Not Provided'} />}
+         {skill.status=='rejected'&& <DetailRow label="Reason for Reject" value={skill.reasonForReject??'Not Provided'} />}
 
           <DetailRow label="Created By" value={skill.createdBy ?? 'System'} />
 

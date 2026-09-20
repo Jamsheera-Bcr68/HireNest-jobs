@@ -19,13 +19,13 @@ export type CompanyFilter = {
 };
 
 function Companies() {
-
   const [companies, setCompanies] = useState<CompanyProfileType[]>([]);
   const [page, setPage] = useState(1);
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
 
-  const [filter, setFilter] = useState<Partial<CompanyFilter>>({});
+  const [filter, setFilter] = useState<Partial<CompanyFilter>>({status:'active'});
+
   useEffect(() => {
     async function getCompanies() {
       try {
@@ -59,6 +59,10 @@ function Companies() {
   };
 
   const [stats, setStatus] = useState<StatusCardType[]>([]);
+
+  const onClearFilter = () => {
+    setFilter({});
+  };
 
   useEffect(() => {
     async function getCompanyStatus() {
@@ -102,9 +106,11 @@ function Companies() {
           <StatusCards stats={stats} />
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <Table
+            filter={filter}
               companies={companies}
               onUpdate={handleCompanyUpdate}
               updateFilter={handleFilterChange}
+              onClearfilter={onClearFilter}
             />
           </div>
           <Pagination

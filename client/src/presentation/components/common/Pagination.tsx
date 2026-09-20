@@ -1,5 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTheme} from '../../../contexts/ThemeContext'
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../redux/store';
 
 type PaginationProps = {
   currentPage: number;
@@ -20,6 +22,7 @@ function Pagination({
 }: PaginationProps) {
   console.log('totalPages', totalPages);
 const {t}=useTheme()
+const role=useSelector((state:RootState)=>state.auth.user).role
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
   <div>
@@ -78,7 +81,7 @@ const {t}=useTheme()
                 font-medium
                 ${
                   page === currentPage
-                    ? "bg-fuchsia-600 text-white"
+                    ?`${role==='admin'?"bg-indigo-600 text-white": "bg-fuchsia-600 text-white"}`
                     : `${t.surface} ${t.paginationText} ${t.paginationHover}`
                 }
               `}

@@ -255,8 +255,8 @@ export class JobRepository
       title,
       ...rest
     } = filter;
-    console.log('skills form repor', skills);
-    console.log('titles from repo', title);
+   // console.log('skills form repor', skills);
+    //console.log('titles from repo', title);
 
     const salaryLookup = Object.fromEntries(
       SalaryRange.map((range) => [range.label, range])
@@ -465,7 +465,7 @@ export class JobRepository
 
     const jobs = result[0]?.data || [];
     const totalDocs = result[0]?.totalCount[0]?.count || 0;
-    //  console.log('jobs', jobs);
+  console.log('jobs', jobs);
 
     return {
       jobs: jobs.map(({ _id, id, ...job }) => ({
@@ -753,63 +753,7 @@ export class JobRepository
     return count;
   }
 
-  // async getReportedJobs(
-  //   filter: Partial<ReportedJobFilter>
-  // ): Promise<MappedAggregatedReportedJob[]> {
-  //   const { isReported, limit = 5 } = filter;
 
-  //   const matchStage: PipelineStage.Match['$match'] = {};
-
-  //   if (isReported !== undefined) {
-  //     matchStage.isReported = isReported;
-  //   }
-
-  //   const documents: AggregatedReportedJob[] = await this._model.aggregate([
-  //     { $match: matchStage },
-
-  //     {
-  //       $lookup: {
-  //         from: 'companies',
-  //         localField: 'companyId',
-  //         foreignField: '_id',
-  //         as: 'company',
-  //       },
-  //     },
-
-  //     {
-  //       $project: {
-  //         _id: 1,
-  //         role: '$title',
-
-  //         company: {
-  //           $arrayElemAt: ['$company.companyName', 0],
-  //         },
-
-  //         count: {
-  //           $size: '$reportDetails',
-  //         },
-
-  //         submitted: {
-  //           $arrayElemAt: ['$reportDetails.reportedAt', -1],
-  //         },
-  //         createdAt: 1,
-  //          reason:'$reportDetails.0.reason'
-  //       },
-  //     },
-
-  //     {
-  //       $sort: {
-  //         submitted: -1,
-  //       },
-  //     },
-
-  //     {
-  //       $limit: limit,
-  //     },
-  //   ]);
-
-  //   return documents.map((doc) => this.mapToReported(doc));
-  // }
   async getReportedJobs(
     filter: Partial<ReportedJobFilter>
   ): Promise<MappedAggregatedReportedJob[]> {
@@ -824,7 +768,7 @@ export class JobRepository
     if (search) {
       matchStage.$or = [
         {
-          company: { $regex: `^${search}`, $options: 'i' },
+          'company.companyName': { $regex: `^${search}`, $options: 'i' },
         },
         { title: { $regex: search, $options: 'i' } },
       ];
@@ -930,7 +874,7 @@ export class JobRepository
   private mapToReported(
     doc: AggregatedReportedJob
   ): MappedAggregatedReportedJob {
-    console.log('AggregatedReportedJob', doc);
+   // console.log('AggregatedReportedJob', doc);
 
     return {
       id: doc._id.toString(),

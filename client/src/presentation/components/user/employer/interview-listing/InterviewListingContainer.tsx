@@ -27,9 +27,9 @@ import InterviewDetailsModal from './InterviewViewModal';
 import { to12Hour } from '../../../../../utils/date-conversion';
 
 const tabs: TabType[] = [
-  { label: 'All', value: '' },
-  { label: 'Scheduled', value: 'scheduled' },
 
+  { label: 'Scheduled', value: 'scheduled' },
+  { label: 'All', value: '' },
   { label: 'Completed', value: 'completed' },
   { label: 'Cancelled', value: 'cancelled' },
   { label: 'Not Show', value: 'not_show' },
@@ -64,7 +64,7 @@ function InterviewListingContainer() {
     filterOptions,
     sortFilter,
     upsateStatus,
-    getInterviewDetails,
+    getInterviewDetails,onResetFilter
   } = useInterviews(setPage);
 
   useEffect(() => {
@@ -381,6 +381,10 @@ function InterviewListingContainer() {
     }
   };
 
+  const resetFilter=()=>{
+    
+  }
+
   return (
     <>
       <div>
@@ -403,7 +407,8 @@ function InterviewListingContainer() {
                 sortOption={sortFilter}
                 setSortBy={setSortBy}
                 item='Interviews'
-                onResetfilter={()=>updateFilter({})}
+                onResetfilter={onResetFilter}
+                filter={filter}
               />
               <Pagination
                 onPageChange={setPage}

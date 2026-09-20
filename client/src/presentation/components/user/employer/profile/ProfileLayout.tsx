@@ -7,33 +7,30 @@ import { AboutCompany } from './AboutCompany';
 import { MissionVision } from './MissionAndVision';
 import { CompanyStatistics } from './Statistics';
 import { CultureSection } from './Culture';
+import CompanyRegistrationDetails from './Register';
 
 import { ContactLinks } from './Contact';
-type TabType={label:string,value:number}
+type TabType = { label: string; value: number };
 
 function ProfileLayout() {
   const { showToast } = useToast();
   const [company, setCompany] = useState<CompanyProfileType | null>(null);
-const [stats,setStats]=useState<TabType[]>([])
-
-
-
+  const [stats, setStats] = useState<TabType[]>([]);
 
   useEffect(() => {
     async function getCompany() {
       try {
         const data = await companyService.getCompany();
         console.log('company from profile', data.company);
-const fetchedCompany=data.company
+        const fetchedCompany = data.company;
         setCompany(fetchedCompany);
         setStats([
-          {label:'Jobs',value:fetchedCompany?.totalJobs??0},
-          {label:'Applications',value:fetchedCompany?.totalApps??0},
-          {label:'Interviews',value:fetchedCompany?.totalInterviews??0},
-          {label:'Hired',value:fetchedCompany?.hiredCount??0},
-        ])
+          { label: 'Jobs', value: fetchedCompany?.totalJobs ?? 0 },
+          { label: 'Applications', value: fetchedCompany?.totalApps ?? 0 },
+          { label: 'Interviews', value: fetchedCompany?.totalInterviews ?? 0 },
+          { label: 'Hired', value: fetchedCompany?.hiredCount ?? 0 },
+        ]);
         console.log('after getting company', data);
-        
       } catch (error: any) {
         console.log(error);
         showToast({
@@ -45,18 +42,21 @@ const fetchedCompany=data.company
     getCompany();
   }, []);
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[calc(100vh-4rem)]">
+    // <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
+    <div className="container mx-auto box-border px-4 py-5 sm:px-6 lg:h-[calc(100vh-5.5rem)] lg:overflow-hidden lg:px-8">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 "> */}
+      <div className="grid h-full min-h-0 grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="h-fit lg:sticky top-0 lg:top-6">
           <BasicPart company={company} onUpdate={setCompany} />
         </div>
         <div className="lg:col-span-2 lg:overflow-y-auto space-y-6 pr-2">
-          <CompanyStatistics company={company} stats={stats}  />
-          <ContactLinks company={company} onUpdate={setCompany} />
+          <CompanyStatistics company={company} stats={stats} />
+         
           <AboutCompany company={company} onUpdate={setCompany} />{' '}
+           <ContactLinks company={company} onUpdate={setCompany} />
           <MissionVision company={company} onUpdate={setCompany} />
           <CultureSection company={company} onUpdate={setCompany} />
-          {/* <BenefitsPerks company={company}/> */}
+       {company&& <CompanyRegistrationDetails company={company}/>}
         </div>
       </div>
     </div>
@@ -64,3 +64,4 @@ const fetchedCompany=data.company
 }
 
 export default ProfileLayout;
+

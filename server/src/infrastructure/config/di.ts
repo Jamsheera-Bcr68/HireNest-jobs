@@ -345,7 +345,7 @@ const companyAboutUpdateUseCase = new CompanyAboutUpdateUseCase(
   companyRepository
 );
 
-const getCompaniesUseCase = new GetCompaniesUseCase(companyRepository);
+const getCompaniesUseCase = new GetCompaniesUseCase(companyRepository,adminRepository);
 const adminGetCompanyUseCase = new AdminGetCompanyUseCase(companyRepository);
 const adminUpdateCompanyUseCase = new AdminUpdateCompanyUseCase(
   companyRepository,
@@ -658,7 +658,7 @@ const pendingActionsUsecase = new PendingActionsUsecase(
 const generateMeetlinkUsecase=new GenerateMeetlinkUsecase(cryptoService)
 const getInterviewByMeetingIdUsecase=new GetInterviewByMeetingIdUsecase(interviewRepository,companyRepository,userRepository,jobRepository)
 const getPendingStatusUsecase=new GetPendingStatusUsecase(jobRepository,companyRepository,adminRepository)
-const getPendingsUsecase=new GetPendingUsecase(adminRepository,companyRepository,jobRepository)
+const getPendingsUsecase=new GetPendingUsecase(adminRepository,companyRepository,jobRepository,skillRepository)
 const dashboardPendingsUsecase=new DashboardPendingsUsecase(companyRepository,jobRepository,adminRepository,)
 
 //controller

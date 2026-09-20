@@ -12,10 +12,12 @@ import { Eye, BanIcon, ThumbsUp } from 'lucide-react';
 import Pagination from '../../components/common/Pagination';
 import ConfirmationModal from '../../modals/ConfirmationModal';
 import { useToast } from '../../../shared/toast/use-toast';
+import { Avatar } from '../../components/common/Avatar';
 
 const tabs = [
-  { label: 'All', value: '' },
+ 
   { label: 'Active', value: 'active' },
+   { label: 'All', value: '' },
   { label: 'Suspended', value: 'suspended' },
 ];
 export type CandidateFilter = {
@@ -35,11 +37,14 @@ export const statusStyles = {
   closed: 'bg-red-50 text-red-600 border border-red-200',
   paused: 'bg-amber-50 text-amber-700 border border-amber-200',
 };
+
+
+const eduLevels=EDUCATION_LEVELS.map(l=>({label:l,value:l}))
 const filterOptions = [
   {
     key: 'education',
     label: 'Education',
-    options: EDUCATION_LEVELS,
+    options: eduLevels,
   },
 ];
 function Candidates() {
@@ -64,7 +69,8 @@ function Candidates() {
       render: (c: UserProfileType) => (
         <>
           {' '}
-          <div
+          <Avatar logoUrl={c.imageUrl} name={c.name??'Candidate'} item='candidate'  className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0`} />
+          {/* <div
             className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0`}
           >
             <img
@@ -72,7 +78,7 @@ function Candidates() {
               src={`${baseUrl}${c.imageUrl}`}
               alt="PI"
             />
-          </div>
+          </div> */}
         </>
       ),
     },
@@ -235,6 +241,11 @@ function Candidates() {
       });
     }
   };
+  const onResetFilter=()=>{
+    setFilter({status:'active'
+
+    })
+  }
   return (
     <div>
       <div>
@@ -248,12 +259,15 @@ function Candidates() {
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable
+              filter={filter}
                 totalDocs={totalDocs}
                 columns={candidateColumns as ColumnType<UserProfileType>[]}
                 tabs={tabs}
                 updateFilter={handleFilterChange}
                 entities={candidates}
                 filterOptions={filterOptions}
+                item='Candidates'
+                onResetfilter={onResetFilter}
               />
               <Pagination
                 onPageChange={setPage}

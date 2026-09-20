@@ -3,20 +3,22 @@ import type { SkillType } from '../../../../types/dtos/profile-types/skill.types
 import { useToast } from '../../../../shared/toast/use-toast';
 import { useEditProfileDetails } from '../../../hooks/user/candidate/profile/useEditProfileDetails';
 import { X } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useProfile } from '../../../hooks/user/candidate/profile/useProfile';
 
 const Skills = ({
   user,
-  skills,
+
   onUserUpdate,
 }: {
   user: UserProfileType | undefined;
-  skills: SkillType[];
+
   onUserUpdate: React.Dispatch<
     React.SetStateAction<UserProfileType | undefined>
   >;
 }) => {
   const { showToast } = useToast();
+  const { updateFilter, allSkills } = useProfile();
   const {
     selectSkill,
     isAddSkill,
@@ -25,19 +27,38 @@ const Skills = ({
     removeSkill,
     filteredSkills,
     setIsAddSkill,
-  } = useEditProfileDetails(showToast, onUserUpdate, user, skills);
+  } = useEditProfileDetails(showToast, onUserUpdate, user, allSkills);
   const inputRef = useRef<HTMLDivElement>(null);
+  const [isLoading,setIsLoading]=useState<boolean>(false)
+
+  const closeSkillInput = () => {
+    setIsAddSkill(false);
+    setSkillName('');
+  };
 
   useEffect(() => {
     const handleOutSideClick = (e: MouseEvent) => {
       if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
-        setIsAddSkill(false);
-        setSkillName('');
+        closeSkillInput();
       }
     };
     document.addEventListener('mousedown', handleOutSideClick);
     return () => document.removeEventListener('mousedown', handleOutSideClick);
   }, [setIsAddSkill]);
+
+  useEffect(() => {
+    if (!skillName.trim()) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      updateFilter(skillName);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [skillName]);
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -45,20 +66,25 @@ const Skills = ({
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-bold text-gray-800">Skills</h3>
 
-        {!isAddSkill ? (
+        {!isAddSkill &&(
           <button
             onClick={() => setIsAddSkill(true)}
             className="text-green-600 hover:text-green-700 text-sm font-medium transition-colors"
           >
             Add Skill
           </button>
-        ) : (
+        )  }
+        {isAddSkill&&(
           <button
-            onClick={() => {
-              setIsAddSkill(false);
-              setSkillName('');
+            onClick={(e) => {
+              if (
+                inputRef.current &&
+                !inputRef.current.contains(e.target as Node)
+              ) {
+                closeSkillInput();
+              }
             }}
-            className="text-red-500 text-bold text-sm"
+            className="text-red-500 font-bold text-sm"
           >
             Cancel
           </button>

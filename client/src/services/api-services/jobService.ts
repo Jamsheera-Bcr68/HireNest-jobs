@@ -9,7 +9,7 @@ import { COMPANY_API_ENDPOINTS } from '../../constants/api-end-points/company';
 
 export const jobService = {
   async createPost(jobData: JobFormType) {
-    const res = await axiosInstance.post(API_ENDPOINTS.JOB, jobData);
+    const res = await axiosInstance.post(API_ENDPOINTS.JOBS, jobData);
     return res.data;
   },
 
@@ -29,9 +29,9 @@ export const jobService = {
     limit?: number,
     page: number = 1
   ) {
-  //  console.log('filter,', filter);
+    console.log('filter from getJobs service,', filter);
 
-    const res = await axiosInstance.get(API_ENDPOINTS.JOB, {
+    const res = await axiosInstance.get(API_ENDPOINTS.JOBS, {
       params: { ...filter, sortBy, limit, page },
     });
     return res.data;

@@ -267,7 +267,7 @@ const Header = ({ title }: { title?: string }) => {
                   </span>
                 )}
               </div>
-              <ThemeToggle/>
+             {user.role=='candidate'&& <ThemeToggle/>}
             </div>
 
             {/* Menu Button */}
