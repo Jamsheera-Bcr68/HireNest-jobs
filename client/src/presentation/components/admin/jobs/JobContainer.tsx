@@ -8,7 +8,7 @@ import ReusableTable from '../Candidates/ReusableTable';
 import { type JobCardDto } from '../../../../types/dtos/job.dto';
 import { statusStyles } from '../../../pages/admin/Candidates';
 import { useNavigate } from 'react-router-dom';
-import { Eye, Trash, Ban, ThumbsUp } from 'lucide-react';
+import { Eye, Trash, Ban, ThumbsUp, Building2 } from 'lucide-react';
 import { type ColumnType } from '../Candidates/ReusableTable';
 import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
 import { type JobFilterType } from '../../candidate/jobListing/ListingContainter';
@@ -17,6 +17,8 @@ import { useLocation } from 'react-router-dom';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { type UpdateStatusType } from '../../user/employer/company-joblisting/CompanyJobListingContainer';
 import type { StatusType } from '../../../../types/dtos/profile-types/user.types';
+ import {MapPin, CalendarDays, Briefcase, Flag } from 'lucide-react';
+
 
 import AddReasonModal from './AddReasonModal';
 
@@ -136,136 +138,266 @@ console.log('comapny id frm jobs',companyId);
     getJobs();
   }, [filter, page]);
 
-  const postColumns = [
-    {
-      key: 'title',
-      label: 'Job',
-      render: (j: JobCardDto) => (
-        <>
-          {' '}
-          <div className={` font-semibold text-slate-800 whitespace-nowrap"`}>
-            <span className="font-semibold text-slate-800">{j.title}</span>
-          </div>
-        </>
-      ),
-    },
-    {
-      key: 'companyName',
-      label: 'Company',
-      render: (j: JobCardDto) => (
-        <>
-          {' '}
-          <div className={`font-semibold text-slate-800 whitespace-nowrap"`}>
-            <span className="font-semibold text-slate-800">
-              {j.companyName}
-            </span>
-          </div>
-        </>
-      ),
-    },
-    {
-      key: 'type',
-      label: 'Type',
-      render: (j: JobCardDto) => (
-        <>
-          {' '}
-          <div className="flex items-center gap-1.5">
-            <span className="font-semibold text-slate-800 whitespace-nowrap">
-              {j.jobType == 'partTime' ? 'Part Time' : 'Full Time'}
-            </span>
-          </div>
-        </>
-      ),
-    },
-    {
-      key: 'location',
-      label: 'Location',
-      render: (j: JobCardDto) => j.location.state,
-    },
+  // const postColumns = [
+  //   {
+  //     key: 'title',
+  //     label: 'Job',
+  //     render: (j: JobCardDto) => (
+  //       <>
+  //         {' '}
+  //         <div className={` font-semibold text-slate-800 whitespace-nowrap"`}>
+  //           <span className="font-semibold text-slate-800">{j.title}</span>
+  //         </div>
+  //       </>
+  //     ),
+  //   },
+  //   {
+  //     key: 'companyName',
+  //     label: 'Company',
+  //     render: (j: JobCardDto) => (
+  //       <>
+  //         {' '}
+  //         <div className={`font-semibold text-slate-800 whitespace-nowrap"`}>
+  //           <span className="font-semibold text-slate-800">
+  //             {j.companyName}
+  //           </span>
+  //         </div>
+  //       </>
+  //     ),
+  //   },
+  //   {
+  //     key: 'type',
+  //     label: 'Type',
+  //     render: (j: JobCardDto) => (
+  //       <>
+  //         {' '}
+  //         <div className="flex items-center gap-1.5">
+  //           <span className="font-semibold text-slate-800 whitespace-nowrap">
+  //             {j.jobType == 'partTime' ? 'Part Time' : 'Full Time'}
+  //           </span>
+  //         </div>
+  //       </>
+  //     ),
+  //   },
+  //   {
+  //     key: 'location',
+  //     label: 'Location',
+  //     render: (j: JobCardDto) => j.location.state,
+  //   },
 
-    {
-      key: 'createdAt',
-      label: 'Posted',
-      render: (j: JobCardDto) => new Date(j.createdAt).toLocaleDateString(),
-    },
+  //   {
+  //     key: 'createdAt',
+  //     label: 'Posted',
+  //     render: (j: JobCardDto) => new Date(j.createdAt).toLocaleDateString(),
+  //   },
 
-    {
-      key: 'status',
-      label: 'Status',
-      render: (j: JobCardDto) => (
+  //   {
+  //     key: 'status',
+  //     label: 'Status',
+  //     render: (j: JobCardDto) => (
+  //       <span
+  //         className={`text-xs font-semibold px-2.5 py-1 rounded-full  ${statusStyles[j.status]}`}
+  //       >
+  //         {j.status}
+  //       </span>
+  //     ),
+  //   },
+  //   {
+  //     key: 'reports',
+  //     label: 'Reports',
+  //     render: (j: JobCardDto) => (
+  //       <span className={`text-xs font-semibold px-2.5 py-1 rounded-full`}>
+  //         {j.reportDetails?.length ?? 0}
+  //       </span>
+  //     ),
+  //   },
+  //   {
+  //     key: 'actions',
+  //     label: 'Actions',
+  //     render: (j: JobCardDto) => (
+  //       <div className="flex items-center  gap-2">
+  //         <button
+  //           onClick={() => {
+  //             console.log(`job`, j);
+  //             navigate(`/admin/jobs/${j.id}`);
+  //           }}
+  //           className="text-indigo-600 hover:text_indigo-800 "
+  //           title="view"
+  //         >
+  //           <Eye size={18} />
+  //         </button>
+
+  //         {j.status !== 'removed' && (
+  //           <button
+  //             onClick={() => {
+  //               setSelectedJob(j);
+  //               setDeleteModalOpen(true);
+  //             }}
+  //             className={`font-semibold text-red-700 hover:text-indigo-800`}
+  //             title="Remove"
+  //           >
+  //             <Trash size={16} />
+  //           </button>
+  //         )}
+  //         {j.status == 'active' && (
+  //           <button
+  //             onClick={() => {
+  //               setSelectedJob(j);
+  //               setSuspendModalOpen(true);
+  //             }}
+  //             className={`font-bold text-red-700 hover:text-red-800`}
+  //             title="Suspend"
+  //           >
+  //             <Ban size={16} />
+  //           </button>
+  //         )}
+  //         {j.status == 'suspended' && (
+  //           <button
+  //             onClick={() => {
+  //               setSelectedJob(j);
+  //               setActivateModalOpen(true);
+  //             }}
+  //             className={`font-bold text-green-700 hover:text-green-800`}
+  //             title="Suspend"
+  //           >
+  //             <ThumbsUp size={16} />
+  //           </button>
+  //         )}
+  //       </div>
+  //     ),
+  //   },
+  // ];
+
+const postColumns = [
+  {
+    key: 'title',
+    label: 'Job',
+    mobile: 'primary',
+    render: (j: JobCardDto) => (
+      <div className="min-w-0 w-full">
+        <p className="font-semibold text-slate-800 truncate">{j.title}</p>
+        <p className="flex items-center gap-1 text-xs text-slate-400 mt-0.5 min-w-0">
+          <Building2 size={12} className="flex-shrink-0" />
+          <span className="truncate min-w-0">{j.companyName}</span>
+        </p>
+      </div>
+    ),
+    width:'20%'
+    // mobileRender omitted — identical to render, falls back automatically
+  },
+  {
+    key: 'type',
+    label: 'Type',
+    icon: <Briefcase size={13} />,
+    render: (j: JobCardDto) => (
+      <span className="font-semibold text-slate-800 whitespace-nowrap">
+        {j.jobType === 'partTime' ? 'Part Time' : 'Full Time'}
+      </span>
+    ),
+  },
+  {
+    key: 'location',
+    label: 'Location',
+    icon: <MapPin size={13} />,
+    render: (j: JobCardDto) => j.location.state,
+  },
+  {
+    key: 'createdAt',
+    label: 'Posted',
+    icon: <CalendarDays size={13} />,
+    render: (j: JobCardDto) => new Date(j.createdAt).toLocaleDateString(),
+  },
+  {
+    key: 'app-count',
+    label: 'App_count',
+   
+    render: (j: JobCardDto) => (
+      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full `}>
+        {j.appCount}
+      </span>
+    ),
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    mobile: 'status',
+    render: (j: JobCardDto) => (
+      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusStyles[j.status]}`}>
+        {j.status}
+      </span>
+    ),
+  },
+  {
+    key: 'reports',
+    label: 'Reports',
+    icon: <Flag size={13} />,
+    render: (j: JobCardDto) => {
+      const count = j.reportDetails?.length ?? 0;
+      return (
         <span
-          className={`text-xs font-semibold px-2.5 py-1 rounded-full  ${statusStyles[j.status]}`}
+          className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
+            count > 0 ? 'bg-amber-50 text-amber-700' : 'text-slate-400'
+          }`}
         >
-          {j.status}
+          {count}
         </span>
-      ),
+      );
     },
-    {
-      key: 'reports',
-      label: 'Reports',
-      render: (j: JobCardDto) => (
-        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full`}>
-          {j.reportDetails?.length ?? 0}
-        </span>
-      ),
-    },
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: (j: JobCardDto) => (
-        <div className="flex items-center  gap-2">
-          <button
-            onClick={() => {
-              console.log(`job`, j);
-              navigate(`/admin/jobs/${j.id}`);
-            }}
-            className="text-indigo-600 hover:text_indigo-800 "
-            title="view"
-          >
-            <Eye size={18} />
+  },
+  {
+    key: 'actions',
+    label: 'Actions',
+    mobile: 'actions',
+    render: (j: JobCardDto) => (
+      <div className="flex items-center gap-2">
+        <button onClick={() => navigate(`/admin/jobs/${j.id}`)} className="text-indigo-600 hover:text-indigo-800" title="View">
+          <Eye size={18} />
+        </button>
+        {j.status !== 'removed' && (
+          <button onClick={() => { setSelectedJob(j); setDeleteModalOpen(true); }} className="font-semibold text-red-700 hover:text-red-800" title="Remove">
+            <Trash size={16} />
           </button>
-
-          {j.status !== 'removed' && (
-            <button
-              onClick={() => {
-                setSelectedJob(j);
-                setDeleteModalOpen(true);
-              }}
-              className={`font-semibold text-red-700 hover:text-indigo-800`}
-              title="Remove"
-            >
-              <Trash size={16} />
-            </button>
-          )}
-          {j.status == 'active' && (
-            <button
-              onClick={() => {
-                setSelectedJob(j);
-                setSuspendModalOpen(true);
-              }}
-              className={`font-bold text-red-700 hover:text-red-800`}
-              title="Suspend"
-            >
-              <Ban size={16} />
-            </button>
-          )}
-          {j.status == 'suspended' && (
-            <button
-              onClick={() => {
-                setSelectedJob(j);
-                setActivateModalOpen(true);
-              }}
-              className={`font-bold text-green-700 hover:text-green-800`}
-              title="Suspend"
-            >
-              <ThumbsUp size={16} />
-            </button>
-          )}
-        </div>
-      ),
-    },
-  ];
- 
+        )}
+        {j.status === 'active' && (
+          <button onClick={() => { setSelectedJob(j); setSuspendModalOpen(true); }} className="font-bold text-red-700 hover:text-red-800" title="Suspend">
+            <Ban size={16} />
+          </button>
+        )}
+        {j.status === 'suspended' && (
+          <button onClick={() => { setSelectedJob(j); setActivateModalOpen(true); }} className="font-bold text-green-700 hover:text-green-800" title="Activate">
+            <ThumbsUp size={16} />
+          </button>
+        )}
+      </div>
+    ),
+    mobileRender: (j: JobCardDto) => (
+      <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
+        <button onClick={() => navigate(`/admin/jobs/${j.id}`)} className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all">
+          <Eye size={14} />
+          View
+        </button>
+        {j.status !== 'removed' && (
+          <button onClick={() => { setSelectedJob(j); setDeleteModalOpen(true); }} className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all">
+            <Trash size={14} />
+            Remove
+          </button>
+        )}
+        {j.status === 'active' && (
+          <button onClick={() => { setSelectedJob(j); setSuspendModalOpen(true); }} className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all">
+            <Ban size={14} />
+            Suspend
+          </button>
+        )}
+        {j.status === 'suspended' && (
+          <button onClick={() => { setSelectedJob(j); setActivateModalOpen(true); }} className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all">
+            <ThumbsUp size={14} />
+            Activate
+          </button>
+        )}
+      </div>
+    ),
+  },
+];
 
   const handleFilterChange = (
     incomingFilter: Partial<JobFilterType> & { search?: string }

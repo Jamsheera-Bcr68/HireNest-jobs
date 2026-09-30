@@ -705,7 +705,7 @@ export const candidateProfileController = new CandidateProfileController(
   removeEducationUseCase,
   addResumeUseCase,
   removeResumeUseCase,
-  getCandidateResumesUsecase
+  getCandidateResumesUsecase,getCompanyDataUsecase
 );
 
 export const skillController = new SkillsController(

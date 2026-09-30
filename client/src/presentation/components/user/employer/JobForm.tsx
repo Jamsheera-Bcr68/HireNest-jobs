@@ -9,6 +9,7 @@ import PermissionModal from '../../../modals/PermissionModal';
 import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
 import { jobService } from '../../../../services/api-services/jobService';
 import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
+import { useSelector } from 'react-redux';
 
 const workMode = ['hybrid', 'remote', 'onsite'];
 type Props = {
@@ -38,6 +39,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
   const [allSkills, setAllSkills] = useState<SkillType[] | []>([]);
   const [res, setRes] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
+  
 
   const ErrorText = ({ error }: { error: string }) => {
     return <p className="text-sm text-red-600"> * {error}</p>;
@@ -468,7 +470,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
                     {formData.skills.map((skill, index) => (
                       <span
                         key={index}
-                        className="flex items-center bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-sm font-medium"
+                        className="flex items-center bg-fuchsia-100 text-fuchsia-800 px-3 py-1.5 rounded-full text-sm font-medium"
                       >
                         {skill.skillName}
                         <X
@@ -623,7 +625,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
 
             <button
               type="submit"
-              className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+              className="px-6 py-2 rounded-lg bg-fuchsia-800 text-white hover:bg-fuchsia-600 transition"
             >
               {mode == 'edit' ? 'Update' : 'Post Job'}
             </button>

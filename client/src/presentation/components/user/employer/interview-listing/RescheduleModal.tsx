@@ -125,7 +125,7 @@ function RescheduleModal({
           <button
             onClick={handleConfirm}
             disabled={!date || !time || isLoading}
-            className="text-xs font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+            className="text-xs font-semibold bg-fuchsia-800 text-white px-4 py-2 rounded-lg hover:bg-fuchsia-600 transition disabled:opacity-50"
           >
             {isLoading ? 'Saving...' : 'Confirm'}
           </button>

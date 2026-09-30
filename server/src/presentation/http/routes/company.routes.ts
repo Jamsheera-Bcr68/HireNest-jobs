@@ -80,12 +80,7 @@ router.patch(
   authValidator(tokenService),
   jobController.updateStatus
 );
-router.put(
-  API_END_POINTS.JOB,
-  authValidator(tokenService),
-  jobValidator,
-  jobController.updateJob
-);
+
 router.get(
   API_END_POINTS.COMPANY_DATA,
   authValidator(tokenService),

@@ -1,6 +1,6 @@
 import { Company } from '../../../domain/entities/company.entity';
 import { NotificationType } from '../../../domain/enums/notification-enums';
-import { StatusEnum } from '../../../domain/enums/status.enum';
+import { RegisterStatusEnum, StatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
@@ -52,21 +52,21 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     if (status == 'suspended') {
       data.reasonForSuspend = reason;
     }
-    if (company.reapplyCount && status == 'rejected') {
+    if ( status == 'rejected') {
       // console.log('reapply details', company.reapplyDetails);
 
-      data.reapplyDetails = company.reapplyDetails.map((app) =>
-        app.status == StatusEnum.PENDING
-          ? { ...app, status: StatusEnum.REJECTED, rejectedReason: reason }
+      data.applyDetails = company.applyDetails.map((app) =>
+        app.status == RegisterStatusEnum.PENDING
+          ? { ...app, status: RegisterStatusEnum.REJECTED, rejectedReason: reason,reviewedAt:new Date() }
           : app
       );
     }
-    if (company.reapplyCount && status == 'active') {
+    if ( status == 'active') {
       //  console.log('reapply details', company.reapplyDetails);
 
-      data.reapplyDetails = company.reapplyDetails.map((app) =>
-        app.status == StatusEnum.PENDING
-          ? { ...app, status: StatusEnum.ACTIVE }
+      data.applyDetails = company.applyDetails.map((app) =>
+        app.status == RegisterStatusEnum.PENDING
+          ? { ...app, status: RegisterStatusEnum.APPROVED,submittedAt:new Date(),reviewedAt:new Date() }
           : app
       );
     }

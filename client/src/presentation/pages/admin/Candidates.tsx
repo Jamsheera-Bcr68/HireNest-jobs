@@ -61,11 +61,12 @@ function Candidates() {
   const [activateModalOpen, setActivateModalOpen] = useState(false);
   const [id, setId] = useState('');
 
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
   const candidateColumns = [
     {
       key: 'imageUrl',
       label: 'Profile',
+      mobile:"primary",
       render: (c: UserProfileType) => (
         <>
           {' '}
@@ -85,6 +86,7 @@ function Candidates() {
     {
       key: 'name',
       label: 'Name',
+       mobile:"primary",
       render: (c: UserProfileType) => (
         <>
           {' '}
@@ -98,6 +100,7 @@ function Candidates() {
     {
       key: 'phone',
       label: 'Phone',
+     
       render: (c: UserProfileType) => c.phone,
     },
     {
@@ -107,12 +110,14 @@ function Candidates() {
     },
     {
       key: 'joined',
+    
       label: 'Joined',
       render: (c: UserProfileType) =>
         c.createdAt ? new Date(c.createdAt).toLocaleDateString() : '---------',
     },
     {
       key: 'status',
+       mobile:"status",
       label: 'Status',
       render: (c: UserProfileType) => (
         <span
@@ -122,47 +127,90 @@ function Candidates() {
         </span>
       ),
     },
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: (c: UserProfileType) => (
-        <div className="flex items-center  gap-1">
-          <button
-            onClick={() => navigate(`/admin/candidates/${c.id}`)}
-            className="text-indigo-600 hover:text_indigo-800 "
-            title="view"
-          >
-            <Eye size={18} />
-          </button>
-          {c.isBlocked ? (
-            <button
-              onClick={() => {
-                setId(c.id);
-                setActivateModalOpen(true);
-              }}
-              className="p-1.5 text-green-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition"
-              title="UnBlock"
-            >
-              <ThumbsUp size={18} />{' '}
-            </button>
-          ) : (
-            <button
-              onClick={() => {
-                console.log('candidateis', c.id);
+   {
+  key: 'actions',
+  label: 'Actions',
+  mobile: 'actions',
 
-                setId(c.id);
-                setModalOpen(true);
-              }}
-              className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
-              title="Block"
-            >
-              {' '}
-              <BanIcon size={18} />{' '}
-            </button>
-          )}
-        </div>
-      ),
-    },
+  // Desktop — unchanged, icon-only
+  render: (c: UserProfileType) => (
+    <div className="flex items-center  gap-1">
+      <button
+        onClick={() => navigate(`/admin/candidates/${c.id}`)}
+        className="text-indigo-600 hover:text_indigo-800 "
+        title="view"
+      >
+        <Eye size={18} />
+      </button>
+      {c.isBlocked ? (
+        <button
+          onClick={() => {
+            setId(c.id);
+            setActivateModalOpen(true);
+          }}
+          className="p-1.5 text-green-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition"
+          title="UnBlock"
+        >
+          <ThumbsUp size={18} />{' '}
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            console.log('candidateis', c.id);
+
+            setId(c.id);
+            setModalOpen(true);
+          }}
+          className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+          title="Block"
+        >
+          {' '}
+          <BanIcon size={18} />{' '}
+        </button>
+      )}
+    </div>
+  ),
+
+  // Mobile — text-labeled pill buttons
+  mobileRender: (c: UserProfileType) => (
+    <div
+      className="flex items-center flex-wrap gap-2"
+      onClick={(e) => e.stopPropagation()} // prevents the card from collapsing when a button inside it is tapped
+    >
+      <button
+        onClick={() => navigate(`/admin/candidates/${c.id}`)}
+        className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+      >
+        <Eye size={14} />
+        View
+      </button>
+      {c.isBlocked ? (
+        <button
+          onClick={() => {
+            setId(c.id);
+            setActivateModalOpen(true);
+          }}
+          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-600 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+        >
+          <ThumbsUp size={14} />
+          Unblock
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            console.log('candidateis', c.id);
+            setId(c.id);
+            setModalOpen(true);
+          }}
+          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+        >
+          <BanIcon size={14} />
+          Block
+        </button>
+      )}
+    </div>
+  ),
+},
   ];
 
   const handleFilterChange = (newFilter: Partial<CandidateFilter>) => {

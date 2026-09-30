@@ -22,12 +22,10 @@ export const useEditProfileDetails = (
   const textref = useRef<HTMLTextAreaElement | null>(null);
   const dispatch = useDispatch();
   const reduxUser = useSelector((state: RootState) => state.auth.user);
-  
 
   //skills component
   const [isAddSkill, setIsAddSkill] = useState<boolean>(false);
   const [skillName, setSkillName] = useState<string>('');
-
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setIsEditing(true);
@@ -64,7 +62,14 @@ export const useEditProfileDetails = (
       console.log('user is ', res.data.user);
 
       showToast({ msg: res.data.message, type: 'success' });
-      onUserUpdate(res.data.user);
+
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          about: res.data.user.about,
+        };
+      });
     } catch (error: any) {
       showToast({
         msg: error.response?.data.message || error.message,
@@ -148,7 +153,6 @@ export const useEditProfileDetails = (
     onBlur,
     textref,
 
-    
     selectSkill,
     isAddSkill,
     skillName,

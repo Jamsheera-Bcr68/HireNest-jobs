@@ -2,7 +2,8 @@ import HeroSection from '../../../admin/HeroSection';
 import StatusCards from '../../../admin/StatusCards';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye } from 'lucide-react';
+
+  import { Eye, MapPin, Briefcase, CalendarDays } from 'lucide-react';
 import type { StatusCardType } from '../../../../pages/admin/Companies';
 import { applicationService } from '../../../../../services/api-services/application.service';
 import { useToast } from '../../../../../shared/toast/use-toast';
@@ -91,86 +92,202 @@ function ApplicationListingContainer({ role, jobId }: Props) {
     }
   };
 
-  const applicationColumns = [
-    {
-      key: 'name',
-      label: 'Name',
-      render: (a: ApplicationDto) => (
-        <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
-          <span className="font-semibold text-slate-800">{a.applicant?.name}</span>
-        </div>
-      ),
-    },
-{
-      key: 'email',
-      label: 'Email',
-      render: (a: ApplicationDto) => (
-        <span className="text-slate-700">{a.applicant?.email}</span>
-      ),
-    },
-    {
-      key: 'location',
-      label: 'Location',
-      render: (a: ApplicationDto) => (
-        <span className="text-slate-700">{a.applicant?.location}</span>
-      ),
-    },
+
+
+const applicationColumns = [
+  {
+    key: 'name',
+    label: 'Name',
+    mobile: 'primary',
+    render: (a: ApplicationDto) => (
+      <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
+        <span className="font-semibold text-slate-800">{a.applicant?.name}</span>
+      </div>
+    ),
+    // Mobile — name + email stacked, no badge background (keeps the row lighter)
+    mobileRender: (a: ApplicationDto) => (
+      <div className="min-w-0 w-full">
+        <p className="font-semibold text-slate-800 truncate">{a.applicant?.name}</p>
+        <p className="text-xs text-slate-400 truncate mt-0.5">{a.applicant?.email}</p>
+      </div>
+    ),
+  },
+  {
+    key: 'email',
+    label: 'Email',
+    mobile: 'hide', // shown inside name's mobileRender above
+    render: (a: ApplicationDto) => (
+      <span className="text-slate-700">{a.applicant?.email}</span>
+    ),
+  },
+  {
+    key: 'location',
+    label: 'Location',
+    icon: <MapPin size={13} />,
+    render: (a: ApplicationDto) => (
+      <span className="text-slate-700">{a.applicant?.location}</span>
+    ),
+  },
+  {
+    key: 'jobType',
+    label: 'Type',
+    icon: <Briefcase size={13} />,
+    render: (a: ApplicationDto) => (
+      <span className="font-semibold text-slate-800">
+        {a.jobType === 'partTime' ? 'Part Time' : 'Full Time'}
+      </span>
+    ),
+  },
+  {
+    key: 'appliedDate',
+    label: 'Applied On',
+    icon: <CalendarDays size={13} />,
+    render: (a: ApplicationDto) => new Date(a.appliedDate).toLocaleDateString(),
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    mobile: 'status',
+    render: (a: ApplicationDto) => (
+      <span
+        className={`text-xs font-semibold px-2.5 py-1 rounded-full ${appStatusStyles[a.status]}`}
+      >
+        {a.status}
+      </span>
+    ),
+  },
+  {
+    key: 'actions',
+    label: 'Actions',
+    mobile: 'actions',
+    // Desktop — unchanged
+    render: (a: ApplicationDto) => (
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => {
+            if (a.status == 'pending' && role == 'company') handleUpdate(a.id);
+            const url =
+              role === 'admin'
+                ? `/admin/applications/${a.id}`
+                : `/company/applications/${a.id}`;
+            navigate(url);
+          }}
+          className={`${role === 'admin' ? 'text-indigo-600 hover:text-indigo-800' : 'text-fuchsia-600 hover:text-fuchsia-800'}`}
+          title="View"
+        >
+          <Eye size={18} />
+        </button>
+      </div>
+    ),
+    // Mobile — labeled pill, colored by role
+    mobileRender: (a: ApplicationDto) => (
+      <div
+        className="flex items-center flex-wrap gap-2"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={() => {
+            if (a.status == 'pending' && role == 'company') handleUpdate(a.id);
+            const url =
+              role === 'admin'
+                ? `/admin/applications/${a.id}`
+                : `/company/applications/${a.id}`;
+            navigate(url);
+          }}
+          className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold active:scale-95 border rounded-full transition-all ${
+            role === 'admin'
+              ? 'text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border-indigo-200'
+              : 'text-fuchsia-600 bg-fuchsia-50 hover:bg-fuchsia-100 border-fuchsia-200'
+          }`}
+        >
+          <Eye size={14} />
+          View
+        </button>
+      </div>
+    ),
+  },
+];
+
+//   const applicationColumns = [
+//     {
+//       key: 'name',
+//       label: 'Name',
+//       render: (a: ApplicationDto) => (
+//         <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
+//           <span className="font-semibold text-slate-800">{a.applicant?.name}</span>
+//         </div>
+//       ),
+//     },
+// {
+//       key: 'email',
+//       label: 'Email',
+//       render: (a: ApplicationDto) => (
+//         <span className="text-slate-700">{a.applicant?.email}</span>
+//       ),
+//     },
+//     {
+//       key: 'location',
+//       label: 'Location',
+//       render: (a: ApplicationDto) => (
+//         <span className="text-slate-700">{a.applicant?.location}</span>
+//       ),
+//     },
 
     
 
-    {
-      key: 'jobType',
-      label: 'Type',
-      render: (a: ApplicationDto) => (
-        <span className="font-semibold text-slate-800">
-          {a.jobType === 'partTime' ? 'Part Time' : 'Full Time'}
-        </span>
-      ),
-    },
+//     {
+//       key: 'jobType',
+//       label: 'Type',
+//       render: (a: ApplicationDto) => (
+//         <span className="font-semibold text-slate-800">
+//           {a.jobType === 'partTime' ? 'Part Time' : 'Full Time'}
+//         </span>
+//       ),
+//     },
 
-    {
-      key: 'appliedDate',
-      label: 'Applied On',
-      render: (a: ApplicationDto) =>
-        new Date(a.appliedDate).toLocaleDateString(),
-    },
+//     {
+//       key: 'appliedDate',
+//       label: 'Applied On',
+//       render: (a: ApplicationDto) =>
+//         new Date(a.appliedDate).toLocaleDateString(),
+//     },
 
-    {
-      key: 'status',
-      label: 'Status',
-      render: (a: ApplicationDto) => (
-        <span
-          className={`text-xs font-semibold px-2.5 py-1 rounded-full ${appStatusStyles[a.status]}`}
-        >
-          {a.status}
-        </span>
-      ),
-    },
+//     {
+//       key: 'status',
+//       label: 'Status',
+//       render: (a: ApplicationDto) => (
+//         <span
+//           className={`text-xs font-semibold px-2.5 py-1 rounded-full ${appStatusStyles[a.status]}`}
+//         >
+//           {a.status}
+//         </span>
+//       ),
+//     },
 
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: (a: ApplicationDto) => (
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => {
-              if (a.status == 'pending'&&role=='company'
-              ) handleUpdate(a.id);
-              const url =
-                role === 'admin'
-                  ? `/admin/applications/${a.id}`
-                  : `/company/applications/${a.id}`;
-              navigate(url);
-            }}
-            className={`${role==='admin'?"text-indigo-600 hover:text-indigo-800":"text-fuchsia-600 hover:text-fuchsia-800"}`}
-            title="View"
-          >
-            <Eye size={18} />
-          </button>
-        </div>
-      ),
-    },
-  ];
+//     {
+//       key: 'actions',
+//       label: 'Actions',
+//       render: (a: ApplicationDto) => (
+//         <div className="flex items-center gap-2">
+//           <button
+//             onClick={() => {
+//               if (a.status == 'pending'&&role=='company'
+//               ) handleUpdate(a.id);
+//               const url =
+//                 role === 'admin'
+//                   ? `/admin/applications/${a.id}`
+//                   : `/company/applications/${a.id}`;
+//               navigate(url);
+//             }}
+//             className={`${role==='admin'?"text-indigo-600 hover:text-indigo-800":"text-fuchsia-600 hover:text-fuchsia-800"}`}
+//             title="View"
+//           >
+//             <Eye size={18} />
+//           </button>
+//         </div>
+//       ),
+//     },
+//   ];
 
    const resetFilter=()=>{
     setFilter({status:'pending'})

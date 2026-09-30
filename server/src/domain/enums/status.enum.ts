@@ -17,7 +17,7 @@ export enum ApplicationStatusEnum {
   INTERVIEW_SCHEDULED = 'interviewScheduled',
   INTERVIEW_COMPLETED = 'interviewCompleted',
   OFFERED = 'offered',
-  HIRED='hired',
+  HIRED = 'hired',
   WITHDRAWN = 'withdrawn',
 }
 export enum InterviewStatusEnum {
@@ -25,4 +25,10 @@ export enum InterviewStatusEnum {
   COMPLETED = 'completed',
   CANCELLED = 'cancelled',
   NO_SHOW = 'not-show',
+}
+
+export enum RegisterStatusEnum {
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
+  PENDING = 'pending',
 }

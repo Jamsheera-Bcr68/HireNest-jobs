@@ -5,7 +5,7 @@ import type {
   InterviewResult,
 } from '../../../../../types/dtos/interview.dto';
 import { useLockBodyScroll } from '../../../../hooks/useBodyLock';
-import { MapPinIcon } from 'lucide-react';
+import { Camera, Link, MapPinIcon, Video } from 'lucide-react';
 import { useInterviews } from '../../../../hooks/user/useInterview';
 import { type InterviewMode } from '../../../../../types/dtos/interview.dto';
 
@@ -110,8 +110,6 @@ const VideoIcon = () => (
   </svg>
 );
 
-
-
 const XIcon = () => (
   <svg
     width="16"
@@ -134,7 +132,6 @@ const SectionLabel = ({ children }: { children: ReactNode }) => (
     {children}
   </p>
 );
-
 
 export default function InterviewDetailsModal({
   isOpen,
@@ -207,7 +204,7 @@ export default function InterviewDetailsModal({
 
   const handleAddResult = async (values: {
     result: InterviewResult;
-    score:number
+    score: number;
     feedback?: string;
   }) => {
     if (!interview) return;
@@ -232,12 +229,12 @@ export default function InterviewDetailsModal({
 
   const handleComplete = async () => {
     if (!interview) return;
-    setFeedbackModal(true)
-   
+    setFeedbackModal(true);
+
     onUpdate({ status: 'completed' });
   };
 
-  const baseUrl=import.meta.env.VITE_BACKEND_URL
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
   if (!interview) return null;
 
   return (
@@ -247,7 +244,7 @@ export default function InterviewDetailsModal({
           {/* ── Header ── */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+              <div className="w-9 h-9 rounded-xl bg-fuchsia-50 flex items-center justify-center text-fuchsia-600">
                 <BriefcaseIcon />
               </div>
               <div>
@@ -268,7 +265,7 @@ export default function InterviewDetailsModal({
                   onClick={() => setIsEditing(!isEditing)}
                   className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors ${
                     isEditing
-                      ? 'bg-blue-600 text-white border-blue-600'
+                      ? 'bg-fuchsia-600 text-white border-fuchsia-600'
                       : 'border-gray-200 text-gray-600 hover:bg-gray-50'
                   }`}
                 >
@@ -286,8 +283,6 @@ export default function InterviewDetailsModal({
             </div>
           </div>
           <div className="flex-1 overflow-y-auto">
-
-            
             <div className="px-6 py-4 border-b border-gray-100">
               <SectionLabel>Candidate</SectionLabel>
 
@@ -343,7 +338,7 @@ export default function InterviewDetailsModal({
 
                       <button
                         onClick={handleReschedule}
-                        className="text-xs text-blue-600 hover:underline whitespace-nowrap"
+                        className="text-xs text-fuchsia-600 hover:underline whitespace-nowrap"
                       >
                         Reschedule
                       </button>
@@ -362,7 +357,7 @@ export default function InterviewDetailsModal({
                     </span>
                     <button
                       onClick={handleAddLink}
-                      className="text-xs text-blue-600 hover:underline"
+                      className="text-xs text-fuchsia-600 hover:underline"
                     >
                       Add Link
                     </button>
@@ -376,7 +371,7 @@ export default function InterviewDetailsModal({
                     </span>
                     <button
                       onClick={() => setFeedbackModal(true)}
-                      className="text-xs text-blue-600 hover:underline"
+                      className="text-xs text-fuchsia-600 hover:underline"
                     >
                       Update Result
                     </button>
@@ -399,7 +394,7 @@ export default function InterviewDetailsModal({
                         updateFormdata({ date: e.currentTarget.value })
                       }
                       value={formatDateForInput(formData.date)}
-                      className="w-full text-xs border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                      className="w-full text-xs border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-100"
                     />
                     {error && error.date && (
                       <p className="text-sm text-red-500">*{error.date}</p>
@@ -410,7 +405,7 @@ export default function InterviewDetailsModal({
                         updateFormdata({ time: e.currentTarget.value })
                       }
                       value={formatTimeForInput(formData.time)}
-                      className="w-full text-xs border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                      className="w-full text-xs border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-100"
                     />
                     {error && error.time && (
                       <p className="text-sm text-red-500">*{error.time}</p>
@@ -446,7 +441,7 @@ export default function InterviewDetailsModal({
                           mode: e.currentTarget.value as InterviewMode,
                         })
                       }
-                      className="w-full text-xs border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                      className="w-full text-xs border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-fuchsia-100"
                     >
                       <option value={'online'} key={'online'}>
                         Online (Google Meet)
@@ -486,44 +481,47 @@ export default function InterviewDetailsModal({
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-1.5 text-gray-500">
                       {interview.mode == 'online' ? (
-                        <VideoIcon />
+                        <Link size={16} className="text-fuchsia-500" />
                       ) : (
-                        <MapPinIcon size={16} className="text-blue-500" />
+                        <MapPinIcon size={16} className="text-fuchsia-500" />
                       )}
 
-                      <span className="text-xs bg-blue-100 rounded-full p-1 text-gray-700">
-                        {interview.mode.toUpperCase()}
+                      <span className="text-xs   text-gray-700">
+                        {interview.mode == 'offline' ? 'Offline' : 'Online'}
                       </span>
                     </div>
-                    <a
-                      href="#"
-                      className="text-xs text-blue-500 hover:underline pl-0.5"
-                    >
-                      {interview.mode === 'online' &&
-                        interview.meetLink &&
-                        interview.status == 'scheduled' && (
-                          <div>
-                            <span className="bg-blue-50 rounded p-1 mt-3">
-                              <a
-                                href={`/meeting/${interview.meetLink}`}
-                                target="_blank"
-                                className="text-xs text-blue-500 hover:underline"
-                              >
-                                Join meeting
-                              </a>
-                            </span>
-                          </div>
+                    <div>
+                      {' '}
+                      <a
+                        href="#"
+                        className="text-xs text-fuchsia-500 hover:underline pl-0.5"
+                      >
+                        {interview.mode === 'online' &&
+                          interview.meetLink &&
+                          interview.status == 'scheduled' && (
+                            <div>
+                              <span className=" rounded py-1 px-2 border border-fuchsia-700 hover:bg-fuchsia-50">
+                                <a
+                                  href={`/meeting/${interview.meetLink}`}
+                                  target="_blank"
+                                  className="text-xs text-fuchsia-800 mt-4 "
+                                >
+                                  Join meeting
+                                </a>
+                              </span>
+                            </div>
+                          )}
+                        {interview.mode === 'offline' && interview.location && (
+                          <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(interview.location)}`}
+                            target="_blank"
+                            className="text-xs text-fuchsia-500 hover:underline"
+                          >
+                            View location
+                          </a>
                         )}
-                      {interview.mode === 'offline' && interview.location && (
-                        <a
-                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(interview.location)}`}
-                          target="_blank"
-                          className="text-xs text-blue-500 hover:underline"
-                        >
-                          View location
-                        </a>
-                      )}
-                    </a>
+                      </a>
+                    </div>
                   </div>
                 )}
               </div>
@@ -548,7 +546,7 @@ export default function InterviewDetailsModal({
                       <div
                         className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
                           formData.isAddlinkLater === val
-                            ? 'border-indigo-500 bg-indigo-500'
+                            ? 'border-fuchsia-800 bg-fuchsia-800'
                             : 'border-slate-300 group-hover:border-slate-400'
                         }`}
                         onClick={() => updateFormdata({ isAddlinkLater: val })}
@@ -637,32 +635,30 @@ export default function InterviewDetailsModal({
               )}
             </div>
 
-        
-
             {/* ── Feedback ── */}
             {interview.status === 'completed' && (
-              <> <div className="px-6 py-4 border-b border-gray-100">
-                 <SectionLabel>Score</SectionLabel>
-                 <p className="text-xs text-gray-500 leading-relaxed">
-                  {interview.score??'Score not added'}
-                 </p>
-              </div>
+              <>
+                {' '}
+                <div className="px-6 py-4 border-b border-gray-100">
+                  <SectionLabel>Score</SectionLabel>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    {interview.score ?? 'Score not added'}
+                  </p>
+                </div>
+                <div className="px-6 py-4 border-b border-gray-100">
+                  <SectionLabel>FeedBack</SectionLabel>
 
-                 <div className="px-6 py-4 border-b border-gray-100">
-                <SectionLabel>FeedBack</SectionLabel>
-
-                <p className="text-xs text-gray-500 leading-relaxed">
-                  {interview?.feedback ? (
-                    interview.feedback
-                  ) : (
-                    <span className="text-amber-600">
-                      No feedback added yet
-                    </span>
-                  )}
-                </p>
-              </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    {interview?.feedback ? (
+                      interview.feedback
+                    ) : (
+                      <span className="text-amber-600">
+                        No feedback added yet
+                      </span>
+                    )}
+                  </p>
+                </div>
               </>
-             
             )}
           </div>
 
@@ -699,7 +695,7 @@ export default function InterviewDetailsModal({
                   </button>
                   <button
                     onClick={handleUpdate}
-                    className="text-xs font-semibold bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    className="text-xs font-semibold bg-fuchsia-800 text-white px-4 py-2 rounded-lg hover:bg-fuchsia-600 transition-colors"
                   >
                     Save changes
                   </button>

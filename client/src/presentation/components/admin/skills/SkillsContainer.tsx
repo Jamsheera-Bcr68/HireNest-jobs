@@ -2,11 +2,12 @@ import StatusCards from '../StatusCards';
 import HeroSection from '../HeroSection';
 import { type StatusCardType } from '../../../pages/admin/Companies';
 import { skillService } from '../../../../services/api-services/skillServices';
-import { useEffect, useState } from 'react';
+
 import { useToast } from '../../../../shared/toast/use-toast';
 import { type SkillType } from '../../../../types/dtos/skill.types';
 import { type ColumnType } from '../Candidates/ReusableTable';
 import ReusableTable from '../Candidates/ReusableTable';
+import { createPortal } from 'react-dom';
 import { statusStyles } from '../../../pages/admin/Candidates';
 import {
   Eye,
@@ -14,6 +15,11 @@ import {
   ThumbsDownIcon,
   CheckCheck,
   SquarePenIcon,
+  CalendarCheck,
+  User,
+  Users,
+  CalendarDays,
+  FileText,
 } from 'lucide-react';
 const tabs = [
     { label: 'Active', value: 'approved' },
@@ -31,6 +37,121 @@ import ViewSkillModal from './ViewModal';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import AddReasonModal from '../jobs/AddReasonModal';
 
+
+// ActionsMenu.tsx
+import { useState, useRef, useEffect } from 'react';
+import { MoreHorizontal } from 'lucide-react';
+
+interface ActionItem {
+  key: string;
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+  className: string; // text/hover color classes
+}
+export function ActionsMenu({
+  primary,
+  overflow,
+}: {
+  primary: ActionItem[];
+  overflow: ActionItem[];
+}) {
+  const [open, setOpen] = useState(false);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const openMenu = () => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.bottom + window.scrollY + 4,
+        // align right edge of menu with right edge of button
+        left: rect.right + window.scrollX - 144, // 144px = menu width (w-36)
+      });
+    }
+    setOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as Node) &&
+        triggerRef.current &&
+        !triggerRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    // close on scroll too, since the menu position would otherwise become stale
+    const handleScroll = () => setOpen(false);
+
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('scroll', handleScroll, true);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll, true);
+    };
+  }, [open]);
+
+  return (
+    <div className="flex items-center justify-center gap-1">
+      {primary.map((action) => (
+        <button
+          key={action.key}
+          onClick={action.onClick}
+          className={`p-1.5 rounded-lg transition ${action.className}`}
+          title={action.label}
+        >
+          {action.icon}
+        </button>
+      ))}
+
+      {overflow.length > 0 && (
+        <>
+          <button
+            ref={triggerRef}
+            onClick={openMenu}
+            className={`p-1.5 rounded-lg transition ${
+              open ? 'bg-slate-100 text-slate-700' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'
+            }`}
+            title="More"
+          >
+            <MoreHorizontal size={18} />
+          </button>
+
+          {open &&
+            createPortal(
+              <div
+                ref={menuRef}
+                style={{ position: 'absolute', top: coords.top, left: coords.left }}
+                className="w-36 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50"
+              >
+                {overflow.map((action) => (
+                  <button
+                    key={action.key}
+                    onClick={() => {
+                      action.onClick();
+                      setOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 text-sm text-left hover:bg-slate-50 transition ${action.className}`}
+                  >
+                    {action.icon}
+                    {action.label}
+                  </button>
+                ))}
+              </div>,
+              document.body
+            )}
+        </>
+      )}
+    </div>
+  );
+}
 
 export type SkillFilterType = {
 
@@ -82,155 +203,477 @@ function SkillsContainer() {
   const [error, setError] = useState<string>('');
   const [skill, setSkill] = useState<SkillType | null>(null);
 
-  const skillColumns = [
-    {
-      key: 'skillName',
-      label: 'Skill',
-      render: (s: SkillType) => (
-        <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
+const skillColumns: ColumnType<SkillType>[] = [
+  {
+    key: 'skillName',
+    label: 'Skill',
+    mobile: 'primary',
+    render: (s: SkillType) => (
+      <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
+        {s.skillName}
+      </div>
+    ),
+    // Mobile — same badge, but truncating-safe wrapper since primary cards are narrower
+    mobileRender: (s: SkillType) => (
+      <div className="min-w-0 w-full">
+        <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block max-w-full truncate">
           {s.skillName}
         </div>
-      ),
-    },
-    {
-      key: 'createdBy',
-      label: 'Created By',
-      render: (s: SkillType) => (
-        <>
-          {' '}
-          <div
-            className={`w-9 h-9 flex items-center justify-center font-bold text-xs flex-shrink-0`}
-          >
-            <span className="font-semibold text-slate-800">{s.createdBy}</span>
-          </div>
-        </>
-      ),
-    },
-    {
-      key: 'candidatesCount',
-      label: 'Used Candidates',
-      render: (s: SkillType) => (
-        <>
-          {' '}
-          <div className="flex items-center gap-1.5">
-            <span className="font-semibold text-slate-800">
-              {s.usedCandidateCount}
-            </span>
-          </div>
-        </>
-      ),
-    },
-    {
-      key: 'usedCount',
-      label: 'Used Posts',
-      render: (s: SkillType) => (
-        <>
-          {' '}
-          <div className="flex items-center gap-1.5">
-            <span className="font-semibold text-slate-800">{s.usedCount}</span>
-          </div>
-        </>
-      ),
-    },
+      </div>
+    ),
+  },
+  {
+    key: 'createdBy',
+    label: 'Created By',
+    icon: <User size={13} />,
+    render: (s: SkillType) => (
+      <div className="w-9 h-9 flex items-center justify-center font-bold text-xs flex-shrink-0">
+        <span className="font-semibold text-slate-800">{s.createdBy}</span>
+      </div>
+    ),
+    // Mobile detail rows are label/value pairs — plain text reads cleaner than the fixed-width box
+    mobileRender: (s: SkillType) => (
+      <span className="font-semibold text-slate-800">{s.createdBy}</span>
+    ),
+  },
+  {
+    key: 'candidatesCount',
+    label: 'Used Candidates',
+    icon: <Users size={13} />,
+    render: (s: SkillType) => (
+      <div className="flex items-center gap-1.5">
+        <span className="font-semibold text-slate-800">{s.usedCandidateCount}</span>
+      </div>
+    ),
+    mobileRender: (s: SkillType) => (
+      <span className="font-semibold text-slate-800">{s.usedCandidateCount}</span>
+    ),
+  },
+  {
+    key: 'usedCount',
+    label: 'Used Posts',
+    icon: <FileText size={13} />,
+    render: (s: SkillType) => (
+      <div className="flex items-center gap-1.5">
+        <span className="font-semibold text-slate-800">{s.usedCount}</span>
+      </div>
+    ),
+    mobileRender: (s: SkillType) => (
+      <span className="font-semibold text-slate-800">{s.usedCount}</span>
+    ),
+  },
+  {
+    key: 'createdAt',
+    label: 'Created At',
+    icon: <CalendarDays size={13} />,
+    render: (s: SkillType) => new Date(s.createdAt).toLocaleDateString(),
+  },
+  {
+    key: 'reviewedAt',
+    label: 'Reviewed At',
+    icon: <CalendarCheck size={13} />,
+    render: (s: SkillType) =>
+      s.reviewedAt
+        ? new Date(s.reviewedAt).toLocaleDateString()
+        : s.createdBy == 'admin'
+          ? null
+          : 'pending',
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    mobile: 'status',
+    render: (s: SkillType) => (
+      <span
+        className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusStyles[s.status!]}`}
+      >
+        {s.status}
+      </span>
+    ),
+  },
 
-    {
-      key: 'createdAt',
-      label: 'Created At',
-      render: (s: SkillType) => new Date(s.createdAt).toLocaleDateString(),
-    },
-    {
-      key: 'reviewedAt',
-      label: 'Reviewed At',
-      render: (s: SkillType) =>
-        s.reviewedAt
-          ? new Date(s.reviewedAt).toLocaleDateString()
-          : s.createdBy == 'admin'
-            ? null
-            : 'pending',
-    },
+// {
+//   key: 'actions',
+//   label: 'Actions',
+//   mobile: 'actions',
+//   // Desktop — Edit + Approve/Reject visible, View + Remove under "More"
+//   render: (s: SkillType) => {
+//     const primary: ActionItem[] = [];
+//     const overflow: ActionItem[] = [];
 
-    {
-      key: 'status',
-      label: 'Status',
-      render: (s: SkillType) => (
-        <span
-          className={`text-xs font-semibold px-2.5 py-1 rounded-full  ${statusStyles[s.status!]}`}
+//     if (['approved', 'pending'].includes(s.status!)) {
+//       primary.push({
+//         key: 'edit',
+//         label: 'Edit',
+//         icon: <SquarePenIcon size={16} />,
+//         onClick: () => {
+//           setSkillName(s.skillName);
+//           setSkill(s);
+//           setShowEditModal(true);
+//         },
+//         className: 'text-amber-500 hover:bg-amber-50',
+//       });
+//     }
+
+//     if (s.status === 'pending') {
+//       primary.push({
+//         key: 'approve',
+//         label: 'Approve',
+//         icon: <CheckCheck size={16} />,
+//         onClick: () => {
+//           setSkill(s);
+//           setShowApproveModal(true);
+//         },
+//         className: 'text-green-700 hover:bg-green-50',
+//       });
+//       primary.push({
+//         key: 'reject',
+//         label: 'Reject',
+//         icon: <ThumbsDownIcon size={16} />,
+//         onClick: () => {
+//           setSkill(s);
+//           setShowRejectModal(true);
+//         },
+//         className: 'text-red-700 hover:bg-red-50',
+//       });
+//     }
+
+//     overflow.push({
+//       key: 'view',
+//       label: 'View',
+//       icon: <Eye size={16} />,
+//       onClick: () => {
+//         setSkill(s);
+//         setShowViewModal(true);
+//       },
+//       className: 'text-indigo-600',
+//     });
+
+//     if (s.status !== 'removed') {
+//       overflow.push({
+//         key: 'remove',
+//         label: 'Remove',
+//         icon: <Trash size={16} />,
+//         onClick: () => {
+//           setSkill(s);
+//           setShowDeleteModal(true);
+//         },
+//         className: 'text-red-700',
+//       });
+//     }
+
+//     return <ActionsMenu primary={primary} overflow={overflow} />;
+//   },
+
+//   // Mobile — unchanged, all buttons visible as labeled pills (space isn't tight there since it's a stacked panel)
+//   mobileRender: (s: SkillType) => (
+//     <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
+//       <button
+//         onClick={() => { setSkill(s); setShowViewModal(true); }}
+//         className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+//       >
+//         <Eye size={14} />
+//         View
+//       </button>
+//       {['approved', 'pending'].includes(s.status!) && (
+//         <button
+//           onClick={() => { setSkillName(s.skillName); setSkill(s); setShowEditModal(true); }}
+//           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
+//         >
+//           <SquarePenIcon size={14} />
+//           Edit
+//         </button>
+//       )}
+//       {s.status !== 'removed' && (
+//         <button
+//           onClick={() => { setSkill(s); setShowDeleteModal(true); }}
+//           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+//         >
+//           <Trash size={14} />
+//           Remove
+//         </button>
+//       )}
+//       {s.status == 'pending' && (
+//         <button
+//           onClick={() => { setSkill(s); setShowApproveModal(true); }}
+//           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+//         >
+//           <CheckCheck size={14} />
+//           Approve
+//         </button>
+//       )}
+//       {s.status == 'pending' && (
+//         <button
+//           onClick={() => { setSkill(s); setShowRejectModal(true); }}
+//           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+//         >
+//           <ThumbsDownIcon size={14} />
+//           Reject
+//         </button>
+//       )}
+//     </div>
+//   ),
+// },
+{
+  key: 'actions',
+  label: 'Actions',
+  mobile: 'actions',
+  // Desktop — View + Edit visible, Remove/Approve/Reject under "More"
+  render: (s: SkillType) => {
+    const primary: ActionItem[] = [];
+    const overflow: ActionItem[] = [];
+
+    primary.push({
+      key: 'view',
+      label: 'View',
+      icon: <Eye size={16} />,
+      onClick: () => {
+        setSkill(s);
+        setShowViewModal(true);
+      },
+      className: 'text-indigo-600 hover:bg-indigo-50',
+    });
+
+    if (['approved', 'pending'].includes(s.status!)) {
+      primary.push({
+        key: 'edit',
+        label: 'Edit',
+        icon: <SquarePenIcon size={16} />,
+        onClick: () => {
+          setSkillName(s.skillName);
+          setSkill(s);
+          setShowEditModal(true);
+        },
+        className: 'text-amber-500 hover:bg-amber-50',
+      });
+    }
+
+    if (s.status !== 'removed') {
+      overflow.push({
+        key: 'remove',
+        label: 'Remove',
+        icon: <Trash size={16} />,
+        onClick: () => {
+          setSkill(s);
+          setShowDeleteModal(true);
+        },
+        className: 'text-red-700',
+      });
+    }
+
+    if (s.status === 'pending') {
+      overflow.push({
+        key: 'approve',
+        label: 'Approve',
+        icon: <CheckCheck size={16} />,
+        onClick: () => {
+          setSkill(s);
+          setShowApproveModal(true);
+        },
+        className: 'text-green-700',
+      });
+      overflow.push({
+        key: 'reject',
+        label: 'Reject',
+        icon: <ThumbsDownIcon size={16} />,
+        onClick: () => {
+          setSkill(s);
+          setShowRejectModal(true);
+        },
+        className: 'text-red-700',
+      });
+    }
+
+    return <ActionsMenu primary={primary} overflow={overflow} />;
+  },
+
+  // Mobile — unchanged, all buttons shown as labeled pills
+  mobileRender: (s: SkillType) => (
+    <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
+      <button
+        onClick={() => { setSkill(s); setShowViewModal(true); }}
+        className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+      >
+        <Eye size={14} />
+        View
+      </button>
+      {['approved', 'pending'].includes(s.status!) && (
+        <button
+          onClick={() => { setSkillName(s.skillName); setSkill(s); setShowEditModal(true); }}
+          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
         >
-          {s.status}
-        </span>
-      ),
-    },
-
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: (s: SkillType) => (
-        <div className="flex items-center justify-center gap-3 w-full">
-          <button
-            onClick={() => {
-              setSkill(s);
-              setShowViewModal(true);
-            }}
-            className="text-indigo-600 hover:text_indigo-800 "
-            title="view"
-          >
-            <Eye size={18} />
-          </button>
-          {['approved', 'pending'].includes(s.status!) && (
-            <button
-              onClick={() => {
-                setSkillName(s.skillName);
-                setSkill(s);
-
-                setShowEditModal(true);
-                console.log('skill on edit click', skill);
-              }}
-              className={`font-bold text-red-700 hover:text-red-800`}
-              title="Edit"
-            >
-              <SquarePenIcon size={16} className="text-amber-500" />
-            </button>
-          )}
-          {s.status !== 'removed' && (
-            <button
-              onClick={() => {
-                setSkill(s);
-                setShowDeleteModal(true);
-              }}
-              className={`font-semibold text-red-700 hover:text-indigo-800`}
-              title="Remove"
-            >
-              <Trash size={16} />
-            </button>
-          )}
-          {s.status == 'pending' && (
-            <button
-              onClick={() => {
-                setSkill(s);
-                setShowApproveModal(true);
-              }}
-              className={`font-semibold text-green-700 hover:text-indigo-800 hover:bg-gray-200 rounded-full p-1.5`}
-              title="Approve"
-            >
-              <CheckCheck size={16} />
-            </button>
-          )}
-          {s.status == 'pending' && (
-            <button
-              onClick={() => {
-                setSkill(s);
-                setShowRejectModal(true);
-              }}
-              className={`font-semibold text-red-700 hover:text-red-800 hover:bg-gray-200 rounded-full p-1.5`}
-              title="Reject"
-            >
-              <ThumbsDownIcon size={16} />
-            </button>
-          )}
-        </div>
-      ),
-    },
-  ];
+          <SquarePenIcon size={14} />
+          Edit
+        </button>
+      )}
+      {s.status !== 'removed' && (
+        <button
+          onClick={() => { setSkill(s); setShowDeleteModal(true); }}
+          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+        >
+          <Trash size={14} />
+          Remove
+        </button>
+      )}
+      {s.status == 'pending' && (
+        <button
+          onClick={() => { setSkill(s); setShowApproveModal(true); }}
+          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+        >
+          <CheckCheck size={14} />
+          Approve
+        </button>
+      )}
+      {s.status == 'pending' && (
+        <button
+          onClick={() => { setSkill(s); setShowRejectModal(true); }}
+          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+        >
+          <ThumbsDownIcon size={14} />
+          Reject
+        </button>
+      )}
+    </div>
+  ),
+},
+  // {
+  //   key: 'actions',
+  //   label: 'Actions',
+  //   mobile: 'actions',
+  //   // Desktop — unchanged, icon-only
+  //   render: (s: SkillType) => (
+  //     <div className="flex items-center justify-center gap-3 w-full">
+  //       <button
+  //         onClick={() => {
+  //           setSkill(s);
+  //           setShowViewModal(true);
+  //         }}
+  //         className="text-indigo-600 hover:text-indigo-800"
+  //         title="view"
+  //       >
+  //         <Eye size={18} />
+  //       </button>
+  //       {['approved', 'pending'].includes(s.status!) && (
+  //         <button
+  //           onClick={() => {
+  //             setSkillName(s.skillName);
+  //             setSkill(s);
+  //             setShowEditModal(true);
+  //             console.log('skill on edit click', skill);
+  //           }}
+  //           className="font-bold text-red-700 hover:text-red-800"
+  //           title="Edit"
+  //         >
+  //           <SquarePenIcon size={16} className="text-amber-500" />
+  //         </button>
+  //       )}
+  //       {s.status !== 'removed' && (
+  //         <button
+  //           onClick={() => {
+  //             setSkill(s);
+  //             setShowDeleteModal(true);
+  //           }}
+  //           className="font-semibold text-red-700 hover:text-indigo-800"
+  //           title="Remove"
+  //         >
+  //           <Trash size={16} />
+  //         </button>
+  //       )}
+  //       {s.status == 'pending' && (
+  //         <button
+  //           onClick={() => {
+  //             setSkill(s);
+  //             setShowApproveModal(true);
+  //           }}
+  //           className="font-semibold text-green-700 hover:text-indigo-800 hover:bg-gray-200 rounded-full p-1.5"
+  //           title="Approve"
+  //         >
+  //           <CheckCheck size={16} />
+  //         </button>
+  //       )}
+  //       {s.status == 'pending' && (
+  //         <button
+  //           onClick={() => {
+  //             setSkill(s);
+  //             setShowRejectModal(true);
+  //           }}
+  //           className="font-semibold text-red-700 hover:text-red-800 hover:bg-gray-200 rounded-full p-1.5"
+  //           title="Reject"
+  //         >
+  //           <ThumbsDownIcon size={16} />
+  //         </button>
+  //       )}
+  //     </div>
+  //   ),
+  //   // Mobile — labeled pills, same visual language as your other tables
+  //   mobileRender: (s: SkillType) => (
+  //     <div
+  //       className="flex items-center flex-wrap gap-2"
+  //       onClick={(e) => e.stopPropagation()}
+  //     >
+  //       <button
+  //         onClick={() => {
+  //           setSkill(s);
+  //           setShowViewModal(true);
+  //         }}
+  //         className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+  //       >
+  //         <Eye size={14} />
+  //         View
+  //       </button>
+  //       {['approved', 'pending'].includes(s.status!) && (
+  //         <button
+  //           onClick={() => {
+  //             setSkillName(s.skillName);
+  //             setSkill(s);
+  //             setShowEditModal(true);
+  //           }}
+  //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
+  //         >
+  //           <SquarePenIcon size={14} />
+  //           Edit
+  //         </button>
+  //       )}
+  //       {s.status !== 'removed' && (
+  //         <button
+  //           onClick={() => {
+  //             setSkill(s);
+  //             setShowDeleteModal(true);
+  //           }}
+  //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+  //         >
+  //           <Trash size={14} />
+  //           Remove
+  //         </button>
+  //       )}
+  //       {s.status == 'pending' && (
+  //         <button
+  //           onClick={() => {
+  //             setSkill(s);
+  //             setShowApproveModal(true);
+  //           }}
+  //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+  //         >
+  //           <CheckCheck size={14} />
+  //           Approve
+  //         </button>
+  //       )}
+  //       {s.status == 'pending' && (
+  //         <button
+  //           onClick={() => {
+  //             setSkill(s);
+  //             setShowRejectModal(true);
+  //           }}
+  //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+  //         >
+  //           <ThumbsDownIcon size={14} />
+  //           Reject
+  //         </button>
+  //       )}
+  //     </div>
+  //   ),
+  // },
+];
 
   useEffect(() => {
     const getStats = async () => {

@@ -6,6 +6,7 @@ import { useToast } from '../../../../shared/toast/use-toast';
 import { useState } from 'react';
 import { type ExperienceType } from '../../../../types/dtos/profile-types/experience.type';
 import { profileService } from '../../../../services/api-services/candidateService';
+import { useTheme } from '../../../../contexts/ThemeContext';
 
 type ExperienceProps = {
   user: UserProfileType | undefined;
@@ -39,117 +40,316 @@ const Experience = ({ user, onUserUpdate }: ExperienceProps) => {
       });
     }
   };
+  const {t}=useTheme()
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">Work Experience</h3>
-        <button
-          onClick={() => setIsExpOpen(true)}
-          className="text-green-600 hover:text-green-700 text-sm font-medium"
-        >
-          Add Experience
-        </button>
-      </div>
-      <div className="space-y-6  bg-grey-200">
-        {user && user.experience?.length ? (
-          user.experience.map((ex) => {
-            return (
-              <div className="border-l-4 border-fuchsia-600 bg-white  p-4 rounded-md shadow-sm hover:shadow-md hover:bg-gray-50 transition">
-                <div className="">
-                  {/* Top section */}
-                  <div className="flex justify-between items-start">
-                    {/* Left side */}
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-lg font-semibold text-gray-800">
-                        {ex.title}
-                      </h4>
+  <div
+    className={`
+      ${t.cardBg}
+      ${t.cardBorder}
+      border
+      rounded-lg
+      shadow-md
+      p-6
+    `}
+  >
+    <div className="flex justify-between items-center mb-4">
+      <h3 className={`text-xl font-bold ${t.cardTitle}`}>
+        Work Experience
+      </h3>
 
-                      <p className="text-gray-600">{ex.company}</p>
+      <button
+        onClick={() => setIsExpOpen(true)}
+        className={`
+          ${t.successText}
+          ${t.successHover}
+          text-sm font-medium
+          transition-colors
+        `}
+      >
+        Add Experience
+      </button>
+    </div>
 
-                      {/* Description */}
-                      <p className=" text-gray-700 text-sm whitespace-pre-line break-words">
-                        {ex.description}
-                      </p>
+    <div className="space-y-6">
+      {user && user.experience?.length ? (
+        user.experience.map((ex) => {
+          return (
+            <div
+              key={ex.id}
+              className={`
+                border-l-4
+                border-fuchsia-600
+                ${t.surface}
+                p-4
+                rounded-md
+                shadow-sm
+                ${t.dropdownHover}
+                transition
+              `}
+            >
+              <div>
+                {/* Top section */}
+                <div className="flex justify-between items-start">
+                  {/* Left side */}
+                  <div className="flex-1 min-w-0">
+                    <h4
+                      className={`
+                        text-lg
+                        font-semibold
+                        ${t.cardTitle}
+                      `}
+                    >
+                      {ex.title}
+                    </h4>
+
+                    <p className={t.subheading}>
+                      {ex.company}
+                    </p>
+
+                    {/* Description */}
+                    <p
+                      className={`
+                        ${t.inputText}
+                        text-sm
+                        whitespace-pre-line
+                        break-words
+                      `}
+                    >
+                      {ex.description}
+                    </p>
+                  </div>
+
+                  {/* Right side */}
+                  <div className="flex flex-col items-end ml-4">
+                    <div className="flex">
+                      {/* Edit */}
+                      <button
+                        onClick={() => {
+                          setExp(ex);
+                          setIsExpOpen(true);
+                          console.log(
+                            'selected ex',
+                            selectedExp
+                          );
+                        }}
+                        className={`
+                          mt-2
+                          text-fuchsia-600
+                          hover:text-fuchsia-700
+                          hover:scale-150
+                          duration-300
+                          text-sm
+                          font-medium
+                          transition
+                        `}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-5 h-5"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          fill="none"
+                          strokeWidth="2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M16.862 3.487a2.1 2.1 0 113.03 2.9L7.5 18.78l-4 1 1-4L16.862 3.487z"
+                          />
+                        </svg>
+                      </button>
+
+                      {/* Delete */}
+                      <Trash
+                        size={18}
+                        onClick={() => {
+                          setDeleteId(ex.id ? ex.id : '');
+                          setIsDeleteModalOpen(true);
+                        }}
+                        className={`
+                          mt-2
+                          ml-3
+                          ${t.dangerText}
+                          ${t.dangerHover}
+                          cursor-pointer
+                          hover:scale-150
+                          duration-300
+                          transition
+                        `}
+                      />
                     </div>
 
-                    {/* Right side */}
-                    <div className="flex flex-col items-end ml-4">
-                      <div className="flex">
-                        <button
-                          onClick={() => {
-                            setExp(ex);
-                            setIsExpOpen(true);
-                            console.log('selected ex', selectedExp);
-                          }}
-                          className="mt-2  text-fuchsia-600 hover:text-fuchsia-700 hover:scale-150 duration-300 text-sm font-medium transition"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5 text-fuchsia-800"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            fill="none"
-                            strokeWidth="2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M16.862 3.487a2.1 2.1 0 113.03 2.9L7.5 18.78l-4 1 1-4L16.862 3.487z"
-                            />
-                          </svg>
-                        </button>
-                        <Trash
-                          size={18}
-                          onClick={() => {
-                            setDeleteId(ex.id ? ex.id : '');
-                            setIsDeleteModalOpen(true);
-                          }}
-                          className="mt-2 ml-3 text-red-600 hover:text-red-700 text-sm font-medium hover:scale-150 duration-300 transition"
-                        />
-                      </div>
-
-                      <span className="text-gray-500 text-sm">
-                        {new Date(ex.startDate).toLocaleDateString('en-US', {
+                    {/* Date */}
+                    <span
+                      className={`
+                        ${t.iconMuted}
+                        text-sm
+                        mt-1
+                      `}
+                    >
+                      {new Date(ex.startDate).toLocaleDateString(
+                        'en-US',
+                        {
                           month: 'short',
                           year: 'numeric',
-                        })}
-                        {' - '}
-                        {ex.endDate
-                          ? new Date(ex.endDate).toLocaleDateString('en-US', {
+                        }
+                      )}
+
+                      {' - '}
+
+                      {ex.endDate
+                        ? new Date(ex.endDate).toLocaleDateString(
+                            'en-US',
+                            {
                               month: 'short',
                               year: 'numeric',
-                            })
-                          : 'Present'}
-                      </span>
-                    </div>
+                            }
+                          )
+                        : 'Present'}
+                    </span>
                   </div>
                 </div>
               </div>
-            );
-          })
-        ) : (
-          <p className="text-gray-500 text-sm italic">
-            Showcase your experience here
-          </p>
-        )}
-      </div>
-      <ExperienceModal
-        open={isExpOpen}
-        onClose={() => {
-          setExp(null);
-          setIsExpOpen(false);
-        }}
-        user={user}
-        onUserUpdate={onUserUpdate}
-        selectedExp={selectedExp}
-      />
-      <DeleteConfirmationModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onDelete={handleDelete}
-        item="Experience"
-      />
+            </div>
+          );
+        })
+      ) : (
+        <p className={`${t.subheading} text-sm italic`}>
+          Showcase your experience here
+        </p>
+      )}
     </div>
-  );
+
+    <ExperienceModal
+      open={isExpOpen}
+      onClose={() => {
+        setExp(null);
+        setIsExpOpen(false);
+      }}
+      user={user}
+      onUserUpdate={onUserUpdate}
+      selectedExp={selectedExp}
+    />
+
+    <DeleteConfirmationModal
+      isOpen={isDeleteModalOpen}
+      onClose={() => setIsDeleteModalOpen(false)}
+      onDelete={handleDelete}
+      item="Experience"
+    />
+  </div>
+);
+  // return (
+  //   <div className="bg-white rounded-lg shadow-md p-6">
+  //     <div className="flex justify-between items-center mb-4">
+  //       <h3 className="text-xl font-bold text-gray-800">Work Experience</h3>
+  //       <button
+  //         onClick={() => setIsExpOpen(true)}
+  //         className="text-green-600 hover:text-green-700 text-sm font-medium"
+  //       >
+  //         Add Experience
+  //       </button>
+  //     </div>
+  //     <div className="space-y-6  bg-grey-200">
+  //       {user && user.experience?.length ? (
+  //         user.experience.map((ex) => {
+  //           return (
+  //             <div className="border-l-4 border-fuchsia-600 bg-white  p-4 rounded-md shadow-sm hover:shadow-md hover:bg-gray-50 transition">
+  //               <div className="">
+  //                 {/* Top section */}
+  //                 <div className="flex justify-between items-start">
+  //                   {/* Left side */}
+  //                   <div className="flex-1 min-w-0">
+  //                     <h4 className="text-lg font-semibold text-gray-800">
+  //                       {ex.title}
+  //                     </h4>
+
+  //                     <p className="text-gray-600">{ex.company}</p>
+
+  //                     {/* Description */}
+  //                     <p className=" text-gray-700 text-sm whitespace-pre-line break-words">
+  //                       {ex.description}
+  //                     </p>
+  //                   </div>
+
+  //                   {/* Right side */}
+  //                   <div className="flex flex-col items-end ml-4">
+  //                     <div className="flex">
+  //                       <button
+  //                         onClick={() => {
+  //                           setExp(ex);
+  //                           setIsExpOpen(true);
+  //                           console.log('selected ex', selectedExp);
+  //                         }}
+  //                         className="mt-2  text-fuchsia-600 hover:text-fuchsia-700 hover:scale-150 duration-300 text-sm font-medium transition"
+  //                       >
+  //                         <svg
+  //                           xmlns="http://www.w3.org/2000/svg"
+  //                           className="w-5 h-5 text-fuchsia-800"
+  //                           viewBox="0 0 24 24"
+  //                           stroke="currentColor"
+  //                           fill="none"
+  //                           strokeWidth="2"
+  //                         >
+  //                           <path
+  //                             strokeLinecap="round"
+  //                             strokeLinejoin="round"
+  //                             d="M16.862 3.487a2.1 2.1 0 113.03 2.9L7.5 18.78l-4 1 1-4L16.862 3.487z"
+  //                           />
+  //                         </svg>
+  //                       </button>
+  //                       <Trash
+  //                         size={18}
+  //                         onClick={() => {
+  //                           setDeleteId(ex.id ? ex.id : '');
+  //                           setIsDeleteModalOpen(true);
+  //                         }}
+  //                         className="mt-2 ml-3 text-red-600 hover:text-red-700 text-sm font-medium hover:scale-150 duration-300 transition"
+  //                       />
+  //                     </div>
+
+  //                     <span className="text-gray-500 text-sm">
+  //                       {new Date(ex.startDate).toLocaleDateString('en-US', {
+  //                         month: 'short',
+  //                         year: 'numeric',
+  //                       })}
+  //                       {' - '}
+  //                       {ex.endDate
+  //                         ? new Date(ex.endDate).toLocaleDateString('en-US', {
+  //                             month: 'short',
+  //                             year: 'numeric',
+  //                           })
+  //                         : 'Present'}
+  //                     </span>
+  //                   </div>
+  //                 </div>
+  //               </div>
+  //             </div>
+  //           );
+  //         })
+  //       ) : (
+  //         <p className="text-gray-500 text-sm italic">
+  //           Showcase your experience here
+  //         </p>
+  //       )}
+  //     </div>
+  //     <ExperienceModal
+  //       open={isExpOpen}
+  //       onClose={() => {
+  //         setExp(null);
+  //         setIsExpOpen(false);
+  //       }}
+  //       user={user}
+  //       onUserUpdate={onUserUpdate}
+  //       selectedExp={selectedExp}
+  //     />
+  //     <DeleteConfirmationModal
+  //       isOpen={isDeleteModalOpen}
+  //       onClose={() => setIsDeleteModalOpen(false)}
+  //       onDelete={handleDelete}
+  //       item="Experience"
+  //     />
+  //   </div>
+  // );
 };
 export default Experience;

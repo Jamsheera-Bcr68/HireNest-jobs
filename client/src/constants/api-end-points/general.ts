@@ -7,8 +7,9 @@ export const API_ENDPOINTS = {
   SKILL: (id: string) => `/skills/${id}`,
 
   APPLY_JOB: (id: string) => `/applications/${id}`,
-  CANDIDATE_APPLICATON_STATUS: (jobId: string) =>
+  JOB_APPLICATON_STATUS: (jobId: string) =>
     `/applications/applications-status/${jobId}`,
+  CANDIDATE_APPLICATON_STATUS: `/applications/applications-status`,
   APPLICATIONS: '/applications',
   JOB_APPLICATIONS: (jobId: string) => `/jobs/${jobId}/applications`,
   APPLICATION: (id: string) => `/applications/${id}`,
@@ -27,9 +28,9 @@ export const API_ENDPOINTS = {
   UPDATE_RESULT: (id: string) => `/interviews/${id}/result`,
   CONFIRM_INTERVIEW: (id: string) => `/interviews/${id}/confirm`,
   RESCHEDULE_REQUEST: (id: string) => `/interviews/${id}/request-reschedule`,
-  GENERATE_MEETLINK:'/interviews/meetlink',
-  GET_MEET_INFO:(meetId:string)=>`/interviews/meetings/${meetId}`,
-  COMPANY_POSTS:(companyId:string)=>`/candidate/company/${companyId}/jobs`,
+  GENERATE_MEETLINK: '/interviews/meetlink',
+  GET_MEET_INFO: (meetId: string) => `/interviews/meetings/${meetId}`,
+  COMPANY_POSTS: (companyId: string) => `/candidate/company/${companyId}/jobs`,
 
   NOTIFICATIONS: `/notifications`,
   NOTIFICATIONS_COUNT: `/notifications/not-read-count`,
@@ -46,7 +47,7 @@ export const API_ENDPOINTS = {
     INTERVIEW_DATA: '/admin/dashboard/interview-data',
     PENDING_COMPANIES: '/admin/dashboard/pending-companies',
     REPORTED_JOBS: '/admin/dashboard/reported-jobs',
-    ACTION_PENDING:'/admin/dashboard/action-pending',
+    ACTION_PENDING: '/admin/dashboard/action-pending',
   },
   CANDIDATE_DASHBOARD: {
     STATUSCARD: '/candidate/dashboard/cards',
@@ -55,12 +56,12 @@ export const API_ENDPOINTS = {
     RECOMENTED_JOBS: '/candidate/dashboard/recomented-jobs',
     UPCOMING_INTERVIEW: '/candidate/dashboard/upcoming-intrview',
   },
-  COMPANY_DASHBOARD:{
-   STATUSCARD:'/company/dashboard/status-data',
-   APPDATA:'/company/dashboard/applications-data',
-   JOB_DATA:'/company/dashboard/jobs-data',
-   INTERVIEW_DATA:'/company/dashboard/interview-data',
-   RECENT_ACTIVITIES:'/company/dashboard/recent_activities',
-   PENDING_ACTION:'/company/dashboard/pending-actions',
-  }
+  COMPANY_DASHBOARD: {
+    STATUSCARD: '/company/dashboard/status-data',
+    APPDATA: '/company/dashboard/applications-data',
+    JOB_DATA: '/company/dashboard/jobs-data',
+    INTERVIEW_DATA: '/company/dashboard/interview-data',
+    RECENT_ACTIVITIES: '/company/dashboard/recent_activities',
+    PENDING_ACTION: '/company/dashboard/pending-actions',
+  },
 };

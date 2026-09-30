@@ -1,9 +1,18 @@
-import { Calendar, FileCheck, FileText, Inbox, XCircle, type LucideIcon } from 'lucide-react';
+import {
+  Calendar,
+  ChevronDown,
+  ChevronUp,
+  FileCheck,
+  FileText,
+  Inbox,
+  XCircle,
+  type LucideIcon,
+} from 'lucide-react';
 import {
   type CompanyProfileType,
-  type ReApplyType,
+  type ApplyType,
 } from '../../../../types/dtos/profile-types/user.types';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 type RegistrationDetailsProps = {
   company: CompanyProfileType | null;
 };
@@ -55,10 +64,10 @@ export function RegistrationDetails({ company }: RegistrationDetailsProps) {
         </div>
 
         {/* Rejection history */}
-        {company.reapplyDetails.length > 0 && (
-          <RejectionHistory
+        {company.applyDetails.length > 0 && (
+          <ApplicationHistory
             reason={company.reasonForReject}
-            history={company.reapplyDetails}
+            history={company.applyDetails}
           />
         )}
       </div>
@@ -66,66 +75,15 @@ export function RegistrationDetails({ company }: RegistrationDetailsProps) {
   );
 }
 
-// function RejectionReasonSection({ status, reasonForReject }) {
-//   const isRejected = status?.toLowerCase?.() === "rejected";
-//   if (!isRejected) return null;
-
-//   return (
-//     <SectionCard title="Rejection Reason">
-//       {hasValue(reasonForReject) ? (
-//         <p className="rounded-xl bg-rose-50 p-3.5 text-sm text-rose-700">
-//           {reasonForReject}
-//         </p>
-//       ) : (
-//         <CompactEmptyState text="No rejection reason recorded." />
-//       )}
-//     </SectionCard>
-//   );
-// }
-// export function RegistrationDetails() {
-//   return (
-//     <div className="space-y-6">
-//       <RejectionReasonSection
-//         status={status}
-//         reasonForReject={reasonForReject}
-//       />
-//       <ReapplicationTimeline
-//         reapplyDetails={reapplyDetails}
-//         reapplyCount={reapplyCount}
-//       />
-//       <DocumentSection document={document} onViewDocument={onViewDocument} />
-
-//       {isPending && (onApprove || onReject) && (
-//         <SectionCard>
-//           <div className="flex gap-3">
-//             {onApprove && (
-//               <button
-//                 type="button"
-//                 onClick={() => onApprove(id)}
-//                 className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
-//               >
-//                 <ShieldCheck className="h-4 w-4" />
-//                 Approve
-//               </button>
-//             )}
-//             {onReject && (
-//               <button
-//                 type="button"
-//                 onClick={() => onReject(id)}
-//                 className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-rose-200 px-4 py-2.5 text-sm font-semibold text-rose-600 transition hover:bg-rose-50"
-//               >
-//                 <XCircle className="h-4 w-4" />
-//                 Reject
-//               </button>
-//             )}
-//           </div>
-//         </SectionCard>
-//       )}
-//     </div>
-//   );
-// }
-
-export function SectionCard({ title, children, className = "" }:{title:string,children:ReactNode,className:string}) {
+export function SectionCard({
+  title,
+  children,
+  className = '',
+}: {
+  title: string;
+  children: ReactNode;
+  className: string;
+}) {
   return (
     <section
       className={`rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 ${className}`}
@@ -135,7 +93,6 @@ export function SectionCard({ title, children, className = "" }:{title:string,ch
           <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
             {title}
           </h3>
-         
         </div>
       )}
       {children}
@@ -143,11 +100,13 @@ export function SectionCard({ title, children, className = "" }:{title:string,ch
   );
 }
 
-
-
-
-
-export function CompactEmptyState({ icon: Icon = Inbox, text }:{icon:LucideIcon,text:string}) {
+export function CompactEmptyState({
+  icon: Icon = Inbox,
+  text,
+}: {
+  icon: LucideIcon;
+  text: string;
+}) {
   return (
     <div className="flex items-center gap-2.5 rounded-xl bg-slate-50 px-4 py-3 text-sm text-slate-400">
       <Icon className="h-4 w-4 shrink-0" />
@@ -155,7 +114,6 @@ export function CompactEmptyState({ icon: Icon = Inbox, text }:{icon:LucideIcon,
     </div>
   );
 }
-
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
@@ -166,70 +124,173 @@ function InfoRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-function RejectionHistory({
+function ApplicationHistory({
   history,
   reason,
 }: {
-  history: ReApplyType[];
+  history: ApplyType[];
   reason: string;
 }) {
-  console.log('reapply details', history);
-
+  const [showHistory, setShowHistory] = useState<boolean>(false);
   return (
-    <div className="border-t border-slate-100 pt-4">
-      <h3 className="mb-3 text-sm font-medium text-slate-700">
-        Registration History
+  <div className="border-t border-slate-100 pt-4">
+    {/* Header */}
+    <div className="flex items-center justify-between">
+      <h3 className="text-sm font-medium text-slate-700">
+        View Registration History
       </h3>
 
-      <div className="space-y-3">
-        {history.map((entry, idx) => (
-          <div
-            key={idx}
-            className="rounded-lg border border-rose-100 bg-rose-50/50 px-4 py-3"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <label htmlFor="">Reason:</label>{' '}
-              <p className="text-sm text-slate-700">
-                {entry.rejectedReason ?? reason}
-              </p>
-              <span
-                className={`rounded-2xl text-xs py-1 px-1 ${entry.status === 'pending' ? 'text-amber-600 bg-amber-100' : 'text-red-700   bg-red-100'}`}
-              >
-                {entry.status}
-              </span>
-            </div>
+      <button
+        type="button"
+        onClick={() => setShowHistory((prev) => !prev)}
+        aria-expanded={showHistory}
+        aria-label={
+          showHistory
+            ? "Hide registration history"
+            : "Show registration history"
+        }
+        className="flex h-8 w-8 items-center justify-center rounded-full
+                   text-slate-500 transition-all duration-200
+                   hover:bg-slate-100 hover:text-slate-700
+                   focus:outline-none focus:ring-2 focus:ring-fuchsia-200"
+      >
+        <span
+          className={`transition-transform duration-300 ease-out ${
+            showHistory ? "rotate-0" : "rotate-0"
+          }`}
+        >
+          {showHistory ? (
+            <ChevronUp size={16} className="h-4 w-4" />
+          ) : (
+            <ChevronDown size={16} className="h-4 w-4" />
+          )}
+        </span>
+      </button>
+    </div>
 
-            <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-500">
-              <Calendar className="h-3.5 w-3.5 text-slate-400" />
-              <span>
-                Submitted
-                {new Date(entry.date).toLocaleDateString('en-IN', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                })}
-              </span>
+    {/* Smooth content */}
+    <div
+      className={`grid transition-all duration-300 ease-in-out ${
+        showHistory
+          ? "mt-3 grid-rows-[1fr] opacity-100"
+          : "grid-rows-[0fr] opacity-0"
+      }`}
+    >
+      <div className="overflow-hidden">
+        <div
+          className={`space-y-3 transition-transform duration-300 ease-out ${
+            showHistory ? "translate-y-0" : "-translate-y-2"
+          }`}
+        >
+          {history.map((entry, idx) => (
+            <div
+              key={idx}
+              className="rounded-lg border border-rose-100 bg-rose-50/50 px-4 py-3"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <span className="text-xs font-medium text-slate-500">
+                    Reason
+                  </span>
+
+                  <p className="mt-0.5 text-sm text-slate-700">
+                    {entry.rejectedReason ?? ""}
+                  </p>
+                </div>
+
+                <span
+                  className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${
+                    entry.status === "pending"
+                      ? "bg-amber-100 text-amber-600"
+                      :entry.status==='approved'?"bg-green-100 text-green-700": "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {entry.status}
+                </span>
+              </div>
+
+              <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
+                <Calendar className="h-3.5 w-3.5 text-slate-400" />
+
+                <span>
+                  Submitted{" "}: 
+                  {new Date(entry.submittedAt).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </span>
+              </div>
+              <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
+                <Calendar className="h-3.5 w-3.5 text-slate-400" />
+
+                <span>
+                  Reviewed{" "}:
+                  {entry.reviewedAt?new Date(entry.reviewedAt).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  }):'Pending'}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
-  );
+  </div>
+);
+  // return (
+  //   <div className="border-t border-slate-100 pt-4">
+  //     <div className='flex jstify-between'><h3 className="mb-3 text-sm font-medium text-slate-700">
+  //       View Registration History
+  //     </h3>
+  //     <span>{showHistory?<ChevronUp onClick={()=>setShowHistory(false)}/>:<ChevronDown onClick={()=>setShowHistory(true)} />}</span></div>
+
+  //    {showHistory&& <div className="space-y-3">
+  //       {history.map((entry, idx) => (
+  //         <div
+  //           key={idx}
+  //           className="rounded-lg border border-rose-100 bg-rose-50/50 px-4 py-3"
+  //         >
+  //           <div className="flex items-start justify-between gap-3">
+  //             <label htmlFor="">Reason:</label>{' '}
+  //             <p className="text-sm text-slate-700">
+  //               {entry.rejectedReason ?? 'pending'}
+  //             </p>
+  //             <span
+  //               className={`rounded-2xl text-xs py-1 px-1 ${entry.status === 'pending' ? 'text-amber-600 bg-amber-100' : 'text-red-700   bg-red-100'}`}
+  //             >
+  //               {entry.status}
+  //             </span>
+  //           </div>
+
+  //           <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-500">
+  //             <Calendar className="h-3.5 w-3.5 text-slate-400" />
+  //             <span>
+  //               Submitted
+  //               {new Date(entry.submittedAt).toLocaleDateString('en-IN', {
+  //                 day: 'numeric',
+  //                 month: 'short',
+  //                 year: 'numeric',
+  //               })}
+  //             </span>
+  //           </div>
+  //         </div>
+  //       ))}
+  //     </div>}
+  //   </div>
+  // );
 }
 
-
-
-
-
-
 interface DocumentProps {
-  document?: {type:string,file:string} | null;
+  document?: { type: string; file: string } | null;
 }
 
 export function Document({ document }: DocumentProps) {
-    const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
   return (
-    <SectionCard className='' title="Registration Document">
+    <SectionCard className="" title="Registration Document">
       {document ? (
         <div className="flex items-center justify-between gap-4 rounded-xl border border-slate-100 bg-slate-50 p-4">
           <div className="flex min-w-0 items-center gap-3">
@@ -250,18 +311,18 @@ export function Document({ document }: DocumentProps) {
 
           <button
             type="button"
-             onClick={() =>
-                window.open(`${baseUrl}${document.file}`, '_blank')
-              }
+            onClick={() => window.open(`${baseUrl}${document.file}`, '_blank')}
             className="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition-all duration-200 hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600"
           >
             View
           </button>
         </div>
       ) : (
-        <CompactEmptyState icon={FileCheck} text="No registration document uploaded." />
+        <CompactEmptyState
+          icon={FileCheck}
+          text="No registration document uploaded."
+        />
       )}
     </SectionCard>
   );
 }
-

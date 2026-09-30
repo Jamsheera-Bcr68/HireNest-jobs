@@ -73,7 +73,7 @@ export class ApplicationController {
         statusCodes.BADREQUEST
       );
     const appStatus = await this._getAppStatusUseCase.execute(
-      { jobId: jobId,userId:user.userId},
+      { jobId: jobId, userId: user.userId },
       user.role
     );
 
@@ -83,6 +83,29 @@ export class ApplicationController {
       appStatus,
     });
   });
+  getCandidateApplicationStatus = asyncHandler(
+    async (req: Request, res: Response) => {
+      const user = req.user;
+      if (!user || !user.userId) {
+        throw new AppError(
+          jobMessages.error.JOB_NOT_FOUND,
+          statusCodes.NOTFOUND
+        );
+      }
+      console.log('user from candidtae get applications', user);
+
+      const appStatus = await this._getAppStatusUseCase.execute(
+        { userId: user.userId },
+        user.role
+      );
+
+      return res.status(statusCodes.OK).json({
+        success: true,
+        message: generalMessages.success.STATUS_FETCHED('Application'),
+        appStatus,
+      });
+    }
+  );
 
   getApplications = asyncHandler(async (req: Request, res: Response) => {
     const { search, status, page, limit, jobType, sortBy } = req.query;

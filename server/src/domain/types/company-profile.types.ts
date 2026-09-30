@@ -1,4 +1,4 @@
-import { StatusEnum } from "../enums/status.enum";
+import { RegisterStatusEnum, StatusEnum } from "../enums/status.enum";
 
 export const Industry_Type = [
   'Information Technology',
@@ -59,9 +59,11 @@ export type AddressType = {
   country: CountryName | '';
 };
 
-export interface IReapplyDetail {
-  date: Date;
-  status: StatusEnum;
+export interface IApplyDetails {
+  submittedAt: Date;
+  status: RegisterStatusEnum;
   rejectedReason?: string;
+  attempt:number
+  reviewedAt?:Date
 }
 

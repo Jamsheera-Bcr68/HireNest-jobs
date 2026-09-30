@@ -1,12 +1,13 @@
 import { Company } from '../../../domain/entities/company.entity';
 import { User } from '../../../domain/entities/user.entity';
 import { NotificationType } from '../../../domain/enums/notification-enums';
-import { StatusEnum } from '../../../domain/enums/status.enum';
+import { RegisterStatusEnum, StatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
+import { IApplyDetails } from '../../../domain/types/company-profile.types';
 import { CompanyRequestType } from '../../../domain/values/profile-types';
 import { getIO } from '../../../infrastructure/socket';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
@@ -64,7 +65,12 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
         generalMessages.errors.COMPANY_ALREADY_EXIST('Name'),
         statusCodes.CONFLICT
       );
-    const company = await this._companyRepository.create(payload);
+      const applyDetails:IApplyDetails[]=[{
+        submittedAt:new Date(),
+        attempt:1,
+        status:RegisterStatusEnum.PENDING
+      }]
+    const company = await this._companyRepository.create({...payload,applyDetails:applyDetails});
     if (!company.id) {
       throw new Error(userMessages.error.COMPANY_NOT_FOUND);
     }

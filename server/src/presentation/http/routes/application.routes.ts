@@ -17,6 +17,11 @@ router.get(
   applicationController.getApplicationStatus
 );
 router.get(
+  API_END_POINTS.CANDIDATE_APPLICATION_STATUS,
+  authValidator(tokenService),
+  applicationController.getCandidateApplicationStatus
+);
+router.get(
   API_END_POINTS.APPLICATIONS,
   authValidator(tokenService),
   applicationController.getApplications

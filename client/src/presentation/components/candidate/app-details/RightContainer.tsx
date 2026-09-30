@@ -13,18 +13,20 @@ import {
   Globe,
   AlertCircle,
 } from 'lucide-react';
-import { jobService } from '../../../../services/api-services/jobService';
+
 import { type JobDetailsDto } from '../../../../types/dtos/job.dto';
 import JobData from './JobData';
-import { companyService } from '../../../../services/api-services/companyService';
+
 import { type CompanyDataDto } from '../../../../types/dtos/company.dto';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   application: ApplicationDetailsDto | null;
 };
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 function RightContainer({ application }: Props) {
-  const { showToast } = useToast();
+  const navigate=useNavigate()
+
   const [showJobModal, setShowJobModal] = useState<boolean>(false);
   const [showCompanyModal, setShowCompanyModal] = useState<boolean>(false);
   const [job, setJob] = useState<JobDetailsDto | null>(null);
@@ -32,41 +34,12 @@ function RightContainer({ application }: Props) {
   if (!application) return null;
 
   const handleViewJob = async () => {
-    setShowJobModal(true);
-    const getJob = async () => {
-      try {
-        const data = await jobService.getDetails(application.job.id);
-
-        setJob(data.jobDetails);
-      } catch (error: any) {
-        showToast({
-          msg: error?.response?.data.message || error.message,
-          type: 'error',
-        });
-      }
-    };
-    getJob();
+      navigate(`/jobs/${application.job.id}`)
+  
   };
 
   const handleViewCompany = async () => {
-    setShowCompanyModal(true);
-    const getCompany = async () => {
-      try {
-        const data = await companyService.getCompanyDetails(
-          application.company.id
-        );
-
-        setCompany(data.companyData);
-        setShowCompanyModal(true);
-      } catch (error: any) {
-        showToast({
-          msg: error?.response?.data.message || error.message,
-          type: 'error',
-        });
-      }
-    };
-    getCompany();
-  };
+  navigate(`/candidate/company/${application.company.id}`) };
 
   return (
     <div className="flex flex-col gap-5">

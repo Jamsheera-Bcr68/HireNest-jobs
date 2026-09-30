@@ -36,6 +36,7 @@ export class AdminGetCandidateUseCase implements IAdminGetEntitiesUseCase<User> 
       search || '',
       education || ''
     );
+console.log('admin candidates',candidates);
 
     return candidates;
   }

@@ -1,5 +1,5 @@
 import { NotificationType } from '../../../domain/enums/notification-enums';
-import { StatusEnum } from '../../../domain/enums/status.enum';
+import { RegisterStatusEnum, StatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
@@ -38,13 +38,13 @@ export class ReApplyCompanyUsecase implements IReApplyCompanyUsecase {
         generalMessages.errors.REAPPLY_COUNT_LIMIT_EXEEDED,
         statusCodes.BADREQUEST
       );
-    if (!company.reapplyDetails.length) {
-      company.reapplyDetails.push({
-        date: new Date(company.joinedAt),
-        rejectedReason: company.reasonForReject,
-        status: StatusEnum.REJECTED,
-      });
-    }
+    // if (!company.reapplyDetails.length) {
+    //   company.reapplyDetails.push({
+    //     date: new Date(company.joinedAt),
+    //     rejectedReason: company.reasonForReject,
+    //     status: StatusEnum.REJECTED,
+    //   });
+    // }
     const { companyName, email } = payload;
     const nameExist = await this._comapnyRepository.getDuplicateCompany({ companyName },company.id);
     if (nameExist)
@@ -63,12 +63,13 @@ export class ReApplyCompanyUsecase implements IReApplyCompanyUsecase {
     const updated: Partial<Company> = {
       ...payload,
       status: StatusEnum.PENDING,
-      reapplyCount: company.reapplyCount + 1,
-      reapplyDetails: [
-        ...company.reapplyDetails,
+      reapplyCount: (company.reapplyCount||0 )+ 1,
+      applyDetails: [
+        ...company.applyDetails,
         {
-          status: StatusEnum.PENDING,
-          date: new Date(),
+          status: RegisterStatusEnum.PENDING,
+          submittedAt: new Date(),
+          attempt:(company.applyDetails.length||0)+1
         },
       ],
     };

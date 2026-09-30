@@ -36,8 +36,13 @@ export const useProfile = () => {
         const data = await profileService.getProfile();
         console.log(`data candidate`, data);
 
-        let user = data.user;
-        console.log('user', user);
+        let user :UserProfileType= data.user;
+       
+        const company=data.company
+        console.log('user', user,'company',company);
+         if(user.isRequested&&company){
+          user.requestedCompany=company
+         }
 
         setUser(user);
       } catch (error: any) {

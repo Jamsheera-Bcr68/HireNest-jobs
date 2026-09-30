@@ -5,6 +5,7 @@ import { useExperience } from '../hooks/user/candidate/profile/useEditExperience
 
 import type { UserProfileType } from '../../types/dtos/profile-types/user.types';
 import type { ExperienceType } from '../../types/dtos/profile-types/experience.type';
+import { useTheme } from '../../contexts/ThemeContext';
 
 type ExperienceModalProps = {
   open: boolean;
@@ -32,7 +33,7 @@ export default function ExperienceModal({
   } = useExperience(open, onUserUpdate, onClose, selectedExp);
 
   const [isOffline, setIsOffline] = useState<boolean>(true);
-
+  const { t } = useTheme();
   return (
     <Dialog.Root
       open={open}
@@ -41,71 +42,80 @@ export default function ExperienceModal({
       }}
     >
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-[100] bg-black/40" />
+        <Dialog.Overlay className={`fixed inset-0 z-[100] ${t.overlay}/40`} />
 
         <Dialog.Content
-          className="  z-[100]   fixed
+          className={`  z-[100]   fixed
     top-1/2 left-1/2
     w-[95%] max-w-lg
     -translate-x-1/2 -translate-y-1/2
-    bg-white
+      ${t.surface} 
+    ${t.cardBorder}
+     border
     rounded-lg
     shadow-lg
     max-h-[90vh]
     overflow-y-auto
     p-6
-    space-y-5"
+    space-y-5`}
         >
           {/* Header */}
           <Dialog.Close asChild>
             <button
               onClick={onClose}
               aria-label="Close"
-              className="absolute top-3 right-3 p-2 rounded-full hover:bg-gray-100"
+              className={`absolute top-3 right-3 p-2 t rounded-full ${t.navMuted} ${t.navIconBg}`}
             >
               <X size={20} />
             </button>
           </Dialog.Close>
-          <Dialog.Title className="text-2xl font-semibold mt-3 text-fuchsia-800 text-center">
+          <Dialog.Title
+            className={`text-2xl font-semibold mt-3 ${t.cardTitle} text-center`}
+          >
             {selectedExp ? 'Edit Experience' : 'Add Experience'}
           </Dialog.Title>
 
           {/* Job Title */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Job Title</label>
+            <label className={`text-sm font-medium ${t.inputText}`}>
+              Job Title
+            </label>
             <input
               type="text"
               name="title"
               value={formData.title}
-              
               onChange={handleChange}
               placeholder="e.g. Senior Full Stack Developer"
-              className="border rounded p-2 focus:border-fuchsia-700"
+              className={`border ${t.surfaceBorder} ${t.surface} ${t.inputText} ${t.placeholder} rounded p-2 ${t.inputFocusRing}`}
             />
             {error?.title && (
-              <p className=" text-sm text-red-600">* {error.title}</p>
+              <p className={`text-sm ${t.dangerText}`}>* {error.title}</p>
             )}
           </div>
 
           {/* Company */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Company</label>
+            <label className={`text-sm font-medium ${t.inputText}`}>
+              Company
+            </label>
             <input
               name="company"
               value={formData.company}
               onChange={handleChange}
               type="text"
               placeholder="e.g. Tech Solutions Pvt Ltd"
-              className="border rounded p-2 focus:border-fuchsia-700"
+              className={`border ${t.surfaceBorder} ${t.surface} ${t.inputText} ${t.placeholder} rounded p-2 ${t.inputFocusRing}`}
             />
             {error?.company && (
-              <p className=" text-sm text-red-600">* {error.company}</p>
+              <p className={`text-sm ${t.dangerText}`}>* {error.company}</p>
             )}
           </div>
           {/* mode */}
 
           <div>
-            <label className="text-sm font-medium">Mode of Work</label>
+            <label className={`text-sm font-medium ${t.inputText}`}>
+              Mode of Work
+            </label>
             <div className="  w-full flex  ">
               {' '}
               <div className="flex w-1/4 items-center">
@@ -118,7 +128,9 @@ export default function ExperienceModal({
                   checked={formData.mode === 'remote'}
                   name="mode"
                 />
-                <label htmlFor="">Remote </label>{' '}
+                <label htmlFor="" className={t.inputText}>
+                  Remote{' '}
+                </label>{' '}
               </div>
               <div className="flex items-center w-1/4">
                 <input
@@ -130,7 +142,9 @@ export default function ExperienceModal({
                   checked={formData.mode === 'onsite'}
                   name="mode"
                 />
-                <label htmlFor="">Offline </label>{' '}
+                <label className={t.inputText} htmlFor="">
+                  Offline{' '}
+                </label>{' '}
               </div>
               <div className="flex items-center w-1/4">
                 <input
@@ -142,24 +156,28 @@ export default function ExperienceModal({
                   type="radio"
                   name="mode"
                 />
-                <label htmlFor="">Hybrid </label>{' '}
+                <label className={t.inputText} htmlFor="">
+                  Hybrid{' '}
+                </label>{' '}
               </div>
             </div>
           </div>
           {/* Location */}
           {isOffline && (
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium">Location</label>
+              <label className={`text-sm font-medium ${t.inputText}`}>
+                Location
+              </label>
               <input
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
                 type="text"
                 placeholder="e.g. Chennai, India"
-                className="border rounded p-2 focus:border-fuchsia-700"
+                className={`border rounded p-2  ${t.surfaceBorder} ${t.surface} ${t.inputText} ${t.placeholder} rounded p-2 ${t.inputFocusRing}`}
               />
               {error?.location && (
-                <p className=" text-sm text-red-600">* {error.location}</p>
+                <p className={`text-sm ${t.dangerText}`}>* {error.location}</p>
               )}
             </div>
           )}
@@ -167,32 +185,38 @@ export default function ExperienceModal({
           {/* Dates */}
           <div className="flex gap-4">
             <div className="flex flex-col gap-1 w-full">
-              <label className="text-sm font-medium">Start Date</label>
+              <label className={`text-sm font-medium ${t.inputText}`}>
+                Start Date
+              </label>
               <input
                 name="startDate"
                 value={formData.startDate}
                 onChange={handleChange}
                 type="month"
-                className="border rounded p-2 focus:border-fuchsia-700"
+                className={`border ${t.surfaceBorder} ${t.surface} ${t.inputText} rounded p-2 ${t.inputFocusRing}`}
               />
               {error?.startDate && (
-                <p className=" text-sm text-red-600">* {error.startDate}</p>
+                <p className={`text-sm ${t.dangerText}`}>* {error.startDate}</p>
               )}
             </div>
             <div className="flex flex-col gap-1 w-full">
               {!formData.isWorking && (
                 <>
                   {' '}
-                  <label className="text-sm font-medium">End Date</label>
+                  <label className={`text-sm font-medium ${t.inputText}`}>
+                    End Date
+                  </label>
                   <input
                     type="month"
-                    className="border rounded p-2 focus:border-fuchsia-700"
+                    className={`border ${t.surfaceBorder} ${t.surface} ${t.inputText} rounded p-2 ${t.inputFocusRing}`}
                     name="endDate"
                     onChange={handleChange}
                     value={formData.endDate}
                   />
                   {error?.endDate && (
-                    <p className=" text-sm text-red-600">* {error.endDate}</p>
+                    <p className={`text-sm ${t.dangerText}`}>
+                      * {error.endDate}
+                    </p>
                   )}
                 </>
               )}
@@ -205,25 +229,28 @@ export default function ExperienceModal({
               name="isWorking"
               checked={formData.isWorking}
               onChange={handleChange}
-
             />
 
-            <label className="text-sm">I currently work here</label>
+            <label className={`text-sm ${t.inputText}`}>
+              I currently work here
+            </label>
           </div>
 
           {/* Description */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Description</label>
+            <label className={`text-sm font-medium ${t.inputText}`}>
+              Description
+            </label>
             <textarea
               rows={4}
               placeholder="• Led development of e-commerce platform"
               name="description"
               value={formData.description}
               onChange={handleTextareaChange}
-              className="border rounded p-2 focus:border-fuchsia-700"
+              className={`border ${t.surfaceBorder} ${t.surface} ${t.inputText} ${t.placeholder} rounded p-2 ${t.inputFocusRing}`}
             />
             {error?.discription && (
-              <p className=" text-sm text-red-600">* {error.discription}</p>
+              <p className={`text-sm ${t.dangerText}`}>* {error.discription}</p>
             )}
           </div>
 
@@ -231,7 +258,7 @@ export default function ExperienceModal({
           <div className="flex justify-end gap-3 pt-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-white bg-red-600 border rounded"
+              className={`px-4 py-2 ${t.dangerText} ${t.dangerHover} ${t.surface} ${t.surfaceBorder} border rounded`}
             >
               Cancel
             </button>
@@ -239,14 +266,14 @@ export default function ExperienceModal({
             {selectedExp ? (
               <button
                 onClick={handleEdit}
-                className="px-4  py-2 bg-fuchsia-800 text-white rounded"
+                className={`px-4 py-2 ${t.primaryButton} rounded`}
               >
                 Update
               </button>
             ) : (
               <button
                 onClick={handleSubmit}
-                className="px-4  py-2 bg-fuchsia-800 text-white rounded"
+                className={`px-4 py-2 ${t.primaryButton} rounded`}
               >
                 Save
               </button>

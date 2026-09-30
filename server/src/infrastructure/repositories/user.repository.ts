@@ -21,6 +21,7 @@ import { UserMapper } from '../../applications/mappers/user.mapper';
 import { PaginatedEntities } from '../../applications/types/candidate.type';
 import { UserRole } from '../../domain/enums/user.enums';
 import { StatusEnum } from '../../domain/enums/status.enum';
+import { lookup } from 'dns';
 
 type CandidateQuery = Partial<User> & {
   $or?: {
@@ -42,7 +43,7 @@ export class UserRepository
     const filter = { email };
 
     const user = await this._model.findOne(filter);
- 
+
     //  console.log('user from repository ', email);
 
     if (!user) return null;
@@ -338,6 +339,7 @@ export class UserRepository
 
     return this.mapToRsumeEntity(resume);
   }
+
   private mapToRsumeEntity(doc: ResumeDocument): IResume {
     //   console.log('doc', doc);
 
@@ -349,6 +351,7 @@ export class UserRepository
       uploadedAt: doc.uploadedAt,
     };
   }
+
   async addProfileImage(
     userId: string,
     imageUrl: string
@@ -439,12 +442,21 @@ export class UserRepository
 
     const pipeline = [
       { $match: query },
+
       {
         $lookup: {
           from: 'educations',
           localField: 'education',
           foreignField: '_id',
           as: 'edudata',
+        },
+      },
+      {
+        $lookup: {
+          from: 'interviews',
+          localField: '_id',
+          foreignField: 'candidateId',
+          as: 'intData',
         },
       },
     ];
@@ -473,7 +485,7 @@ export class UserRepository
     };
   }
 
-  private mapToCandidateList(doc: any): User {
+  private mapToCandidateList(doc: any): User&{interviewCount:number} {
     return {
       id: doc._id.toString(),
       email: doc.email,
@@ -491,6 +503,7 @@ export class UserRepository
       title: doc.title ?? undefined,
       imageUrl: doc.imageUrl ?? undefined,
       name: doc.name ?? undefined,
+      interviewCount:doc.intData?.length??0,
       savedJobs: doc.savedJobs?.map((_id: Types.ObjectId) => _id.toString()),
     };
   }
@@ -537,17 +550,13 @@ export class UserRepository
     return this._model.countDocuments(matchStage);
   }
 
-  async getUserDistributionData(
-  
-  ): Promise<{ _id: UserRole; count: number }[]> {
-    
-
+  async getUserDistributionData(): Promise<{ _id: UserRole; count: number }[]> {
     const userdata = await this._model.aggregate([
-      { $match: { isBlocked:false} },
+      { $match: { isBlocked: false } },
       { $group: { _id: '$role', count: { $sum: 1 } } },
     ]);
-    console.log('repository userdata',userdata);
-    
+    console.log('repository userdata', userdata);
+
     return userdata;
   }
 }

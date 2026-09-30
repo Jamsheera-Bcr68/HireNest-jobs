@@ -4,6 +4,7 @@ export const API_END_POINTS = {
   SKILL_STATUS: '/skill-status',
   REQUESTED_SKILLS: '/requested',
   APPLICATION_STATUS: '/applications-status/:jobId',
+  CANDIDATE_APPLICATION_STATUS:`/applications-status`,
   APPLICATIONS: '/',
   APPLICATION: '/:applicationId',
   COMPANY_DATA: '/:companyId',

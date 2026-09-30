@@ -5,6 +5,7 @@ import { useEditProfileDetails } from '../../../hooks/user/candidate/profile/use
 import { X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useProfile } from '../../../hooks/user/candidate/profile/useProfile';
+import { useTheme } from '../../../../contexts/ThemeContext';
 
 const Skills = ({
   user,
@@ -59,17 +60,30 @@ const Skills = ({
       clearTimeout(timer);
     };
   }, [skillName]);
+  const {t}=useTheme()
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className={`
+      ${t.cardBg}
+      ${t.cardBorder}
+      border
+      rounded-lg
+      shadow-md
+      p-6
+    `}   >
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">Skills</h3>
+           <h3 className={`text-xl font-bold ${t.cardTitle}`}>Skills</h3>
 
         {!isAddSkill &&(
           <button
             onClick={() => setIsAddSkill(true)}
-            className="text-green-600 hover:text-green-700 text-sm font-medium transition-colors"
+            className={`
+            ${t.successText}
+            ${t.successHover}
+            text-sm font-medium
+            transition-colors
+          `}
           >
             Add Skill
           </button>
@@ -84,7 +98,11 @@ const Skills = ({
                 closeSkillInput();
               }
             }}
-            className="text-red-500 font-bold text-sm"
+            className={`
+            ${t.dangerText}
+            ${t.dangerHover}
+            text-sm font-medium
+          `}
           >
             Cancel
           </button>
@@ -97,13 +115,16 @@ const Skills = ({
           user.skills.map((skill) => (
             <span
               key={skill.id}
-              className="
-                flex items-center
-                bg-fuchsia-100 text-fuchsia-800
-                px-3 py-1.5
-                rounded-full
-                text-sm font-medium
-              "
+               className={`
+              flex items-center
+              ${t.skillChipBg}
+              ${t.skillChipText}
+              ${t.skillChipBorder}
+              border
+              px-3 py-1.5
+              rounded-full
+              text-sm font-medium
+            `}
             >
               {skill.skillName}
               <X
@@ -114,7 +135,7 @@ const Skills = ({
             </span>
           ))
         ) : (
-          <p className="text-gray-500 text-sm italic">
+          <p className={`${t.subheading} text-sm italic`}>
             Showcase your skills here...
           </p>
         )}
@@ -129,11 +150,33 @@ const Skills = ({
               setSkillName(e.target.value);
             }}
             placeholder="Enter a skill"
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                className={`
+            w-full
+            ${t.surface}
+${t.surfaceBorder}
+            border
+            rounded-md
+            px-3 py-2
+            text-sm
+            ${t.inputText}
+            ${t.placeholder}
+            focus:outline-none
+            ${t.inputFocusRing}
+          `}
           />
 
           {filteredSkills.length > 0 && (
-            <div className="absolute bg-white shadow-md w-1/4 border rounded-md z-10">
+            <div className={`
+              absolute
+              ${t.dropdownBg}
+              ${t.dropdownBorder}
+              shadow-md
+              w-1/4
+              border
+              rounded-md
+              z-10
+              overflow-hidden
+            `}>
               {filteredSkills.map((skill) => (
                 <div
                   key={skill.id}
@@ -141,7 +184,15 @@ const Skills = ({
                     setSkillName(skill.skillName);
                     selectSkill(skill.id);
                   }}
-                  className="p-2 hover:bg-gray-100 border cursor-pointer"
+                        className={`
+                  ${t.dropdownHover}
+                  ${t.inputText}
+                  p-2
+                  border-b
+                  ${t.dropdownBorder}
+                  cursor-pointer
+                  text-sm
+                `}
                 >
                   {skill.skillName}
                 </div>

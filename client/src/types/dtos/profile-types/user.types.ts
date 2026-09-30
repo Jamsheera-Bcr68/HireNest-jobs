@@ -50,6 +50,7 @@ export interface UserProfileType {
   applicationCount?: number;
   shortListedCount?: number;
   offeredCount?: number;
+  requestedCompany?:CompanyProfileType
 }
 
 export interface CompanyProfileType {
@@ -71,14 +72,14 @@ export interface CompanyProfileType {
   mission: string;
   vision: string;
   jobCount?: string;
-  reapplyCount:number
-  reapplyDetails:ReApplyType[]
+  reapplyCount: number;
+  applyDetails: ApplyType[];
   culture: string;
   status: StatusType;
   benefits: string[] | [];
   about: string;
   createdAt: string;
-  reasonForReject:string
+  reasonForReject: string;
   joinedAt?: string;
   socialMediaLinks: ISocialLinks;
   document: { type: string; file: string };
@@ -95,10 +96,11 @@ export type CompanyFieldUpdateType = {
   benefits?: string[] | [];
 };
 
- export type ReApplyType={
-
-  date: Date;
-  status: StatusType;
+export type ApplyType = {
+  submittedAt: Date;
+  status: RegistrationStatus;
   rejectedReason?: string;
-}
-
+  reviewedAt?: string;
+  attempt: number;
+};
+export type RegistrationStatus = 'approved' | 'rejected' | 'pending';

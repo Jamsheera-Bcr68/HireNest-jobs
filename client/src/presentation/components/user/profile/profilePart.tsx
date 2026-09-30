@@ -1,6 +1,6 @@
 import BasicDataPart from './BasicdataPart';
 import { useProfile } from '../../../hooks/user/candidate/profile/useProfile';
-
+import CompanyRegistrationDetails from '../employer/profile/Register';
 import { useNavigate } from 'react-router-dom';
 import Resume from './Resume';
 
@@ -8,6 +8,8 @@ import AboutMe from './AboutMe';
 import Skills from './Skills';
 import Experience from './Experience';
 import Education from './Education';
+import { useTheme } from '../../../../contexts/ThemeContext';
+
 
 const ProfilePart = () => {
   const navigate = useNavigate();
@@ -15,12 +17,12 @@ const ProfilePart = () => {
 
   const { user, setUser} = useProfile();
   console.log('user', user);
-
+const {t}=useTheme()
  
 
   if (!user) return null;
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-5">
+      <div className={`container mx-auto px-4 sm:px-6 lg:px-8 py-5 ${t.pageText}`}>
       {user.isRequested &&
         user.company &&
         user.company.status === 'rejected' && (
@@ -77,7 +79,7 @@ const ProfilePart = () => {
           <Resume
             resumes={
               user.resumes.length
-                ? user.resumes.sort(
+                ? [...user.resumes].sort(
                     (r1, r2) =>
                       new Date(r2.uploadedAt).getTime() -
                       new Date(r1.uploadedAt).getTime()
@@ -86,6 +88,7 @@ const ProfilePart = () => {
             }
             onUserUpdate={setUser}
           />
+          {user&&user.requestedCompany&&(<CompanyRegistrationDetails company={user.requestedCompany} />)}
         </div>
       </div>
     </div>

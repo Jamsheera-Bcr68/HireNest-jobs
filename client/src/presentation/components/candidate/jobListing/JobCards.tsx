@@ -97,7 +97,7 @@ function JobCards({
               <JobCard
                 handleSave={handleSave}
                 handleUnSave={handleUnSave}
-                onApply={onApply}
+                
                 job={job}
               />
             </div>
@@ -314,21 +314,68 @@ export function JobErrorState({ onRetry }:{onRetry:()=>void}) {
   );
 }
 
-export function EmptyJobsState({ onClear }:{onClear:()=>void}) {
-  const t=THEME_TOKENS.light
+// export function EmptyJobsState({ onClear,mode }:{onClear:()=>void,mode?:'saved'|'all'}) {
+//   const t=THEME_TOKENS.light
+//   return (
+//     <div className="col-span-full flex flex-col items-center justify-center text-center py-16 sm:py-20 px-6">
+//       <div className={cx("h-16 w-16 rounded-2xl border flex items-center justify-center mb-5", t.emptyIconBg, t.emptyIconBorder)}>
+//         <FolderSearch className={cx("h-7 w-7", t.emptyIconText)} />
+//       </div>
+//       <h3 className={cx("text-lg font-semibold", t.cardTitle)}>No jobs found</h3>
+//       <p className={cx("mt-1.5 text-sm max-w-sm", t.subheading)}>Try adjusting your search or removing some filters.</p>
+//       <button
+//         onClick={onClear}
+//         className="mt-5 inline-flex items-center gap-1.5 rounded-xl bg-purple-600 text-white text-sm font-medium px-4 py-2.5 hover:bg-purple-700 transition-colors shadow-md"
+//       >
+//         Clear all filters
+//       </button>
+//     </div>
+//   );
+// }
+
+export function EmptyJobsState({
+  onClear,
+  mode = 'all',
+  hasActiveFilters = true,
+}: {
+  onClear: () => void;
+  mode?: 'saved' | 'all';
+  hasActiveFilters?: boolean;
+}) {
+  const t = THEME_TOKENS.light;
+
+  const isSavedEmpty = mode === 'saved' && !hasActiveFilters;
+
   return (
     <div className="col-span-full flex flex-col items-center justify-center text-center py-16 sm:py-20 px-6">
-      <div className={cx("h-16 w-16 rounded-2xl border flex items-center justify-center mb-5", t.emptyIconBg, t.emptyIconBorder)}>
-        <FolderSearch className={cx("h-7 w-7", t.emptyIconText)} />
-      </div>
-      <h3 className={cx("text-lg font-semibold", t.cardTitle)}>No jobs found</h3>
-      <p className={cx("mt-1.5 text-sm max-w-sm", t.subheading)}>Try adjusting your search or removing some filters.</p>
-      <button
-        onClick={onClear}
-        className="mt-5 inline-flex items-center gap-1.5 rounded-xl bg-purple-600 text-white text-sm font-medium px-4 py-2.5 hover:bg-purple-700 transition-colors shadow-md"
+      <div
+        className={cx(
+          'h-16 w-16 rounded-2xl border flex items-center justify-center mb-5',
+          t.emptyIconBg,
+          t.emptyIconBorder
+        )}
       >
-        Clear all filters
-      </button>
+        <FolderSearch className={cx('h-7 w-7', t.emptyIconText)} />
+      </div>
+
+      <h3 className={cx('text-lg font-semibold', t.cardTitle)}>
+        {isSavedEmpty ? 'No saved jobs yet' : 'No jobs found'}
+      </h3>
+
+      <p className={cx('mt-1.5 text-sm max-w-sm', t.subheading)}>
+        {isSavedEmpty
+          ? 'Jobs you save will show up here. Browse listings and tap the save icon to add one.'
+          : 'Try adjusting your search or removing some filters.'}
+      </p>
+
+      {!isSavedEmpty && (
+        <button
+          onClick={onClear}
+          className="mt-5 inline-flex items-center gap-1.5 rounded-xl bg-purple-600 text-white text-sm font-medium px-4 py-2.5 hover:bg-purple-700 transition-colors shadow-md"
+        >
+          Clear all filters
+        </button>
+      )}
     </div>
   );
 }

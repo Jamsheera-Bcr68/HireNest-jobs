@@ -114,6 +114,17 @@ function JobListingContainer({ mode }: Props) {
   const user = useSelector((state: StateType) => state.auth.user);
   const dispatch = useDispatch();
 
+
+function isFilterActive(value: unknown): boolean {
+  if (value == null) return false;
+  if (typeof value === 'string') return value.trim() !== '';
+  if (typeof value === 'object') {
+    return Object.values(value).some(isFilterActive);
+  }
+  return Boolean(value);
+}
+
+
   const [reportForm, setReportForm] =
     useState<ReportFormType>(initialReportForm);
 
@@ -407,42 +418,7 @@ function JobListingContainer({ mode }: Props) {
               setSelectedTypes={setSelectedTypes}
             />
 
-            {/* demo controls — not part of the real product, just for showcasing states */}
-            {/* <div className="hidden md:flex items-center gap-1.5 text-xs">
-              <button
-                onClick={simulateLoading}
-                className={cx(
-                  'px-2.5 py-1.5 rounded-lg border',
-                  t.filterBorder,
-                  t.footerText,
-                  'hover:text-purple-600'
-                )}
-              >
-                Preview loading
-              </button>
-              <button
-                onClick={() => setViewState('empty')}
-                className={cx(
-                  'px-2.5 py-1.5 rounded-lg border',
-                  t.filterBorder,
-                  t.footerText,
-                  'hover:text-purple-600'
-                )}
-              >
-                Preview empty
-              </button>
-              <button
-                onClick={() => setViewState('error')}
-                className={cx(
-                  'px-2.5 py-1.5 rounded-lg border',
-                  t.filterBorder,
-                  t.footerText,
-                  'hover:text-purple-600'
-                )}
-              >
-                Preview error
-              </button>
-            </div> */}
+           
           </div>
           <ActiveFilterChips
             chips={activeChips}
@@ -471,7 +447,7 @@ function JobListingContainer({ mode }: Props) {
           )}
 
           {viewState === 'loaded' && jobs.length === 0 && (
-            <EmptyJobsState onClear={clearAll} />
+            <EmptyJobsState onClear={clearAll} mode={mode}  hasActiveFilters={Object.values(filter).some(isFilterActive)} />
           )}
 
           {viewState === 'loaded' &&

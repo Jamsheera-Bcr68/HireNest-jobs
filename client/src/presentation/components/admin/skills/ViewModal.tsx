@@ -1,6 +1,9 @@
+import { useSelector } from 'react-redux';
 import { type SkillType } from '../../../../types/dtos/skill.types';
 
+
 import { useEffect } from 'react';
+import type { RootState } from '../../../../redux/store';
 type Props = {
   isOpen: boolean;
   skill: SkillType | null;
@@ -22,6 +25,7 @@ function DetailRow({
   );
 }
 export default function ViewSkillModal({ isOpen, skill, onClose }: Props) {
+  const role=useSelector((state:RootState)=>state.auth.user).role
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -101,7 +105,7 @@ export default function ViewSkillModal({ isOpen, skill, onClose }: Props) {
         <div className="flex justify-end px-6 py-4 border-t">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm"
+            className={`px-4 py-2  text-white rounded-lg text-sm ${role==='admin'?'bg-indigo-600 hover:bg-indigo-700':'bg-fuchsia-800 hover:bg-fuchsia-600'}`}
           >
             Close
           </button>

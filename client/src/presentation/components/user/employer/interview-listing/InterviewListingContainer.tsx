@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useInterviews } from '../../../../hooks/user/useInterview';
 import AddReasonModal from '../../../admin/jobs/AddReasonModal';
 
-import { Eye, XCircle, Calendar, CheckCircle, PlusCircle } from 'lucide-react';
+import { Eye, XCircle, Calendar, CheckCircle, PlusCircle, Video, CalendarDays, Clock } from 'lucide-react';
 import { interviewStatusStyles } from '../../../../hooks/user/useInterview';
 import HeroSection from '../../../admin/HeroSection';
 import StatusCards from '../../../admin/StatusCards';
@@ -130,172 +130,415 @@ function InterviewListingContainer() {
     getInterviews();
   }, [filter, page, limit, sortby]);
 
-  const interviewColumns = [
-    {
-      key: 'jobTitle',
-      label: 'Job Role',
-      render: (i: InterviewDto) => (
-        <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 text-sm inline-block whitespace-nowrap max-w-[180px] overflow-hidden text-ellipsis">
-          <span title={i.jobTitle}>{i.jobTitle}</span>
-        </div>
-      ),
-    },
+  // const interviewColumns = [
+  //   {
+  //     key: 'jobTitle',
+  //     label: 'Job Role',
+  //     render: (i: InterviewDto) => (
+  //       <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 text-sm inline-block whitespace-nowrap max-w-[180px] overflow-hidden text-ellipsis">
+  //         <span title={i.jobTitle}>{i.jobTitle}</span>
+  //       </div>
+  //     ),
+  //   },
 
-    {
-      key: 'candidateName',
-      label: 'Candidate',
-      render: (i: InterviewDto) => (
-        <span className="text-slate-700 whitespace-nowrap">{i.name}</span>
-      ),
-    },
+  //   {
+  //     key: 'candidateName',
+  //     label: 'Candidate',
+  //     render: (i: InterviewDto) => (
+  //       <span className="text-slate-700 whitespace-nowrap">{i.name}</span>
+  //     ),
+  //   },
 
-    {
-      key: 'mode',
-      label: 'Mode',
-      render: (i: InterviewDto) => (
-        <span className="text-slate-700 capitalize whitespace-nowrap">
-          {i.mode}
+  //   {
+  //     key: 'mode',
+  //     label: 'Mode',
+  //     render: (i: InterviewDto) => (
+  //       <span className="text-slate-700 capitalize whitespace-nowrap">
+  //         {i.mode}
+  //       </span>
+  //     ),
+  //   },
+  //   {
+  //     key: 'createdAt',
+  //     label: 'Scheduled',
+  //     render: (i: InterviewDto) => (
+  //       <span className="text-slate-700 capitalize whitespace-nowrap">
+  //         {i.createdAt}
+  //       </span>
+  //     ),
+  //   },
+
+  //   // {
+  //   //   key: 'scheduledAt',
+  //   //   label: 'Date',
+  //   //   render: (i: InterviewDto) => (
+  //   //     <span className="text-slate-700 whitespace-nowrap">
+  //   //       {i.scheduledAt.date}
+  //   //     </span>
+  //   //   ),
+  //   // },
+
+  //   {
+  //     key: 'time',
+  //     label: 'Time',
+  //     render: (i: InterviewDto) => (
+  //       <span className="text-slate-700 whitespace-nowrap">
+  //         {to12Hour(i.scheduledAt.time)}
+  //       </span>
+  //     ),
+  //   },
+
+  //   {
+  //     key: 'status',
+  //     label: 'Status',
+  //     render: (i: InterviewDto) => (
+  //       <span
+  //         className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${interviewStatusStyles[i.status]}`}
+  //       >
+  //         {i.status}
+  //       </span>
+  //     ),
+  //   },
+
+  //   {
+  //     key: 'result',
+  //     label: 'Result',
+  //     render: (i: InterviewDto) => {
+  //       let classes =
+  //         'text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap';
+
+  //       if (i.status === 'cancelled') {
+  //         classes += ' bg-gray-100 text-gray-400';
+  //       } else if (i.result === 'passed') {
+  //         classes += ' bg-green-50 text-green-600';
+  //       } else if (i.result === 'failed') {
+  //         classes += ' bg-red-50 text-red-600';
+  //       } else {
+  //         classes += ' bg-amber-50 text-amber-600';
+  //       }
+
+  //       return (
+  //         <span className={classes}>
+  //           {i.status === 'cancelled' ? '------' : (i.result ?? 'pending')}
+  //         </span>
+  //       );
+  //     },
+  //   },
+
+  //   {
+  //     key: 'actions',
+  //     label: 'Actions',
+  //     render: (i: InterviewDto) => (
+  //       <div className="flex items-center gap-2 whitespace-nowrap">
+  //         {/* View */}
+  //         <button
+  //           onClick={() => handleView(i.id)}
+  //           className="text-indigo-600 hover:text-indigo-800"
+  //           title="View"
+  //         >
+  //           <Eye size={18} />
+  //         </button>
+
+  //         {/* Reschedule */}
+  //         {i.status === 'scheduled' && (
+  //           <button
+  //             onClick={() => {
+  //               setSelected(i);
+  //               setRescheduleModal(true);
+  //             }}
+  //             className="text-yellow-600 hover:text-yellow-800"
+  //             title="Reschedule"
+  //           >
+  //             <Calendar size={18} />
+  //           </button>
+  //         )}
+
+  //         {/* Mark Completed */}
+  //         {i.status === 'scheduled' && (
+  //           <button
+  //             onClick={() => {
+  //               setSelected(i);
+  //               setResultModal(true);
+  //             }}
+  //             className="text-green-600 hover:text-green-800"
+  //             title="Mark Completed"
+  //           >
+  //             <CheckCircle size={18} />
+  //           </button>
+  //         )}
+
+  //         {/* Cancel */}
+  //         {i.status === 'scheduled' && (
+  //           <button
+  //             onClick={() => {
+  //               setSelectedId(i.id);
+  //               setCancelModal(true);
+  //             }}
+  //             className="text-red-600 hover:text-red-800"
+  //             title="Cancel"
+  //           >
+  //             <XCircle size={18} />
+  //           </button>
+  //         )}
+  //         {i.status === 'completed' && !i.result && (
+  //           <button
+  //             onClick={() => {
+  //               setSelectedId(i.id);
+  //               setResultModal(true);
+  //             }}
+  //             className="text-green-600 hover:text-green-800"
+  //             title="Update Result"
+  //           >
+  //             <PlusCircle size={18} />
+  //           </button>
+  //         )}
+  //       </div>
+  //     ),
+  //   },
+  // ];
+
+  const interviewColumns: ColumnType<InterviewDto>[] = [
+  {
+    key: 'jobTitle',
+    label: 'Job Role',
+    mobile: 'primary',
+    width: '20%',
+    render: (i: InterviewDto) => (
+      <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 text-sm inline-block whitespace-nowrap max-w-[180px] overflow-hidden text-ellipsis">
+        <span title={i.jobTitle}>{i.jobTitle}</span>
+      </div>
+    ),
+    mobileRender: (i: InterviewDto) => (
+      <div className="min-w-0 w-full">
+        <p className="font-semibold text-slate-800 truncate">{i.jobTitle}</p>
+        <p className="text-xs text-slate-500 truncate mt-0.5">{i.name}</p>
+      </div>
+    ),
+  },
+  {
+    key: 'candidateName',
+    label: 'Candidate',
+    width: '14%',
+    render: (i: InterviewDto) => (
+      <span className="text-slate-700 whitespace-nowrap">{i.name}</span>
+    ),
+  },
+  {
+    key: 'mode',
+    label: 'Mode',
+    width: '9%',
+    render: (i: InterviewDto) => (
+      <span className="flex items-center gap-1 text-slate-700 capitalize whitespace-nowrap">
+       
+        {i.mode}
+      </span>
+    ),
+  },
+ 
+  {
+    key: 'createdAt',
+    label: 'Scheduled',
+    width: '11%',
+    render: (i: InterviewDto) => (
+      <span className="flex items-center gap-1 text-slate-700 capitalize whitespace-nowrap">
+        
+        {new Date(i.createdAt).toLocaleDateString()}
+      </span>
+    ),
+  }, {
+    key: 'createdAt',
+    label: 'Date',
+    width: '11%',
+    render: (i: InterviewDto) => (
+      <span className="flex items-center gap-1 text-slate-700 capitalize whitespace-nowrap">
+        
+        {new Date(i.scheduledAt.date).toLocaleDateString()}
+
+        
+      </span>
+    ),
+  },
+  {
+    key: 'time',
+    label: 'Time',
+    width: '8%',
+    render: (i: InterviewDto) => (
+      <span className="flex items-center gap-1 text-slate-700 whitespace-nowrap">
+        <Clock size={13} />
+        {to12Hour(i.scheduledAt.time)}
+      </span>
+    ),
+  },
+  {
+    key: 'status',
+    label: 'Status',
+    mobile: 'status',
+    width: '10%',
+    render: (i: InterviewDto) => (
+      <span
+        className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${interviewStatusStyles[i.status]}`}
+      >
+        {i.status}
+      </span>
+    ),
+  },
+  {
+    key: 'result',
+    label: 'Result',
+    width: '10%',
+    render: (i: InterviewDto) => {
+      let classes = 'text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap';
+
+      if (i.status === 'cancelled') {
+        classes += ' bg-gray-100 text-gray-400';
+      } else if (i.result === 'passed') {
+        classes += ' bg-green-50 text-green-600';
+      } else if (i.result === 'failed') {
+        classes += ' bg-red-50 text-red-600';
+      } else {
+        classes += ' bg-amber-50 text-amber-600';
+      }
+
+      return (
+        <span className={classes}>
+          {i.status === 'cancelled' ? '------' : (i.result ?? 'pending')}
         </span>
-      ),
+      );
     },
-    {
-      key: 'createdAt',
-      label: 'Scheduled',
-      render: (i: InterviewDto) => (
-        <span className="text-slate-700 capitalize whitespace-nowrap">
-          {i.createdAt}
-        </span>
-      ),
-    },
-
-    // {
-    //   key: 'scheduledAt',
-    //   label: 'Date',
-    //   render: (i: InterviewDto) => (
-    //     <span className="text-slate-700 whitespace-nowrap">
-    //       {i.scheduledAt.date}
-    //     </span>
-    //   ),
-    // },
-
-    {
-      key: 'time',
-      label: 'Time',
-      render: (i: InterviewDto) => (
-        <span className="text-slate-700 whitespace-nowrap">
-          {to12Hour(i.scheduledAt.time)}
-        </span>
-      ),
-    },
-
-    {
-      key: 'status',
-      label: 'Status',
-      render: (i: InterviewDto) => (
-        <span
-          className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${interviewStatusStyles[i.status]}`}
+  },
+  {
+    key: 'actions',
+    label: 'Actions',
+    mobile: 'actions',
+    width: '18%',
+    render: (i: InterviewDto) => (
+      <div className="flex items-center gap-2 whitespace-nowrap">
+        <button
+          onClick={() => handleView(i.id)}
+          className="text-fuchsia-800 hover:text-fuchsia-600"
+          title="View"
         >
-          {i.status}
-        </span>
-      ),
-    },
+          <Eye size={18} />
+        </button>
 
-    {
-      key: 'result',
-      label: 'Result',
-      render: (i: InterviewDto) => {
-        let classes =
-          'text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap';
-
-        if (i.status === 'cancelled') {
-          classes += ' bg-gray-100 text-gray-400';
-        } else if (i.result === 'passed') {
-          classes += ' bg-green-50 text-green-600';
-        } else if (i.result === 'failed') {
-          classes += ' bg-red-50 text-red-600';
-        } else {
-          classes += ' bg-amber-50 text-amber-600';
-        }
-
-        return (
-          <span className={classes}>
-            {i.status === 'cancelled' ? '------' : (i.result ?? 'pending')}
-          </span>
-        );
-      },
-    },
-
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: (i: InterviewDto) => (
-        <div className="flex items-center gap-2 whitespace-nowrap">
-          {/* View */}
+        {i.status === 'scheduled' && (
           <button
-            onClick={() => handleView(i.id)}
-            className="text-indigo-600 hover:text-indigo-800"
-            title="View"
+            onClick={() => {
+              setSelected(i);
+              setRescheduleModal(true);
+            }}
+            className="text-yellow-600 hover:text-yellow-800"
+            title="Reschedule"
           >
-            <Eye size={18} />
+            <Calendar size={18} />
           </button>
+        )}
 
-          {/* Reschedule */}
-          {i.status === 'scheduled' && (
-            <button
-              onClick={() => {
-                setSelected(i);
-                setRescheduleModal(true);
-              }}
-              className="text-yellow-600 hover:text-yellow-800"
-              title="Reschedule"
-            >
-              <Calendar size={18} />
-            </button>
-          )}
+        {i.status === 'scheduled' && (
+          <button
+            onClick={() => {
+              setSelected(i);
+              setResultModal(true);
+            }}
+            className="text-green-600 hover:text-green-800"
+            title="Mark Completed"
+          >
+            <CheckCircle size={18} />
+          </button>
+        )}
 
-          {/* Mark Completed */}
-          {i.status === 'scheduled' && (
-            <button
-              onClick={() => {
-                setSelected(i);
-                setResultModal(true);
-              }}
-              className="text-green-600 hover:text-green-800"
-              title="Mark Completed"
-            >
-              <CheckCircle size={18} />
-            </button>
-          )}
+        {i.status === 'scheduled' && (
+          <button
+            onClick={() => {
+              setSelectedId(i.id);
+              setCancelModal(true);
+            }}
+            className="text-red-600 hover:text-red-800"
+            title="Cancel"
+          >
+            <XCircle size={18} />
+          </button>
+        )}
 
-          {/* Cancel */}
-          {i.status === 'scheduled' && (
-            <button
-              onClick={() => {
-                setSelectedId(i.id);
-                setCancelModal(true);
-              }}
-              className="text-red-600 hover:text-red-800"
-              title="Cancel"
-            >
-              <XCircle size={18} />
-            </button>
-          )}
-          {i.status === 'completed' && !i.result && (
-            <button
-              onClick={() => {
-                setSelectedId(i.id);
-                setResultModal(true);
-              }}
-              className="text-green-600 hover:text-green-800"
-              title="Update Result"
-            >
-              <PlusCircle size={18} />
-            </button>
-          )}
-        </div>
-      ),
-    },
-  ];
+        {i.status === 'completed' && !i.result && (
+          <button
+            onClick={() => {
+              setSelectedId(i.id);
+              setResultModal(true);
+            }}
+            className="text-green-600 hover:text-green-800"
+            title="Update Result"
+          >
+            <PlusCircle size={18} />
+          </button>
+        )}
+      </div>
+    ),
+    mobileRender: (i: InterviewDto) => (
+      <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
+        <button
+          onClick={() => handleView(i.id)}
+          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+        >
+          <Eye size={14} />
+          View
+        </button>
+
+        {i.status === 'scheduled' && (
+          <button
+            onClick={() => {
+              setSelected(i);
+              setRescheduleModal(true);
+            }}
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-yellow-600 bg-yellow-50 hover:bg-yellow-100 active:scale-95 border border-yellow-200 rounded-full transition-all"
+          >
+            <Calendar size={14} />
+            Reschedule
+          </button>
+        )}
+
+        {i.status === 'scheduled' && (
+          <button
+            onClick={() => {
+              setSelected(i);
+              setResultModal(true);
+            }}
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-600 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+          >
+            <CheckCircle size={14} />
+            Complete
+          </button>
+        )}
+
+        {i.status === 'scheduled' && (
+          <button
+            onClick={() => {
+              setSelectedId(i.id);
+              setCancelModal(true);
+            }}
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+          >
+            <XCircle size={14} />
+            Cancel
+          </button>
+        )}
+
+        {i.status === 'completed' && !i.result && (
+          <button
+            onClick={() => {
+              setSelectedId(i.id);
+              setResultModal(true);
+            }}
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-600 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+          >
+            <PlusCircle size={14} />
+            Add Result
+          </button>
+        )}
+      </div>
+    ),
+  },
+];
 
   const handleStatusChange = async (
     status: InterviewStatusType,
@@ -346,13 +589,13 @@ function InterviewListingContainer() {
 
   const updateInterveiw = (data: Partial<interviewDetailDto>) => {
     setInterview((prev) => {
-      if (!prev) return prev; // 👈 prevent null case
-
+      if (!prev) return prev; 
       return {
         ...prev,
         ...data,
       };
     });
+   if(interview) setInterviews(interviews.map((i)=>i.id!==interview.id?i:{...i,...data}))
   };
 
   const handleAddResult = async (values: {
@@ -381,9 +624,7 @@ function InterviewListingContainer() {
     }
   };
 
-  const resetFilter=()=>{
-    
-  }
+ 
 
   return (
     <>

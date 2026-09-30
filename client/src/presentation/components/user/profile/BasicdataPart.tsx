@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { type BasicDataProps } from '../../../../types/prop-types/profileProps';
 import type { StateType } from '../../../../constants/types/user';
+import { useTheme } from '../../../../contexts/ThemeContext';
 
 const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
   const BASE_URL = import.meta.env.VITE_BACKEND_URL;
@@ -25,14 +26,31 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
     setOpenEditModal,
     handleEditProfile,
   } = useEditBasicData();
+  const { t } = useTheme();
   return (
     <div className="lg:col-span-1">
-      <div className="bg-white  rounded-lg shadow-md p-6">
+      <div
+        className={`
+    ${t.cardBg}
+    ${t.cardBorder}
+    border
+    rounded-lg
+    shadow-md
+    p-6
+  `}
+      >
         {/* Profile Picture */}
         <div className="flex flex-col items-center">
           <div
             onClick={handleImageClick}
-            className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center text-gray-600"
+           className={`
+  w-32 h-32
+  ${t.skeletonBg}
+  rounded-full
+  flex items-center justify-center
+  ${t.iconMuted}
+  overflow-hidden
+`}
           >
             <img
               onError={(e) => {
@@ -53,11 +71,11 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
 
         {/* Basic Info */}
         <div className="mt-6 text-center">
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className={`text-2xl font-bold ${t.cardTitle}`}>
             {user?.name || ''}
           </h2>
-          <p className="text-gray-600 mt-1">{user?.title || ''}</p>
-          <p className="text-gray-500 text-sm mt-2">
+         <p className={`${t.subheading} mt-1`}>{user?.title || ''}</p>
+         <p className={`${t.iconMuted} text-sm mt-2`}>
             {user?.address?.place || ''},{user?.address?.state || ''},
             {user?.address?.country || ''}
           </p>
@@ -65,14 +83,24 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
 
         {/* Quick Stats */}
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <div className="bg-fuchsia-50 rounded-lg p-3 text-center">
-            <p className="text-2xl font-bold text-fuchsia-800">{user?.applicationCount??0}</p>
-            <p className="text-gray-600 text-sm">Applications</p>
-          </div>
-          <div className="bg-green-50 rounded-lg p-3 text-center">
-            <p className="text-2xl font-bold text-green-600">{user?.interviewsCount??0}</p>
-            <p className="text-gray-600 text-sm">Interviews</p>
-          </div>
+          <div className={`${t.metaBadgeBg} rounded-lg p-3 text-center`}>
+  <p className={`text-2xl font-bold ${t.metaBadgeText}`}>
+    {user?.applicationCount ?? 0}
+  </p>
+
+  <p className={`${t.subheading} text-sm`}>
+    Applications
+  </p>
+</div>
+          <div className={`${t.statSuccessBg} rounded-lg p-3 text-center`}>
+  <p className={`text-2xl font-bold ${t.statSuccessText}`}>
+    {user?.interviewsCount ?? 0}
+  </p>
+
+  <p className={`${t.subheading} text-sm`}>
+    Interviews
+  </p>
+</div>
         </div>
 
         {/* Contact Info */}
@@ -91,7 +119,7 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
               />
             </svg>
-            <span className="text-gray-700 text-sm">{user?.email}</span>
+           <span className={`${t.inputText} text-sm`}>{user?.email}</span>
           </div>
           <div className="flex items-center space-x-3">
             <svg
@@ -221,14 +249,30 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
         {/* Edit Profile Button */}
         <button
           onClick={handleEditProfile}
-          className="w-full mt-6 bg-white text-fuchsia-700 hover:bg-fuchsia-300 border border-fuchsia-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          className={`
+  w-full mt-6
+  ${t.secondaryButton}
+  ${t.secondaryButtonHover}
+  px-4 py-2
+  rounded-lg
+  text-sm font-medium
+  transition-colors
+`}
         >
           Edit Profile
         </button>
         <button
           onClick={handleChangePassword}
-          className="w-full mt-6 bg-white text-fuchsia-700 hover:bg-fuchsia-300 border border-fuchsia-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-         >
+          className={`
+  w-full mt-6
+  ${t.secondaryButton}
+  ${t.secondaryButtonHover}
+  px-4 py-2
+  rounded-lg
+  text-sm font-medium
+  transition-colors
+`}
+        >
           Change Password
         </button>
       </div>

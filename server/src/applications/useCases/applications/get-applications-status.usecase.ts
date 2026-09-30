@@ -14,7 +14,7 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 
 export interface IGetApplicationStatusUsecase {
   execute(
-    filter: { jobId: string; userId: string },
+    filter: { jobId?: string; userId: string },
     role: UserRole
   ): Promise<ApplicationStatsCardType>;
 }

@@ -5,7 +5,7 @@ import {
 } from '../database/models/company.model';
 import { Mongoose, PipelineStage } from 'mongoose';
 import { StatusEnum } from '../../domain/enums/status.enum';
-import { IndustryType } from '../../domain/types/company-profile.types';
+import { IApplyDetails, IndustryType } from '../../domain/types/company-profile.types';
 import { GenericRepository } from './generic.repository';
 import { Company } from '../../domain/entities/company.entity';
 import {
@@ -147,10 +147,12 @@ export class CompanyRepository
         id.toString()
       ),
       reapplyCount: doc.reapplyCount,
-      reapplyDetails: doc.reapplyDetails.map((app) => ({
-        date: app.date,
+      applyDetails: doc.applyDetails.map((app:IApplyDetails) => ({
+        submittedAt: app.submittedAt,
+        reviewedAt:app.reviewedAt,
         status: app.status,
         rejectedReason: app.rejectedReason,
+        attempt:app.attempt
       })),
       reasonForSuspend: doc.reasonForSuspend,
       reasonForReject: doc.reasonForReject,
@@ -174,8 +176,8 @@ export class CompanyRepository
     if (entity.about !== undefined) data.about = entity.about;
     if (entity.reapplyCount !== undefined)
       data.reapplyCount = entity.reapplyCount;
-    if (entity.reapplyDetails !== undefined)
-      data.reapplyDetails = entity.reapplyDetails;
+    if (entity.applyDetails !== undefined)
+      data.applyDetails = entity.applyDetails;
 
     if (entity.startedIn !== undefined)
       data.startedIn = Number(entity.startedIn);

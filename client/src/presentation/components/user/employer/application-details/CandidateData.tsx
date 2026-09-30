@@ -56,14 +56,15 @@ function CandidateData({
               Send Message
             </button>
           )}
-          <button
+          {application.status!=='rejected'&& <button
             onClick={!['pending','reviewed','shortListed','rejected'].includes(application.status)?()=>onViewClick(true):onScheduleClick}
             className="px-4 py-2 text-sm bg-fuchsia-800 text-white rounded-lg hover:bg-fuchsia-600 font-medium transition"
           >
             {application.status === 'interviewScheduled'
               ? 'View Interview'
               : 'Schedule Interview'}
-          </button>
+          </button>}
+         
           <button
             disabled={application.status === 'rejected'}
             onClick={() => updateStatus('rejected')}

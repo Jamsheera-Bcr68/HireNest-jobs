@@ -38,7 +38,7 @@ export default function AddReasonModal<T>({
   return (
     <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
       <div className="bg-white rounded-xl shadow-xl p-6 w-[360px]">
-        <h2 className="text-lg font-semibold mb-2">Plase enter a reason </h2>
+        <h2 className="text-lg font-semibold mb-2">Please enter a reason </h2>
 
         <p className="text-sm text-gray-500 mb-4">
           If you really want to {action} this {item} enter a reason

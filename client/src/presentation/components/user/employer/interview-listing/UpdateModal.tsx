@@ -146,7 +146,7 @@ export default function InterviewFeedbackModal({
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="text-xs px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+              className="text-xs px-4 py-2 rounded-lg bg-fuchsia-800 text-white hover:bg-fuchsia-600 disabled:opacity-50"
             >
               {loading ? 'Saving...' : 'Save'}
             </button>

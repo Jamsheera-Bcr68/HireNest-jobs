@@ -1,5 +1,5 @@
 import mongoose, { Schema, Types, model } from 'mongoose';
-import { StatusEnum } from '../../../domain/enums/status.enum';
+import { RegisterStatusEnum, StatusEnum } from '../../../domain/enums/status.enum';
 
 import {
   Document_Types,
@@ -14,7 +14,7 @@ import {
   ISocialMediaLinks,
 } from '../../../domain/values/profile-types';
 
-import { IReapplyDetail } from '../../../domain/types/company-profile.types';
+import { IApplyDetails } from '../../../domain/types/company-profile.types';
 
 export interface ICompanyDocument {
   _id: mongoose.Types.ObjectId;
@@ -36,9 +36,9 @@ export interface ICompanyDocument {
   isAgreed: boolean;
   isConsent: boolean;
   logoUrl: string;
-
+reviewedAt?:Date
   reapplyCount: number;
-  reapplyDetails: IReapplyDetail[];
+  applyDetails: IApplyDetails[];
 
   requestedSkills: Types.ObjectId[] | [];
   industry: IndustryType;
@@ -65,6 +65,7 @@ const companySchema = new Schema<ICompanyDocument>(
     userId: Types.ObjectId,
     startedIn: Number,
     isAgreed: Boolean,
+    reviewedAt:Date,
     isConsent: Boolean,
     status: {
       type: String,
@@ -106,16 +107,18 @@ const companySchema = new Schema<ICompanyDocument>(
     },
 
     reapplyCount: { type: Number, default: 0 },
-    reapplyDetails: [
+    applyDetails: [
       {
-        date: {
+        submittedAt: {
           type: Date,
           default: new Date(),
         },
         status: {
           type: String,
-          enum: Object.values(StatusEnum),
+          enum: Object.values(RegisterStatusEnum),
         },
+        reviewedAt:Date,
+        attempt:Number,
         rejectedReason: String,
       },
     ],

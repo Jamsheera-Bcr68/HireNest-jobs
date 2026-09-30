@@ -23,14 +23,14 @@ export default function EditJobModal({
   return (
     <div
       onClick={(e) => e.target === e.currentTarget && onClose()}
-      className="fixed inset-0 z-8 flex items-center justify-center px-4 bg-black/40 backdrop-blur-sm"
+      className="fixed inset-0 z-[60]  flex items-center justify-center px-4 bg-black/40 backdrop-blur-sm"
     >
       <div
         className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden"
         style={{ maxHeight: 'calc(100vh - 48px)' }}
       >
         {/* Top accent bar */}
-        <div className="h-1 w-full bg-gradient-to-r from-blue-500 to-indigo-500 flex-shrink-0" />
+        <div className="h-1 w-full bg-gradient-to-r from-fuchsia-500 to-fuchsia-500 flex-shrink-0" />
 
         <div className="relative flex items-center justify-center px-8 py-5 border-b border-gray-100">
           {/* Centered Title */}

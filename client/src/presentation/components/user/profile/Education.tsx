@@ -9,6 +9,7 @@ import { profileService } from '../../../../services/api-services/candidateServi
 import { updateUser } from '../../../../redux/slices/auth.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../../redux/store';
+import { useTheme } from '../../../../contexts/ThemeContext';
 type EducationProps = {
   onUserUpdate: React.Dispatch<
     React.SetStateAction<UserProfileType | undefined>
@@ -56,96 +57,237 @@ const Education = ({ onUserUpdate, educations }: EducationProps) => {
       return;
     }
   };
+  const {t}=useTheme()
   return (
-    <div className="bg-white  rounded-lg shadow-md p-6">
-      <div className="flex  justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">Education</h3>
-        <button
-          onClick={() => {
-            setIsOpen({ type: 'add', isOpen: true });
-            setEditEdu(null);
-          }}
-          className="text-green-600 hover:text-green-700 text-sm font-medium"
-        >
-          Add
-        </button>
-      </div>
-      <div className="space-y-4">
-        {educations.length ? (
-          educations.map((edu) => {
-            return (
-              <div
-                key={edu.id}
-                className="border-l-4 border-fuchsia-600 bg-white p-4 rounded-md shadow-sm hover:shadow-md hover:bg-gray-50 transition"
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-800">
-                      {edu.level}
-                    </h4>
-                    <p className="text-gray-600">{edu.university}</p>
-                    <p className="text-gray-500 text-sm">{edu.location}</p>
-                  </div>
+  <div
+    className={`
+      ${t.cardBg}
+      ${t.cardBorder}
+      border
+      rounded-lg
+      shadow-md
+      p-6
+    `}
+  >
+    <div className="flex justify-between items-center mb-4">
+      <h3 className={`text-xl font-bold ${t.cardTitle}`}>
+        Education
+      </h3>
 
-                  <div className="flex flex-col items-end gap-2">
-                    <div className="flex gap-3">
-                      <PenIcon
-                        onClick={() => {
-                          setEditEdu(edu);
-                          setIsOpen({ type: 'edit', isOpen: true });
-                        }}
-                        className="text-fuchsia-600 cursor-pointer hover:scale-150 duration-300 "
-                        size={18}
-                      />
-                      <Trash
-                        onClick={() => {
-                          setIsOpen({ type: 'delete', isOpen: true });
-                          setDeleteEduId(edu.id);
-                        }}
-                        className="text-red-600 cursor-pointer hover:scale-150 duration-300"
-                        size={18}
-                      />
-                    </div>
-
-                    <span className="text-gray-500 text-sm">
-                      {edu.startYear} - {edu.completedYear || 'Ongoing'}
-                    </span>
-                  </div>
-                </div>
-
-                <p className="mt-1 text-gray-700 text-sm">CGPA: {edu.cgpa} %</p>
-              </div>
-            );
-          })
-        ) : (
-          <p className="text-gray-500 text-sm italic">
-            Showcase your experience here
-          </p>
-        )}
-      </div>
-      <EducationModal
-        isOpen={isOpen?.type === 'edit' || isOpen?.type == 'add'}
-        onClose={() => {
-          setIsOpen(null);
-
+      <button
+        onClick={() => {
+          setIsOpen({ type: 'add', isOpen: true });
           setEditEdu(null);
         }}
-        onUserUpdate={onUserUpdate}
-        editEdu={editEdu}
-      />
-
-      <DeleteConfirmationModal
-        isOpen={isOpen?.type == 'delete'}
-        onDelete={handleDelete}
-        onClose={() => {
-          setIsOpen(null);
-          setDeleteEduId('');
-        }}
-        item={'Qualification'}
-      />
-
-      {/* <DeleteConfirmationModal isOpen={} /> */}
+        className={`
+          ${t.successText}
+          ${t.successHover}
+          text-sm font-medium
+        `}
+      >
+        Add
+      </button>
     </div>
-  );
+
+    <div className="space-y-4">
+      {educations.length ? (
+        educations.map((edu) => {
+          return (
+            <div
+              key={edu.id}
+              className={`
+                border-l-4
+                border-fuchsia-600
+                ${t.surface}
+                p-4
+                rounded-md
+                shadow-sm
+                hover:shadow-md
+                ${t.dropdownHover}
+                transition
+              `}
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <h4
+                    className={`
+                      text-lg
+                      font-semibold
+                      ${t.cardTitle}
+                    `}
+                  >
+                    {edu.level}
+                  </h4>
+
+                  <p className={t.subheading}>
+                    {edu.university}
+                  </p>
+
+                  <p className={`${t.iconMuted} text-sm`}>
+                    {edu.location}
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-end gap-2">
+                  <div className="flex gap-3">
+                    <PenIcon
+                      onClick={() => {
+                        setEditEdu(edu);
+                        setIsOpen({ type: 'edit', isOpen: true });
+                      }}
+                      className="text-fuchsia-600 cursor-pointer hover:scale-150 duration-300"
+                      size={18}
+                    />
+
+                    <Trash
+                      onClick={() => {
+                        setIsOpen({ type: 'delete', isOpen: true });
+                        setDeleteEduId(edu.id);
+                      }}
+                      className={`
+                        ${t.dangerText}
+                        ${t.dangerHover}
+                        cursor-pointer
+                        hover:scale-150
+                        duration-300
+                      `}
+                      size={18}
+                    />
+                  </div>
+
+                  <span className={`${t.iconMuted} text-sm`}>
+                    {edu.startYear} - {edu.completedYear || 'Ongoing'}
+                  </span>
+                </div>
+              </div>
+
+              <p className={`mt-1 ${t.inputText} text-sm`}>
+                CGPA: {edu.cgpa} %
+              </p>
+            </div>
+          );
+        })
+      ) : (
+        <p className={`${t.subheading} text-sm italic`}>
+          Showcase your experience here
+        </p>
+      )}
+    </div>
+
+    <EducationModal
+      isOpen={isOpen?.type === 'edit' || isOpen?.type == 'add'}
+      onClose={() => {
+        setIsOpen(null);
+
+        setEditEdu(null);
+      }}
+      onUserUpdate={onUserUpdate}
+      editEdu={editEdu}
+    />
+
+    <DeleteConfirmationModal
+      isOpen={isOpen?.type == 'delete'}
+      onDelete={handleDelete}
+      onClose={() => {
+        setIsOpen(null);
+        setDeleteEduId('');
+      }}
+      item={'Qualification'}
+    />
+
+    {/* <DeleteConfirmationModal isOpen={} /> */}
+  </div>
+);
+  // return (
+  //   <div className="bg-white  rounded-lg shadow-md p-6">
+  //     <div className="flex  justify-between items-center mb-4">
+  //       <h3 className="text-xl font-bold text-gray-800">Education</h3>
+  //       <button
+  //         onClick={() => {
+  //           setIsOpen({ type: 'add', isOpen: true });
+  //           setEditEdu(null);
+  //         }}
+  //         className="text-green-600 hover:text-green-700 text-sm font-medium"
+  //       >
+  //         Add
+  //       </button>
+  //     </div>
+  //     <div className="space-y-4">
+  //       {educations.length ? (
+  //         educations.map((edu) => {
+  //           return (
+  //             <div
+  //               key={edu.id}
+  //               className="border-l-4 border-fuchsia-600 bg-white p-4 rounded-md shadow-sm hover:shadow-md hover:bg-gray-50 transition"
+  //             >
+  //               <div className="flex justify-between items-start">
+  //                 <div>
+  //                   <h4 className="text-lg font-semibold text-gray-800">
+  //                     {edu.level}
+  //                   </h4>
+  //                   <p className="text-gray-600">{edu.university}</p>
+  //                   <p className="text-gray-500 text-sm">{edu.location}</p>
+  //                 </div>
+
+  //                 <div className="flex flex-col items-end gap-2">
+  //                   <div className="flex gap-3">
+  //                     <PenIcon
+  //                       onClick={() => {
+  //                         setEditEdu(edu);
+  //                         setIsOpen({ type: 'edit', isOpen: true });
+  //                       }}
+  //                       className="text-fuchsia-600 cursor-pointer hover:scale-150 duration-300 "
+  //                       size={18}
+  //                     />
+  //                     <Trash
+  //                       onClick={() => {
+  //                         setIsOpen({ type: 'delete', isOpen: true });
+  //                         setDeleteEduId(edu.id);
+  //                       }}
+  //                       className="text-red-600 cursor-pointer hover:scale-150 duration-300"
+  //                       size={18}
+  //                     />
+  //                   </div>
+
+  //                   <span className="text-gray-500 text-sm">
+  //                     {edu.startYear} - {edu.completedYear || 'Ongoing'}
+  //                   </span>
+  //                 </div>
+  //               </div>
+
+  //               <p className="mt-1 text-gray-700 text-sm">CGPA: {edu.cgpa} %</p>
+  //             </div>
+  //           );
+  //         })
+  //       ) : (
+  //         <p className="text-gray-500 text-sm italic">
+  //           Showcase your experience here
+  //         </p>
+  //       )}
+  //     </div>
+  //     <EducationModal
+  //       isOpen={isOpen?.type === 'edit' || isOpen?.type == 'add'}
+  //       onClose={() => {
+  //         setIsOpen(null);
+
+  //         setEditEdu(null);
+  //       }}
+  //       onUserUpdate={onUserUpdate}
+  //       editEdu={editEdu}
+  //     />
+
+  //     <DeleteConfirmationModal
+  //       isOpen={isOpen?.type == 'delete'}
+  //       onDelete={handleDelete}
+  //       onClose={() => {
+  //         setIsOpen(null);
+  //         setDeleteEduId('');
+  //       }}
+  //       item={'Qualification'}
+  //     />
+
+  //     {/* <DeleteConfirmationModal isOpen={} /> */}
+  //   </div>
+  // );
 };
 export default Education;

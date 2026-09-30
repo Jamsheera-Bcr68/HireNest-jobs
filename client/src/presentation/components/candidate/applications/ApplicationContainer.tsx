@@ -21,14 +21,14 @@ function ApplicationContainer() {
   const [limit] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
   const [totalDocs, setTotalDocs] = useState<number>(0);
-  const { filter, updateFilter } = useApplications((page?: number) => {
+  const { filter, updateFilter,setFilter } = useApplications((page?: number) => {
     if (page) {
       setPage(page);
     }
   });
   useEffect(() => {
     const getStatus = async () => {
-      const data = await applicationService.getApplicationStatus();
+      const data = await applicationService.getCandidateApplicationStatus();
       console.log('app status', data.appStatus);
       const total = {
         label: 'Total Applications',
@@ -107,7 +107,9 @@ function ApplicationContainer() {
       { label: 'Oldest ', value: 'oldest' },
     ],
   };
-
+const onResetfilter=()=>{
+  setFilter({})
+}
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-4xl mx-auto">
@@ -128,6 +130,7 @@ function ApplicationContainer() {
           filterOptions={[statusFilter, typeFilter]}
           onFilterChange={updateFilter}
           sortOrder={sortOrder}
+          onResetFilter={onResetfilter}
         />
         <ApplicationList applications={applications ?? []} />
         <Pagination

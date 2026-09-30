@@ -2,6 +2,17 @@ import { createContext } from 'react';
 
 export const THEME_TOKENS = {
   light: {
+    inputFocusRing:
+      'focus:ring-2 focus:ring-fuchsia-200 focus:border-fuchsia-400',
+    successText: 'text-green-600',
+    successHover: 'hover:text-green-700',
+
+    dangerText: 'text-red-600',
+    dangerHover: 'hover:text-red-700',
+
+    editBorder: 'border-slate-300',
+    statSuccessBg: 'bg-green-50',
+    statSuccessText: 'text-green-700',
     pageBg: 'bg-slate-50',
     pageText: 'text-slate-900',
     navBg: 'bg-white',
@@ -86,13 +97,26 @@ export const THEME_TOKENS = {
     viewHover: 'hover:bg-fuchsia-100',
     primaryButton: 'bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white',
     primaryButtonHover: 'hover:from-fuchsia-500 hover:to-purple-500',
- heroAccent: "bg-gradient-to-br from-fuchsia-50 via-purple-50 to-white",
-    heroGlow: "bg-fuchsia-300/30",
+    heroAccent: 'bg-gradient-to-br from-fuchsia-50 via-purple-50 to-white',
+    heroGlow: 'bg-fuchsia-300/30',
     secondaryButtonHover: 'hover:bg-purple-50',
-     statIconBg: "bg-purple-100", statIconText: "text-purple-600",
-    sectionIconBg: "bg-fuchsia-100", sectionIconText: "text-fuchsia-600",
+    statIconBg: 'bg-purple-100',
+    statIconText: 'text-purple-600',
+    sectionIconBg: 'bg-fuchsia-100',
+    sectionIconText: 'text-fuchsia-600',
   },
   dark: {
+    inputFocusRing:
+      'focus:ring-2 focus:ring-fuchsia-900 focus:border-fuchsia-500',
+    successText: 'text-green-400',
+    successHover: 'hover:text-green-300',
+
+    dangerText: 'text-red-400',
+    dangerHover: 'hover:text-red-300',
+
+    editBorder: 'border-slate-700',
+    statSuccessBg: 'bg-green-950',
+    statSuccessText: 'text-green-300',
     pageBg: 'bg-slate-950',
     pageText: 'text-slate-100',
     navBg: 'bg-slate-900',
@@ -161,10 +185,13 @@ export const THEME_TOKENS = {
     toastBg: 'bg-slate-100',
     toastText: 'text-slate-900',
     overlay: 'bg-black',
-heroAccent: "bg-gradient-to-br from-purple-950/40 via-slate-950 to-slate-950",
-    heroGlow: "bg-fuchsia-500/10",
-     statIconBg: "bg-purple-500/10", statIconText: "text-purple-300",
-    sectionIconBg: "bg-fuchsia-500/10", sectionIconText: "text-fuchsia",
+    heroAccent:
+      'bg-gradient-to-br from-purple-950/40 via-slate-950 to-slate-950',
+    heroGlow: 'bg-fuchsia-500/10',
+    statIconBg: 'bg-purple-500/10',
+    statIconText: 'text-purple-300',
+    sectionIconBg: 'bg-fuchsia-500/10',
+    sectionIconText: 'text-fuchsia',
     appliedBg: 'bg-green-950',
     appliedText: 'text-green-300',
     appliedBorder: 'border-green-900',

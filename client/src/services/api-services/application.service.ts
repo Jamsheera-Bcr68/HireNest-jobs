@@ -16,7 +16,13 @@ export const applicationService = {
 
   async getApplicationStatus(jobId: string) {
     const res = await axiosInstance.get(
-      API_ENDPOINTS.CANDIDATE_APPLICATON_STATUS(jobId)
+      API_ENDPOINTS.JOB_APPLICATON_STATUS(jobId)
+    );
+    return res.data;
+  },
+  async getCandidateApplicationStatus() {
+    const res = await axiosInstance.get(
+      API_ENDPOINTS.CANDIDATE_APPLICATON_STATUS
     );
     return res.data;
   },

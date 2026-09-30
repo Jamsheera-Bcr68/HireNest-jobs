@@ -1,4 +1,4 @@
-import React from 'react';
+
 import type { IndustryPostCount } from './DashbordContainer';
 import type { IndustryType } from '../../../../types/dtos/profile-types/industry.type';
 
@@ -11,6 +11,8 @@ const colorData: Record<IndustryType, string> = {
   Education: 'bg-yellow-500',
   'Media And Communication': 'bg-pink-500',
   Logistics: 'bg-cyan-500',
+  'Water & Environmental Services': 'bg-sky-500',
+  'Travel & Tourism': 'bg-teal-500',
   Other: 'bg-slate-500',
 };
 

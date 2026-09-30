@@ -176,65 +176,121 @@ type AppChartProps = {
   appData: AppData[];
 };
 
-export function ApplicationByIndustry({ appData }: AppChartProps) {
-  console.log('chart app data', appData);
 
+
+
+const COLORS = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#6250d6', '#e34948'];
+
+export function ApplicationByIndustry({ appData }: AppChartProps) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300     hover:shadow-lg">
-      <h3 className="font-display text-lg text-slate-900">
-        Applications by Industry
-      </h3>
-      <p className="text-sm text-slate-400 mb-2">
-        Sent by candidates, all-time
-      </p>
-      <div className="h-56">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={appData} margin={{ left: -20, right: 10, top: 10 }}>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              vertical={false}
-              stroke="#eef0f4"
-            />
-            <XAxis
-              dataKey="industry"
-              tickLine={false}
-              axisLine={{
-                stroke: '#cbd5e1',
-                strokeOpacity: 0.4,
-              }}
-              tick={{ fontSize: 11, fill: '#94a3b8' }}
-              interval={0}
-              angle={-20}
-              textAnchor="end"
-              height={50}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={{
-                stroke: '#cbd5e1',
-                strokeOpacity: 0.4,
-              }}
-              tick={{ fontSize: 12, fill: '#94a3b8' }}
-            />
-            <Tooltip
-              contentStyle={{
-                borderRadius: 12,
-                border: '1px solid #e2e8f0',
-                fontSize: 13,
-              }}
-            />
-            <Bar
-              maxBarSize={30}
-              dataKey="count"
-              fill="#6366f1"
-              radius={[6, 6, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg">
+      <h3 className="font-display text-lg text-slate-900">Applications by Industry</h3>
+      <p className="text-sm text-slate-400 mb-4">Sent by candidates, all-time</p>
+
+      <div className="flex items-center gap-4 h-56">
+        {/* Chart side */}
+        <div className="flex-[1.1] min-w-0 h-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={appData}
+                dataKey="count"
+                nameKey="industry"
+                innerRadius={50}
+                outerRadius={80}
+                paddingAngle={2}
+              >
+                {appData.map((_, idx) => (
+                  <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  borderRadius: 12,
+                  border: '1px solid #e2e8f0',
+                  fontSize: 13,
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Legend side */}
+        {/* <div className="flex-1 min-w-0 flex flex-col gap-1.5 text-xs text-slate-600 overflow-y-auto max-h-56 pr-1">
+          {appData.map((d, idx) => (
+            <span key={d.industry} className="flex items-center gap-1.5">
+              <span
+                className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
+                style={{ background: COLORS[idx % COLORS.length] }}
+              />
+              <span className="truncate">{d.industry}</span>
+              <span className="text-slate-400 ml-auto pl-2 flex-shrink-0">{d.count}</span>
+            </span>
+          ))}
+        </div> */}
       </div>
     </div>
   );
 }
+// export function ApplicationByIndustry({ appData }: AppChartProps) {
+//   console.log('chart app data', appData);
+
+//   return (
+//     <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300     hover:shadow-lg">
+//       <h3 className="font-display text-lg text-slate-900">
+//         Applications by Industry
+//       </h3>
+//       <p className="text-sm text-slate-400 mb-2">
+//         Sent by candidates, all-time
+//       </p>
+//       <div className="h-56">
+//         <ResponsiveContainer width="100%" height="100%">
+//           <BarChart data={appData} margin={{ left: -20, right: 10, top: 10 }}>
+//             <CartesianGrid
+//               strokeDasharray="3 3"
+//               vertical={false}
+//               stroke="#eef0f4"
+//             />
+//             <XAxis
+//               dataKey="industry"
+//               tickLine={false}
+//               axisLine={{
+//                 stroke: '#cbd5e1',
+//                 strokeOpacity: 0.4,
+//               }}
+//               tick={{ fontSize: 11, fill: '#94a3b8' }}
+//               interval={0}
+//               angle={-20}
+//               textAnchor="end"
+//               height={50}
+//             />
+//             <YAxis
+//               tickLine={false}
+//               axisLine={{
+//                 stroke: '#cbd5e1',
+//                 strokeOpacity: 0.4,
+//               }}
+//               tick={{ fontSize: 12, fill: '#94a3b8' }}
+//             />
+//             <Tooltip
+//               contentStyle={{
+//                 borderRadius: 12,
+//                 border: '1px solid #e2e8f0',
+//                 fontSize: 13,
+//               }}
+//             />
+//             <Bar
+//               maxBarSize={30}
+//               dataKey="count"
+//               fill="#6366f1"
+//               radius={[6, 6, 0, 0]}
+//             />
+//           </BarChart>
+//         </ResponsiveContainer>
+//       </div>
+//     </div>
+//   );
+// }
 
 
 // const INTERVIEW_STATUS = [
@@ -247,45 +303,52 @@ export function ApplicationByIndustry({ appData }: AppChartProps) {
 type InterviewProps={
   interviewData:InterviewData[]
 }
-export function InterviewStatusChart({interviewData}:InterviewProps) {
-  console.log('interview chart data',interviewData);
-  
+export function InterviewStatusChart({ interviewData }: InterviewProps) {
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300     hover:shadow-lg">
+    <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg">
       <h3 className="font-display text-lg text-slate-900">Interview status</h3>
       <p className="text-sm text-slate-400 mb-2">Across all active pipelines</p>
+
       <div className="h-56">
         <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={interviewData}
-              dataKey="value"
-              nameKey="label"
-              innerRadius={55}
-              outerRadius={80}
-              paddingAngle={3}
-            >
-              {interviewData.map((entry, i) => (
-                <Cell key={i} fill={entry.color} stroke="none" />
-              ))}
-            </Pie>
+          <BarChart
+            data={interviewData}
+            margin={{ left: -20, right: 10, top: 10, bottom: 5 }}
+            barCategoryGap={20}
+          >
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eef0f4" />
+            <XAxis
+              dataKey="label"
+              tickLine={false}
+              axisLine={{ stroke: '#cbd5e1', strokeOpacity: 0.4 }}
+              tick={{ fontSize: 11, fill: '#94a3b8' }}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={{ stroke: '#cbd5e1', strokeOpacity: 0.4 }}
+              tick={{ fontSize: 12, fill: '#94a3b8' }}
+            />
             <Tooltip
+              cursor={{ fill: '#f8fafc' }}
               contentStyle={{
                 borderRadius: 12,
                 border: '1px solid #e2e8f0',
                 fontSize: 13,
               }}
-              formatter={(value,name,item) => value?.toLocaleString()+'%'}
+              formatter={(value: number) => value?.toLocaleString() + '%'}
             />
-          </PieChart>
+            <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={30}>
+              {interviewData.map((entry, i) => (
+                <Cell key={i} fill={entry.color} />
+              ))}
+            </Bar>
+          </BarChart>
         </ResponsiveContainer>
       </div>
+
       <ul className="space-y-1.5 mt-1">
         {interviewData.map((s) => (
-          <li
-            key={s.label}
-            className="flex items-center justify-between text-xs"
-          >
+          <li key={s.label} className="flex items-center justify-between text-xs">
             <span className="flex items-center gap-2 text-slate-500">
               <span
                 className="h-2 w-2 rounded-full"
@@ -293,9 +356,7 @@ export function InterviewStatusChart({interviewData}:InterviewProps) {
               />
               {s.label}
             </span>
-            <span className="font-semibold text-slate-700">
-              {s.count}
-            </span>
+            <span className="font-semibold text-slate-700">{s.count}</span>
           </li>
         ))}
       </ul>

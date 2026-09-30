@@ -27,7 +27,7 @@ return {
     subTitle:company.industry,
       details: company.email?company.email:'',
       submitted: company.reapplyCount
-        ? company.reapplyDetails[company.reapplyCount - 1].date.toDateString()
+        ? company.applyDetails[company.reapplyCount - 1].submittedAt.toDateString()
         : company.joinedAt.toISOString(),
       createdAt: company.joinedAt.toDateString(),
       tag: company.reapplyCount?`${company.reapplyCount} Reapplication`:'New',
