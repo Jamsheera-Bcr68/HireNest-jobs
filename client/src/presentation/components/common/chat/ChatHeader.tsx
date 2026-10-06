@@ -32,7 +32,7 @@ export function ChatHeader({ conversation }: { conversation: ChatroomType }) {
       <div className="relative shrink-0">
         {conversation.imageUrl ? (
           <img
-            src={`${baseUrl}${conversation.imageUrl}`}
+            src={`${conversation.imageUrl}`}
             alt={conversation.participantName}
             className="w-10 h-10 rounded-full object-cover"
           />

@@ -12,7 +12,7 @@ import type { RootState } from '../../../../redux/store';
 import { useTheme } from '../../../../contexts/ThemeContext';
 type EducationProps = {
   onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | undefined>
+    React.SetStateAction<UserProfileType | null>
   >;
   educations: EducationType[] | [];
 };

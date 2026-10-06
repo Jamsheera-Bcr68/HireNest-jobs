@@ -11,7 +11,8 @@ export class EditAboutUseCase implements IEditAboutUseCase {
   constructor(userRepository: IUserRepository) {
     this._userRepository = userRepository;
   }
-  async execute(userId: string, role: UserRole, about: string): Promise<User> {
+
+  async execute(userId: string, role: UserRole, about: string): Promise<string> {
     const user = await this._userRepository.findById(userId);
     if (!user || !user.id || user.role !== role)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
@@ -19,6 +20,6 @@ export class EditAboutUseCase implements IEditAboutUseCase {
     const updated = await this._userRepository.addProfileData(user.id, user);
     if (!updated)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return updated;
+    return updated.about??''
   }
 }

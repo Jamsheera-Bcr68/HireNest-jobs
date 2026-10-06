@@ -8,6 +8,7 @@ import { Interview } from '../../domain/entities/interview.entity';
 import { Job } from '../../domain/entities/job.entity';
 import { User } from '../../domain/entities/user.entity';
 import { Company } from '../../domain/entities/company.entity';
+import { string } from 'zod';
 export class InterviewMapper {
   static toInterviewDto(data: AggregatedInterviewDto,chatroomId?:string): interviewDto {
     return {
@@ -15,6 +16,7 @@ export class InterviewMapper {
       name: data.name,
       mode: data.mode,
       jobTitle: data.jobTitle,
+     candidateImageUrl:data.candidateImageUrl,
       result: data.result,
       createdAt: new Date(data.createdAt).toDateString(),
       status: data.status,
@@ -45,6 +47,7 @@ export class InterviewMapper {
       result: data.result,
       createdAt: new Date(data.createdAt).toDateString(),
       status: data.status,
+     
       isConfirmed: data.isConfirmed,
       candidateId:data.candidateId,
       companyId:data.companyId,
@@ -78,6 +81,7 @@ export class InterviewMapper {
       feedback: interview.feedback,
       companyLogo: company.logoUrl,
       companyName: company.companyName,
+      candidateImageUrl:candidate.imageUrl,
       cancelledBy: interview.cancelledBy,
     };
   }

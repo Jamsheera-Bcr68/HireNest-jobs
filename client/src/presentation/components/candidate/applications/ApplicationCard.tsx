@@ -12,6 +12,8 @@ export const appStatusStyles: Record<ApplicationStatusType, string> = {
   reviewed: 'bg-yellow-100 text-yellow-700',
   rejected: 'bg-red-100 text-red-700',
   withdrawn: 'bg-red-100 text-red-600',
+  'interviewCompleted': 'bg-green-200 text-green-700',
+  hired: 'bg-orange-100 text-orange-700'
 };
 
 type Props = {
@@ -21,7 +23,7 @@ type Props = {
 export function ApplicationCard({ app }: Props) {
   const navigate = useNavigate();
   if (!app) return null;
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+ 
   return (
     <div className="bg-white border border-gray-100 rounded-xl p-5 shadow-sm hover:border-gray-300 transition-colors">
       <div className="flex gap-4 items-start">
@@ -31,7 +33,7 @@ export function ApplicationCard({ app }: Props) {
         >
           <img
             className="rounded-full"
-            src={`${baseUrl}${app.logo}`}
+            src={`${app.logo}`}
             alt={`${app.company?.charAt(0).toUpperCase()}`}
           />
         </div>

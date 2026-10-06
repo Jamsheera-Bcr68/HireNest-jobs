@@ -8,8 +8,8 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { getTime } from '../../../shared/utils';
 import { ChatroomDto, ChatroomFilterDto } from '../../dtos/chatroom.dto';
 
-
 import { IPresenceService } from '../../interfaces/services/presence.service.interface';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface IGetChatromsUsecase {
   execute(userId: string, role: UserRole): Promise<ChatroomDto[]>;
@@ -19,11 +19,11 @@ export class GetChatroomsUsecase implements IGetChatromsUsecase {
   constructor(
     private _chatroomRepository: IChatroomRepository,
     private _companyRepository: ICompanyRepository,
-    private _presenceService:IPresenceService
+    private _presenceService: IPresenceService,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(userId: string, role: UserRole): Promise<ChatroomDto[]> {
     let filter: ChatroomFilterDto = {};
-  //  console.log('from usecase', userId, role);
 
     if (role === UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(userId);
@@ -45,16 +45,19 @@ export class GetChatroomsUsecase implements IGetChatromsUsecase {
 
       role
     );
-   // console.log('chat rooms from usecase', chatrooms);
-    return chatrooms.map((ch) => ({
-      ...ch,
-      isOnline: this._presenceService.isOnline(ch.participantId),
-    
-      context: ch.jobTitle,
-      participantRole:role==UserRole.CANDIDATE?UserRole.COMPANY:UserRole.CANDIDATE,
-      lastMessagedAt: ch.lastMessagedAt?.toLocaleString() ?? undefined,
-      time:ch.lastMessagedAt?getTime(new Date(ch.lastMessagedAt)):''
 
-    }));
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+    return await Promise.all(
+      chatrooms.map(async (ch) => ({
+        ...ch,
+        isOnline: this._presenceService.isOnline(ch.participantId),
+        imageUrl: await fileUrlResolver(ch.imageUrl),
+        context: ch.jobTitle,
+        participantRole:
+          role == UserRole.CANDIDATE ? UserRole.COMPANY : UserRole.CANDIDATE,
+        lastMessagedAt: ch.lastMessagedAt?.toLocaleString() ?? undefined,
+        time: ch.lastMessagedAt ? getTime(new Date(ch.lastMessagedAt)) : '',
+      }))
+    );
   }
 }

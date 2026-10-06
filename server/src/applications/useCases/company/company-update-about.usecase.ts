@@ -4,13 +4,17 @@ import { ICompanyRepository } from '../../../domain/repository-interfaces/compan
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { companyDto } from '../../dtos/company.dto';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface ICompanyAboutUpdateUseCase {
   execute(data: Partial<companyDto>, userId: string): Promise<Company>;
 }
 
 export class CompanyAboutUpdateUseCase implements ICompanyAboutUpdateUseCase {
-  constructor(private companyRepository: ICompanyRepository) {}
+  constructor(
+    private companyRepository: ICompanyRepository,
+    private _fileUrlResolverService: IFileResolverService
+  ) {}
 
   async execute(data: Partial<companyDto>, userId: string): Promise<Company> {
     const company = await this.companyRepository.findOne({ userId });
@@ -20,7 +24,7 @@ export class CompanyAboutUpdateUseCase implements ICompanyAboutUpdateUseCase {
         statusCodes.NOTFOUND
       );
     }
-  //  console.log('data from UseCase', data);
+    //  console.log('data from UseCase', data);
 
     const entity = await this.companyRepository.save(company.id, {
       ...data,
@@ -32,6 +36,14 @@ export class CompanyAboutUpdateUseCase implements ICompanyAboutUpdateUseCase {
         userMessages.error.COMPANY_NOT_FOUND,
         statusCodes.NOTFOUND
       );
-    return entity;
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+    return {
+      ...entity,
+      logoUrl: await fileUrlResolver(entity.logoUrl),
+      document: {
+        ...entity.document,
+        file: await fileUrlResolver(entity.document.file)??'',
+      },
+    };
   }
 }

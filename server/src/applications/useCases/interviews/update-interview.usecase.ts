@@ -17,6 +17,7 @@ import { NotificationInputDto } from '../../dtos/notification.dto';
 import { NotificationType } from '../../../domain/enums/notification-enums';
 import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
 import { getIO } from '../../../infrastructure/socket';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
   interviewInputDto,
@@ -27,7 +28,8 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
     private _companyRepository: ICompanyRepository,
     private _jobRepository: IJobRepository,
     private _userRepository: IUserRepository,
-    private _notificationService: INotificationService
+    private _notificationService: INotificationService,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
 
   async execute(
@@ -42,8 +44,6 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
         statusCodes.UNAUTHERIZED
       );
     }
-   
- //   console.log('from usecaser,filter', id, data);
 
     const interview = await this._interviewRepository.findById(id);
     if (!interview)
@@ -96,15 +96,24 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
       userId: interview.candidateId,
     };
 
-   const newNotification= await this._notificationService.create(notificationData);
+    const newNotification =
+      await this._notificationService.create(notificationData);
 
     getIO().to(notificationData.userId).emit('notification', newNotification);
-
-    return InterviewMapper.entityToInterviewDto(
+    const updatedInterview = InterviewMapper.entityToInterviewDto(
       updated,
       job,
       candidate,
       company
     );
+
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+    return {
+      ...updatedInterview,
+      candidateImageUrl: await fileUrlResolver(
+        updatedInterview.candidateImageUrl
+      ),
+      companyLogo: await fileUrlResolver(updatedInterview.companyLogo),
+    };
   }
 }

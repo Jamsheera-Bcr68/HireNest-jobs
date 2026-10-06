@@ -23,6 +23,7 @@ export type InterviewDto = {
   result?: string;
   company: string;
   companyLogo: string;
+  candidateImageUrl?:string
   chatroomId?:string
   isConfirmed: boolean;
   createdAt:string
@@ -38,6 +39,7 @@ export type interviewDetailDto = {
   mode: InterviewMode;
   companyName: string;
   companyLogo: string;
+  candidateImageUrl?:string
   status: InterviewStatusType;
   meetLink?: string;
   location?: string;

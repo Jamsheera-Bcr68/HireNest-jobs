@@ -12,13 +12,15 @@ import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { EducationDto } from '../../dtos/education.dto';
 import { IAddEducationUseCase } from '../../interfaces/candidate/add-education.usecase';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export class AddEducationUseCase implements IAddEducationUseCase {
   private _educationRepository: IEducationRepository;
   private _userRepository: IUserRepository;
   constructor(
     educationRepository: IEducationRepository,
-    userRepository: IUserRepository
+    userRepository: IUserRepository,
+  
   ) {
     this._educationRepository = educationRepository;
     this._userRepository = userRepository;
@@ -27,7 +29,7 @@ export class AddEducationUseCase implements IAddEducationUseCase {
     payload: EducationDto,
     userId: string,
     role: UserRole
-  ): Promise<User> {
+  ): Promise<Education> {
     payload = { ...payload, userId } as Education;
     const educations = await this._educationRepository.getAllEducations(userId);
 
@@ -70,9 +72,10 @@ export class AddEducationUseCase implements IAddEducationUseCase {
       userId,
       education.id
     );
-  //  console.log('updated user from add education', updatedUser, userId);
+    //  console.log('updated user from add education', updatedUser, userId);
     if (!updatedUser)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return updatedUser;
+    
+    return education
   }
 }

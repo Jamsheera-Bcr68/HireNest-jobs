@@ -13,14 +13,14 @@ import { Skill } from '../../../domain/entities/skill.entity';
 
 export class GetSkillSatusUseCase implements IGetEntitySatusUseCase<SkillStatusCardDto> {
   constructor(
-    private skillRepository: ISkillRepository,
-    private companyRepository: ICompanyRepository,
-    private adminRepository: IAdminRepository
+    private _skillRepository: ISkillRepository,
+    private _companyRepository: ICompanyRepository,
+    private _adminRepository: IAdminRepository
   ) {}
   async execute(userId: string, role: UserRole): Promise<SkillStatusCardDto> {
     let filter: Partial<Skill> = {};
     if (role == UserRole.COMPANY) {
-      const company = await this.companyRepository.findByUserId(userId);
+      const company = await this._companyRepository.findByUserId(userId);
    //   console.log('user is company', company);
 
       if (!company || !company.id) {
@@ -30,21 +30,21 @@ export class GetSkillSatusUseCase implements IGetEntitySatusUseCase<SkillStatusC
         );
       }
       filter = { createdBy: UserRole.COMPANY, userId };
-      const total = await this.skillRepository.count(filter);
-      const active = await this.skillRepository.count({
+      const total = await this._skillRepository.count(filter);
+      const active = await this._skillRepository.count({
         ...filter,
         status: SkillStatus.APPROVED,
       });
 
-      const rejected = await this.skillRepository.count({
+      const rejected = await this._skillRepository.count({
         ...filter,
         status: SkillStatus.REJECTED,
       });
-      const pending = await this.skillRepository.count({
+      const pending = await this._skillRepository.count({
         ...filter,
         status: SkillStatus.PENDING,
       });
-      const removed = await this.skillRepository.count({
+      const removed = await this._skillRepository.count({
         ...filter,
         status: SkillStatus.REMOVED,
       });
@@ -59,7 +59,7 @@ export class GetSkillSatusUseCase implements IGetEntitySatusUseCase<SkillStatusC
     }
 
     if (role === UserRole.ADMIN) {
-      const admin = await this.adminRepository.findById(userId);
+      const admin = await this._adminRepository.findById(userId);
       if (!admin || !admin.id) {
         throw new AppError(
           authMessages.error.ADMIN_NOT_FOUND,
@@ -67,20 +67,20 @@ export class GetSkillSatusUseCase implements IGetEntitySatusUseCase<SkillStatusC
         );
       }
     }
-    const total = await this.skillRepository.count(filter);
-    const active = await this.skillRepository.count({
+    const total = await this._skillRepository.count(filter);
+    const active = await this._skillRepository.count({
       ...filter,
       status: SkillStatus.APPROVED,
     });
-    const rejected = await this.skillRepository.count({
+    const rejected = await this._skillRepository.count({
       ...filter,
       status: SkillStatus.REJECTED,
     });
-    const pending = await this.skillRepository.count({
+    const pending = await this._skillRepository.count({
       ...filter,
       status: SkillStatus.PENDING,
     });
-    const removed = await this.skillRepository.count({
+    const removed = await this._skillRepository.count({
       ...filter,
       status: SkillStatus.REMOVED,
     });

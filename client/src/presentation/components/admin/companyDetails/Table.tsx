@@ -290,15 +290,7 @@ function Table({
                 >
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-3">
-                      {/* <div
-                      className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0`}
-                    >
-                      <img
-                        className="rounded-full"
-                        src={`${baseUrl}${company.logoUrl}`}
-                        alt="Logo"
-                      />
-                    </div> */}
+                     
                       <Avatar
                         item="company"
                         logoUrl={company.logoUrl}

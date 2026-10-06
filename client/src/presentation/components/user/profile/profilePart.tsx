@@ -10,19 +10,19 @@ import Experience from './Experience';
 import Education from './Education';
 import { useTheme } from '../../../../contexts/ThemeContext';
 
-
 const ProfilePart = () => {
   const navigate = useNavigate();
   console.log('from candidate profiel');
 
-  const { user, setUser} = useProfile();
+  const { user, setUser } = useProfile();
   console.log('user', user);
-const {t}=useTheme()
- 
+  const { t } = useTheme();
 
   if (!user) return null;
   return (
-      <div className={`container mx-auto px-4 sm:px-6 lg:px-8 py-5 ${t.pageText}`}>
+    <div
+      className={`container mx-auto px-4 sm:px-6 lg:px-8 py-5 ${t.pageText}`}
+    >
       {user.isRequested &&
         user.company &&
         user.company.status === 'rejected' && (
@@ -40,15 +40,13 @@ const {t}=useTheme()
               </div>
 
               <button
-                onClick={() =>
-                {
-                  console.log('from rejected company',user.company);
-                  
+                onClick={() => {
+                  console.log('from rejected company', user.company);
+
                   navigate(
                     `/company/register?companyId=${user.company?.id}&reapply=true`
-                  )
-                }
-                }
+                  );
+                }}
                 className="rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition"
               >
                 Reapply
@@ -69,7 +67,7 @@ const {t}=useTheme()
         {/* Content */}
         <div className="lg:col-span-2 lg:overflow-y-auto space-y-6 pr-2">
           <AboutMe user={user} onUserUpdate={setUser} />
-          <Skills user={user}  onUserUpdate={setUser} />
+          <Skills user={user} onUserUpdate={setUser} />
           <Experience user={user} onUserUpdate={setUser} />
           <Education
             onUserUpdate={setUser}
@@ -88,7 +86,9 @@ const {t}=useTheme()
             }
             onUserUpdate={setUser}
           />
-          {user&&user.requestedCompany&&(<CompanyRegistrationDetails company={user.requestedCompany} />)}
+          {user && user.requestedCompany && (
+            <CompanyRegistrationDetails company={user.requestedCompany} />
+          )}
         </div>
       </div>
     </div>

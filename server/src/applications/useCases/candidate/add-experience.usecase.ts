@@ -3,7 +3,7 @@ import { UserRole } from '../../../domain/enums/user.enums';
 import { WorkMode } from '../../../domain/enums/work-mode.enum';
 import { AppError } from '../../../domain/errors/app-error';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
-import { IExperience } from '../../../domain/values/profile-types';
+
 import { ExperienceDto } from '../../../presentation/http/validators/profile.validation';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
@@ -25,7 +25,7 @@ export class AddExperienceUseCase implements IAddExperienceUseCase {
     userId: string,
     role: UserRole,
     payLoad: ExperienceDto
-  ): Promise<User> {
+  ): Promise<Experience> {
     const user = await this._userRepository.findById(userId);
     if (!user || user.role !== role || !user.id)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
@@ -67,6 +67,6 @@ export class AddExperienceUseCase implements IAddExperienceUseCase {
     const updated = await this._userRepository.addExperience(userId, exp.id);
     if (!updated)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return updated;
+    return exp;
   }
 }

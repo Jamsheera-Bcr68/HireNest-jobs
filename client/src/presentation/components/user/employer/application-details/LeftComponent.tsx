@@ -37,7 +37,7 @@ function LeftComponent({ application }: Props) {
         >
           <img
             className="w-10 h-10 rounded-full"
-            src={`${baseUrl}${application.candidate.profileImg}`}
+            src={`${application.candidate.profileImg}`}
             alt={application.candidate.candidateName.charAt(0).toUpperCase()}
           />
         </div>

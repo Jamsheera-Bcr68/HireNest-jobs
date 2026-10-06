@@ -60,7 +60,7 @@ export interface DashboardApplication {
   role: string;
   appliedAt: string;
   status: ApplicationStatusEnum;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export interface CompanyDashboardJobData {
@@ -85,7 +85,7 @@ export interface DashboardInterview {
   time: string;
   date: string;
   type: InterviewMode;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export type DashboardActiveJobType = {

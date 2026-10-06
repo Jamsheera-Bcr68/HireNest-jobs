@@ -21,9 +21,9 @@ export interface IUpdateJobStatusUseCase {
 
 export class UpdateJobStatusUseCase implements IUpdateJobStatusUseCase {
   constructor(
-    private jobRepository: IJobRepository,
-    private companyRepository: ICompanyRepository,
-    private skillRepository: ISkillRepository
+    private _jobRepository: IJobRepository,
+    private _companyRepository: ICompanyRepository,
+    private _skillRepository: ISkillRepository
   ) {}
   async execute(
     jobId: string,
@@ -33,12 +33,12 @@ export class UpdateJobStatusUseCase implements IUpdateJobStatusUseCase {
   ): Promise<void> {
     //console.log('from usecase', jobId, userId, role, data);
 
-    const job = await this.jobRepository.findById(jobId);
+    const job = await this._jobRepository.findById(jobId);
     if (!job || !job.id)
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
 
     if (role === UserRole.COMPANY) {
-      const company = await this.companyRepository.findByUserId(userId);
+      const company = await this._companyRepository.findByUserId(userId);
       if (!company)
         throw new AppError(
           authMessages.error.UNAUTHORIZED,
@@ -58,8 +58,8 @@ export class UpdateJobStatusUseCase implements IUpdateJobStatusUseCase {
     const { status } = data;
     if (status === 'removed') {
       const skills = job.skills;
-      await this.skillRepository.updatePostUsedCount(skills, 'remove');
+      await this._skillRepository.updatePostUsedCount(skills, 'remove');
     }
-    await this.jobRepository.update(jobId, data);
+    await this._jobRepository.update(jobId, data);
   }
 }

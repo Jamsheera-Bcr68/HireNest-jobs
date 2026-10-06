@@ -14,7 +14,7 @@ interface AddEducationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onUserUpdate:  React.Dispatch<
-      React.SetStateAction<UserProfileType | undefined>
+      React.SetStateAction<UserProfileType | null>
     >
   editEdu: EducationType | null;
 }

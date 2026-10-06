@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useExperience } from '../hooks/user/candidate/profile/useEditExperience';
 
 import type { UserProfileType } from '../../types/dtos/profile-types/user.types';
@@ -10,7 +10,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 type ExperienceModalProps = {
   open: boolean;
   onClose: () => void;
-  onUserUpdate: (user: UserProfileType) => void;
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType|null>>
   user?: UserProfileType;
 
   selectedExp: ExperienceType | null;

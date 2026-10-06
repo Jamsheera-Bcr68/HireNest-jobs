@@ -18,17 +18,19 @@ import { asyncHandler } from '../middleweres/async-handler';
 import { IChangeLogogUseCase } from '../../../applications/useCases/company/update-logo.usecase';
 import { ICompanyUpdateProfileUseCase } from '../../../applications/useCases/company/company-update-profile.usecase';
 import { ICompanyAboutUpdateUseCase } from '../../../applications/useCases/company/company-update-about.usecase';
+import { IAddFileUseCase } from '../../../applications/useCases/company/add-document.usecase';
 
 export class CompanyProfileController {
   constructor(
     private _companyRegisterUseCase: ICompanyRegisterUseCase,
     private _addFileUseCase: IAddLogoUseCase,
-    private _addDocumentUseCasez: IAddLogoUseCase,
+    private _addDocumentUseCase: IAddFileUseCase,
     private _getCompanyUseCase: IGetCompanyUseCase,
     private _changeLogoUseCase: IChangeLogogUseCase,
     private _removeLogoUseCase: ILogoRemoveUseCase,
     private _compantProfieUpdateUseCase: ICompanyUpdateProfileUseCase,
-    private _companyAboutUpdateUseCase: ICompanyAboutUpdateUseCase
+    private _companyAboutUpdateUseCase: ICompanyAboutUpdateUseCase,
+  
   ) {}
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
@@ -39,8 +41,7 @@ export class CompanyProfileController {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
     const company = await this._getCompanyUseCase.execute(user.userId);
-    console.log('company from controoleler',company);
-    
+
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.COMPANY_FOUND,
@@ -50,6 +51,7 @@ export class CompanyProfileController {
 
   companyRegister = asyncHandler(async (req: Request, res: Response) => {
     const payload: CompanyRegisterType = req.body;
+  
 
     const user = req.user;
 
@@ -60,7 +62,9 @@ export class CompanyProfileController {
       payload,
       user.userId
     );
-    const company =await this._companyRegisterUseCase.execute(
+
+    
+   await this._companyRegisterUseCase.execute(
       companyData,
       user.userId, 
       user.role
@@ -125,7 +129,7 @@ export class CompanyProfileController {
       originalName: file.originalname,
     };
 
-    const updated = await this._changeLogoUseCase.execute(
+    const logoUrl = await this._changeLogoUseCase.execute(
       user.userId,
       user.role,
       payload
@@ -133,11 +137,13 @@ export class CompanyProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.LOGO_UPLOADED,
-      company: updated,
+      logoUrl
     });
   });
 
   addDocument = asyncHandler(async (req: Request, res: Response) => {
+    console.log('from company add document');
+    
     const user = req.user;
     const file = req.file;
 
@@ -156,7 +162,7 @@ export class CompanyProfileController {
       mimetype: file.mimetype,
       originalName: file.originalname,
     };
-    const docUrl = await this._addDocumentUseCasez.execute(
+    const docUrl = await this._addDocumentUseCase.execute(
       user.userId,
       user.role,
       payload

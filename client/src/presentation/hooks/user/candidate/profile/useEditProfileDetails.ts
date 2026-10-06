@@ -12,9 +12,9 @@ import { updateUser } from '../../../../../redux/slices/auth.slice';
 export const useEditProfileDetails = (
   showToast: (data: typeOfToast) => void,
   onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | undefined>
+    React.SetStateAction<UserProfileType | null>
   >,
-  user: UserProfileType | undefined,
+  user: UserProfileType | null,
   skills: SkillType[] | []
 ) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -67,7 +67,7 @@ export const useEditProfileDetails = (
         if (!prev) return prev;
         return {
           ...prev,
-          about: res.data.user.about,
+          about: res.data.about,
         };
       });
     } catch (error: any) {
@@ -86,7 +86,7 @@ export const useEditProfileDetails = (
         if (!prev) return prev;
         return {
           ...prev,
-          skills: data.user.skills,
+          skills: [...prev.skills,data.skill],
         };
       });
       dispatch(updateUser({ skillCount: (reduxUser.skillCount || 0) + 1 }));

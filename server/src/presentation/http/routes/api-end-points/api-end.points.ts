@@ -30,7 +30,7 @@ export const API_END_POINTS = {
   ABOUT: '/profile/about',
   PROFILE_SKILLS: '/profile/skills/:skillId',
   EXPERIENCES: '/profile/experience',
-  EXPERIENCE: '/profile/experience/experienceId',
+  EXPERIENCE: '/profile/experience/:experienceId',
   EDUCATIONS: '/profile/education',
   EDUCATION: '/profile/education/:eduId',
   RESUMES: '/profile/resume',

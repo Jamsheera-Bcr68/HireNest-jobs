@@ -22,6 +22,7 @@ export type AggregatedInterviewDto = {
   id: string;
   name: string;
   mode: InterviewMode;
+  jobId: string;
   jobTitle: string;
   company: string;
   companyLogo: string;
@@ -34,20 +35,21 @@ export type AggregatedInterviewDto = {
   isRescheduleRequested: boolean;
   status: InterviewStatusEnum;
   scheduledAt: Date;
-  link?:string
-  candidateImageUrl:string
+  link?: string;
+  candidateImageUrl: string;
 };
 
 export type interviewDto = {
   id: string;
   result?: InterviewResult;
   name: string;
+  candidateImageUrl?: string;
   jobTitle: string;
   isRescheduleRequested: boolean;
   companyId: string;
   candidateId: string;
   company: string;
-  companyLogo: string;
+  companyLogo?: string;
   mode: InterviewMode;
   chatroomId?: string;
   scheduledAt: { date: string; time: string };
@@ -70,16 +72,15 @@ export type InterviewFilterDto = {
   search?: string;
   status?: InterviewStatusEnum;
   companyId?: string;
-  isRescheduleRequested?:boolean
-  isConfirmed?:boolean,
-  type?:'upcoming'
+  isRescheduleRequested?: boolean;
+  isConfirmed?: boolean;
+  type?: 'upcoming';
   page?: number;
   limit?: number;
   sortBy?: string;
   mode?: InterviewMode;
   jobId?: string;
   result?: InterviewResult;
-  
 };
 
 export type InterviewListDto = {
@@ -94,7 +95,8 @@ export type interviewDetailDto = {
   date: string;
   time: string;
   companyName: string;
-  companyLogo: string;
+  companyLogo?: string;
+  candidateImageUrl?: string;
   reasonForRescheduleRequest: string;
   mode: InterviewMode;
   status: InterviewStatusEnum;

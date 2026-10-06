@@ -6,10 +6,9 @@ import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { userMessages } from '../../../shared/constants/messages/user.messages';
+
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
-import { partial } from 'zod/v4/core/util.cjs';
-import { ApplicationMapper } from '../../mappers/application.mapper';
+
 import { Notification } from '../../../domain/entities/notification.entity';
 import { NotificationType } from '../../../domain/enums/notification-enums';
 import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
@@ -89,17 +88,19 @@ export class UpdateApplicationStatusUseCase implements IUpdateEntityStatusUseCas
     const notificationData: Partial<Notification> = {
       userId: application.candidateId,
       type: NotificationType.APPLICATION_STATUS_UPDATED,
-      message: notificationMessages[NotificationType.APPLICATION_STATUS_UPDATED]({
-        status:status,
+      message: notificationMessages[
+        NotificationType.APPLICATION_STATUS_UPDATED
+      ]({
+        status: status,
         companyName: company.companyName,
 
         jobTitle: job.title,
       }),
-      title:notificationTitleTypes.APP_STATUS_UPDATED(status) ,
+      title: notificationTitleTypes.APP_STATUS_UPDATED(status),
     };
-  const newNotification= await this._notifictionService.create(notificationData);
-  //  console.log('updated', updated);
-
+    const newNotification =
+      await this._notifictionService.create(notificationData);
+    //  console.log('updated', updated);
 
     getIO().to(application.candidateId).emit('notification', newNotification);
     return updated;

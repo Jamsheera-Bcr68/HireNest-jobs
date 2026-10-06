@@ -47,7 +47,7 @@ function HeroPart({ job, role }: Props) {
         <div className="flex-shrink-0">
           {job?.companyLogo ? (
             <img
-              src={`${baseUrl}${job.companyLogo}`}
+              src={`${job.companyLogo}`}
               alt={job.companyName}
               className="w-16 h-16 rounded-2xl object-cover border border-gray-100"
             />

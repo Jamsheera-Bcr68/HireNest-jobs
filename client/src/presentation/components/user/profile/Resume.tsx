@@ -15,7 +15,7 @@ import { useTheme } from '../../../../contexts/ThemeContext';
 
 type ResumeProps = {
   onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | undefined>
+    React.SetStateAction<UserProfileType | null>
   >;
   resumes: ResumeType[] | [];
 };
@@ -72,6 +72,7 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
       setFile(null);
       setIsUploading(false);
     } catch (error: any) {
+       setIsUploading(false);
       console.log(error);
       showToast({
         msg: error?.response?.data?.message || error.message,
@@ -222,7 +223,7 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
              hover:shadow-md`}
                   >
                     <a
-                      href={`${import.meta.env.VITE_BACKEND_URL}${res.url}`}
+                      href={`${res.url}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm"

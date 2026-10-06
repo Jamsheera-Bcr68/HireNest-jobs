@@ -17,7 +17,7 @@ export class RemoveExperienceUseCase implements IRemoveExperienceUseCase {
     this._experienceRepository = experienceRepository;
     this._userRepository = userRepository;
   }
-  async execute(userId: string, role: UserRole, expId: string): Promise<User> {
+  async execute(userId: string, role: UserRole, expId: string): Promise<void> {
     const user = await this._userRepository.findById(userId);
     if (!user || !user.id || user.role !== role) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
@@ -27,6 +27,6 @@ export class RemoveExperienceUseCase implements IRemoveExperienceUseCase {
 
     if (!updated)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return updated;
+    
   }
 }

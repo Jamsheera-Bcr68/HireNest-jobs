@@ -7,8 +7,6 @@ import { AppError } from '../../../domain/errors/app-error';
 import { hashedToken } from '../../../infrastructure/services/reset-token.service';
 import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
 
-//import { passwordResetToken } from "../../../infrastructure/services/resetTokenService";
-
 export class ResetPasswordUsecase implements IResetPasswordUsecase {
   private _userRepository: IUserRepository;
   private _adminRepository: IAdminRepository;

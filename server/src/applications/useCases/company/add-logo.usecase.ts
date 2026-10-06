@@ -6,13 +6,23 @@ export interface IAddLogoUseCase {
   execute(userId: string, role: UserRole, file: UploadFileDto): Promise<String>;
 }
 export class AddLogoUseCase implements IAddLogoUseCase {
-  constructor(private imageStorageService: IFileStorageService) {}
+  constructor(
+    private _fileStorageService:IFileStorageService,
+   
+   
+
+  ) {}
   async execute(
     userId: string,
     role: UserRole,
     file: UploadFileDto
   ): Promise<String> {
-    const imagePath = await this.imageStorageService.uploadFile(file);
-    return imagePath;
+    console.log('from comapny document update use case',file);
+    
+    const docUrl = await this._fileStorageService.uploadFile(file,'companies/logos','jpg');
+   
+    return docUrl;
   }
 }
+
+

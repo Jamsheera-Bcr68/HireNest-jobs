@@ -7,10 +7,11 @@ import { IApplicationRepository } from '../../../../domain/repository-interfaces
 import { IJobRepository } from '../../../../domain/repository-interfaces/job-repository.interface';
 import { ISkillRepository } from '../../../../domain/repository-interfaces/skill-repository.interface';
 import { IUserRepository } from '../../../../domain/repository-interfaces/user-repository.interface';
-import { JobType } from '../../../../domain/types/job.types';
+
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { JobCardDto } from '../../../dtos/job.dto';
+import { IFileResolverService } from '../../../services/file-url-resolver.service';
 
 export interface IRecomentedJobsUsecase {
   execute(userId: string, role: UserRole): Promise<JobCardDto[]>;
@@ -21,7 +22,8 @@ export class RecomentedJobUsecase implements IRecomentedJobsUsecase {
     private _jobRepository: IJobRepository,
     private _candidateRepository: IUserRepository,
     private _skillRepository: ISkillRepository,
-    private _appRepository: IApplicationRepository
+    private _appRepository: IApplicationRepository,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(userId: string, role: UserRole): Promise<JobCardDto[]> {
     if (role !== UserRole.CANDIDATE)
@@ -39,16 +41,23 @@ export class RecomentedJobUsecase implements IRecomentedJobsUsecase {
     const applied = await this._appRepository.getDocsByUserId(userId);
     const jobIds = applied.map((app) => app.jobId);
     const skillIds = candidate.skills?.map((s) => s.id);
-    
-    const normalisedTitles=candidate.title?.split(' ').map(t=>t.toLowerCase())
-  if (
-  (!skillIds || skillIds.length === 0) &&
-  (!normalisedTitles || normalisedTitles.length === 0)
-) {
-  return [];
-}
+
+    const normalisedTitles = candidate.title
+      ?.split(' ')
+      .map((t) => t.toLowerCase());
+    if (
+      (!skillIds || skillIds.length === 0) &&
+      (!normalisedTitles || normalisedTitles.length === 0)
+    ) {
+      return [];
+    }
     const { jobs } = await this._jobRepository.getJobs(
-      { skills: skillIds, status: StatusEnum.ACTIVE, appliedJobIds: jobIds,title:[...new Set(normalisedTitles)] },
+      {
+        skills: skillIds,
+        status: StatusEnum.ACTIVE,
+        appliedJobIds: jobIds,
+        title: [...new Set(normalisedTitles)],
+      },
       3,
       1,
       { job: '', location: '' },
@@ -57,16 +66,20 @@ export class RecomentedJobUsecase implements IRecomentedJobsUsecase {
     const activeSkills = await this._skillRepository.getAll({
       status: SkillStatus.APPROVED,
     });
-    const modifiedJobs = jobs.map((job) => {
-      const skillArray = job.skills
-        .map((id) => activeSkills.find((skill: Skill) => id == skill.id))
-        .filter(Boolean);
 
-      return {
-        ...job,
-        skills: skillArray.map((skill) => skill!.skillName),
-      };
-    });
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+    const modifiedJobs = await Promise.all(
+      jobs.map(async (job) => {
+        const skillArray = job.skills
+          .map((id) => activeSkills.find((skill: Skill) => id == skill.id))
+          .filter(Boolean);
+
+        return {
+          ...job,companyLogo:await fileUrlResolver(job.companyLogo),
+          skills: skillArray.map((skill) => skill!.skillName),
+        };
+      })
+    );
 
     return modifiedJobs;
   }

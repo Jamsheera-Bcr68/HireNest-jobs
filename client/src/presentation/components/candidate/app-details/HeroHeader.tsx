@@ -19,7 +19,7 @@ function HeroHeader({ application }: Props) {
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center text-white font-bold text-xl flex-shrink-0 shadow-md">
             <img
               className="w-12 h-12 rounded-2xl"
-              src={`${baseUrl}${application.company.logoUrl}`}
+              src={`${application.company.logoUrl}`}
               alt=""
             />
           </div>

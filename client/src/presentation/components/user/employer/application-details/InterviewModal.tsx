@@ -215,7 +215,7 @@ export default function InterviewModal({
             <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-xs font-semibold flex-shrink-0 overflow-hidden">
               {candidate.profileImg ? (
                 <img
-                  src={`${baseUrl}${candidate.profileImg}`}
+                  src={`${candidate.profileImg}`}
                   alt={candidate.initials}
                   className="w-full h-full object-cover"
                 />

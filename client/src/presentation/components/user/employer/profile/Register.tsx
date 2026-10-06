@@ -880,7 +880,7 @@ export default function CompanyRegistrationDetails({
 
         {company.document?.file && (
           <a
-            href={`${import.meta.env.VITE_BACKEND_URL}${company.document.file}`}
+            href={`${company.document.file}`}
             target="_blank"
             rel="noopener noreferrer"
             className={cx(BTN, 'px-2.5 py-1 text-xs')}

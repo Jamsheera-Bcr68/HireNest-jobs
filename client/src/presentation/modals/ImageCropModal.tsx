@@ -55,7 +55,8 @@ function ImageCropModal({
       const file = new File([croppedBlob], 'logo', { type: 'image/jpeg' });
       formData.append('logo', file);
       const data = await companyService.uploadLogo(formData);
-      console.log('adfter logo upload response', data);
+      console.log('after logo upload response from register company', data);
+   
 
       const imageUrl = await data.imageUrl;
       const croppedUrl = URL.createObjectURL(croppedBlob);

@@ -292,6 +292,8 @@ export const useRegisterCompany = (isReapply?: boolean) => {
         const docData = new FormData();
         docData.append('verification_document', verify_file);
         const docResposnse = await companyService.uploadDocument(docData);
+      console.log('after submitting the document',docResposnse);
+      
         docUrl = docResposnse.data.docUrl;
         docName = verify_file.name;
       }

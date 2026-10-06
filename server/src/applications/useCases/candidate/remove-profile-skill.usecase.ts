@@ -15,7 +15,7 @@ export class RemoveSkillFromProfileUseCase implements IRemoveSkillFromProfileUse
     userId: string,
     skillId: string,
     role: UserRole
-  ): Promise<User> {
+  ): Promise<void> {
     const user = await this._userRepository.findById(userId);
     if (!user || user?.role !== role || !user.id)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
@@ -24,6 +24,6 @@ export class RemoveSkillFromProfileUseCase implements IRemoveSkillFromProfileUse
     const updated = await this._userRepository.removeSkill(userId, skillId);
     if (!updated)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return updated;
+  
   }
 }

@@ -143,16 +143,7 @@ const APP_STATUS_CONFIG: Record<
 };
 
 export type QuickAction = { label: string; icon: LucideIcon; path: string };
-const quickActions: QuickAction[] = [
-  { label: 'Post a job', icon: Plus, path: '/company/jobs/create' },
-  {
-    label: 'Schedule interview',
-    icon: CalendarClock,
-    path: '/company/interviews',
-  },
-  { label: 'Review applications', icon: ClipboardList, path: '/' },
-  { label: 'Message candidates', icon: Send, path: '/company/messages' },
-];
+
 
 export type StatType = {
   id: Field;
@@ -165,6 +156,7 @@ export type StatType = {
   note: string;
   desc: string;
 };
+
 const PENDING_CONFIG: Record<PendingActionItem, { path: string }> = {
   reschedule: { path: '/company/interviews' },
   'new-apps': { path: '/company/jobs' },
@@ -172,6 +164,7 @@ const PENDING_CONFIG: Record<PendingActionItem, { path: string }> = {
   shortlisted: { path: '/company/applications' },
   'confirmed-interview': { path: '/company/interviews' },
 };
+
 export type PendingActionItem =
   | 'reschedule'
   | 'new-apps'
@@ -236,6 +229,7 @@ export type RecentActivityType = {
   title: string;
   time: string;
 };
+
 export type ActiveJob = {
   id: string;
   title: string;
@@ -265,7 +259,8 @@ export type Application = {
   imageUrl?: string;
   style: string;
 };
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
+
 
 function CompanyDashboardContainer() {
   const [statusData, setStatusData] = useState<StatType[]>([]);
@@ -415,7 +410,7 @@ function CompanyDashboardContainer() {
           stage: ApplicationStatusType;
           count: number;
         }[] = applicationsData.appData.appStatusData;
-        console.log('applicationsData.appData.appStatusData;',applicationsData.appData.appStatusData);
+        
         
 
         const completeStatusData: AppStatusData[] = PIPELINE_STAGES.map(

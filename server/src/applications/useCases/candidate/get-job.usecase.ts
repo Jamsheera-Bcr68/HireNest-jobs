@@ -13,6 +13,7 @@ import { UserSkillDto } from '../../dtos/skill.dto';
 import { JobReportType } from '../../dtos/job.dto';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface IGetJobDetailsUseCase {
   execute(id: string): Promise<JobDetailsDto>;
@@ -24,14 +25,16 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
     private _companyRepository: ICompanyRepository,
     private _skillRepository: ISkillRepository,
     private _userRepository: IUserRepository,
-    private _applicationRepository: IApplicationRepository
+    private _applicationRepository: IApplicationRepository,private _fileUrlResolverService:IFileResolverService
   ) {}
-  private mapToJobDetailsDto(
+  private async mapToJobDetailsDto(
     job: Job,
     company: Company,
     skillNames: UserSkillDto[],
     reports: JobReportType[],count:number
-  ): JobDetailsDto {
+  ): Promise<JobDetailsDto> {
+
+      const fileUrlResolver=this._fileUrlResolverService.createResolver()
     return {
       id: job.id.toString(),
       title: job.title,
@@ -54,7 +57,7 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
       responsibilities: job.responsibilities ?? [],
       skills: skillNames || [],
       companyName: company.companyName,
-      companyLogo: company.logoUrl,
+      companyLogo:await fileUrlResolver(company.logoUrl) ,
       industry: company.industry,
       benefits: company.benefits ?? [],
       aboutCompany: company.about ?? '',
@@ -63,6 +66,8 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
       companySize: company.size,
     };
   }
+
+
   async execute(id: string): Promise<JobDetailsDto> {
     const job = await this._jobRepository.findById(id);
     if (!job || !job.companyId)
@@ -77,12 +82,7 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
     const skills = await this._skillRepository.getAll({
       status: SkillStatus.APPROVED,
     });
-    // if (!skills.length)
-    //   throw new AppError(
-    //     jobMessages.error.SKILL_NOT_FOUND,
-    //     statusCodes.NOTFOUND
-    //   );
-
+    
     const skillIds = new Set(job.skills.map(String));
 
     const skillnames = skills.filter((skill) => skillIds.has(String(skill.id)));

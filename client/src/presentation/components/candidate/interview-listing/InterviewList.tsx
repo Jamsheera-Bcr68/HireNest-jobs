@@ -14,7 +14,7 @@ type Props = {
   onViewClick: (id: string) => Promise<void>;
 };
 
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
 export function CandidateInterviewList({
   interviews,
   onConfirmClick,
@@ -52,7 +52,7 @@ export function CandidateInterviewList({
                   <div className="w-10 h-10 rounded-xl overflow-hidden border bg-gray-50 flex items-center justify-center shrink-0">
                     {interview.companyLogo ? (
                       <img
-                        src={`${baseUrl}${interview.companyLogo}`}
+                        src={`${interview.companyLogo}`}
                         alt={interview.company}
                         className="w-full h-full object-cover"
                       />

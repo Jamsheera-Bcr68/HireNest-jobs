@@ -132,14 +132,7 @@ function LogoAndName({
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div className="flex items-center gap-4">
-        {/* Logo */}
-        {/* <div className="w-16 h-16  rounded-lg flex items-center justify-center">
-          <img
-            className="w-full h-full border rounded-full object-contain"
-            src={`${baseUrl}${company.logoUrl}`}
-            alt="Company logo"
-          />
-        </div> */}
+       
         <Avatar name={company.companyName} item='company' imageClassName='w-full h-full border rounded-full object-contain' logoUrl={company.logoUrl} className="w-16 h-16  rounded-full flex items-center justify-center"/>
 
         <div>

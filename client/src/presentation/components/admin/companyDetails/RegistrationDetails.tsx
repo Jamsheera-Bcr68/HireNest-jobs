@@ -311,7 +311,7 @@ export function Document({ document }: DocumentProps) {
 
           <button
             type="button"
-            onClick={() => window.open(`${baseUrl}${document.file}`, '_blank')}
+            onClick={() => window.open(`${document.file}`, '_blank')}
             className="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition-all duration-200 hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600"
           >
             View

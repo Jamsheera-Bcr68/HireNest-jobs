@@ -1,13 +1,14 @@
 import { StatusEnum } from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
-import { JobMapper } from '../../../presentation/http/mappers/job.mapper';
+
 import { HomeResponseDto } from '../../dtos/response.dto';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
 import { Skill } from '../../../domain/entities/skill.entity';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface IGetHomeDataUseCase {
   execute(): Promise<HomeResponseDto>;
@@ -15,9 +16,10 @@ export interface IGetHomeDataUseCase {
 
 export class GetHomeDataUseCase implements IGetHomeDataUseCase {
   constructor(
-    private jobRepository: IJobRepository,
-    private userRepository: IUserRepository,
-    private SkillRepository: ISkillRepository
+    private _jobRepository: IJobRepository,
+    private _userRepository: IUserRepository,
+    private _SkillRepository: ISkillRepository,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(): Promise<HomeResponseDto> {
     const startOfDay = new Date();
@@ -26,25 +28,25 @@ export class GetHomeDataUseCase implements IGetHomeDataUseCase {
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
-    let todayJobCount = await this.jobRepository.count(
+    let todayJobCount = await this._jobRepository.count(
       {
         status: StatusEnum.ACTIVE,
       },
       'today'
     );
-    let industryWise = await this.jobRepository.industryBasedJobs();
+    let industryWise = await this._jobRepository.industryBasedJobs();
     let limit = 6;
-    const { jobs } = await this.jobRepository.getJobs({}, limit, 1);
-    const companyCount = await this.userRepository.getCount({
+    const { jobs } = await this._jobRepository.getJobs({}, limit, 1);
+    const companyCount = await this._userRepository.getCount({
       role: UserRole.COMPANY,
     });
-    const candidateCount = await this.userRepository.getCount({
+    const candidateCount = await this._userRepository.getCount({
       role: UserRole.CANDIDATE,
     });
-    const activeJobCount = await this.jobRepository.count({
+    const activeJobCount = await this._jobRepository.count({
       status: StatusEnum.ACTIVE,
     });
-    const activeSkills = await this.SkillRepository.getAll({
+    const activeSkills = await this._SkillRepository.getAll({
       status: SkillStatus.APPROVED,
     });
     const modifiedJobs = jobs.map((featured) => {
@@ -58,11 +60,18 @@ export class GetHomeDataUseCase implements IGetHomeDataUseCase {
       };
     });
     // console.log('jobs', modifiedJobs);
-
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
     return {
       currentDayPostCount: todayJobCount,
       industries: industryWise,
-      featuredJobs: modifiedJobs,
+      featuredJobs: await Promise.all(
+        modifiedJobs.map(async (job) => {
+          return {
+            ...job,
+            companyLogo: await fileUrlResolver(job.companyLogo),
+          };
+        })
+      ),
       stats: [
         { label: 'Active Jobs', value: activeJobCount },
         { label: 'Candidates', value: candidateCount },

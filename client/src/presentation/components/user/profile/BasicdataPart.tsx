@@ -10,8 +10,6 @@ import type { StateType } from '../../../../constants/types/user';
 import { useTheme } from '../../../../contexts/ThemeContext';
 
 const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-  console.log('baser ulr', BASE_URL);
   const userData = useSelector((state: StateType) => state.auth.user);
   console.log('userData', userData);
 
@@ -43,7 +41,7 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
         <div className="flex flex-col items-center">
           <div
             onClick={handleImageClick}
-           className={`
+            className={`
   w-32 h-32
   ${t.skeletonBg}
   rounded-full
@@ -59,11 +57,7 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
                 e.currentTarget.src = '/profileImage.jpg';
               }}
               className="rounded-full"
-              src={
-                user?.imageUrl
-                  ? `${BASE_URL}${user?.imageUrl}`
-                  : '/profileImage.jpg'
-              }
+              src={user?.imageUrl ? `${user?.imageUrl}` : '/profileImage.jpg'}
               alt=""
             />
           </div>
@@ -74,8 +68,8 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
           <h2 className={`text-2xl font-bold ${t.cardTitle}`}>
             {user?.name || ''}
           </h2>
-         <p className={`${t.subheading} mt-1`}>{user?.title || ''}</p>
-         <p className={`${t.iconMuted} text-sm mt-2`}>
+          <p className={`${t.subheading} mt-1`}>{user?.title || ''}</p>
+          <p className={`${t.iconMuted} text-sm mt-2`}>
             {user?.address?.place || ''},{user?.address?.state || ''},
             {user?.address?.country || ''}
           </p>
@@ -84,23 +78,19 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
         {/* Quick Stats */}
         <div className="mt-6 grid grid-cols-2 gap-4">
           <div className={`${t.metaBadgeBg} rounded-lg p-3 text-center`}>
-  <p className={`text-2xl font-bold ${t.metaBadgeText}`}>
-    {user?.applicationCount ?? 0}
-  </p>
+            <p className={`text-2xl font-bold ${t.metaBadgeText}`}>
+              {user?.applicationCount ?? 0}
+            </p>
 
-  <p className={`${t.subheading} text-sm`}>
-    Applications
-  </p>
-</div>
+            <p className={`${t.subheading} text-sm`}>Applications</p>
+          </div>
           <div className={`${t.statSuccessBg} rounded-lg p-3 text-center`}>
-  <p className={`text-2xl font-bold ${t.statSuccessText}`}>
-    {user?.interviewsCount ?? 0}
-  </p>
+            <p className={`text-2xl font-bold ${t.statSuccessText}`}>
+              {user?.interviewsCount ?? 0}
+            </p>
 
-  <p className={`${t.subheading} text-sm`}>
-    Interviews
-  </p>
-</div>
+            <p className={`${t.subheading} text-sm`}>Interviews</p>
+          </div>
         </div>
 
         {/* Contact Info */}
@@ -119,7 +109,7 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
               />
             </svg>
-           <span className={`${t.inputText} text-sm`}>{user?.email}</span>
+            <span className={`${t.inputText} text-sm`}>{user?.email}</span>
           </div>
           <div className="flex items-center space-x-3">
             <svg
@@ -287,7 +277,7 @@ const BasicDataPart = ({ user, onUserUpdate }: BasicDataProps) => {
       <ProfileImageViewModal
         open={openImageModal}
         onClose={() => setOpenImageModal(false)}
-        profileImage={user?.imageUrl ? `${BASE_URL}${user?.imageUrl}` : ''}
+        profileImage={user?.imageUrl ? `${user?.imageUrl}` : ''}
         onUserUpdate={onUserUpdate}
       />
       <ProfileEditModal

@@ -145,7 +145,7 @@ export default function SelectResumeModal({
                 </div>
 
                 <a
-                  href={`${baseUrl}${resume.url}`}
+                  href={`${resume.url}`}
                   target="_blank"
                   className="text-fuchsia-700 text-sm hover:underline"
                 >

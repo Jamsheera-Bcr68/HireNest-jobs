@@ -60,21 +60,7 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
         <div className="flex items-center gap-4">
           {/* Logo */}
           <Avatar item='candidate' name={candidate.name??'Candidate'} logoUrl={candidate.imageUrl}  imageClassName="w-full h-full border rounded-full object-contain" className='w-16 h-16 border rounded-full flex items-center justify-center'/>
-          {/* <div
-            className={`w-16 h-16 border rounded-full flex items-center justify-center  ${candidate.imageUrl ? '' : 'bg-gray-400'}`}
-          >
-            {candidate.imageUrl ? (
-              <img
-                className="w-full h-full border rounded-full object-contain"
-                src={`${baseUrl}${candidate.imageUrl}`}
-                alt="Logo"
-              />
-            ) : (
-              <h1 className="text-bold 2xl text-white">
-                {candidate?.name?.slice(0, 1) || 'image'}
-              </h1>
-            )}
-          </div> */}
+   
 
           <div>
             <h1 className="text-xl md:text-xl font-bold text-slate-800">

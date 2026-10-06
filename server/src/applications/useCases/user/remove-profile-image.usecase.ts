@@ -17,7 +17,7 @@ export class RemoveProfileImageUseCase implements IRemoveProfileImageUseCase {
     this._userRepository = userRepository;
     this._imageStorageService = imageStorageService;
   }
-  async execute(userId: string, role: UserRole): Promise<User> {
+  async execute(userId: string, role: UserRole): Promise<void> {
     const user = await this._userRepository.findById(userId);
     if (!user || !user.role || !user.id)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
@@ -33,6 +33,5 @@ export class RemoveProfileImageUseCase implements IRemoveProfileImageUseCase {
     if (!updatad)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     await this._imageStorageService.removeFile(fileName);
-    return updatad;
   }
 }

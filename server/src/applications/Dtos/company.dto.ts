@@ -107,7 +107,7 @@ export type CompanyFilterDto = {
 export type PendingCompany = {
   id: string;
   email?: string;
-  logoUrl: string;
+  logoUrl?: string;
   location: string;
   submittedAt: string;
 };

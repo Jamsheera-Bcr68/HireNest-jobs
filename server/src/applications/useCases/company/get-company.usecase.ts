@@ -8,7 +8,9 @@ import { IJobRepository } from '../../../domain/repository-interfaces/job-reposi
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { CompanyDataDto } from '../../dtos/company.dto';
+import { IFileStorageService } from '../../interfaces/services/file-storage.service';
 import { CompanyMapper } from '../../mappers/company.mapper';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface IGetCompanyUseCase {
   execute(userId: string): Promise<CompanyDataDto>;
@@ -19,7 +21,10 @@ export class GetCompanyUseCase implements IGetCompanyUseCase {
     private _companyRepository: ICompanyRepository,
     private _jobRepository: IJobRepository,
     private _applicationRepository: IApplicationRepository,
-    private _interviewRepository: IInterviewRepository
+    private _interviewRepository: IInterviewRepository,
+    private _fileStorageService:IFileStorageService,
+    private _fileUrlResolverService:IFileResolverService
+   
   ) {}
   async execute(userId: string): Promise<CompanyDataDto> {
     const company = await this._companyRepository.findByUserId(userId);
@@ -46,10 +51,12 @@ export class GetCompanyUseCase implements IGetCompanyUseCase {
       companyId: company.id,
     });
     console.log('total interviews',totalInterviews);
-    
+    const urlResolver=this._fileUrlResolverService.createResolver()
+    const logoUrl=await  urlResolver(company.logoUrl)
+    const docUrl=await this._fileStorageService.getFileUrl(company.document.file)
 
     return {
-      ...CompanyMapper.toCompanyDataDto(company),
+      ...CompanyMapper.toCompanyDataDto({...company,logoUrl:logoUrl,document:{...company.document,file:docUrl}}),
       totalJobs,
       hiredCount,
       totalApps,

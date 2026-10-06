@@ -60,7 +60,7 @@ function ConversationItem({ conversation, isActive, onClick }: Props) {
           <>
             <img
               className=" w-12 h-12 rounded-full  flex items-center justify-center text-white font-semibold shrink-0 select-none"
-              src={`${baseUrl}${conversation.imageUrl}`}
+              src={`${conversation.imageUrl}`}
               alt=""
             />
           </>

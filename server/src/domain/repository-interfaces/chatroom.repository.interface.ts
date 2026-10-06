@@ -14,5 +14,13 @@ export interface IChatroomRepository extends IBaseRepository<Chatroom> {
     role: UserRole
   ): Promise<AggregatedChatroomDto[]>;
   isParticipant(chatroomId: string, participantId: string): Promise<boolean>;
-  getChatroom(chatroomId: string, role: UserRole,participantId:string): Promise<AggregatedChatroomDto>;
+  getChatroom(
+    chatroomId: string,
+    role: UserRole,
+    participantId: string
+  ): Promise<AggregatedChatroomDto>;
+  getChatroomsByParticipants(
+    companyId?: string,
+    candidateId?: string
+  ): Promise<{ id: string; companyId: string; candidateId: string }[]>;
 }

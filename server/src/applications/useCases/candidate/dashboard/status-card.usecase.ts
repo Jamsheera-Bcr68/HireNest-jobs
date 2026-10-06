@@ -10,7 +10,7 @@ import { IInterviewRepository } from '../../../../domain/repository-interfaces/i
 import { IJobRepository } from '../../../../domain/repository-interfaces/job-repository.interface';
 import { INotificationRepository } from '../../../../domain/repository-interfaces/notification.repository.interface';
 import { IUserRepository } from '../../../../domain/repository-interfaces/user-repository.interface';
-import { INotificationDocument } from '../../../../infrastructure/database/models/notification.model';
+
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { IDashboardCardDataUsecase } from '../../../interfaces/dashboard/status-card-data.usecase.interface';

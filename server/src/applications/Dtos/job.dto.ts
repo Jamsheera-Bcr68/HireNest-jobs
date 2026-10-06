@@ -3,7 +3,7 @@ import { ExperienceType, JobType } from '../../domain/types/job.types';
 import { WorkMode } from '../../domain/enums/work-mode.enum';
 import { StatusEnum } from '../../domain/enums/status.enum';
 import { Job } from '../../domain/entities/job.entity';
-import { EducationType } from '../../presentation/http/validators/education-form.validator';
+
 import {
   AddressType,
   IndustryType,
@@ -50,7 +50,7 @@ export interface JobUpdateDto {
   description: string;
 }
 export interface JobCardDto {
-  companyLogo: string;
+  companyLogo?: string;
   companyName: string;
   location: AddressType;
   vacancyCount: number;
@@ -91,7 +91,7 @@ export type JobDetailsDto = {
   education: string;
   languages?: string;
   companyName: string;
-  companyLogo: string;
+  companyLogo?: string;
   industry: string;
   benefits: string[];
   aboutCompany: string;

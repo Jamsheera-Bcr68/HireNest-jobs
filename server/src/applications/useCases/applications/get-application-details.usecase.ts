@@ -1,4 +1,3 @@
-import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
@@ -11,8 +10,9 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { ApplicationDetailsDto } from '../../dtos/application.dto';
 import { IGetEntityDetailsUsecase } from '../../interfaces/usecases/get-entity-details.usecase.inerface';
 import { ApplicationMapper } from '../../mappers/application.mapper';
-import { IExperienseRepository } from '../../../domain/repository-interfaces/experience-repository.interface';
+
 import { IChatroomRepository } from '../../../domain/repository-interfaces/chatroom.repository.interface';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<ApplicationDetailsDto> {
   constructor(
@@ -21,7 +21,8 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
     private _companyRepository: ICompanyRepository,
     private _userRepository: IUserRepository,
     private _skillRepository: ISkillRepository,
-    private _chatroomRepository: IChatroomRepository
+    private _chatroomRepository: IChatroomRepository,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(
     applicationId: string,
@@ -59,13 +60,8 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
         statusCodes.NOTFOUND
       );
     const resume = candidate.resumes.find((r) => r.id == application.resumeId);
-    // if (!resume)
-    //   throw new AppError(
-    //     generalMessages.errors.NOT_FOUND('Resume'),
-    //     statusCodes.NOTFOUND
-    //   );
-   
-      let chatroomId:string|undefined
+
+    let chatroomId: string | undefined;
     if (
       !['pending', 'rejected', 'reviewed', 'shortListed'].includes(
         application.status
@@ -76,19 +72,37 @@ export class GetApplicationDetailUsecase implements IGetEntityDetailsUsecase<App
         candidateId: application.candidateId,
         jobId: application.jobId,
       });
-      chatroomId=chatroom?.id
-     
+      chatroomId = chatroom?.id;
     }
 
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
     const skills = await this._skillRepository.findByIds(job.skills);
-    return ApplicationMapper.toApplicationDetailDto(
+    const updated = ApplicationMapper.toApplicationDetailDto(
       application,
       job,
       company,
       candidate,
       skills,
       resume,
-     chatroomId
+      chatroomId
     );
+
+    return {
+      ...updated,
+      resume: updated.resume
+        ? {
+            ...updated.resume,
+            url: (await fileUrlResolver(updated.resume.url)) ?? '',
+          }
+        : updated.resume,
+      candidate: {
+        ...updated.candidate,
+        profileImg: await fileUrlResolver(updated.candidate.profileImg),
+      },
+      company: {
+        ...updated.company,
+        logoUrl: await fileUrlResolver(updated.company.logoUrl),
+      },
+    };
   }
 }

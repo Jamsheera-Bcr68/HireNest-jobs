@@ -6,6 +6,7 @@ import { ICompanyRepository } from '../../../../domain/repository-interfaces/com
 import { IJobRepository } from '../../../../domain/repository-interfaces/job-repository.interface';
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
+import { IFileResolverService } from '../../../services/file-url-resolver.service';
 import { DashboardPendingsDto } from '../../../types/admin-dashboard.types';
 
 export interface IDashboardPendingsUsecase {
@@ -16,7 +17,8 @@ export class DashboardPendingsUsecase implements IDashboardPendingsUsecase {
   constructor(
     private _companyRepository: ICompanyRepository,
     private _jobRepository: IJobRepository,
-    private _adminRepository: IAdminRepository
+    private _adminRepository: IAdminRepository,
+    private _fileUrlResolver:IFileResolverService
   ) {}
 
   async execute(userId: string, role: string): Promise<DashboardPendingsDto> {
@@ -43,12 +45,12 @@ export class DashboardPendingsUsecase implements IDashboardPendingsUsecase {
     console.log('reported jobs jobs', jobs);
     const companyCount=await this._companyRepository.getCount({status:StatusEnum.PENDING})
     const jobCount=await this._jobRepository.getCount({isReported:true})
-
-    return {
-      companies: companies.map((com) => {
-        const { country, state, place } = com.address;
+    const fileUrlResolver=this._fileUrlResolver.createResolver()
+    const updatedCompanies=await Promise.all(companies.map(async(com)=>{
+       const { country, state, place } = com.address;
 
         const location = state + ',' + country;
+        const logoUrl=await fileUrlResolver(com.logoUrl)
 
         return {
           id: com.id?.toString() ?? '',
@@ -57,10 +59,13 @@ export class DashboardPendingsUsecase implements IDashboardPendingsUsecase {
           industry: com.industry,
 
           location: location,
-          logoUrl: com.logoUrl,
+          logoUrl: logoUrl,
           submittedAt: com.joinedAt.toDateString(),
         };
-      }),
+    }))
+
+    return {
+      companies:updatedCompanies,
       jobs: jobs.map((j) => ({
         id: j.id,
 

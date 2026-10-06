@@ -38,13 +38,7 @@ export class ReApplyCompanyUsecase implements IReApplyCompanyUsecase {
         generalMessages.errors.REAPPLY_COUNT_LIMIT_EXEEDED,
         statusCodes.BADREQUEST
       );
-    // if (!company.reapplyDetails.length) {
-    //   company.reapplyDetails.push({
-    //     date: new Date(company.joinedAt),
-    //     rejectedReason: company.reasonForReject,
-    //     status: StatusEnum.REJECTED,
-    //   });
-    // }
+      
     const { companyName, email } = payload;
     const nameExist = await this._comapnyRepository.getDuplicateCompany({ companyName },company.id);
     if (nameExist)

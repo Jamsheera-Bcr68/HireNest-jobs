@@ -75,7 +75,7 @@ export function SectionHeading({
 type InterviewCardProps = {
   interview: Interview;
 };
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
 export function InterviewCard({ interview }: InterviewCardProps) {
   const TypeIcon = interviewTypeIcon[interview.type];
   return (
@@ -84,7 +84,7 @@ export function InterviewCard({ interview }: InterviewCardProps) {
         {interview.imageUrl ? (
           <img
             className="rounded-full"
-            src={`${baseUrl}${interview.imageUrl}`}
+            src={`${interview.imageUrl}`}
             alt={interview.name}
           />
         ) : (
@@ -142,7 +142,7 @@ export function ApplicationRow({ app }: ApplicationRowProps) {
       <div className="h-10 w-10 shrink-0 rounded-full bg-emerald-50 flex items-center justify-center text-xs font-semibold text-emerald-700">
         {app.imageUrl ? (
           <img
-            src={`${baseUrl}${app.imageUrl}`}
+            src={`${app.imageUrl}`}
             className="shrink-0 rounded-full"
           />
         ) : (

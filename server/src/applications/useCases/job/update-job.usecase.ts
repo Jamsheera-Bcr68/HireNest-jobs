@@ -19,9 +19,9 @@ export interface IUpdateJobUseCase {
 }
 export class UpdateJobUseCase implements IUpdateJobUseCase {
   constructor(
-    private jobRepository: IJobRepository,
-    private userRepository: IUserRepository,
-    private skillRepository: ISkillRepository
+    private _jobRepository: IJobRepository,
+    private _userRepository: IUserRepository,
+    private _skillRepository: ISkillRepository
   ) {}
   async execute(
     jobid: string,
@@ -29,22 +29,22 @@ export class UpdateJobUseCase implements IUpdateJobUseCase {
     userId: string,
     data: JobUpdateDto
   ): Promise<JobDto> {
-    const job = await this.jobRepository.findById(jobid);
+    const job = await this._jobRepository.findById(jobid);
     if (!job || !job.id)
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
-    const user = await this.userRepository.findById(userId);
+    const user = await this._userRepository.findById(userId);
     if (!user || user.role !== role)
       throw new AppError(
         userMessages.error.COMPANY_NOT_FOUND,
         statusCodes.NOTFOUND
       );
-    const updated = await this.jobRepository.update(job.id, {
+    const updated = await this._jobRepository.update(job.id, {
       ...job,
       ...data,
       updatedAt: new Date(),
     });
 
-    const skills = await this.skillRepository.getAll({
+    const skills = await this._skillRepository.getAll({
       status: SkillStatus.APPROVED,
     });
     if (!skills.length)

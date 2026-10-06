@@ -18,6 +18,7 @@ import { companyDto } from '../../dtos/company.dto';
 import { NotificationInputDto } from '../../dtos/notification.dto';
 import { ICompanyRegisterUseCase } from '../../interfaces/company/company-register.usecase';
 import { IFileStorageService } from '../../interfaces/services/file-storage.service';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 import { INotificationService } from '../../services/notification.service';
 
 export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
@@ -26,7 +27,8 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
 
     private _userRepository: IUserRepository,
     private _adminRepository: IAdminRepository,
-    private _notificationService: INotificationService
+    private _notificationService: INotificationService,
+    private _fileUrlResolverService:IFileResolverService
   ) {}
   async execute(
     payload: Partial<companyDto>,
@@ -74,6 +76,7 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
     if (!company.id) {
       throw new Error(userMessages.error.COMPANY_NOT_FOUND);
     }
+
     const request: CompanyRequestType = {
       companyId: company.id,
       status: StatusEnum.PENDING,
@@ -103,6 +106,8 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
     const newNotification =
       await this._notificationService.create(notificationData);
     getIO().to(admin.id).emit('notification', newNotification);
-    return company;
+
+      const fileUrlResolver=this._fileUrlResolverService.createResolver()
+    return {...company,logoUrl:await fileUrlResolver(company.logoUrl),document:{...company.document,file:await fileUrlResolver(company.document.file)??''}};
   }
 }

@@ -10,26 +10,30 @@ import {
   IAddress,
   ISocialMediaLinks,
 } from '../../../domain/values/profile-types';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export class CandidateProfileEditUsecase implements IProfileEditUsecase {
   private _userRepository: IUserRepository;
-  constructor(userRepository: IUserRepository) {
+  constructor(
+    userRepository: IUserRepository,
+    private _fileUrlResolverService: IFileResolverService
+  ) {
     this._userRepository = userRepository;
   }
   async execute(data: CandidateProfileUpdateDto): Promise<User> {
- //   console.log('from usecase data is', data);
     const user = await this._userRepository.findOne({
       id: data.userId,
       email: data.email,
       role: data.role,
     });
-   // console.log('user from usercase ', user);
+
     if (!user || !user.id) {
       throw new AppError(
         authMessages.error.USER_NOT_FOUND,
         statusCodes.NOTFOUND
       );
     }
+
     const links: ISocialMediaLinks = {
       gitHub: data.socialMedidaLinks?.gitHub ?? user.socialMediaLinks?.gitHub,
       whatsapp:
@@ -43,6 +47,7 @@ export class CandidateProfileEditUsecase implements IProfileEditUsecase {
       twitter:
         data.socialMedidaLinks?.twitter ?? user.socialMediaLinks?.twitter,
     };
+
     const address: IAddress = {
       place: data.location?.place ?? user.address?.place,
       state: data.location?.state ?? user.address?.state,
@@ -52,7 +57,6 @@ export class CandidateProfileEditUsecase implements IProfileEditUsecase {
     user.address = address;
     user.title = data.title ?? user.title;
     user.socialMediaLinks = links;
-    //console.log('user before saving ', user);
 
     const updated = await this._userRepository.addProfileData(user?.id, user);
     if (!updated) {
@@ -61,6 +65,17 @@ export class CandidateProfileEditUsecase implements IProfileEditUsecase {
         statusCodes.NOTFOUND
       );
     }
-    return updated;
+
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+    return {
+      ...updated,
+      imageUrl: await fileUrlResolver(updated.imageUrl),
+      resumes: await Promise.all(
+        updated.resumes.map(async (res) => ({
+          ...res,
+          url: (await fileUrlResolver(res.url)) ?? '',
+        }))
+      ),
+    }
   }
 }

@@ -1,4 +1,3 @@
-//import { AppError } from "../../../domain/errors/AppError";
 import { ILogoutUsecase } from '../../interfaces/auth/logout.usecase';
 import { Request, Response } from 'express-serve-static-core';
 
@@ -11,6 +10,5 @@ export class LogoutUsecase implements ILogoutUsecase {
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
     });
-    //console.log(refreshToken);
   }
 }

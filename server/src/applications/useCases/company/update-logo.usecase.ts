@@ -13,21 +13,24 @@ export interface IChangeLogogUseCase {
     userId: string,
     role: UserRole,
     file: UploadFileDto
-  ): Promise<Company>;
+  ): Promise<string | undefined>;
 }
 
 export class ChangeLogoUseCase implements IChangeLogogUseCase {
   constructor(
-    private companyRepository: ICompanyRepository,
-    private imageStorageService: IFileStorageService
+    private _companyRepository: ICompanyRepository,
+    private _fileStorageService: IFileStorageService,
+   
   ) {}
   async execute(
     userId: string,
     role: UserRole,
     file: UploadFileDto
-  ): Promise<Company> {
-    const company = await this.companyRepository.findOne({ userId: userId });
-  //  console.log('company by userId', company);
+  ): Promise<string | undefined> {
+    console.log('from comapny update logo usecase',);
+    
+    const company = await this._companyRepository.findOne({ userId: userId });
+    //  console.log('company by userId', company);
 
     if (!company || !company.id)
       throw new AppError(
@@ -36,15 +39,19 @@ export class ChangeLogoUseCase implements IChangeLogogUseCase {
       );
     const oldImg = company.logoUrl;
 
-    const logoUrl = await this.imageStorageService.uploadFile(file);
+    const logoUrl = await this._fileStorageService.uploadFile(file,'companies/logos','jpg');
+    console.log('new Url is ',logoUrl);
+    
     company.logoUrl = logoUrl;
-    let updated = await this.companyRepository.save(company.id, company);
-    if (oldImg) await this.imageStorageService.removeFile(oldImg);
+    let updated = await this._companyRepository.save(company.id, company);
+     if (oldImg) await this._fileStorageService.removeFile(oldImg);
     if (!updated)
       throw new AppError(
         userMessages.error.COMPANY_NOT_FOUND,
         statusCodes.NOTFOUND
       );
-    return updated;
+    return updated.logoUrl
+      ? await this._fileStorageService.getFileUrl(updated.logoUrl)
+      : undefined;
   }
 }

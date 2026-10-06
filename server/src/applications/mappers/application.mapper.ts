@@ -3,8 +3,8 @@ import { Company } from '../../domain/entities/company.entity';
 import { Job } from '../../domain/entities/job.entity';
 import { Skill } from '../../domain/entities/skill.entity';
 import { User } from '../../domain/entities/user.entity';
-import { UserRole } from '../../domain/enums/user.enums';
-import { IAddress, IResume } from '../../domain/values/profile-types';
+
+import { IResume } from '../../domain/values/profile-types';
 import { ApplicationTimelineItemDTO } from '../dtos/application.dto';
 import { getMonthAndYear } from '../../shared/utils';
 import {
@@ -16,17 +16,15 @@ import { buildApplicationTimeline } from '../utils/build-application-timeline';
 import { email, string } from 'zod';
 
 export class ApplicationMapper {
-  static toApplicationDto(
-    entity: AggregatedApplication,
-  
-  ): ApplicationDto {
+  static toApplicationDto(entity: AggregatedApplication): ApplicationDto {
     type applicantType = { name?: string; email?: string; location?: string };
-    let address:string=''
+    let address: string = '';
 
     if (entity.applicant) {
-      
-    
-      address = [entity.applicant.address?.place, entity.applicant.address?.state]
+      address = [
+        entity.applicant.address?.place,
+        entity.applicant.address?.state,
+      ]
         .filter(Boolean)
         .join(', ');
     }
@@ -41,7 +39,7 @@ export class ApplicationMapper {
       logo: entity.logo,
       status: entity.status,
       appliedDate: new Date(entity.appliedAt).toDateString(),
-      applicant: {...entity.applicant,location:address},
+      applicant: { ...entity.applicant, location: address },
     };
   }
 
@@ -51,13 +49,14 @@ export class ApplicationMapper {
     company: Company,
     candidate: User,
     skills: Skill[],
-    resume?: IResume,chatroomId?:string
+    resume?: IResume,
+    chatroomId?: string
   ): ApplicationDetailsDto {
     return {
       id: app.id,
       status: app.status,
       resume: resume,
-chatroomId:chatroomId,
+      chatroomId: chatroomId,
       appliedAt: new Date(app.appliedAt).toDateString(),
 
       reviewedAt: app.reviewedAt

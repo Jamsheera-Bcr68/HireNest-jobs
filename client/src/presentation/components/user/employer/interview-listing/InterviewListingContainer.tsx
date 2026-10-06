@@ -694,17 +694,7 @@ function InterviewListingContainer() {
           initialDate={selected?.scheduledAt.date ?? null}
           initialTime={selected?.scheduledAt.time ?? null}
         />
-        {/* <ConfirmationModal
-          isOpen={completedModal}
-          onClose={() => {
-            setSelectedId(null);
-            setCompltedModal(false);
-          }}
-          item="Interview"
-          action="Mark as Completed"
-          type="info"
-          onConfirm={() => handleStatusChange('completed')}
-        /> */}
+       
         <InterviewFeedbackModal
           isOpen={resultModal}
           onClose={() => {

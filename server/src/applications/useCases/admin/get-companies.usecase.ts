@@ -1,4 +1,4 @@
-import { CompanyListDTO, PaginatedCompanies } from '../../dtos/company.dto';
+import { PaginatedCompanies } from '../../dtos/company.dto';
 import { Company } from '../../../domain/entities/company.entity';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { UserRole } from '../../../domain/enums/user.enums';
@@ -6,6 +6,7 @@ import { AppError } from '../../../domain/errors/app-error';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface IGetCompaniesUseCase {
   execute(
@@ -21,7 +22,8 @@ export interface IGetCompaniesUseCase {
 export class GetCompaniesUseCase implements IGetCompaniesUseCase {
   constructor(
     private _companyRepository: ICompanyRepository,
-    private _adminRepository: IAdminRepository
+    private _adminRepository: IAdminRepository,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(
     userId: string,
@@ -45,14 +47,28 @@ export class GetCompaniesUseCase implements IGetCompaniesUseCase {
         statusCodes.NOTFOUND
       );
     }
-    const data = await this._companyRepository.getCompanyList(
-      filter,
-      page,
-      search,
-      limit,sortBy
-    );
-     console.log('filtered companes', data);
+    const { companies, totalDocs } =
+      await this._companyRepository.getCompanyList(
+        filter,
+        page,
+        search,
+        limit,
+        sortBy
+      );
 
-    return data;
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+
+    const updated = await Promise.all(
+      companies.map(async (com) => {
+        return { ...com, logoUrl:await fileUrlResolver(com.logoUrl) };
+      })
+    );
+
+   
+
+    return {
+      companies:updated,
+      totalDocs
+    };
   }
 }

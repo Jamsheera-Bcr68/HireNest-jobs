@@ -103,7 +103,7 @@ function JobData({ job }: { job: JobDetailsDto | null }) {
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-md">
                   <img
                     className="rounded-2xl"
-                    src={`${baseUrl}${job.companyLogo}`}
+                    src={`${job.companyLogo}`}
                     alt=""
                   />
                 </div>
@@ -309,7 +309,7 @@ function JobData({ job }: { job: JobDetailsDto | null }) {
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-base font-bold text-white">
                   <img
                     className="rounded-2xl"
-                    src={`${baseUrl}${job.companyLogo}`}
+                    src={`${job.companyLogo}`}
                     alt=""
                   />
                 </div>

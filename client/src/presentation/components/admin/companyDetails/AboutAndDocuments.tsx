@@ -64,35 +64,7 @@ function AboutAndDocuments({
         </div>
       </div>
       <RegistrationDetails company={company}/>
-{/* <Document document={company.document} /> */}
-      {/* Documents */}
-      {/* <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold  text-indigo-700 mb-5">
-          Company Documents
-        </h2>
 
-        <div className="space-y-4">
-          <div className="flex items-center justify-between border p-4 rounded-lg">
-            <div>
-              <p className="font-medium text-slate-700">
-                {company.document.type}
-              </p>
-              <p className="text-xs text-slate-500">
-                Uploaded during registration
-              </p>
-            </div>
-
-            <button
-              onClick={() =>
-                window.open(`${baseUrl}${company.document.file}`, '_blank')
-              }
-              className="text-sm bg-indigo-100 text-indigo-600 px-3 py-1 rounded-md hover:bg-indigo-200"
-            >
-              View
-            </button>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }

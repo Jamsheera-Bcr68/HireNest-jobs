@@ -13,7 +13,7 @@ export type SkillFilter = {
 };
 
 export const useProfile = () => {
-  const [user, setUser] = useState<UserProfileType>();
+  const [user, setUser] = useState<UserProfileType|null>(null);
   const [allSkills, setAllSkills] = useState<SkillType[]>([]);
     const [loading,setLoading]=useState<boolean>(false)
   const { showToast } = useToast();

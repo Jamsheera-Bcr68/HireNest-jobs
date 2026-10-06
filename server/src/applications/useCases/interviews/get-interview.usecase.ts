@@ -11,13 +11,17 @@ import { generalMessages } from '../../../shared/constants/messages/general.mess
 import { UserRole } from '../../../domain/enums/user.enums';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { InterviewMapper } from '../../mappers/interview.mapper';
+import { IFileStorageService } from '../../interfaces/services/file-storage.service';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export class GetInterviewDetailsUsecase implements IGetEntityDetailsUsecase<interviewDetailDto> {
   constructor(
     private _interviewRepository: IInterviewRepository,
     private _jobRepository: IJobRepository,
     private _companyRepository: ICompanyRepository,
-    private _userRepository: IUserRepository
+    private _userRepository: IUserRepository,
+    private _fileStorageService: IFileStorageService,
+    private _fileResolverService: IFileResolverService
   ) {}
   async execute(
     id: string,
@@ -66,12 +70,15 @@ export class GetInterviewDetailsUsecase implements IGetEntityDetailsUsecase<inte
         generalMessages.errors.NOT_FOUND('Candidate'),
         statusCodes.NOTFOUND
       );
+    const urlResolver = this._fileResolverService.createResolver();
+    const logoUrl = await urlResolver(company.logoUrl);
+    const image = await urlResolver(candidate.imageUrl);
 
     return InterviewMapper.toInterviewDetailDto(
       interview,
       job,
-      candidate,
-      company
+      { ...candidate, imageUrl: image },
+      { ...company, logoUrl }
     );
   }
 }

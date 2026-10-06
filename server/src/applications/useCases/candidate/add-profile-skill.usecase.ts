@@ -6,6 +6,7 @@ import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { IAddSkillToProfileUseCase } from '../../interfaces/candidate/add-skill-profile.usecase';
 import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
+import { CandidateSkillDto } from '../../dtos/skill.dto';
 
 export class AddSkillsToProfieUseCase implements IAddSkillToProfileUseCase {
   private _userRepository: IUserRepository;
@@ -17,7 +18,7 @@ export class AddSkillsToProfieUseCase implements IAddSkillToProfileUseCase {
     this._userRepository = userRepository;
     this._skillRepository = skillRepository;
   }
-  async execute(id: string, skillId: string, role: UserRole): Promise<User> {
+  async execute(id: string, skillId: string, role: UserRole): Promise<CandidateSkillDto> {
  //   console.log('from add skill to profiel usercase');
 
     const user = await this._userRepository.findById(id);
@@ -38,14 +39,11 @@ export class AddSkillsToProfieUseCase implements IAddSkillToProfileUseCase {
         statusCodes.CONFLICT
       );
     }
-    // user.skills?.push(skill);
-    // console.log('usr.skills', user.skills);
+ 
 
-    const updated = await this._userRepository.addSkill(user.id, skill.id);
-    if (!updated)
-      throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-  //  console.log('skill updated user for addskillusecase ', updated);
+     await this._userRepository.addSkill(user.id, skill.id);
+  
 
-    return updated;
+    return skill;
   }
 }

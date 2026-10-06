@@ -25,10 +25,9 @@ export const generalMessages = {
     DASHBOARD_STATUS_DATA_FETCHED: 'Dashboard statuscard data fetched',
   },
   errors: {
-
-
+    UNABLE_TO_DELETE_FILE: 'Unable to delete the file',
     NOT_FOUND: (entity: string) => `${entity} not found`,
-    
+
     INTERNAL_SERVER_ERROR: 'Something went wrong, please try again later',
     INVALID_RESUME_FILE_TYPE: 'Only docx and pdf formats are allowed',
     INVALID_IMAGES_FILE_TYPE: 'Only png and jpeg formats are allowed',
@@ -42,5 +41,7 @@ export const generalMessages = {
       `Company with same ${field} is already exist`,
     REAPPLY_COUNT_LIMIT_EXEEDED: 'You can only reapply for 3 times',
     FORBIDDEN: `You are not authorized to access this resource.`,
+    SIZE_LIMIT_EXEED: (size: number) =>
+      `File is too large. Maximum allowed size is ${size} MB.`,
   },
 };

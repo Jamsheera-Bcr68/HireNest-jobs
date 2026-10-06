@@ -10,18 +10,16 @@ import { IFileStorageService } from '../../interfaces/services/file-storage.serv
 
 export class RemoveResumUseCase implements IRemoveResumeUseCase {
   constructor(
-    private userRepository: IUserRepository,
-    private fileStorageService: IFileStorageService
-  ) {
-    this.userRepository = userRepository;
-    this.fileStorageService = fileStorageService;
-  }
+    private _userRepository: IUserRepository,
+    private _fileStorageService: IFileStorageService
+  ) {}
+
   async execute(
     userId: string,
     resumeId: string,
     role: UserRole
-  ): Promise<User> {
-    const user = await this.userRepository.findById(userId);
+  ): Promise<void> {
+    const user = await this._userRepository.findById(userId);
     if (!user || !user.id || user.role !== role)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -36,17 +34,17 @@ export class RemoveResumUseCase implements IRemoveResumeUseCase {
       );
 
     try {
-      await this.fileStorageService.removeFile(res.url);
-      const updated = await this.userRepository.removeResume(userId, resumeId);
+      await this._fileStorageService.removeFile(res.url);
+      const updated = await this._userRepository.removeResume(userId, resumeId);
       if (!updated)
         throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-      return updated;
+     
     } catch (err: any) {
       if (
         err instanceof AppError &&
         err.message === userMessages.error.RESUME_ALREADY_DELETED
       ) {
-        const updated = await this.userRepository.removeResume(
+        const updated = await this._userRepository.removeResume(
           userId,
           resumeId
         );
@@ -55,7 +53,7 @@ export class RemoveResumUseCase implements IRemoveResumeUseCase {
             userMessages.error.NOT_FOUND,
             statusCodes.NOTFOUND
           );
-        return updated;
+     
       } else {
         throw err;
       }

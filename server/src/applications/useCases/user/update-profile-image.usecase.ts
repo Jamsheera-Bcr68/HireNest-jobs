@@ -11,9 +11,11 @@ import { IFileStorageService } from '../../interfaces/services/file-storage.serv
 export class EditProfileImageUseCase implements IEditProfileImageUsecase {
   private _userRepository: IUserRepository;
   private _imageStorageService: IFileStorageService;
+
   constructor(
     userRepository: IUserRepository,
-    imageStorageService: IFileStorageService
+    imageStorageService: IFileStorageService,
+    private _fileStorageService: IFileStorageService
   ) {
     this._userRepository = userRepository;
     this._imageStorageService = imageStorageService;
@@ -22,14 +24,20 @@ export class EditProfileImageUseCase implements IEditProfileImageUsecase {
     userId: string,
     role: UserRole,
     file: UploadFileDto
-  ): Promise<User> {
+  ): Promise<string | undefined> {
     const user = await this._userRepository.findById(userId);
+    console.log('from candidate profile image usecase', user?.imageUrl);
     if (!user || !user.id || user.role !== role) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
-    if (user.imageUrl)
-      await this._imageStorageService.removeFile(user.imageUrl);
-    const imageUrl = await this._imageStorageService.uploadFile(file);
+    if (user.imageUrl) await this._fileStorageService.removeFile(user.imageUrl);
+    console.log('from candidate profile image usecase');
+
+    const imageUrl = await this._fileStorageService.uploadFile(
+      file,
+      'candidates/profile-images',
+      'jpg'
+    );
 
     const updated = await this._userRepository.addProfileImage(
       user.id,
@@ -38,6 +46,9 @@ export class EditProfileImageUseCase implements IEditProfileImageUsecase {
     if (!updated) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
-    return updated;
+    const url = updated.imageUrl
+      ? await this._fileStorageService.getFileUrl(updated.imageUrl)
+      : undefined;
+    return url;
   }
 }

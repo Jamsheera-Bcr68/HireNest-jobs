@@ -10,6 +10,7 @@ import { generalMessages } from '../../../shared/constants/messages/general.mess
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { StatusEnum } from '../../../domain/enums/status.enum';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface IGetAllJobsUseCase {
   execute(
@@ -27,7 +28,8 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
   constructor(
     private _jobRepository: IJobRepository,
     private _skillRepository: ISkillRepository,
-    private _userRepository: IUserRepository
+    private _userRepository: IUserRepository,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(
     userId: string,
@@ -61,11 +63,11 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
       }
       query.skills = user.skills?.map((sk) => sk.id);
       console.log('candidate skills ', query.skills);
-      const title=user.title
-      if(title){
-        const normalised=title.split(' ').map(t=>t.toLowerCase())
-        if(normalised.length){
-          query.title=[...new Set(normalised)]
+      const title = user.title;
+      if (title) {
+        const normalised = title.split(' ').map((t) => t.toLowerCase());
+        if (normalised.length) {
+          query.title = [...new Set(normalised)];
         }
       }
       query.status = StatusEnum.ACTIVE;
@@ -97,7 +99,16 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
       };
     });
 
-     console.log('from getAll jobs', modifiedJobs);
-    return { jobs: modifiedJobs, totalDocs };
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+    console.log('from getAll jobs', modifiedJobs);
+    return {
+      jobs: await Promise.all(
+        modifiedJobs.map(async (job) => ({
+          ...job,
+          companyLogo: await fileUrlResolver(job.companyLogo),
+        }))
+      ),
+      totalDocs,
+    };
   }
 }

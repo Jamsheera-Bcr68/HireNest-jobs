@@ -1,4 +1,4 @@
-import { InterviewStatusEnum } from '../../domain/enums/status.enum';
+
 import { IndustryType } from '../../domain/types/company-profile.types';
 import { PendingCompany } from '../dtos/company.dto';
 import { AdminDashboardReportedJob } from '../dtos/job.dto';

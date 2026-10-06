@@ -2,20 +2,20 @@ import { useState } from 'react';
 import LogoImgViewModal from '../../../../modals/LogoPreviewModal';
 import EditCompanyProfileModal from '../../../../modals/EditCompanyProfile';
 import type { CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
-import { Twitter } from 'lucide-react';
+
 import ChangePasswordModal from '../../../../modals/ChangePasswordModal';
-import { ContactLinks } from './Contact';
 
 type Props = {
   company: CompanyProfileType | null;
-  onUpdate: (updated: CompanyProfileType) => void;
+  onUpdate: React.Dispatch<
+    React.SetStateAction<CompanyProfileType | null>
+  >;
 };
 function BasicPart({ company, onUpdate }: Props) {
   const [open, setOpen] = useState<boolean>(false);
   const [openPwd, setOpenPwd] = useState<boolean>(false);
   const [openEdit, setOpenEdit] = useState<boolean>(false);
 
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
   return (
     <div className="lg:col-span-1 z-1">
       <div className="bg-white rounded-lg shadow-md p-6">
@@ -31,9 +31,7 @@ function BasicPart({ company, onUpdate }: Props) {
               }}
               className="rounded-full object-cover w-full h-full"
               src={
-                company?.logoUrl
-                  ? `${BASE_URL}${company.logoUrl}`
-                  : '/profileImage.jpg'
+                company?.logoUrl ? `${company.logoUrl}` : '/profileImage.jpg'
               }
               alt="company-logo"
             />
@@ -227,7 +225,7 @@ function BasicPart({ company, onUpdate }: Props) {
             )}
           </div>
         </div> */}
-  
+
         {/* Edit Company Button */}
         <div className="flex gap-3">
           <button
@@ -247,7 +245,7 @@ function BasicPart({ company, onUpdate }: Props) {
       <LogoImgViewModal
         onClose={() => setOpen(false)}
         onUpdate={onUpdate}
-        profileImage={company?.logoUrl ? `${BASE_URL}${company?.logoUrl}` : ''}
+        profileImage={company?.logoUrl ? `${company?.logoUrl}` : ''}
         open={open}
       />
       <ChangePasswordModal open={openPwd} onClose={() => setOpenPwd(false)} />

@@ -105,7 +105,7 @@ export class CompanyDashboardController {
       user.userId,
       user.role
     );
-   // console.log('interview data', data);
+  
 
     return res.status(statusCodes.OK).json({
       success: true,

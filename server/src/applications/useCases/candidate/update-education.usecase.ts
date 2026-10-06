@@ -3,7 +3,7 @@ import { IEducationRepository } from '../../../domain/repository-interfaces/educ
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { EducationDto } from '../../dtos/education.dto';
 import { Education } from '../../../domain/entities/education.entity';
-import { User } from '../../../domain/entities/user.entity';
+
 import {
   EducationLevel,
   EducationStatus,
@@ -27,7 +27,8 @@ export class EditEducationUseCase implements IEditEducationUseCase {
     eduId: string,
     role: string,
     userId: string
-  ): Promise<User> {
+  ): Promise<Education> {
+
     payload = payload as Education;
     const educations = await this._educationRepository.getAllEducations(userId);
 
@@ -42,6 +43,7 @@ export class EditEducationUseCase implements IEditEducationUseCase {
           statusCodes.CONFLICT
         );
     }
+
     if (payload.level == EducationLevel.HS) {
       eduExist = educations.find(
         (edu) => edu.level === EducationLevel.HS && edu.id !== eduId
@@ -52,6 +54,7 @@ export class EditEducationUseCase implements IEditEducationUseCase {
           statusCodes.CONFLICT
         );
     }
+
     if (payload.status == EducationStatus.ONGOING) {
       eduExist = educations.find(
         (edu) => edu.status == EducationStatus.ONGOING && edu.id !== eduId
@@ -62,7 +65,8 @@ export class EditEducationUseCase implements IEditEducationUseCase {
           statusCodes.CONFLICT
         );
     }
-    if (payload.status == EducationStatus.ONGOING) payload.completedYear = 0;
+
+    if (payload.status == EducationStatus.ONGOING) payload.completedYear = 0
 
     const education = await this._educationRepository.editEducation(
       eduId,
@@ -70,18 +74,16 @@ export class EditEducationUseCase implements IEditEducationUseCase {
     );
 
     if (!education || !education.id) {
-    //  console.log('edu id', eduId);
-
       throw new AppError(
         userMessages.error.EDUCATION_NOTFOUND,
         statusCodes.NOTFOUND
       );
     }
+
     const updatedUser = await this._userRepository.findById(userId);
 
-   // console.log('updated user from add education', updatedUser, userId);
     if (!updatedUser)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return updatedUser;
+    return education
   }
 }

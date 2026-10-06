@@ -70,6 +70,7 @@ export class ChatroomRepository
       lastMessage: '$lastMessage',
       lastMessagedAt: '$lastMessagedAt',
       jobTitle: '$job.title',
+      jobId: 1,
       participantName: `$participant.${config.nameField}`,
       imageUrl: `$participant.${config.imageField}`,
       participantId: { $toString: `$participant._id` },
@@ -174,6 +175,7 @@ export class ChatroomRepository
       lastMessagedAt: doc.lastMessagedAt,
       imageUrl: doc.imageUrl,
       jobTitle: doc.jobTitle,
+      jobId: doc.jobId,
       participantName: doc.participantName,
       unreadCount: doc.unreadCount,
       participantId: doc.participantId,
@@ -182,12 +184,13 @@ export class ChatroomRepository
 
   async getChatroom(
     chatroomId: string,
-    role: UserRole.CANDIDATE | UserRole.COMPANY,participantId:string
+    role: UserRole.CANDIDATE | UserRole.COMPANY,
+    participantId: string
   ): Promise<AggregatedChatroomDto> {
     const matchStage: PipelineStage.Match['$match'] = {
-      _id:new mongoose.Types.ObjectId(chatroomId),
+      _id: new mongoose.Types.ObjectId(chatroomId),
     };
-     const config: {
+    const config: {
       from: string;
       localField: string;
       nameField: string;
@@ -206,7 +209,7 @@ export class ChatroomRepository
       unreadCount: '$unreadCount',
     };
 
-     const aggregatedChatroom: AggregatedChatroomDto[] =
+    const aggregatedChatroom: AggregatedChatroomDto[] =
       await this._model.aggregate([
         { $match: matchStage },
         {
@@ -262,6 +265,27 @@ export class ChatroomRepository
         { $project: projectStage },
         { $sort: { lastMessagedAt: -1 } },
       ]);
-      return this.mapToChatroomList(aggregatedChatroom[0])
+    return this.mapToChatroomList(aggregatedChatroom[0]);
+  }
+  async getChatroomsByParticipants(
+    companyId?: string,
+    candidateId?: string
+  ): Promise<{ id: string; companyId: string; candidateId: string }[]> {
+    const filter: Partial<IChatroomDocument> = {};
+    if (companyId) {
+      filter.companyId = new mongoose.Types.ObjectId(companyId);
+    }
+    if (candidateId) {
+      filter.candidateId = new mongoose.Types.ObjectId(candidateId);
+    }
+    const chatrooms = await this._model.find(filter, {
+      companyId: 1,
+      candidateId: 1,
+    });
+    return chatrooms.map((ch) => ({
+      candidateId: ch.candidateId.toString(),
+      companyId: ch.companyId.toString(),
+      id: ch._id.toString(),
+    }));
   }
 }

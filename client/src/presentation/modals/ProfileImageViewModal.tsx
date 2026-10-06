@@ -12,7 +12,7 @@ export default function ProfileImgViewModal({
   profileImage,
   onUserUpdate,
 }: ProfileImgViewModalProps) {
-  console.log('profileimage', profileImage);
+  console.log('profileimage from view image', profileImage);
 
   const {
     preview,

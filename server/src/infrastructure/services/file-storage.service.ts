@@ -55,4 +55,7 @@ export class FileStorageService implements IFileStorageService {
       return false;
     }
   }
+  async getFileUrl(key: string, expiresIn: number): Promise<string> {
+    return ''
+  }
 }

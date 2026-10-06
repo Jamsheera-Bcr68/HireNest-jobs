@@ -6,7 +6,6 @@ import { IRemoveEducationUseCase } from '../../interfaces/candidate/remove-educa
 import { AppError } from '../../../domain/errors/app-error';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import mongoose from 'mongoose';
 
 export class RemoveEducationUseCase implements IRemoveEducationUseCase {
   private _educationRepository: IEducationRepository;
@@ -19,7 +18,7 @@ export class RemoveEducationUseCase implements IRemoveEducationUseCase {
     this._userRepository = userRepository;
   }
 
-  async execute(eduId: string, userId: string, role: UserRole): Promise<User> {
+  async execute(eduId: string, userId: string, role: UserRole): Promise<void> {
     const user = await this._userRepository.findById(userId);
     if (!user || !user.id || user.role !== role)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
@@ -31,6 +30,5 @@ export class RemoveEducationUseCase implements IRemoveEducationUseCase {
 
     if (!updatedUser)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return updatedUser;
   }
 }

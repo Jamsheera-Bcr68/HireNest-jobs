@@ -15,28 +15,28 @@ export interface ICrateJobUseCase {
 
 export class CrateJobUseCase implements ICrateJobUseCase {
   constructor(
-    private userRepository: IUserRepository,
-    private jobRepository: IJobRepository,
-    private comapanyRepository: ICompanyRepository,
-    private skillRepository: ISkillRepository
+    private _userRepository: IUserRepository,
+    private _jobRepository: IJobRepository,
+    private _comapanyRepository: ICompanyRepository, 
+    private _skillRepository: ISkillRepository
   ) {}
   async execute(payload: JobDto, userId: string, role: UserRole): Promise<Job> {
-    const user = this.userRepository.findById(userId);
+    const user = this._userRepository.findById(userId);
     if (!user) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
-    const company = await this.comapanyRepository.findOne({ userId: userId });
+    const company = await this._comapanyRepository.findOne({ userId: userId });
     if (!company || !company.id)
       throw new AppError(
         userMessages.error.COMPANY_NOT_FOUND,
         statusCodes.NOTFOUND
       );
     const { skills } = payload;
-    const postCount = await this.skillRepository.updatePostUsedCount(
+    const postCount = await this._skillRepository.updatePostUsedCount(
       skills,
       'add'
     );
-    const newJob = await this.jobRepository.create({
+    const newJob = await this._jobRepository.create({
       ...payload,
       companyId: company.id,
     });

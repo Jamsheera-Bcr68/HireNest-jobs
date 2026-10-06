@@ -7,5 +7,5 @@ export interface IRemoveExperienceUseCase {
     role: UserRole,
 
     expId: string
-  ): Promise<User>;
+  ): Promise<void>;
 }

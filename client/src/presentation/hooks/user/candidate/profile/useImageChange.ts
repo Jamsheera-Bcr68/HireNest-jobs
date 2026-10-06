@@ -7,7 +7,9 @@ import { profileService } from '../../../../../services/api-services/candidateSe
 
 export const useImageChange = (
   onClose: () => void,
-  onUserUpdate: (user: UserProfileType) => void
+  onUserUpdate: React.Dispatch<
+    React.SetStateAction<UserProfileType | null>
+  >
 ) => {
   const { showToast } = useToast();
   const [preview, setPreview] = useState<string | null>(null);
@@ -58,11 +60,19 @@ export const useImageChange = (
     formdata.append('image', file);
 
     try {
+      console.log('file is ', file);
       const data = await profileService.saveImage(formdata);
+console.log('image url after changing image ',data.imageUrl);
 
-      const user = data.user;
+      const imageUrl = data.imageUrl;
+
       showToast({ msg: data.message, type: 'success' });
-      onUserUpdate(user);
+      
+
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
+        return { ...prev, imageUrl: imageUrl };
+      });
       onClose();
     } catch (error: any) {
       showToast({
@@ -78,7 +88,10 @@ export const useImageChange = (
     try {
       const data = await profileService.removeImage();
 
-      onUserUpdate(data.user);
+      onUserUpdate((prev)=>{
+        if(!prev)return prev
+        return{...prev,imageUrl:''}
+      });
       showToast({ msg: data.message, type: 'success' });
       setPreview(null);
       onClose();

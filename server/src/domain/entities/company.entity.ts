@@ -31,7 +31,7 @@ export interface Company {
   isVerified: boolean;
   isAgreed: boolean;
   isConsent: boolean;
-  logoUrl: string;
+  logoUrl?: string;
   industry: IndustryType;
   socialMediaLinks: ISocialMediaLinks;
   size: CompanySize;

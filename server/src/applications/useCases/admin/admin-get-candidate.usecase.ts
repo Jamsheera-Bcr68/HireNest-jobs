@@ -1,4 +1,3 @@
-import { User } from '../../../domain/entities/user.entity';
 import { AdminCandidateDto } from '../../dtos/user.dto';
 import {
   ApplicationStatusEnum,
@@ -10,9 +9,10 @@ import { IInterviewRepository } from '../../../domain/repository-interfaces/inte
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { adminMessages } from '../../../shared/constants/messages/admin.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { userDto } from '../../dtos/user.dto';
+
 import { UserMapper } from '../../mappers/user.mapper';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface IAdminGetEntityUseCase {
   execute(id: string): Promise<AdminCandidateDto>;
@@ -20,13 +20,14 @@ export interface IAdminGetEntityUseCase {
 
 export class AdminGetEntityUseCase implements IAdminGetEntityUseCase {
   constructor(
-    private userRepository: IUserRepository,
+    private _userRepository: IUserRepository,
     private _applicationReposotory: IApplicationRepository,
     private _interviewRepository: IInterviewRepository,
-    private _companyRepository: ICompanyRepository
+    private _companyRepository: ICompanyRepository,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(id: string): Promise<AdminCandidateDto> {
-    const candidate = await this.userRepository.findById(id);
+    const candidate = await this._userRepository.findById(id);
 
     if (!candidate)
       throw new AppError(
@@ -49,8 +50,20 @@ export class AdminGetEntityUseCase implements IAdminGetEntityUseCase {
       candidateId: id,
       status: InterviewStatusEnum.COMPLETED,
     });
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+
+    const updated = {
+      ...candidate,
+      imageUrl: await fileUrlResolver(candidate.imageUrl),
+      resumes: await Promise.all(
+        candidate.resumes.map(async (res) => ({
+          ...res,
+          url: await fileUrlResolver(res.url)??'',
+        }))
+      ),
+    };
     return UserMapper.toAdminCandidateDto(
-      candidate,
+      updated,
       company,
       appCount,
       interviewAttended,

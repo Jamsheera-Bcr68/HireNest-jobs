@@ -11,6 +11,9 @@ import { UserMapper } from '../../mappers/user.mapper';
 import { Company } from '../../../domain/entities/company.entity';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
+import { IFileStorageService } from '../../interfaces/services/file-storage.service';
+import { file } from 'zod';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export class GetUserUseCase implements IGetUserUseCase {
   private _userRepository: IUserRepository;
@@ -21,7 +24,9 @@ export class GetUserUseCase implements IGetUserUseCase {
     userRepository: IUserRepository,
     companyRepository: ICompanyRepository,
     applicationRepository: IApplicationRepository,
-    interviewRepository: IInterviewRepository
+    interviewRepository: IInterviewRepository,
+    private _fileStorageService: IFileStorageService,
+    private _fileUrlResolverService:IFileResolverService
   ) {
     this._userRepository = userRepository;
     this._companyRepository = companyRepository;
@@ -31,9 +36,9 @@ export class GetUserUseCase implements IGetUserUseCase {
 
   async execute(userId: string, role: UserRole): Promise<userProfileDto> {
     const user = await this._userRepository.findById(userId);
-    if (!user )
+    if (!user)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    // console.log('user from getuser ', user);
+
     let company: Company | null = null;
     const interviewsCount = await this._interviewRepository.count({
       candidateId: userId,
@@ -42,17 +47,26 @@ export class GetUserUseCase implements IGetUserUseCase {
       candidateId: userId,
     });
     if (user.isRequested) {
-      //   console.log('use is requested');
-
       company = await this._companyRepository.findByUserId(userId);
     }
+  const fileUrlResolver=this._fileUrlResolverService.createResolver()
+    const imageUrl = user.imageUrl
+      ? await this._fileStorageService.getFileUrl(user.imageUrl, 3600)
+      : undefined;
+    const resumes = await Promise.all(
+      user.resumes.map(async (r) => ({
+        ...r,
+        url: await fileUrlResolver(r.url)??'',
+      }))
+    );
+   
 
-    // console.log(
-    //   'company to client',
-    //   UserMapper.toUserProfileDto(user, company)
-    // );
+    const mapped = UserMapper.toUserProfileDto(
+      { ...user, imageUrl: imageUrl, resumes: resumes },
+      company
+    );
+    console.log('mapped user,company', mapped);
 
-    const mapped = UserMapper.toUserProfileDto(user, company);
     return { ...mapped, interviewsCount, applicationCount };
   }
 }

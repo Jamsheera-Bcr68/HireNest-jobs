@@ -4,25 +4,18 @@ import { ICompanyRepository } from '../../../domain/repository-interfaces/compan
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { companyDto, CompanyUpdateDto } from '../../dtos/company.dto';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface ICompanyUpdateProfileUseCase {
   execute(data: CompanyUpdateDto, userId: string): Promise<Company>;
 }
 
 export class CompanyProfileUpdate implements ICompanyUpdateProfileUseCase {
-  constructor(private companyRepository: ICompanyRepository) {}
+  constructor(
+    private companyRepository: ICompanyRepository,
+    private _fileUrlResolverService: IFileResolverService
+  ) {}
   async execute(data: CompanyUpdateDto, userId: string): Promise<Company> {
-    // if (data.companyName) {
-    //   const companyexist = await this.companyRepository.findOne({
-    //     companyName: data.companyName,
-    //   });
-    //   if (companyexist) {
-    //     throw new AppError(
-    //       userMessages.error.COMPANY_ALREADY_EXIST,
-    //       statusCodes.CONFLICT
-    //     );
-    //   }
-    // }
     const company = await this.companyRepository.findOne({ userId: userId });
 
     if (!company || !company.id)
@@ -30,7 +23,6 @@ export class CompanyProfileUpdate implements ICompanyUpdateProfileUseCase {
         userMessages.error.COMPANY_NOT_FOUND,
         statusCodes.NOTFOUND
       );
- //   console.log('company befor update', company);
 
     const updated = await this.companyRepository.save(company.id, {
       ...data,
@@ -41,6 +33,15 @@ export class CompanyProfileUpdate implements ICompanyUpdateProfileUseCase {
         userMessages.error.COMPANY_NOT_FOUND,
         statusCodes.NOTFOUND
       );
-    return updated;
+
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+    return {
+      ...updated,
+      logoUrl: await fileUrlResolver(updated.logoUrl),
+      document: {
+        ...updated.document,
+        file: (await fileUrlResolver(updated.document.file)) ?? '',
+      },
+    };
   }
 }

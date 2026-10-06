@@ -2,7 +2,7 @@ import { UserRole } from '../../../../domain/enums/user.enums';
 import { AppError } from '../../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../../domain/repository-interfaces/company-repository.interface';
 import { IJobRepository } from '../../../../domain/repository-interfaces/job-repository.interface';
-import { chartDataDto } from '../../../../domain/types/chart.data.type';
+
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { IDashboardDataListUsecase } from '../../../interfaces/dashboard/dashboard-data-list.usecase.interface';

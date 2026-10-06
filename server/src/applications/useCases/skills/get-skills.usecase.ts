@@ -8,8 +8,8 @@ import { UserRole } from '../../../domain/enums/user.enums';
 
 export class GetAllSkillsUseCase implements IGetAllSkillsUseCase {
   constructor(
-    private skillRepository: ISkillRepository,
-    private jobReposistory: IJobRepository,
+    private _skillRepository: ISkillRepository,
+    private _jobReposistory: IJobRepository,
     private _userRepository: IUserRepository
   ) {}
   async execute(
@@ -21,21 +21,21 @@ export class GetAllSkillsUseCase implements IGetAllSkillsUseCase {
     search?: string,
     sortBy?: string
   ): Promise<SkillListDto> {
-    const skillDocs = await this.skillRepository.getAllSkills(
+    const skillDocs = await this._skillRepository.getAllSkills(
       filter,
       limit,
       page,
       search,
       sortBy
     );
-    const totalDocs = await this.skillRepository.getCount(filter);
+    const totalDocs = await this._skillRepository.getCount(filter);
     if (!skillDocs.length) return { skills: [], totalDocs: totalDocs };
 
     const skills = await Promise.all(
       skillDocs.map(async (skill) => {
         const postCount =
           skill.status === 'approved'
-            ? await this.jobReposistory.getCountBySkill(skill.id)
+            ? await this._jobReposistory.getCountBySkill(skill.id)
             : 0;
         const candidateCount =
           skill.status === 'approved'

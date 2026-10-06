@@ -27,8 +27,10 @@ export class EditExperienceUseCase implements IEditExperienceUseCase {
     expId: string,
     role: UserRole,
     payLoad: ExperienceDto
-  ): Promise<User> {
+  ): Promise<Experience> {
     const exp = await this._experienceRepository.findById(expId);
+    console.log('from edit experience usecasse');
+    
     if (!exp || !exp.id)
       throw new AppError(
         userMessages.error.EXPEIENCE_NOT_FOUND,
@@ -78,6 +80,6 @@ export class EditExperienceUseCase implements IEditExperienceUseCase {
     if (!updated)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
 
-    return updated;
+    return updatedExp;
   }
 }

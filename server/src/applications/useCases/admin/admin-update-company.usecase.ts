@@ -1,6 +1,9 @@
 import { Company } from '../../../domain/entities/company.entity';
 import { NotificationType } from '../../../domain/enums/notification-enums';
-import { RegisterStatusEnum, StatusEnum } from '../../../domain/enums/status.enum';
+import {
+  RegisterStatusEnum,
+  StatusEnum,
+} from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
@@ -12,6 +15,7 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { NotificationInputDto } from '../../dtos/notification.dto';
 import { INotificationService } from '../../services/notification.service';
 import { IEmailService } from '../../interfaces/services/email.service';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface IAdminUpdateCompanyUseCase {
   execute(
@@ -26,7 +30,8 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     private _companyRepository: ICompanyRepository,
     private _userRepository: IUserRepository,
     private _notificationService: INotificationService,
-    private _emailService: IEmailService
+    private _emailService: IEmailService,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(
     id: string,
@@ -52,25 +57,35 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
     if (status == 'suspended') {
       data.reasonForSuspend = reason;
     }
-    if ( status == 'rejected') {
+    if (status == 'rejected') {
       // console.log('reapply details', company.reapplyDetails);
 
       data.applyDetails = company.applyDetails.map((app) =>
         app.status == RegisterStatusEnum.PENDING
-          ? { ...app, status: RegisterStatusEnum.REJECTED, rejectedReason: reason,reviewedAt:new Date() }
+          ? {
+              ...app,
+              status: RegisterStatusEnum.REJECTED,
+              rejectedReason: reason,
+              reviewedAt: new Date(),
+            }
           : app
       );
     }
-    if ( status == 'active') {
+    if (status == 'active') {
       //  console.log('reapply details', company.reapplyDetails);
 
       data.applyDetails = company.applyDetails.map((app) =>
         app.status == RegisterStatusEnum.PENDING
-          ? { ...app, status: RegisterStatusEnum.APPROVED,submittedAt:new Date(),reviewedAt:new Date() }
+          ? {
+              ...app,
+              status: RegisterStatusEnum.APPROVED,
+              submittedAt: new Date(),
+              reviewedAt: new Date(),
+            }
           : app
       );
     }
-    const updated = await this._companyRepository.save(id, {
+    let updated = await this._companyRepository.save(id, {
       ...company,
       ...data,
     });
@@ -80,7 +95,8 @@ export class AdminUpdateCompanyUseCase implements IAdminUpdateCompanyUseCase {
         statusCodes.NOTFOUND
       );
     }
-
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+    updated = { ...updated, logoUrl: await fileUrlResolver(company.logoUrl) };
     const userId = company.userId;
     const user = await this._userRepository.findById(userId);
     if (!user) {

@@ -1,5 +1,5 @@
 import { Company } from '../../domain/entities/company.entity';
-import { Job } from '../../domain/entities/job.entity';
+
 import { PendingActivityDto } from '../types/pending.type';
 import { MappedAggregatedReportedJob } from '../../infrastructure/repositories/job.repository';
 

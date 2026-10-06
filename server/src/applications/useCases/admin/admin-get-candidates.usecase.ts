@@ -4,19 +4,16 @@ import { IUserRepository } from '../../../domain/repository-interfaces/user-repo
 import { UserRole } from '../../../domain/enums/user.enums';
 import {
   CandidateFilterType,
-  PaginatedCandidates,
   PaginatedEntities,
 } from '../../types/candidate.type';
 import { IEducationRepository } from '../../../domain/repository-interfaces/education-repository.interface';
-import { EducationLevel } from '../../../domain/enums/education.enum';
-import { AppError } from '../../../domain/errors/app-error';
-import { userMessages } from '../../../shared/constants/messages/user.messages';
-import { statusCodes } from '../../../shared/enums/statuscodes';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export class AdminGetCandidateUseCase implements IAdminGetEntitiesUseCase<User> {
   constructor(
-    private userRepository: IUserRepository,
-    private eduRepository: IEducationRepository
+    private _userRepository: IUserRepository,
+    private _eduRepository: IEducationRepository,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(filter: CandidateFilterType): Promise<PaginatedEntities<User>> {
     const { page, limit, status, search, education, ...rest } = filter;
@@ -28,7 +25,7 @@ export class AdminGetCandidateUseCase implements IAdminGetEntitiesUseCase<User> 
       query.isBlocked = true;
     }
 
-    const candidates = await this.userRepository.getCandidateList(
+    const { entities, totalDocs } = await this._userRepository.getCandidateList(
       { ...query, role: UserRole.CANDIDATE },
       page ? Number(page) : 1,
       limit ? Number(limit) : 10,
@@ -36,8 +33,23 @@ export class AdminGetCandidateUseCase implements IAdminGetEntitiesUseCase<User> 
       search || '',
       education || ''
     );
-console.log('admin candidates',candidates);
 
-    return candidates;
+    const fileResolver = this._fileUrlResolverService.createResolver();
+
+    const updated: User[] = await Promise.all(
+      entities.map(async (cand) => {
+        return {
+          ...cand,
+          imageUrl: (await fileResolver(cand.imageUrl)) ?? '',
+          resumes: await Promise.all(
+            cand.resumes.map(async (res) => ({
+              ...res,
+              url: (await fileResolver(res.url)) ?? '',
+            }))
+          ),
+        };
+      })
+    );
+    return { entities: updated, totalDocs };
   }
 }

@@ -43,7 +43,7 @@ const baseUrl=import.meta.env.VITE_BACKEND_URL
 export const CompanyLogo = ({ name='', src }: CompanyLogoType) => {
   const { t } = useTheme();
   if (src)
-    return <img src={`${baseUrl}${src}`} alt={name} className="w-full h-full object-cover" />;
+    return <img src={`${src}`} alt={name} className="w-full h-full object-cover" />;
   const initials = name
     .split(' ')
     .map((w) => w[0])

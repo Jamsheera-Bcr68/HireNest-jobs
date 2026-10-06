@@ -60,9 +60,6 @@ export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<
         status: InterviewStatusEnum.COMPLETED,
       }),
     ]);
-    // await this._interviewRepository.update(id, {
-    //   ...data,
-    //   status: InterviewStatusEnum.COMPLETED,
-    // });
+   
   }
 }

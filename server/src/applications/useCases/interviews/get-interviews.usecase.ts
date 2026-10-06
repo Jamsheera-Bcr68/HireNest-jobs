@@ -11,6 +11,7 @@ import { ICompanyRepository } from '../../../domain/repository-interfaces/compan
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { IChatroomRepository } from '../../../domain/repository-interfaces/chatroom.repository.interface';
 import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
+import { IFileStorageService } from '../../interfaces/services/file-storage.service';
 
 export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
   InterviewListDto,
@@ -20,7 +21,8 @@ export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
     private _interviewRepository: IInterviewRepository,
     private _companyRepository: ICompanyRepository,
     private _userRepository: IUserRepository,
-    private _chatReposiory: IChatroomRepository
+    private _chatReposiory: IChatroomRepository,
+    private _fileStorageService: IFileStorageService
   ) {}
 
   async execute(
@@ -28,7 +30,7 @@ export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
     role: UserRole,
     userId: string
   ): Promise<InterviewListDto> {
-  //  console.log('filter from usecase', filter);
+    //  console.log('filter from usecase', filter);
 
     if (role === UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(userId);
@@ -51,34 +53,77 @@ export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
 
     const { interviews, totalDocs } =
       await this._interviewRepository.getAllInterviews(filter);
+
     const chatAllowed: Array<InterviewStatusEnum> = [
       InterviewStatusEnum.SCHEDULED,
       InterviewStatusEnum.COMPLETED,
     ];
- 
-    const updatedInterviews = await Promise.all(
-      interviews.map(async (int) => {
-        if (chatAllowed.includes(int.status)) {
-          const chatroom = await this._chatReposiory.findOne({
-            companyId: int.companyId,
-            candidateId: int.candidateId,
-          });
 
-          if (!chatroom)
+    ///////////
+    const logoCache = new Map<string, string | null>();
+
+    const resolveLogo = async (key: string|null) => {
+      if(!key)return ''
+      if (!logoCache.has(key)) {
+        logoCache.set(key, await this._fileStorageService.getFileUrl(key));
+      }
+      return logoCache.get(key)!;
+    };
+
+    const chatrooms = await this._chatReposiory.getChatroomsByParticipants(
+      filter.companyId,
+      filter.candidateId
+    );
+
+
+    const updated = await Promise.all(
+      interviews.map(async (int) => {
+        int.companyLogo =await resolveLogo(int.companyLogo)
+        int.candidateImageUrl=await resolveLogo(int.candidateImageUrl)
+        if (chatAllowed.includes(int.status)) {
+          const chat = chatrooms.find(
+            (ch) =>
+              ch.companyId == int.companyId && ch.candidateId == int.candidateId
+          );
+          if (!chat)
             throw new AppError(
               generalMessages.errors.NOT_FOUND('Chatroom'),
               statusCodes.NOTFOUND
             );
-
-          return InterviewMapper.toInterviewDto(int, chatroom.id);
+          return InterviewMapper.toInterviewDto(int, chat.id);
         }
-
-        return InterviewMapper.toInterviewDto(int);
+          return InterviewMapper.toInterviewDto(int) 
       })
     );
 
+    //////
+    // const updatedInterviews = await Promise.all(
+    //   interviews.map(async (int) => {
+    //     if (chatAllowed.includes(int.status)) {
+    //       const chatroom = await this._chatReposiory.findOne({
+    //         companyId: int.companyId,
+    //         candidateId: int.candidateId,
+    //       });
+
+    //       if (!chatroom)
+    //         throw new AppError(
+    //           generalMessages.errors.NOT_FOUND('Chatroom'),
+    //           statusCodes.NOTFOUND
+    //         );
+
+    //       return InterviewMapper.toInterviewDto(int, chatroom.id);
+    //     }
+
+    //     int.companyLogo = await this._fileStorageService.getFileUrl(
+    //       int.companyLogo
+    //     );
+
+    //     return InterviewMapper.toInterviewDto(int);
+    //   })
+    // );
+
     return {
-      interviews: updatedInterviews,
+      interviews: updated,
 
       totalDocs,
     };

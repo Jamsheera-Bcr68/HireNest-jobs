@@ -14,8 +14,8 @@ export class UpdateSkillUsecase implements IUpdateEntityUseCase<
   void
 > {
   constructor(
-    private skillRepository: ISkillRepository,
-    private adminRepository: IAdminRepository
+    private _skillRepository: ISkillRepository,
+    private _adminRepository: IAdminRepository
   ) {}
   async execute(
     id: string,
@@ -23,7 +23,7 @@ export class UpdateSkillUsecase implements IUpdateEntityUseCase<
     userId: string,
     data: { skill: string }
   ): Promise<void> {
-    const skillExist = await this.skillRepository.findById(id);
+    const skillExist = await this._skillRepository.findById(id);
     if (!skillExist)
       throw new AppError(
         skillMessages.error.SKILL_NOT_FOUND,
@@ -44,7 +44,7 @@ export class UpdateSkillUsecase implements IUpdateEntityUseCase<
         );
       }
     } else if (role == UserRole.ADMIN) {
-      const admin = await this.adminRepository.findById(userId);
+      const admin = await this._adminRepository.findById(userId);
       if (!admin)
         throw new AppError(
           authMessages.error.ADMIN_NOT_FOUND,
@@ -59,7 +59,7 @@ export class UpdateSkillUsecase implements IUpdateEntityUseCase<
     //new
 
     const { skill } = data;
-    const skillNameExist = await this.skillRepository.findBySkillName(skill);
+    const skillNameExist = await this._skillRepository.findBySkillName(skill);
 
     // if (skillNameExist && skillNameExist.status == SkillStatus.APPROVED)
     if (
@@ -85,6 +85,6 @@ export class UpdateSkillUsecase implements IUpdateEntityUseCase<
     if (skillExist.status === SkillStatus.PENDING && role == UserRole.ADMIN) {
       updateData.status = SkillStatus.APPROVED;
     }
-    await this.skillRepository.update(id, updateData);
+    await this._skillRepository.update(id, updateData);
   }
 }

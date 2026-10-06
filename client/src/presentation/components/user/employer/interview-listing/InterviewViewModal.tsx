@@ -234,7 +234,7 @@ export default function InterviewDetailsModal({
     onUpdate({ status: 'completed' });
   };
 
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
   if (!interview) return null;
 
   return (
@@ -289,9 +289,17 @@ export default function InterviewDetailsModal({
               <div className="flex items-center justify-between">
                 {/* Left side (candidate info) */}
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 font-semibold text-sm flex-shrink-0">
-                    {interview?.name.charAt(0).toUpperCase()}
-                  </div>
+                 <div className="w-11 h-11 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 font-semibold text-sm flex-shrink-0 overflow-hidden">
+  {interview?.candidateImageUrl ? (
+    <img
+      src={interview.candidateImageUrl}
+      alt={interview.name}
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    interview?.name?.charAt(0).toUpperCase()
+  )}
+</div>
                   <div>
                     <p className="text-sm font-semibold text-gray-800">
                       {interview?.name}

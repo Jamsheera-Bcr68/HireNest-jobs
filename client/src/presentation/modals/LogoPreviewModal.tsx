@@ -2,7 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import type { CompanyProfileType } from '../../types/dtos/profile-types/user.types';
 import { companyService } from '../../services/api-services/companyService';
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Cropper from 'react-easy-crop';
 import { useToast } from '../../shared/toast/use-toast';
 import { getCroppedImage } from '../../utils/crop-image';
@@ -11,7 +11,9 @@ type ImgViewModalProps = {
   open: boolean;
   onClose: () => void;
   profileImage: string | undefined;
-  onUpdate: (updatedUser: CompanyProfileType) => void;
+  onUpdate: React.Dispatch<
+    React.SetStateAction<CompanyProfileType | null>
+  >;
 };
 
 export default function LogoImgViewModal({
@@ -20,8 +22,6 @@ export default function LogoImgViewModal({
   profileImage,
   onUpdate,
 }: ImgViewModalProps) {
-  console.log('profileimage', profileImage);
-
   const { showToast } = useToast();
   const [preview, setPreview] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -45,8 +45,6 @@ export default function LogoImgViewModal({
     inputRef?.current?.click();
   };
   const saveCroppedImage = async () => {
-    //  console.log('preview is ', preview, 'pixels is ', croppedAreaPixels);
-
     if (!preview || !croppedAreaPixels) return;
     const croppedBlob = await getCroppedImage(
       preview,
@@ -68,10 +66,15 @@ export default function LogoImgViewModal({
 
     try {
       const data = await companyService.changeLogo(formdata);
-      console.log('response user', data.company);
-      const company = data.company;
+      console.log('response user', data);
+
       showToast({ msg: data.message, type: 'success' });
-      onUpdate(company);
+      onUpdate((prev) => {
+        if (prev) {
+          return { ...prev, logoUrl: data.logoUrl };
+        }
+        return prev;
+      });
       onClose();
     } catch (error: any) {
       showToast({

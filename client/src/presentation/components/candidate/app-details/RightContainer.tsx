@@ -51,7 +51,7 @@ function RightContainer({ application }: Props) {
             {application.candidate ? (
               <img
                 className="w-11 h-11 rounded-full"
-                src={`${baseUrl}${application.candidate.profileImg}`}
+                src={`${application.candidate.profileImg}`}
                 alt={`${application.candidate.candidateName.charAt(0).toUpperCase()}`}
               />
             ) : (
@@ -124,7 +124,7 @@ function RightContainer({ application }: Props) {
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-blue-600 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
             <img
               className="w-10 h-10 rounded-xl"
-              src={`${baseUrl}${application.company.logoUrl}`}
+              src={`${application.company.logoUrl}`}
               alt=""
             />
           </div>

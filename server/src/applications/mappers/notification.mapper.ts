@@ -1,6 +1,6 @@
 import { Notification } from '../../domain/entities/notification.entity';
 import { NotificationDto } from '../dtos/notification.dto';
-import { notificationMessages } from '../../shared/constants/messages/notification.messages';
+
 export class NotificationMapper {
   static toNotificationDto(entity: Notification): NotificationDto {
     return {

@@ -15,9 +15,8 @@ import { useToast } from '../../../shared/toast/use-toast';
 import { Avatar } from '../../components/common/Avatar';
 
 const tabs = [
- 
   { label: 'Active', value: 'active' },
-   { label: 'All', value: '' },
+  { label: 'All', value: '' },
   { label: 'Suspended', value: 'suspended' },
 ];
 export type CandidateFilter = {
@@ -38,8 +37,7 @@ export const statusStyles = {
   paused: 'bg-amber-50 text-amber-700 border border-amber-200',
 };
 
-
-const eduLevels=EDUCATION_LEVELS.map(l=>({label:l,value:l}))
+const eduLevels = EDUCATION_LEVELS.map((l) => ({ label: l, value: l }));
 const filterOptions = [
   {
     key: 'education',
@@ -61,32 +59,27 @@ function Candidates() {
   const [activateModalOpen, setActivateModalOpen] = useState(false);
   const [id, setId] = useState('');
 
-
   const candidateColumns = [
     {
       key: 'imageUrl',
       label: 'Profile',
-      mobile:"primary",
+      mobile: 'primary',
       render: (c: UserProfileType) => (
         <>
           {' '}
-          <Avatar logoUrl={c.imageUrl} name={c.name??'Candidate'} item='candidate'  className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0`} />
-          {/* <div
+          <Avatar
+            logoUrl={c.imageUrl}
+            name={c.name ?? 'Candidate'}
+            item="candidate"
             className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0`}
-          >
-            <img
-              className="rounded-full"
-              src={`${baseUrl}${c.imageUrl}`}
-              alt="PI"
-            />
-          </div> */}
+          />
         </>
       ),
     },
     {
       key: 'name',
       label: 'Name',
-       mobile:"primary",
+      mobile: 'primary',
       render: (c: UserProfileType) => (
         <>
           {' '}
@@ -100,7 +93,7 @@ function Candidates() {
     {
       key: 'phone',
       label: 'Phone',
-     
+
       render: (c: UserProfileType) => c.phone,
     },
     {
@@ -110,14 +103,14 @@ function Candidates() {
     },
     {
       key: 'joined',
-    
+
       label: 'Joined',
       render: (c: UserProfileType) =>
         c.createdAt ? new Date(c.createdAt).toLocaleDateString() : '---------',
     },
     {
       key: 'status',
-       mobile:"status",
+      mobile: 'status',
       label: 'Status',
       render: (c: UserProfileType) => (
         <span
@@ -127,90 +120,90 @@ function Candidates() {
         </span>
       ),
     },
-   {
-  key: 'actions',
-  label: 'Actions',
-  mobile: 'actions',
+    {
+      key: 'actions',
+      label: 'Actions',
+      mobile: 'actions',
 
-  // Desktop — unchanged, icon-only
-  render: (c: UserProfileType) => (
-    <div className="flex items-center  gap-1">
-      <button
-        onClick={() => navigate(`/admin/candidates/${c.id}`)}
-        className="text-indigo-600 hover:text_indigo-800 "
-        title="view"
-      >
-        <Eye size={18} />
-      </button>
-      {c.isBlocked ? (
-        <button
-          onClick={() => {
-            setId(c.id);
-            setActivateModalOpen(true);
-          }}
-          className="p-1.5 text-green-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition"
-          title="UnBlock"
-        >
-          <ThumbsUp size={18} />{' '}
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            console.log('candidateis', c.id);
+      // Desktop — unchanged, icon-only
+      render: (c: UserProfileType) => (
+        <div className="flex items-center  gap-1">
+          <button
+            onClick={() => navigate(`/admin/candidates/${c.id}`)}
+            className="text-indigo-600 hover:text_indigo-800 "
+            title="view"
+          >
+            <Eye size={18} />
+          </button>
+          {c.isBlocked ? (
+            <button
+              onClick={() => {
+                setId(c.id);
+                setActivateModalOpen(true);
+              }}
+              className="p-1.5 text-green-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition"
+              title="UnBlock"
+            >
+              <ThumbsUp size={18} />{' '}
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                console.log('candidateis', c.id);
 
-            setId(c.id);
-            setModalOpen(true);
-          }}
-          className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
-          title="Block"
-        >
-          {' '}
-          <BanIcon size={18} />{' '}
-        </button>
-      )}
-    </div>
-  ),
+                setId(c.id);
+                setModalOpen(true);
+              }}
+              className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+              title="Block"
+            >
+              {' '}
+              <BanIcon size={18} />{' '}
+            </button>
+          )}
+        </div>
+      ),
 
-  // Mobile — text-labeled pill buttons
-  mobileRender: (c: UserProfileType) => (
-    <div
-      className="flex items-center flex-wrap gap-2"
-      onClick={(e) => e.stopPropagation()} // prevents the card from collapsing when a button inside it is tapped
-    >
-      <button
-        onClick={() => navigate(`/admin/candidates/${c.id}`)}
-        className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
-      >
-        <Eye size={14} />
-        View
-      </button>
-      {c.isBlocked ? (
-        <button
-          onClick={() => {
-            setId(c.id);
-            setActivateModalOpen(true);
-          }}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-600 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+      // Mobile — text-labeled pill buttons
+      mobileRender: (c: UserProfileType) => (
+        <div
+          className="flex items-center flex-wrap gap-2"
+          onClick={(e) => e.stopPropagation()} // prevents the card from collapsing when a button inside it is tapped
         >
-          <ThumbsUp size={14} />
-          Unblock
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            console.log('candidateis', c.id);
-            setId(c.id);
-            setModalOpen(true);
-          }}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
-        >
-          <BanIcon size={14} />
-          Block
-        </button>
-      )}
-    </div>
-  ),
-},
+          <button
+            onClick={() => navigate(`/admin/candidates/${c.id}`)}
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+          >
+            <Eye size={14} />
+            View
+          </button>
+          {c.isBlocked ? (
+            <button
+              onClick={() => {
+                setId(c.id);
+                setActivateModalOpen(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-600 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+            >
+              <ThumbsUp size={14} />
+              Unblock
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                console.log('candidateis', c.id);
+                setId(c.id);
+                setModalOpen(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+            >
+              <BanIcon size={14} />
+              Block
+            </button>
+          )}
+        </div>
+      ),
+    },
   ];
 
   const handleFilterChange = (newFilter: Partial<CandidateFilter>) => {
@@ -289,11 +282,9 @@ function Candidates() {
       });
     }
   };
-  const onResetFilter=()=>{
-    setFilter({status:'active'
-
-    })
-  }
+  const onResetFilter = () => {
+    setFilter({ status: 'active' });
+  };
   return (
     <div>
       <div>
@@ -307,14 +298,14 @@ function Candidates() {
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable
-              filter={filter}
+                filter={filter}
                 totalDocs={totalDocs}
                 columns={candidateColumns as ColumnType<UserProfileType>[]}
                 tabs={tabs}
                 updateFilter={handleFilterChange}
                 entities={candidates}
                 filterOptions={filterOptions}
-                item='Candidates'
+                item="Candidates"
                 onResetfilter={onResetFilter}
               />
               <Pagination

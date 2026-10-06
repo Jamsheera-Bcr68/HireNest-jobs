@@ -117,7 +117,7 @@ import { GetInterviewByMeetingIdUsecase } from '../../applications/useCases/meet
 import { UpdateMissedInterviews } from '../../applications/useCases/interviews/mark-missed-interviews.usecase';
 import { GetPendingStatusUsecase } from '../../applications/useCases/admin/pendings/get-pending-status.usecase';
 import { DashboardPendingsUsecase } from '../../applications/useCases/admin/dashoard/dashboard-pendings.usecase';
-import { GetPendingUsecase } from '../../applications/useCases/admin/pendings/get-pendings.usecase';//==Controllers
+import { GetPendingUsecase } from '../../applications/useCases/admin/pendings/get-pendings.usecase'; //==Controllers
 //==Controllers
 //==Controllers
 //==Controllers
@@ -177,11 +177,13 @@ import { SendOtpService } from '../../applications/services/send-otp.services';
 import { VerifyOtpService } from '../../applications/services/verify-otp.service';
 import { GoogleAuthService } from '../../applications/services/google-auth.service';
 import { ImageStorageService } from '../services/image-storage.service';
+import { S3FileStorageService } from '../services/s3-file-storage.service';
 import { FileStorageService } from '../services/file-storage.service';
 import { NotificationService } from '../../applications/services/notification.service';
 import { PresenceService } from '../services/presence.service';
 import { CompanyService } from '../../applications/services/company.service';
 import { CryptoService } from '../services/crypto.service';
+import { FileUrlResolverService } from '../../applications/services/file-url-resolver.service';
 
 //repositories
 const userRepository = new UserRepository();
@@ -205,10 +207,12 @@ export const tokenService = new TokenService();
 const googleAuthService = new GoogleAuthService();
 const imageStorageService = new ImageStorageService();
 const fileStorageServices = new FileStorageService();
+const s3FileStorageService = new S3FileStorageService();
 const notificatinService = new NotificationService(notificationRepository);
+const fileUrlResolverService = new FileUrlResolverService(s3FileStorageService);
 export const presenceService = new PresenceService();
 export const companyService = new CompanyService(companyRepository);
-export const cryptoService=new CryptoService()
+export const cryptoService = new CryptoService();
 
 const registerUseCase = new RegisterUseCase(userRepository);
 const sendOtpService = new SendOtpService(
@@ -253,7 +257,7 @@ const removeExperienceUseCase = new RemoveExperienceUseCase(
 
 //candidate
 const candidateEditProfileUsecase = new CandidateProfileEditUsecase(
-  userRepository
+  userRepository,fileUrlResolverService
 );
 const addSkilltoProfileUseCase = new AddSkillsToProfieUseCase(
   userRepository,
@@ -271,10 +275,17 @@ const editExperienceUseCase = new EditExperienceUseCase(
   experienceRepository
 );
 //user
-const getUserUserCase = new GetUserUseCase(userRepository, companyRepository,applicationRepository,interviewRepository);
+const getUserUserCase = new GetUserUseCase(
+  userRepository,
+  companyRepository,
+  applicationRepository,
+  interviewRepository,
+  s3FileStorageService,fileUrlResolverService
+);
 const editProfileImageUseCase = new EditProfileImageUseCase(
   userRepository,
-  imageStorageService
+  imageStorageService,
+  s3FileStorageService
 );
 const removeProfileImageUseCase = new RemoveProfileImageUseCase(
   userRepository,
@@ -298,11 +309,11 @@ const removeEducationUseCase = new RemoveEducationUseCase(
 
 const addResumeUseCase = new AddResumeUseCase(
   userRepository,
-  fileStorageServices
+  s3FileStorageService
 );
 const removeResumeUseCase = new RemoveResumUseCase(
   userRepository,
-  fileStorageServices
+  s3FileStorageService
 );
 //skills
 const getAllSkillsUseCase = new GetAllSkillsUseCase(
@@ -314,10 +325,10 @@ const companyRegisterUseCase = new CompanyRegisterUseCase(
   companyRepository,
   userRepository,
   adminRepository,
-  notificatinService
+  notificatinService,fileUrlResolverService
 );
-const addLogoUseCase = new AddLogoUseCase(imageStorageService);
-const addDocumentUseCase = new AddDocumentUseCase(fileStorageServices);
+const addLogoUseCase = new AddLogoUseCase(s3FileStorageService);
+const addDocumentUseCase = new AddDocumentUseCase(s3FileStorageService);
 const addSkillUsecase = new AddSkillUseCase(
   skillRepository,
   adminRepository,
@@ -331,53 +342,80 @@ const createJobUseCase = new CrateJobUseCase(
   companyRepository,
   skillRepository
 );
-const getCompanyUseCase = new GetCompanyUseCase(companyRepository,jobRepository,applicationRepository,interviewRepository);
+const getCompanyUseCase = new GetCompanyUseCase(
+  companyRepository,
+  jobRepository,
+  applicationRepository,
+  interviewRepository,
+  s3FileStorageService,
+  fileUrlResolverService
+);
 const changeLogoUseCase = new ChangeLogoUseCase(
   companyRepository,
-  imageStorageService
+  s3FileStorageService
 );
 const logoRemoveUseCase = new LogoRemoveUseCase(
   companyRepository,
-  imageStorageService
+  fileUrlResolverService
 );
-const companyProfileUpdateUseCase = new CompanyProfileUpdate(companyRepository);
+const companyProfileUpdateUseCase = new CompanyProfileUpdate(companyRepository,fileUrlResolverService);
 const companyAboutUpdateUseCase = new CompanyAboutUpdateUseCase(
-  companyRepository
+  companyRepository,fileUrlResolverService
 );
 
-const getCompaniesUseCase = new GetCompaniesUseCase(companyRepository,adminRepository);
-const adminGetCompanyUseCase = new AdminGetCompanyUseCase(companyRepository);
+const getCompaniesUseCase = new GetCompaniesUseCase(
+  companyRepository,
+  adminRepository,
+  fileUrlResolverService
+);
+const adminGetCompanyUseCase = new AdminGetCompanyUseCase(
+  companyRepository,
+  fileUrlResolverService
+);
 const adminUpdateCompanyUseCase = new AdminUpdateCompanyUseCase(
   companyRepository,
   userRepository,
-  notificatinService,emailService
+  notificatinService,
+  emailService,
+  fileUrlResolverService
 );
 const getCompnayStatusUseCase = new GetCompanyStatusUseCase(companyRepository);
 const getCandidateStatusUseCase = new GetCandidateStatusUseCase(userRepository);
 const adminGetCandidatesUseCase = new AdminGetCandidateUseCase(
   userRepository,
-  educationRepository
+  educationRepository,
+  fileUrlResolverService
 );
 const adminUpdateCandidateUseCase = new AdminUpdateCandidateUseCase(
-  userRepository
+  userRepository,
+  fileUrlResolverService
 );
-const adminGetEntityUseCase = new AdminGetEntityUseCase(userRepository,applicationRepository,interviewRepository,companyRepository);
-const getFileExistUseCase = new GetFileExistUseCase(fileStorageServices);
+const adminGetEntityUseCase = new AdminGetEntityUseCase(
+  userRepository,
+  applicationRepository,
+  interviewRepository,
+  companyRepository,
+  fileUrlResolverService
+);
+const getFileExistUseCase = new GetFileExistUseCase(s3FileStorageService);
 const getHomeDataUseCase = new GetHomeDataUseCase(
   jobRepository,
   userRepository,
-  skillRepository
+  skillRepository,
+  fileUrlResolverService
 );
 const getAllJobsUsecase = new GetAllJobssUseCase(
   jobRepository,
-  skillRepository,userRepository
+  skillRepository,
+  userRepository,fileUrlResolverService
 );
 const getJobDetailsUseCase = new GetJobDetailsUseCase(
   jobRepository,
   companyRepository,
   skillRepository,
   userRepository,
-  applicationRepository
+  applicationRepository,
+  fileUrlResolverService
 );
 const reportJobUseCase = new ReportJobUseCase(jobRepository);
 const saveJobUseCase = new SaveJobUseCase(jobRepository, userRepository);
@@ -388,7 +426,8 @@ const removeSavedJobUseCase = new RemoveSavedJobUseCase(
 const getSavedJobsUseCase = new GetSavedJobUseCase(
   jobRepository,
   skillRepository,
-  userRepository
+  userRepository,
+  fileUrlResolverService
 );
 
 const getPostStatusUseCase = new GetPostSatusUseCase(
@@ -418,10 +457,17 @@ const getApplicationDetailsUsecase = new GetApplicationDetailUsecase(
   jobRepository,
   companyRepository,
   userRepository,
-  skillRepository,chatromRepository)
-const getCompanyDataUsecase = new GetCompanyDataUseCase(companyRepository);
+  skillRepository,
+  chatromRepository,
+  fileUrlResolverService
+);
+const getCompanyDataUsecase = new GetCompanyDataUseCase(
+  companyRepository,
+  s3FileStorageService
+);
 const getCandidateResumesUsecase = new GetCandidateResumesUsecase(
-  userRepository
+  userRepository,
+  fileUrlResolverService
 );
 const scheduleInterviewUsecase = new ScheduleInterviewUsecase(
   applicationRepository,
@@ -429,7 +475,9 @@ const scheduleInterviewUsecase = new ScheduleInterviewUsecase(
   notificatinService,
   companyRepository,
   jobRepository,
-  chatromRepository,emailService,userRepository
+  chatromRepository,
+  emailService,
+  userRepository
 );
 const getInterviewStatusUsecase = new GetInterviewStatusUseCase(
   interviewRepository,
@@ -441,7 +489,9 @@ const updateInterviewStatusUsecase = new UpdateInterviewStatusUsecase(
   notificatinService,
   jobRepository
 );
-const updateMissedInterviewUsecase=new UpdateMissedInterviews(interviewRepository)
+const updateMissedInterviewUsecase = new UpdateMissedInterviews(
+  interviewRepository
+);
 
 export const authController = new AuthController(
   registerUseCase,
@@ -477,9 +527,8 @@ const getApplicationStatusUseCase = new GetApplicationStatusUseCase(
 );
 const getAllApplications = new GetAllApplicationsUsecase(
   applicationRepository,
-  jobRepository,
-  companyRepository,
-  userRepository
+
+  fileUrlResolverService
 );
 const updateApplicationStatusUsecase = new UpdateApplicationStatusUseCase(
   applicationRepository,
@@ -491,13 +540,16 @@ const getInterviewsUsecase = new GetInterviewsUsecase(
   interviewRepository,
   companyRepository,
   userRepository,
-  chatromRepository
+  chatromRepository,
+  s3FileStorageService
 );
 const getInterviewDetailsUsecase = new GetInterviewDetailsUsecase(
   interviewRepository,
   jobRepository,
   companyRepository,
-  userRepository
+  userRepository,
+  s3FileStorageService,
+  fileUrlResolverService
 );
 const updateInterviewUsecase = new UpdateInterviewUsecase(
   interviewRepository,
@@ -505,7 +557,7 @@ const updateInterviewUsecase = new UpdateInterviewUsecase(
 
   jobRepository,
   userRepository,
-  notificatinService
+  notificatinService,fileUrlResolverService
 );
 const upateInterviewResultUsecase = new UpdateInterviewResultUsecase(
   interviewRepository,
@@ -553,7 +605,7 @@ const reapplyUsecase = new ReApplyCompanyUsecase(
 const getChatroomsUsecase = new GetChatroomsUsecase(
   chatromRepository,
   companyRepository,
-  presenceService
+  presenceService,fileUrlResolverService
 );
 const getChatroomMessagesUsecase = new GetChatroomMessagesUsecase(
   messageRepository,
@@ -591,7 +643,8 @@ const applcationDistributionUsecase = new ApplcationDistributionUsecase(
 );
 const interviewDataUsecase = new InterviewDataUsecase(interviewRepository);
 const getPendingCompaniesUsecase = new GetPendingCompaniesUsecase(
-  companyRepository
+  companyRepository,
+  fileUrlResolverService
 );
 const getReportedJobsUsecase = new GetReportedJobsUsecase(jobRepository);
 const candidateDashboardStatusDataUsecase =
@@ -603,7 +656,8 @@ const candidateDashboardStatusDataUsecase =
     notificationRepository
   );
 const candidateDashboardAppDataUsecase = new CandidateDashboardAppDataUsecase(
-  applicationRepository
+  applicationRepository,
+  fileUrlResolverService
 );
 const upcomingInterviewUsecase = new UpcomingInterviewUsecase(
   interviewRepository,
@@ -617,7 +671,8 @@ const recomentedJobUsecase = new RecomentedJobUsecase(
   jobRepository,
   userRepository,
   skillRepository,
-  applicationRepository
+  applicationRepository,
+  fileUrlResolverService
 );
 const companyDashboardStatusCardDataUsecase =
   new CompanyDashboardStatusCardDataUsecase(
@@ -631,7 +686,8 @@ const companyDashboardStatusCardDataUsecase =
 
 const companyDashboardAppDataUsecase = new CompanyDashboardAppDataUsecase(
   applicationRepository,
-  companyRepository
+  companyRepository,
+  fileUrlResolverService
 );
 const companyDashboardTopJobsUsecase = new CompanyDashboardTopJobsUsecase(
   jobRepository,
@@ -640,7 +696,8 @@ const companyDashboardTopJobsUsecase = new CompanyDashboardTopJobsUsecase(
 const companyDashboardInterviewDataUsecase =
   new CompanyDashboardInterviewDataUsecase(
     interviewRepository,
-    companyRepository
+    companyRepository,
+    fileUrlResolverService
   );
 const recentActivitiesUsecase = new RecentActivitiesUsecase(
   jobRepository,
@@ -655,11 +712,30 @@ const pendingActionsUsecase = new PendingActionsUsecase(
   jobRepository
 );
 
-const generateMeetlinkUsecase=new GenerateMeetlinkUsecase(cryptoService)
-const getInterviewByMeetingIdUsecase=new GetInterviewByMeetingIdUsecase(interviewRepository,companyRepository,userRepository,jobRepository)
-const getPendingStatusUsecase=new GetPendingStatusUsecase(jobRepository,companyRepository,adminRepository)
-const getPendingsUsecase=new GetPendingUsecase(adminRepository,companyRepository,jobRepository,skillRepository)
-const dashboardPendingsUsecase=new DashboardPendingsUsecase(companyRepository,jobRepository,adminRepository,)
+const generateMeetlinkUsecase = new GenerateMeetlinkUsecase(cryptoService);
+const getInterviewByMeetingIdUsecase = new GetInterviewByMeetingIdUsecase(
+  interviewRepository,
+  companyRepository,
+  userRepository,
+  jobRepository
+);
+const getPendingStatusUsecase = new GetPendingStatusUsecase(
+  jobRepository,
+  companyRepository,
+  adminRepository
+);
+const getPendingsUsecase = new GetPendingUsecase(
+  adminRepository,
+  companyRepository,
+  jobRepository,
+  skillRepository
+);
+const dashboardPendingsUsecase = new DashboardPendingsUsecase(
+  companyRepository,
+  jobRepository,
+  adminRepository,
+  fileUrlResolverService
+);
 
 //controller
 //controller
@@ -705,7 +781,8 @@ export const candidateProfileController = new CandidateProfileController(
   removeEducationUseCase,
   addResumeUseCase,
   removeResumeUseCase,
-  getCandidateResumesUsecase,getCompanyDataUsecase
+  getCandidateResumesUsecase,
+  getCompanyDataUsecase
 );
 
 export const skillController = new SkillsController(
@@ -758,7 +835,8 @@ export const adminJobcontroller = new AdminJobController(
 export const userControlller = new UserController(
   getHomeDataUseCase,
   getCompanyDataUsecase,
-  reapplyUsecase,getAllJobsUsecase
+  reapplyUsecase,
+  getAllJobsUsecase
 );
 
 export const applicationController = new ApplicationController(
@@ -778,7 +856,10 @@ export const interviewcontroller = new InterviewController(
   updateInterviewUsecase,
   upateInterviewResultUsecase,
   confirmInterviewUsecase,
-  rescheduleInterviewUsecase,generateMeetlinkUsecase,getInterviewByMeetingIdUsecase,updateMissedInterviewUsecase
+  rescheduleInterviewUsecase,
+  generateMeetlinkUsecase,
+  getInterviewByMeetingIdUsecase,
+  updateMissedInterviewUsecase
 );
 
 export const notificationController = new NotificationControlller(
@@ -805,7 +886,8 @@ export const adminDashboarController = new AdminDashboardController(
   applcationDistributionUsecase,
   interviewDataUsecase,
   getPendingCompaniesUsecase,
-  getReportedJobsUsecase,dashboardPendingsUsecase
+  getReportedJobsUsecase,
+  dashboardPendingsUsecase
 );
 
 export const candidateDashboardController = new CandidateDashboardController(
@@ -824,4 +906,7 @@ export const companyDashboardController = new CompanyDashboardController(
   pendingActionsUsecase
 );
 
-export const activityController=new ActivityController(getPendingStatusUsecase,getPendingsUsecase)
+export const activityController = new ActivityController(
+  getPendingStatusUsecase,
+  getPendingsUsecase
+);

@@ -9,7 +9,7 @@ import { ITokenService } from '../../interfaces/services/token.service';
 import { loginOutPutDto } from '../../dtos/login.dto';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
-//import {AdminLoginOutPutDto} from'../../Dtos/adminDto'
+
 
 export class GoogleLoginUsecase implements IGoogleLoginUsecase {
   private _userRepository: IUserRepository;

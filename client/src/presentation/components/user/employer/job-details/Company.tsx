@@ -46,7 +46,7 @@ function Company({ job }: Props) {
       <div className="flex items-center gap-4">
         {job.companyLogo ? (
           <img
-            src={`${baseUrl}${job.companyLogo}`}
+            src={`${job.companyLogo}`}
             alt={job.companyName}
             className="w-12 h-12 rounded-xl object-cover border border-gray-100"
           />

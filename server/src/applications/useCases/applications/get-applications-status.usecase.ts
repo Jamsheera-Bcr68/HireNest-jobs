@@ -1,8 +1,5 @@
-import {
-  ApplicationFilterDto,
-  ApplicationStatsCardType,
-} from '../../dtos/application.dto';
-import { IGetEntityStatusUseCase } from '../../interfaces/admin/get-admin-entity-status.usecase';
+import { ApplicationStatsCardType } from '../../dtos/application.dto';
+
 import { Application } from '../../../domain/entities/application.entity';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 import { ApplicationStatusEnum } from '../../../domain/enums/status.enum';

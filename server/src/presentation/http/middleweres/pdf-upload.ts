@@ -4,6 +4,8 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { AppError } from '../../../domain/errors/app-error';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 
+export const fileSize=5
+
 const documentFilter = (req: any, file: any, cb: any) => {
   const allowedTypes = [
     'application/pdf',
@@ -23,6 +25,6 @@ const documentFilter = (req: any, file: any, cb: any) => {
 };
 export const fileUpload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1020 * 1024 },
+  limits: { fileSize: fileSize * 1020 * 1024 },
   fileFilter: documentFilter,
 });

@@ -19,7 +19,7 @@ type FormError = {
 };
 export const useExperience = (
   open: boolean,
-  onUserUpdate: (user: UserProfileType) => void,
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>,
   onClose: () => void,
   exp: ExperienceType | null,
   user?: UserProfileType
@@ -62,6 +62,7 @@ export const useExperience = (
       setFormData(defaultForm);
     }
   }, [exp, open]);
+
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
@@ -70,6 +71,7 @@ export const useExperience = (
       [name]: value,
     }));
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.currentTarget;
 
@@ -78,12 +80,14 @@ export const useExperience = (
       [name]: type === 'checkbox' ? checked : value,
     }));
   };
+
   const handleModeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
       mode: e.target.value as WorkMode,
     }));
   };
+
   const handleSubmit = async () => {
     console.log('formdata is', formData);
     const result = addExperienceSchema.safeParse(formData);
@@ -112,7 +116,13 @@ export const useExperience = (
       const data = await profileService.addExperience(formData);
       console.log('user after adding experience', data);
       showToast({ msg: data.message, type: 'success' });
-      onUserUpdate(data.user);
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          experience: [data.experience, ...prev.experience],
+        };
+      });
       onClose();
       setFormData({
         title: '',
@@ -132,6 +142,7 @@ export const useExperience = (
       });
     }
   };
+
   const handleEdit = async () => {
     setError({});
     console.log('edit form data', formData);
@@ -166,7 +177,12 @@ export const useExperience = (
       const data = await profileService.editExperience(formData, exp.id);
       console.log('user after adding experience', data);
       showToast({ msg: data.message, type: 'success' });
-      onUserUpdate(data.user);
+      onUserUpdate((prev)=>{
+        if(!prev)return prev
+        return {
+          ...prev,experience:prev.experience.map(ex=>ex.id!==exp.id?ex:data.experience)
+        }
+      });
       onClose();
       setFormData({
         title: '',

@@ -1,4 +1,3 @@
-import { userProfileDto } from '../dtos/user.dto';
 import { User } from '../../domain/entities/user.entity';
 
 export type CandidateFilterType = {

@@ -1,7 +1,7 @@
-import { Application } from 'express';
+
 import { ApplicationStatusEnum } from '../../domain/enums/status.enum';
 import { Job } from '../../domain/entities/job.entity';
-import { Company } from '../../domain/entities/company.entity';
+
 import { JobType } from '../../domain/types/job.types';
 import { WorkMode } from '../../domain/enums/work-mode.enum';
 import { IndustryType } from '../../domain/types/company-profile.types';
@@ -20,7 +20,7 @@ export interface ApplicationDto {
   category: string;
   status: ApplicationStatusEnum;
   appliedDate: string;
-  logo: string;
+  logo?: string;
   applicant?: {
     name?: string;
     email?: string;
@@ -140,6 +140,6 @@ export type ApplicationDetailsDto = {
     industry: IndustryType;
     location: string;
     size: string;
-    logoUrl: string;
+    logoUrl?: string;
   };
 };

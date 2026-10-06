@@ -21,7 +21,7 @@ export type CandidateDashboardCardsDto=
 
 export type AppData={
 
-  recentApps:{title:string,companyName:string,logoUrl:string,status:ApplicationStatusEnum,appliedAt:Date,id:string}[]
+  recentApps:{title:string,companyName:string,logoUrl?:string,status:ApplicationStatusEnum,appliedAt:Date,id:string}[]
   appStatusData:{status:ApplicationStatusEnum,count:number}[]
 }
 

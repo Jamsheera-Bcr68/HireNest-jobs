@@ -39,7 +39,7 @@ const role=useSelector((state:RootState)=>state.auth.user).role
     >
       {logoUrl ? (
         <img
-          src={`${baseUrl}${logoUrl}`}
+          src={`${logoUrl}`}
           alt={`${name ??item=='company'?'Company Logo':'Candidate'} `}
           className={`h-full w-full object-cover ${imageClassName}`}
         />

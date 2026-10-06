@@ -12,10 +12,10 @@ const Skills = ({
 
   onUserUpdate,
 }: {
-  user: UserProfileType | undefined;
+  user: UserProfileType | null;
 
   onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | undefined>
+    React.SetStateAction<UserProfileType | null>
   >;
 }) => {
   const { showToast } = useToast();

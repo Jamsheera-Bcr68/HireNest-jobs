@@ -54,7 +54,7 @@ const initialError: FormError = {
 };
 export const useEducation = (
   onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | undefined>
+    React.SetStateAction<UserProfileType | null>
   >,
   onClose: () => void,
   editEdu: EducationType | null
@@ -118,18 +118,24 @@ export const useEducation = (
       const data = editEdu
         ? await profileService.editEducation(result.data, editEdu.id)
         : await profileService.addEducation(result.data);
-      if (editEdu) console.log('after editing, result', data);
-      else console.log('after adding, result', data);
-      console.log('data afa ter adding educations', data.user);
-
-      onUserUpdate((prev) => {
+      if (editEdu) onUserUpdate((prev) => {
         if (!prev) return prev;
 
         return {
           ...prev,
-          education: data.user.education,
+          education: prev.education.map(edu=>edu.id===editEdu.id?data.education:edu),
         };
       });
+      else  onUserUpdate((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          education:[...prev.education, data.education],
+        };
+      });
+
+     
       if (!editEdu) {
         dispatch(
           updateUser({ educationCount: (user.educationCount || 0) + 1 })

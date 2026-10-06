@@ -12,9 +12,9 @@ import { SkillStatus } from '../../../domain/enums/skill.enum';
 
 export class GetRequestedSkillsUseCase implements IGetAllSkillsUseCase {
   constructor(
-    private skillRepository: ISkillRepository,
-    private jobReposistory: IJobRepository,
-    private userRepository: IUserRepository
+    private _skillRepository: ISkillRepository,
+    private _jobReposistory: IJobRepository,
+    private _userRepository: IUserRepository
   ) {}
   async execute(
     userId: string,
@@ -36,7 +36,7 @@ export class GetRequestedSkillsUseCase implements IGetAllSkillsUseCase {
       createdBy: UserRole.COMPANY,
       userId,
     };
-    const skillDocs = await this.skillRepository.getAllSkills(
+    const skillDocs = await this._skillRepository.getAllSkills(
       finalFilter,
       limit,
       page,
@@ -44,7 +44,7 @@ export class GetRequestedSkillsUseCase implements IGetAllSkillsUseCase {
       sortBy
     );
 
-    const totalDocs = await this.skillRepository.count(finalFilter);
+    const totalDocs = await this._skillRepository.count(finalFilter);
 
     if (!skillDocs.length) return { skills: [], totalDocs: totalDocs };
 
@@ -52,11 +52,11 @@ export class GetRequestedSkillsUseCase implements IGetAllSkillsUseCase {
       skillDocs.map(async (skill) => {
         const postCount =
           skill.status === SkillStatus.APPROVED
-            ? await this.jobReposistory.getCountBySkill(skill.id)
+            ? await this._jobReposistory.getCountBySkill(skill.id)
             : 0;
         const candidateCount =
           skill.status === SkillStatus.APPROVED
-            ? await this.userRepository.getCountBySkill(skill.id,UserRole.CANDIDATE)
+            ? await this._userRepository.getCountBySkill(skill.id,UserRole.CANDIDATE)
             : 0;
 
         return this.maptToUserSkillDto(skill, postCount, candidateCount);

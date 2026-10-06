@@ -10,7 +10,7 @@ function CompanyModalContent({ company }: { company: CompanyDataDto | null }) {
       <div className="flex gap-4 items-start">
         {company.logoUrl ? (
           <img
-            src={`${baseUrl}${company.logoUrl}`}
+            src={`${company.logoUrl}`}
             alt="logo"
             className="w-16 h-16 rounded-xl object-cover border"
           />

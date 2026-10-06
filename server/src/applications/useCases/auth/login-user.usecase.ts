@@ -11,7 +11,7 @@ import { UserRole } from '../../../domain/enums/user.enums';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
-//import { IAdminRepository } from "../../../domain/repositoriesInterfaces/IAdminRepository";
+
 
 export class LoginUseCase implements IUserLoginUseCase {
   private _userRepository: IUserRepository;

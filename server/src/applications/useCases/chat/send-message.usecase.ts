@@ -10,7 +10,7 @@ import { MessageDto } from '../../dtos/messages.dto';
 import { MessageMapper } from '../../mappers/message.mapper';
 import { getIO } from '../../../infrastructure/socket';
 import { AggregatedChatroomDto, ChatroomDto } from '../../dtos/chatroom.dto';
-import { ChatroomMapper } from '../../mappers/chatroom.mapper';
+
 import { presenceService } from '../../../infrastructure/config/di';
 import { getTime } from '../../../shared/utils';
 

@@ -30,6 +30,8 @@ import { IAddResumeUseCase } from '../../../applications/interfaces/candidate/ad
 import { IRemoveResumeUseCase } from '../../../applications/interfaces/candidate/remove-resume.usecase';
 import { IGetCandidateResumesUsecase } from '../../../applications/useCases/candidate/get-resumes.usecase';
 import { IGetCompanyDataUseCase } from '../../../applications/useCases/company/get-company-data.usecase';
+import { env } from '../../../infrastructure/config/env';
+import { fi } from 'zod/v4/locales';
 
 export class CandidateProfileController {
   private _candidateEditProfileUsecase: IProfileEditUsecase;
@@ -138,7 +140,7 @@ export class CandidateProfileController {
       const company = await this._getCompanyUsecase.execute(user.company.id);
       companyData = company;
     }
-    console.log('user is ', user);
+    //  console.log('user is ', user);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -149,7 +151,7 @@ export class CandidateProfileController {
   });
 
   editProfileImage = asyncHandler(async (req: Request, res: Response) => {
-    //console.log('from edit image');
+    console.log('from edit image');
     const user = req.user;
     if (!user || !user.role)
       throw new AppError(
@@ -163,7 +165,7 @@ export class CandidateProfileController {
         statusCodes.BADREQUEST
       );
     }
-    //   console.log('file ', file);
+    console.log('frile file', file);
 
     const imageFile: UploadFileDto = {
       buffer: file.buffer,
@@ -172,17 +174,17 @@ export class CandidateProfileController {
       originalName: file.originalname,
     };
 
-    const updatedUser = await this._editProfileImageUseCase.execute(
+    const imageUrl = await this._editProfileImageUseCase.execute(
       user?.userId,
       user?.role,
       imageFile
     );
     //  console.log('updted user from controlleer image edit ', updatedUser);
-    const userDto = UserMapper.toUserProfileDto(updatedUser, null);
+
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.USER_PROFILE_IMAGE_UPDATED,
-      user: userDto,
+      imageUrl,
     });
   });
 
@@ -196,15 +198,15 @@ export class CandidateProfileController {
       );
     }
 
-    const updatedUser = await this._removeProfileImageUseCase.execute(
+    await this._removeProfileImageUseCase.execute(
       user.userId,
       user.role
     );
-    const userDto = UserMapper.toUserProfileDto(updatedUser, null);
+
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.USER_PROFILE_IMAGE_REMOVED,
-      user: userDto,
+
     });
   });
 
@@ -223,7 +225,7 @@ export class CandidateProfileController {
         userMessages.error.NO_ABOUT_VALUE,
         statusCodes.BADREQUEST
       );
-    const userUpdated = await this._editAboutUseCase.execute(
+    const about = await this._editAboutUseCase.execute(
       user.userId,
       user.role,
       value
@@ -231,7 +233,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.USER_PROFILE_ABOUT_UPDATED,
-      user: userUpdated,
+      about,
     });
   });
 
@@ -251,23 +253,22 @@ export class CandidateProfileController {
         statusCodes.BADREQUEST
       );
     }
-    const updated = await this._addSkillToProfileUseCase.execute(
+    const skill = await this._addSkillToProfileUseCase.execute(
       user.userId,
       skillId,
       user.role
     );
-    const updatedUser = UserMapper.toUserProfileDto(updated, null);
+
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.SKILL_ADDED,
-      user: updatedUser,
+      skill,
     });
   });
 
   removeSkill = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
     const { skillId } = req.params;
-    // console.log('from remove skll conteoler,dkillid', skillId);
 
     if (!user || !user.userId || !user.role)
       throw new AppError(
@@ -280,15 +281,10 @@ export class CandidateProfileController {
         statusCodes.BADREQUEST
       );
     }
-    const updatedUser = await this._removeSkillUseCase.execute(
-      user.userId,
-      skillId,
-      user.role
-    );
+    await this._removeSkillUseCase.execute(user.userId, skillId, user.role);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.SKILL_REMOVED,
-      user: UserMapper.toUserProfileDto(updatedUser, null),
     });
   });
 
@@ -303,7 +299,7 @@ export class CandidateProfileController {
       );
 
     const payload: ExperienceDto = req.body;
-    const updated = await this._addExperienceUseCase.execute(
+    const exp = await this._addExperienceUseCase.execute(
       user.userId,
       user.role,
       payload
@@ -312,12 +308,11 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EXPERIENCE_ADDED,
-      user: UserMapper.toUserProfileDto(updated, null),
+      experience: exp,
     });
   });
 
   editExperience = asyncHandler(async (req: Request, res: Response) => {
-    // console.log('from edit experience controller');
     const user = req.user;
 
     if (!user || !user.userId || !user.role)
@@ -333,7 +328,7 @@ export class CandidateProfileController {
         userMessages.error.EXPEIENCE_ID_NOT_FOUND,
         statusCodes.BADREQUEST
       );
-    const updated = await this._editExperienceUseCase.execute(
+    const experience = await this._editExperienceUseCase.execute(
       user.userId,
       experienceId,
       user.role,
@@ -341,11 +336,10 @@ export class CandidateProfileController {
       payload
     );
 
-    //console.log('edited experience form controller', updated);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EXPERIENCE_UPDATED,
-      user: UserMapper.toUserProfileDto(updated, null),
+      experience,
     });
   });
 
@@ -366,7 +360,7 @@ export class CandidateProfileController {
         userMessages.error.EXPEIENCE_ID_NOT_FOUND,
         statusCodes.BADREQUEST
       );
-    const updated = await this._removeExperienceUseCase.execute(
+    await this._removeExperienceUseCase.execute(
       user.userId,
       user.role,
       experienceId
@@ -376,7 +370,6 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EXPEIENCE_REMOVED,
-      user: UserMapper.toUserProfileDto(updated, null),
     });
   });
 
@@ -389,11 +382,11 @@ export class CandidateProfileController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    const education = ProfileDataMapper.toEducationDto(payload);
+    const educationDto = ProfileDataMapper.toEducationDto(payload);
     // console.log('education from controller', education);
 
-    const updatedUser = await this._addEducationUseCase.excecute(
-      education,
+    const education = await this._addEducationUseCase.excecute(
+      educationDto,
       user.userId,
       user.role
     );
@@ -401,7 +394,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.CREATED).json({
       success: true,
       message: userMessages.success.EDUCATION_ADDED,
-      user: UserMapper.toUserProfileDto(updatedUser, null),
+      education,
     });
   });
 
@@ -420,11 +413,10 @@ export class CandidateProfileController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-    const education = ProfileDataMapper.toEducationDto(payload);
-    // console.log('education from controller', education);
+    const educationData = ProfileDataMapper.toEducationDto(payload);
 
-    const updatedUser = await this._editEducationUseCase.execute(
-      education,
+    const education = await this._editEducationUseCase.execute(
+      educationData,
       eduId,
       user.role,
       user.userId
@@ -433,7 +425,7 @@ export class CandidateProfileController {
     return res.status(statusCodes.CREATED).json({
       success: true,
       message: userMessages.success.EDUCATION_UPDATED,
-      user: UserMapper.toUserProfileDto(updatedUser, null),
+      education,
     });
   });
 
@@ -460,12 +452,11 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EDUCATION_REMOVED,
-      user: UserMapper.toUserProfileDto(updatedUser, null),
     });
   });
 
   addResume = asyncHandler(async (req: Request, res: Response) => {
-    // console.log('from upload resume controller');
+    console.log('from upload resume controller');
     const user = req.user;
 
     if (!user || !user.userId || !user.role)
@@ -522,7 +513,6 @@ export class CandidateProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.RESUME_DELETED,
-      user: UserMapper.toUserProfileDto(updatedUser, null),
     });
   });
 

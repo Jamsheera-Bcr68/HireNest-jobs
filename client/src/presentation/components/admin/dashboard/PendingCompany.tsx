@@ -61,7 +61,7 @@ function PendingCompany({companies}:PendingProps) {
             className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 hover:border-slate-200 transition-colors"
           >
            {c.logoUrl? <div  className="h-10 w-10 text-xs shrink-0" >
-              <img className='rounded-full' src={`${baseUrl}${c.logoUrl}`} alt="" />
+              <img className='rounded-full' src={`${c.logoUrl}`} alt="" />
             </div>: <Avatar name={c.name} className="h-10 w-10 text-xs shrink-0" />}
            
             <div className="min-w-0 flex-1">

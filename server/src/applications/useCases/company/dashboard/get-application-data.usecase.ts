@@ -11,6 +11,7 @@ import {
 } from '../../../types/company-dashboard.types';
 import { monthNames } from '../../../types/admin-dashboard.types';
 import { getDateAndTime, getTime } from '../../../../shared/utils';
+import { IFileResolverService } from '../../../services/file-url-resolver.service';
 
 export interface ICompanyDashboardAppDataUsecase {
   execute(userId: string, role: UserRole): Promise<CompanyDashboardAppData>;
@@ -18,7 +19,8 @@ export interface ICompanyDashboardAppDataUsecase {
 export class CompanyDashboardAppDataUsecase implements ICompanyDashboardAppDataUsecase {
   constructor(
     private _applicationRepository: IApplicationRepository,
-    private _companyRepository: ICompanyRepository
+    private _companyRepository: ICompanyRepository,
+    private _fileUrlResolver: IFileResolverService
   ) {}
 
   async execute(
@@ -62,26 +64,39 @@ export class CompanyDashboardAppDataUsecase implements ICompanyDashboardAppDataU
         limit: 5,
         sortBy: 'newest',
       });
-    const latest = applications.map((app) => {
-      const appdate = getTime(new Date(app.appliedAt));
-      return {
-        id: app.id,
-        name: app.applicant.name,
-        status: app.status,
-        role: app.jobTitle,
-        imageUrl: app.applicant.imageUrl??'',
-        appliedAt: appdate,
-      };
-    });
+    const fileUrlResolver = this._fileUrlResolver.createResolver();
+    const updatedApps = await Promise.all(
+      applications.map(async (app) => {
+        const appdate = getTime(new Date(app.appliedAt));
+        const imageUrl = await fileUrlResolver(app.applicant.imageUrl);
+        return {
+          id: app.id,
+          name: app.applicant.name,
+          status: app.status,
+          role: app.jobTitle,
+          imageUrl: imageUrl,
+          appliedAt: appdate,
+        };
+      })
+    );
+    // const latest = applications.map((app) => {
+    //   const appdate = getTime(new Date(app.appliedAt));
+    //   return {
+    //     id: app.id,
+    //     name: app.applicant.name,
+    //     status: app.status,
+    //     role: app.jobTitle,
+    //     imageUrl: app.applicant.imageUrl ?? '',
+    //     appliedAt: appdate,
+    //   };
+    // });
     const appStatusData = await this._applicationRepository.getCountByStatus({
       companyId: company.id,
     });
-   
-    
 
     return {
       chartData: res,
-      latestApplications: latest,
+      latestApplications: updatedApps,
       appStatusData: appStatusData.map((data) => ({
         stage: data.status,
         count: data.count,

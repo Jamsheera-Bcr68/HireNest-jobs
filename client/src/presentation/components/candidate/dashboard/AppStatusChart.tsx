@@ -179,7 +179,7 @@ const onViewAllClick=()=>{
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-semibold shrink-0 ${a.color}`}
                 >
-                  {a.logoUrl?<img className='rounded-xl' src={`${baseUrl}${a.logoUrl}`} alt="" />:a.companyName.slice(-1)}
+                  {a.logoUrl?<img className='rounded-xl' src={`${a.logoUrl}`} alt="" />:a.companyName.slice(-1)}
                  
                 </div>
                 <div className="min-w-0 flex-1">

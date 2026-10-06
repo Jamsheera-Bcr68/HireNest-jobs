@@ -3,7 +3,7 @@ import { UserRole } from '../../../../domain/enums/user.enums';
 import { AppError } from '../../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../../domain/repository-interfaces/company-repository.interface';
 import { IUserRepository } from '../../../../domain/repository-interfaces/user-repository.interface';
-import { UserRepository } from '../../../../infrastructure/repositories/user.repository';
+
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { DashboardProfileData } from '../../../types/candidate-dashboard.types';

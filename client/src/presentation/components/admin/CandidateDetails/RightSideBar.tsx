@@ -37,7 +37,7 @@ function RightSideBar({
       const data = await adminService.checkExist(url);
 
       if (data.isExist) {
-        window.open(`${baseUrl}${url}`, '_blank');
+        window.open(`${url}`, '_blank');
       } else {
         showToast({
           msg: data.message,

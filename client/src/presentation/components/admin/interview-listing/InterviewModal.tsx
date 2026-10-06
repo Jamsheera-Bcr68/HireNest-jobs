@@ -38,7 +38,7 @@ export default function InterviewDetailsModal({
           <div className="flex items-center gap-4">
             {interview.companyLogo ? (
               <img
-                src={`${baseUrl}${interview.companyLogo}`}
+                src={`${interview.companyLogo}`}
                 alt={interview.companyName}
                 className="w-14 h-14 rounded-xl object-cover border"
               />
