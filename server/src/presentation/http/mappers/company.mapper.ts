@@ -14,7 +14,7 @@ export class CompanyMapper {
       website: data.website,
       tagLine: data.tagLine ?? '',
       email: data.email,
-      userId: userId,
+      userId,
       phone: data.phone,
       about: data.about,
       startedIn: Number(data.startedIn),
@@ -65,8 +65,6 @@ export class CompanyMapper {
   static CompanyUpdateFiedTypeToCompanyDto(
     data: CompanyUpdateFiedType
   ): Partial<companyDto> {
-   
-
     const dto: Partial<companyDto> = {};
 
     if (data.mission !== undefined) dto.mission = data.mission;

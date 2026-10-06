@@ -46,7 +46,7 @@ export class GetRequestedSkillsUseCase implements IGetAllSkillsUseCase {
 
     const totalDocs = await this._skillRepository.count(finalFilter);
 
-    if (!skillDocs.length) return { skills: [], totalDocs: totalDocs };
+    if (!skillDocs.length) return { skills: [], totalDocs };
 
     const skills = await Promise.all(
       skillDocs.map(async (skill) => {
@@ -56,7 +56,10 @@ export class GetRequestedSkillsUseCase implements IGetAllSkillsUseCase {
             : 0;
         const candidateCount =
           skill.status === SkillStatus.APPROVED
-            ? await this._userRepository.getCountBySkill(skill.id,UserRole.CANDIDATE)
+            ? await this._userRepository.getCountBySkill(
+                skill.id,
+                UserRole.CANDIDATE
+              )
             : 0;
 
         return this.maptToUserSkillDto(skill, postCount, candidateCount);
@@ -70,7 +73,7 @@ export class GetRequestedSkillsUseCase implements IGetAllSkillsUseCase {
     usedCount: number = 0,
     candidateCount: number = 0
   ): UserSkillDto {
-   // console.log('skill map to dto', skill, usedCount);
+    // console.log('skill map to dto', skill, usedCount);
 
     return { ...skill, usedCount, usedCandidateCount: candidateCount };
   }

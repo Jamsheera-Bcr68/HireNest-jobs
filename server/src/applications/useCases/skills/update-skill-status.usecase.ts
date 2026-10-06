@@ -33,8 +33,6 @@ export class UpdateSkillStatusUseCase implements IUpdateEntityStatusUseCase<
     status: SkillStatus,
     reason?: string
   ): Promise<void> {
-
-
     const skill = await this._skillRepository.findById(id);
     if (!skill || !skill.id)
       throw new AppError(
@@ -71,7 +69,7 @@ export class UpdateSkillStatusUseCase implements IUpdateEntityStatusUseCase<
 
       if (skill.createdBy === UserRole.COMPANY) {
         const notificationData: NotificationInputDto = {
-          userId: userId,
+          userId,
           type: NotificationType.SKILL_STATUS_UPDATED,
           message: notificationMessages[NotificationType.SKILL_STATUS_UPDATED]({
             skillName: skill.skillName,
@@ -91,7 +89,7 @@ export class UpdateSkillStatusUseCase implements IUpdateEntityStatusUseCase<
       );
     }
 
-    const data = { status: status } as Partial<Skill>;
+    const data = { status } as Partial<Skill>;
     if (status === SkillStatus.REJECTED) {
       data.reasonForReject = reason;
       data.reviewedAt = new Date();

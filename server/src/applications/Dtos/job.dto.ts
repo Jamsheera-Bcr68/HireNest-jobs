@@ -63,7 +63,7 @@ export interface JobCardDto {
   min_salary: string;
   jobType: JobType;
   skills: string[];
-  pendingAppCount:number
+  pendingAppCount: number;
   max_salary: string;
   // postedDate: Date;
   lastDate: Date;
@@ -123,7 +123,7 @@ export type JobFilter = {
   isReported?: boolean;
   skills?: string[];
   appliedJobIds?: string[];
-  title?:string[]
+  title?: string[];
 };
 export const SalaryRange = [
   { label: '₹0 - ₹10k', min_salary: 0, max_salary: 10000 },

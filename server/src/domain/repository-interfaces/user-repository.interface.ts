@@ -13,9 +13,8 @@ import { UserRole } from '../enums/user.enums';
 import { IExperience, IResume } from '../values/profile-types';
 import { IBaseRepository } from './base-repository.interface';
 
-
 export interface IUserRepository extends IBaseRepository<User> {
-  findByEmail(email: string, userId?: string): Promise<User | null>
+  findByEmail(email: string, userId?: string): Promise<User | null>;
 
   createUser(user: User): Promise<User>;
 
@@ -71,5 +70,5 @@ export interface IUserRepository extends IBaseRepository<User> {
 
   getCountBySkill(skillId: string, role: UserRole): Promise<number>;
   getCountByFilter(data: UserFilter): Promise<number>;
-  getUserDistributionData():Promise<{_id:UserRole,count:number}[]>
+  getUserDistributionData(): Promise<{ _id: UserRole; count: number }[]>;
 }

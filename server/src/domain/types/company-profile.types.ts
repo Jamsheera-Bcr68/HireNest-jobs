@@ -1,4 +1,4 @@
-import { RegisterStatusEnum, StatusEnum } from "../enums/status.enum";
+import { RegisterStatusEnum, StatusEnum } from '../enums/status.enum';
 
 export const Industry_Type = [
   'Information Technology',
@@ -8,8 +8,8 @@ export const Industry_Type = [
   'Retail And E-commerce',
   'Education',
   'Media And Communication',
-'Travel & Tourism',
-'Water & Environmental Services',
+  'Travel & Tourism',
+  'Water & Environmental Services',
   'Logistics',
   'Other',
 ] as const;
@@ -46,7 +46,7 @@ export type FileType = {
 export type VerificationDocType = {
   type: DocumentType;
   file: string;
-  name:string
+  name: string;
 };
 
 export type DocumentType = (typeof Document_Types)[number] | '';
@@ -63,7 +63,6 @@ export interface IApplyDetails {
   submittedAt: Date;
   status: RegisterStatusEnum;
   rejectedReason?: string;
-  attempt:number
-  reviewedAt?:Date
+  attempt: number;
+  reviewedAt?: Date;
 }
-

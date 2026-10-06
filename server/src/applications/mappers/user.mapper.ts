@@ -5,10 +5,10 @@ import { AdminCandidateDto, userProfileDto } from '../dtos/user.dto';
 
 export class UserMapper {
   static toDto(user: User, name?: string) {
-    let returnData = {
+    const returnData = {
       id: user.id,
       email: user.email,
-      name: name,
+      name,
       phone: user.phone,
       role: user.role,
       isRequested: user.isRequested,

@@ -46,8 +46,8 @@ export class RecentActivitiesUsecase implements IDashboardDataListUsecase<Recent
       JOB_SORT.NEW
     );
 
-    console.log('recent jobs',jobs);
-    
+    console.log('recent jobs', jobs);
+
     const { applications } =
       await this._applicationRepository.getAllApplications({
         companyId: company.id,
@@ -62,7 +62,7 @@ export class RecentActivitiesUsecase implements IDashboardDataListUsecase<Recent
     const applicationActivities: RecentActivityDto[] = applications.map(
       (app) => ({
         id: app.id,
-        title:'Application Recieved ',
+        title: 'Application Recieved ',
         type: 'application_received',
         item: 'application',
         message: messages.appMsg(app.applicant.name, app.jobTitle),
@@ -72,7 +72,7 @@ export class RecentActivitiesUsecase implements IDashboardDataListUsecase<Recent
 
     const jobActivities: RecentActivityDto[] = jobs.map((job) => ({
       id: job.id,
-      title:'Job Published',
+      title: 'Job Published',
       type: 'job_published' as const,
       createdAt: job.createdAt,
       message: messages.jobMsg(job.title),
@@ -82,7 +82,7 @@ export class RecentActivitiesUsecase implements IDashboardDataListUsecase<Recent
 
     const interviewActivity: RecentActivityDto[] = interviews.map((int) => ({
       id: int.id,
-      title:'Inteview Scheduled',
+      title: 'Inteview Scheduled',
       type: 'interview_scheduled' as const,
       message: messages.intMsg(int.name, int.jobTitle),
       createdAt: int.createdAt,
@@ -95,10 +95,7 @@ export class RecentActivitiesUsecase implements IDashboardDataListUsecase<Recent
       ...applicationActivities,
       ...interviewActivity,
     ]
-      .sort(
-        (a, b) =>
-          new Date(b.time).getTime() - new Date(a.time).getTime()
-      )
+      .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
       .slice(0, 5);
 
     return recentActivities;

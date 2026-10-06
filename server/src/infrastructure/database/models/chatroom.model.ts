@@ -17,9 +17,9 @@ const chatroomSchema = new mongoose.Schema<IChatroomDocument>(
   {
     companyId: { type: mongoose.Types.ObjectId, ref: 'Company' },
     candidateId: { type: mongoose.Types.ObjectId, ref: 'User' },
-    jobId: { type: mongoose.Types.ObjectId,ref:'Job' },
+    jobId: { type: mongoose.Types.ObjectId, ref: 'Job' },
     lastMessage: { type: String },
-    lastMessagedAt: { type: Date},
+    lastMessagedAt: { type: Date },
   },
   {
     timestamps: true,

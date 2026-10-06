@@ -1,10 +1,6 @@
 import { z } from 'zod';
 import { WorkMode } from '../../../../domain/enums/work-mode.enum';
-import {
-  JobType,
-  ExperienceType,
-  Experience_LEVELS,
-} from '../../../../domain/types/job.types';
+import { JobType, Experience_LEVELS } from '../../../../domain/types/job.types';
 
 export const jobPostSchema = z
   .object({

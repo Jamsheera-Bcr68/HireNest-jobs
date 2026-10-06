@@ -63,7 +63,7 @@ export function educationValidator(
   next: NextFunction
 ) {
   try {
-    const result = educationSchema.safeParse(req.body);
+    educationSchema.safeParse(req.body);
     next();
   } catch (error) {
     next(error);

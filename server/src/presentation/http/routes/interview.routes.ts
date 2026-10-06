@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import express from 'express';
 import { interviewcontroller } from '../../../infrastructure/config/di';
 
 const router = express.Router();
@@ -75,13 +75,11 @@ router.post(
   authValidator(tokenService),
   interviewcontroller.createMeetlink
 );
-          
-router.get(
 
+router.get(
   API_END_POINTS.GET_MEET_INFO,
   authValidator(tokenService),
   interviewcontroller.getMeetInfo
 );
-          
 
 export default router;

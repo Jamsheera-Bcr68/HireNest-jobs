@@ -23,7 +23,7 @@ export class GetChatroomsUsecase implements IGetChatromsUsecase {
     private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(userId: string, role: UserRole): Promise<ChatroomDto[]> {
-    let filter: ChatroomFilterDto = {};
+    const filter: ChatroomFilterDto = {};
 
     if (role === UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(userId);

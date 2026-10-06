@@ -75,10 +75,10 @@ export type CompanyDataDto = {
   tagLine?: string;
   hiredCount?: number;
   totalJobs?: number;
-  totalInterviews?:number
-  totalApps?:number
+  totalInterviews?: number;
+  totalApps?: number;
   website?: string;
- document: VerificationDocType;
+  document: VerificationDocType;
   about: string;
   mission: string;
   vision: string;

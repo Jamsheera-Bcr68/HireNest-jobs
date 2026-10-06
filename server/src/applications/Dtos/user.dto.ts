@@ -7,7 +7,7 @@ import {
   ISocialMediaLinks,
 } from '../../domain/values/profile-types';
 import { EducationDto } from './education.dto';
-import { CandidateSkillDto, UserSkillDto } from './skill.dto';
+import { CandidateSkillDto } from './skill.dto';
 
 export interface userDto {
   id: string;

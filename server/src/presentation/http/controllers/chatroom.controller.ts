@@ -1,4 +1,3 @@
-import { success } from 'zod';
 import { IGetChatromsUsecase } from '../../../applications/useCases/chat/get-chatrooms.usecase';
 import { AppError } from '../../../domain/errors/app-error';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
@@ -86,7 +85,7 @@ export class ChatroomController {
 
     const { text } = req.body;
 
-    const { message, } = await this._sendMessageUsecase.execute(
+    const { message } = await this._sendMessageUsecase.execute(
       user.userId,
       text,
       chatroomId,
@@ -97,7 +96,6 @@ export class ChatroomController {
       success: true,
       message: generalMessages.success.ENTITY_CREATED('Messages', 'send'),
       msg: message,
-     
     });
   });
 }

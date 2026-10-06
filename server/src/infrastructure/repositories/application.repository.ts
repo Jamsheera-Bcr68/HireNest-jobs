@@ -5,15 +5,15 @@ import {
   IApplicationDocument,
 } from '../database/models/application.model';
 import { Application } from '../../domain/entities/application.entity';
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 import {
   AggregatedApplication,
   ApplicationDto,
-  ApplicationListDto,
+
   type ApplicationFilterDto,
 } from '../../applications/dtos/application.dto';
 import { PipelineStage } from 'mongoose';
-import { number } from 'zod';
+
 import { IndustryType } from '../../domain/types/company-profile.types';
 import { ApplicationStatusEnum } from '../../domain/enums/status.enum';
 
@@ -121,7 +121,7 @@ export class ApplicationRepository
       jobType,
     } = filter;
 
-    let matchStage: PipelineStage.Match['$match'] = {};
+    const matchStage: PipelineStage.Match['$match'] = {};
     let sortStage: PipelineStage.Sort['$sort'] = {};
     if (sortBy === 'oldest') {
       sortStage = { appliedAt: 1 };
@@ -224,13 +224,13 @@ export class ApplicationRepository
               category: '$company.industry',
               status: '$status',
               logo: '$company.logoUrl',
-              
+
               applicant: {
                 name: '$applicant.name',
                 email: '$applicant.email',
                 address: '$applicant.address',
-                
-imageUrl: '$applicant.imageUrl',
+
+                imageUrl: '$applicant.imageUrl',
               },
               candidateId: { $toString: '$candidateId' },
             },
@@ -323,7 +323,6 @@ imageUrl: '$applicant.imageUrl',
   }): Promise<{ status: ApplicationStatusEnum; count: number }[]> {
     const { candidateId, companyId } = filter;
 
-
     const matchStage: PipelineStage.Match['$match'] = {};
     if (candidateId)
       matchStage.candidateId = new mongoose.Types.ObjectId(candidateId);
@@ -345,7 +344,7 @@ imageUrl: '$applicant.imageUrl',
 
     const matchStage: PipelineStage.Match['$match'] = {};
     if (companyId)
-     matchStage.companyId = new mongoose.Types.ObjectId(companyId);
+      matchStage.companyId = new mongoose.Types.ObjectId(companyId);
     const today = new Date();
     const startOfyear = new Date(today.getFullYear(), 0, 1);
     console.log('startOfyear ', startOfyear);

@@ -109,10 +109,14 @@ export interface RecentActivityDto {
   time: string;
 }
 
-export type PendingActionItem = 'reschedule'|'new-apps'|'closing-jobs'|'shortlisted'|'confirmed-interview';
+export type PendingActionItem =
+  | 'reschedule'
+  | 'new-apps'
+  | 'closing-jobs'
+  | 'shortlisted'
+  | 'confirmed-interview';
 export interface PendingActivityDto {
   item: PendingActionItem;
   desc: string;
   title: string;
- 
 }

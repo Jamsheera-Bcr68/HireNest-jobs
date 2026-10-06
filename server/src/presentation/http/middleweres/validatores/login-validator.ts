@@ -32,7 +32,7 @@ export const resetPasswordValidator = (
   next: NextFunction
 ) => {
   const result = resetPasswordSchema.safeParse(req.body);
- // console.log('result from  resetvalidator', result);
+  // console.log('result from  resetvalidator', result);
   if (!result.success) {
     next(result.error);
   } else next();
@@ -49,8 +49,4 @@ export const googeLoginValidator = (
   } else next();
 };
 
-export const changePasswordValidator = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+export const changePasswordValidator = () => {};

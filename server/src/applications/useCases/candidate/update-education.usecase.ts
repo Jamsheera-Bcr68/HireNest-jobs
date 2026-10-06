@@ -28,7 +28,6 @@ export class EditEducationUseCase implements IEditEducationUseCase {
     role: string,
     userId: string
   ): Promise<Education> {
-
     payload = payload as Education;
     const educations = await this._educationRepository.getAllEducations(userId);
 
@@ -66,7 +65,7 @@ export class EditEducationUseCase implements IEditEducationUseCase {
         );
     }
 
-    if (payload.status == EducationStatus.ONGOING) payload.completedYear = 0
+    if (payload.status == EducationStatus.ONGOING) payload.completedYear = 0;
 
     const education = await this._educationRepository.editEducation(
       eduId,
@@ -84,6 +83,6 @@ export class EditEducationUseCase implements IEditEducationUseCase {
 
     if (!updatedUser)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    return education
+    return education;
   }
 }

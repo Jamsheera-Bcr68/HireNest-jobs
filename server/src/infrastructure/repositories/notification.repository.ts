@@ -6,7 +6,7 @@ import {
   notificationModel,
 } from '../database/models/notification.model';
 import mongoose, { Types } from 'mongoose';
-import { NotificationFilterType } from '../../applications/types/notification.type';
+
 
 export class NotificationRepository
   extends GenericRepository<Notification, INotificationDocument>
@@ -17,7 +17,7 @@ export class NotificationRepository
   }
 
   protected mapToEntity(doc: INotificationDocument): Notification {
-  //  console.log('doc notifications', doc);
+    //  console.log('doc notifications', doc);
 
     return {
       id: doc._id.toString(),
@@ -60,12 +60,12 @@ export class NotificationRepository
   async deleteNotification(notificationId: string): Promise<void> {
     await this._model.findByIdAndDelete(notificationId);
   }
-  
+
   protected mapToPersistance(
     entity: Partial<Notification>
   ): Partial<INotificationDocument> {
     const data: Partial<INotificationDocument> = {};
-  //  console.log('mapToPersistance', entity);
+    //  console.log('mapToPersistance', entity);
 
     if (entity.userId) data.userId = new mongoose.Types.ObjectId(entity.userId);
     if (entity.message) data.message = entity.message;
@@ -74,7 +74,7 @@ export class NotificationRepository
     if (entity.isRead == false) data.isRead = false;
     if (entity.isRead == true) data.isRead = true;
     if (entity.type) data.type = entity.type;
-   // console.log('data', data);
+    // console.log('data', data);
 
     return data;
   }

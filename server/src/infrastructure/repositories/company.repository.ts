@@ -3,21 +3,24 @@ import {
   companyModel,
   ICompanyDocument,
 } from '../database/models/company.model';
-import { Mongoose, PipelineStage } from 'mongoose';
+import {  PipelineStage } from 'mongoose';
 import { StatusEnum } from '../../domain/enums/status.enum';
-import { IApplyDetails, IndustryType } from '../../domain/types/company-profile.types';
+import {
+  IApplyDetails,
+  IndustryType,
+} from '../../domain/types/company-profile.types';
 import { GenericRepository } from './generic.repository';
 import { Company } from '../../domain/entities/company.entity';
 import {
   PaginatedCompanies,
   CompanyListDTO,
   CompanyStatus,
-  PendingCompany,
+
 } from '../../applications/dtos/company.dto';
 import { CompanyFilterDto } from '../../applications/dtos/company.dto';
-import mongoose, { AggregateOptions, Types } from 'mongoose';
+import mongoose from 'mongoose';
 import { chartDataDto } from '../../domain/types/chart.data.type';
-import { email, size } from 'zod';
+
 
 type CompanyQuery = {
   status?: StatusEnum;
@@ -43,7 +46,7 @@ export class CompanyRepository
 
   async findByUserId(userId: string): Promise<Company | null> {
     const company = await this._model.findOne({
-      userId: new Types.ObjectId(userId),
+      userId: new mongoose.Types.ObjectId(userId),
     });
     // console.log('company from repo', company);
 
@@ -97,7 +100,7 @@ export class CompanyRepository
             status: 1,
             createdAt: 1,
             industry: 1,
-            jobCount:1
+            jobCount: 1,
           },
         },
       ])
@@ -105,7 +108,7 @@ export class CompanyRepository
       .skip(skip)
       .limit(limit);
 
-   // console.log('comapnies list from repor', companies);
+    // console.log('comapnies list from repor', companies);
 
     const totalDocs = await this._model.countDocuments(query);
     return {
@@ -147,12 +150,12 @@ export class CompanyRepository
         id.toString()
       ),
       reapplyCount: doc.reapplyCount,
-      applyDetails: doc.applyDetails.map((app:IApplyDetails) => ({
+      applyDetails: doc.applyDetails.map((app: IApplyDetails) => ({
         submittedAt: app.submittedAt,
-        reviewedAt:app.reviewedAt,
+        reviewedAt: app.reviewedAt,
         status: app.status,
         rejectedReason: app.rejectedReason,
-        attempt:app.attempt
+        attempt: app.attempt,
       })),
       reasonForSuspend: doc.reasonForSuspend,
       reasonForReject: doc.reasonForReject,
@@ -167,7 +170,7 @@ export class CompanyRepository
 
     if (entity.companyName !== undefined) data.companyName = entity.companyName;
     if (entity.userId !== undefined)
-      data.userId = new Types.ObjectId(entity.userId);
+      data.userId = new mongoose.Types.ObjectId(entity.userId);
 
     if (entity.website !== undefined) data.website = entity.website;
     if (entity.tagLine !== undefined) data.tagLine = entity.tagLine;

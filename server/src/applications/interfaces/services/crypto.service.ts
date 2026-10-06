@@ -1,4 +1,3 @@
-export interface ICryptoService{
-    
-    meetIdGenerator():string
+export interface ICryptoService {
+  meetIdGenerator(): string;
 }

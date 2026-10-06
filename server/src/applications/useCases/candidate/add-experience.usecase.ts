@@ -1,4 +1,3 @@
-import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { WorkMode } from '../../../domain/enums/work-mode.enum';
 import { AppError } from '../../../domain/errors/app-error';
@@ -44,7 +43,7 @@ export class AddExperienceUseCase implements IAddExperienceUseCase {
         statusCodes.CONFLICT
       );
     const experience: Experience = {
-      userId: userId,
+      userId,
       title: payLoad.title,
       company: payLoad.company,
       startDate: new Date(payLoad.startDate),

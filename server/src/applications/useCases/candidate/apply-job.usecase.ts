@@ -69,11 +69,11 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
       jobId,
       companyId: job.companyId,
       candidateId: userId,
-      resumeId: resumeId,
+      resumeId,
       status: ApplicationStatusEnum.PENDING,
     };
     if (isApplied) {
-    //  console.log('this.job already applied');
+      //  console.log('this.job already applied');
       throw new AppError(
         applicationMessage.error.ALREADY_APPLIED,
         statusCodes.CONFLICT
@@ -91,7 +91,8 @@ export class ApplyJobUseCase implements IApplyJobUseCase {
       title: 'New Job Application Recieved',
     };
 
-  const notification=  await this._notificationService.create(notificationData);
+    const notification =
+      await this._notificationService.create(notificationData);
     getIO().to(application.companyId).emit('notification', notification);
     return application.id;
   }

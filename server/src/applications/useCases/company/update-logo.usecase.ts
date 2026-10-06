@@ -19,17 +19,16 @@ export interface IChangeLogogUseCase {
 export class ChangeLogoUseCase implements IChangeLogogUseCase {
   constructor(
     private _companyRepository: ICompanyRepository,
-    private _fileStorageService: IFileStorageService,
-   
+    private _fileStorageService: IFileStorageService
   ) {}
   async execute(
     userId: string,
     role: UserRole,
     file: UploadFileDto
   ): Promise<string | undefined> {
-    console.log('from comapny update logo usecase',);
-    
-    const company = await this._companyRepository.findOne({ userId: userId });
+    console.log('from comapny update logo usecase');
+
+    const company = await this._companyRepository.findOne({ userId });
     //  console.log('company by userId', company);
 
     if (!company || !company.id)
@@ -39,12 +38,16 @@ export class ChangeLogoUseCase implements IChangeLogogUseCase {
       );
     const oldImg = company.logoUrl;
 
-    const logoUrl = await this._fileStorageService.uploadFile(file,'companies/logos','jpg');
-    console.log('new Url is ',logoUrl);
-    
+    const logoUrl = await this._fileStorageService.uploadFile(
+      file,
+      'companies/logos',
+      'jpg'
+    );
+    console.log('new Url is ', logoUrl);
+
     company.logoUrl = logoUrl;
-    let updated = await this._companyRepository.save(company.id, company);
-     if (oldImg) await this._fileStorageService.removeFile(oldImg);
+    const updated = await this._companyRepository.save(company.id, company);
+    if (oldImg) await this._fileStorageService.removeFile(oldImg);
     if (!updated)
       throw new AppError(
         userMessages.error.COMPANY_NOT_FOUND,

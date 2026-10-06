@@ -10,7 +10,6 @@ import { loginOutPutDto } from '../../dtos/login.dto';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 
-
 export class GoogleLoginUsecase implements IGoogleLoginUsecase {
   private _userRepository: IUserRepository;
   private _googleAuthService: IGoogleAuthServices;
@@ -56,7 +55,7 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
         statusCodes.BADREQUEST
       );
     }
-    let name=user.name
+    let name = user.name;
     let companyId;
     if (user.role == UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(user.id);
@@ -66,7 +65,7 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
           statusCodes.NOTFOUND
         );
       }
-      name=company.companyName
+      name = company.companyName;
       companyId = company.id;
     }
     const accessToken = this._tokenService.generateAccessToken(
@@ -91,11 +90,12 @@ export class GoogleLoginUsecase implements IGoogleLoginUsecase {
       applications = await this._applicationRepository.getDocsByUserId(user.id);
     }
     return {
-      user,name,
+      user,
+      name,
       accessToken,
       refreshToken,
       companyId,
-      isProfileCompleted: isProfileCompleted,
+      isProfileCompleted,
       appliedJobs: applications ? applications.map((a) => a.jobId) : undefined,
     };
   }

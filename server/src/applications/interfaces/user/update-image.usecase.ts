@@ -1,6 +1,9 @@
-
 import { UserRole } from '../../../domain/enums/user.enums';
 import { UploadFileDto } from '../../dtos/upload-file.dto';
 export interface IEditProfileImageUsecase {
-  execute(userId: string, role: UserRole, file: UploadFileDto): Promise<string|undefined>;
+  execute(
+    userId: string,
+    role: UserRole,
+    file: UploadFileDto
+  ): Promise<string | undefined>;
 }

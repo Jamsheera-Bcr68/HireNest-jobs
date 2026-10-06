@@ -12,7 +12,6 @@ import { ICompanyRepository } from '../../../domain/repository-interfaces/compan
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 
-
 export class LoginUseCase implements IUserLoginUseCase {
   private _userRepository: IUserRepository;
   private _companyRepository: ICompanyRepository;
@@ -30,21 +29,19 @@ export class LoginUseCase implements IUserLoginUseCase {
     this._applicationRepository = applicationRepository;
   }
 
-
   async execute(input: IloginInput): Promise<loginOutPutDto> {
-    
     const user: User | null = await this._userRepository.findByEmail(
       input.email
     );
-    console.log('user fro login',user);
-    
+    console.log('user fro login', user);
+
     if (!user || !user.role || !user.id)
       throw new AppError(
         authMessages.error.USER_NOT_FOUND,
         statusCodes.NOTFOUND
       );
     let companyId;
-    let name=user.name
+    let name = user.name;
     if (user.role == UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(user.id);
       if (!company) {
@@ -53,7 +50,7 @@ export class LoginUseCase implements IUserLoginUseCase {
           statusCodes.NOTFOUND
         );
       }
-      name=company.companyName
+      name = company.companyName;
       companyId = company.id;
     }
 
@@ -79,32 +76,31 @@ export class LoginUseCase implements IUserLoginUseCase {
       user.role
     );
     let isProfileCompleted;
-    let skills=[]
-    let resumeCount=0
-    let educations=[]
+    let skills = [];
+    let resumeCount = 0;
+    let educations = [];
     if (user.role === UserRole.CANDIDATE) {
       if (user.education.length && user.skills?.length && user.resumes.length) {
         isProfileCompleted = true;
       } else isProfileCompleted = false;
-       skills=user.skills??[]
-      resumeCount=user.resumes.length
-      educations=user.education??[]
+      skills = user.skills ?? [];
+      resumeCount = user.resumes.length;
+      educations = user.education ?? [];
     }
     let applications;
     if (user.role == UserRole.CANDIDATE) {
       applications = await this._applicationRepository.getDocsByUserId(user.id);
     }
-    console.log('profle is completed ',isProfileCompleted);
+    console.log('profle is completed ', isProfileCompleted);
 
     return {
-      user:user,
-      name:name,
+      user,
+      name,
       accessToken,
       refreshToken,
       companyId,
-      isProfileCompleted: isProfileCompleted,
+      isProfileCompleted,
       appliedJobs: applications ? applications.map((a) => a.jobId) : undefined,
-
     };
   }
 }

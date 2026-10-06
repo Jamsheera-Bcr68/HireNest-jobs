@@ -13,12 +13,15 @@ export interface IEmailService {
     name: string,
     companyName: string
   ): Promise<void>;
-  sendInterviewScheduledEmail( email:string, name: string,
-  jobTitle: string,
-  companyName: string,
-  interviewDate: string,
-  interviewTime: string,
-  interviewType: 'online' | 'offline',
-  meetLink?: string,
-  location?: string):Promise<void>
+  sendInterviewScheduledEmail(
+    email: string,
+    name: string,
+    jobTitle: string,
+    companyName: string,
+    interviewDate: string,
+    interviewTime: string,
+    interviewType: 'online' | 'offline',
+    meetLink?: string,
+    location?: string
+  ): Promise<void>;
 }

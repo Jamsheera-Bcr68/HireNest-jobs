@@ -1,7 +1,10 @@
 import { Company } from '../../../domain/entities/company.entity';
 import { User } from '../../../domain/entities/user.entity';
 import { NotificationType } from '../../../domain/enums/notification-enums';
-import { RegisterStatusEnum, StatusEnum } from '../../../domain/enums/status.enum';
+import {
+  RegisterStatusEnum,
+  StatusEnum,
+} from '../../../domain/enums/status.enum';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
@@ -28,7 +31,7 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
     private _userRepository: IUserRepository,
     private _adminRepository: IAdminRepository,
     private _notificationService: INotificationService,
-    private _fileUrlResolverService:IFileResolverService
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(
     payload: Partial<companyDto>,
@@ -67,12 +70,17 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
         generalMessages.errors.COMPANY_ALREADY_EXIST('Name'),
         statusCodes.CONFLICT
       );
-      const applyDetails:IApplyDetails[]=[{
-        submittedAt:new Date(),
-        attempt:1,
-        status:RegisterStatusEnum.PENDING
-      }]
-    const company = await this._companyRepository.create({...payload,applyDetails:applyDetails});
+    const applyDetails: IApplyDetails[] = [
+      {
+        submittedAt: new Date(),
+        attempt: 1,
+        status: RegisterStatusEnum.PENDING,
+      },
+    ];
+    const company = await this._companyRepository.create({
+      ...payload,
+      applyDetails,
+    });
     if (!company.id) {
       throw new Error(userMessages.error.COMPANY_NOT_FOUND);
     }
@@ -107,7 +115,14 @@ export class CompanyRegisterUseCase implements ICompanyRegisterUseCase {
       await this._notificationService.create(notificationData);
     getIO().to(admin.id).emit('notification', newNotification);
 
-      const fileUrlResolver=this._fileUrlResolverService.createResolver()
-    return {...company,logoUrl:await fileUrlResolver(company.logoUrl),document:{...company.document,file:await fileUrlResolver(company.document.file)??''}};
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
+    return {
+      ...company,
+      logoUrl: await fileUrlResolver(company.logoUrl),
+      document: {
+        ...company.document,
+        file: (await fileUrlResolver(company.document.file)) ?? '',
+      },
+    };
   }
 }

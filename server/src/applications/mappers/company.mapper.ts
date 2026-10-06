@@ -3,7 +3,7 @@ import { CompanyDataDto } from '../dtos/company.dto';
 
 export class CompanyMapper {
   static toCompanyDataDto(company: Company): CompanyDataDto {
-    return {...company}
+    return { ...company };
     // return {
     //   companyName: company.companyName,
 

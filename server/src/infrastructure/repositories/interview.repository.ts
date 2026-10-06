@@ -53,7 +53,7 @@ export class InterviewRepository
   protected mapToPersistance(
     entity: Partial<Interview>
   ): Partial<IInterviewDocument> {
-    let data = {} as Partial<IInterviewDocument>;
+    const data = {} as Partial<IInterviewDocument>;
     if (entity.id) data._id = new mongoose.Types.ObjectId(entity.id);
     if (entity.candidateId)
       data.candidateId = new mongoose.Types.ObjectId(entity.candidateId);
@@ -131,7 +131,7 @@ export class InterviewRepository
     } = filter;
     const skip = (page - 1) * limit;
 
-    let matchStage: PipelineStage.Match['$match'] = {};
+    const matchStage: PipelineStage.Match['$match'] = {};
     if (sortBy === 'upcoming') {
       matchStage.status = InterviewStatusEnum.SCHEDULED;
       matchStage.scheduledAt = { $gte: new Date() };
@@ -346,7 +346,7 @@ export class InterviewRepository
   }
 
   async markMissedInterviews(): Promise<void> {
-    console.log('data from mart missed inter' );
+    console.log('data from mart missed inter');
 
     await this._model.updateMany(
       {

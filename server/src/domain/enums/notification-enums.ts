@@ -1,4 +1,4 @@
-import { InterviewStatusEnum } from "./status.enum";
+import { InterviewStatusEnum } from './status.enum';
 
 export enum NotificationType {
   INTERVIEW_SCHEDULED = 'Interview Scheduled',
@@ -14,9 +14,9 @@ export enum NotificationType {
   APPLICATION_SHORTLISTED = 'Application Shortlisted',
   COMPANY_APPROVAL_REQUEST = 'Application Recieved',
   COMPANY_REVIEW_COMPLETED = 'Company Registration Review Completed',
-  COMPANY_SUSPENDED='Company Suspended',
-  COMPANY_REAPPLY_RECIEVED='Company Reapplication Recieved',
-  RESCHEDULE_REQUESTED='Reschedule Request Recieved',
-  INTERVIEW_STATUS_UPDATED='Interview Status Updated',
-  INTERVIEW_UPDATED='Interview  Updated'
+  COMPANY_SUSPENDED = 'Company Suspended',
+  COMPANY_REAPPLY_RECIEVED = 'Company Reapplication Recieved',
+  RESCHEDULE_REQUESTED = 'Reschedule Request Recieved',
+  INTERVIEW_STATUS_UPDATED = 'Interview Status Updated',
+  INTERVIEW_UPDATED = 'Interview  Updated',
 }

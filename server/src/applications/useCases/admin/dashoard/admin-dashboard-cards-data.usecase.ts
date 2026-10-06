@@ -1,4 +1,3 @@
-
 import { StatusEnum } from '../../../../domain/enums/status.enum';
 import { UserRole } from '../../../../domain/enums/user.enums';
 import { ICompanyRepository } from '../../../../domain/repository-interfaces/company-repository.interface';
@@ -20,11 +19,7 @@ export class AdminDashboardCardDataUsecase implements IDashboardCardDataUsecase<
     });
 
     const today = new Date();
-    const currentMonthStartDate = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      1
-    );
+
     const previousMonthLastDate = new Date(
       today.getFullYear(),
       today.getMonth(),

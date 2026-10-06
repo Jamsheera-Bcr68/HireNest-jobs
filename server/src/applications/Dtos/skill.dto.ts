@@ -21,7 +21,7 @@ export type SkillListDto = {
   skills: UserSkillDto[];
   totalDocs: number;
 };
-export type CandidateSkillDto={
-  id:string,
-  skillName:string
-}
+export type CandidateSkillDto = {
+  id: string;
+  skillName: string;
+};

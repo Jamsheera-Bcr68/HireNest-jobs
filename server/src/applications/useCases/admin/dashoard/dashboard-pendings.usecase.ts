@@ -18,7 +18,7 @@ export class DashboardPendingsUsecase implements IDashboardPendingsUsecase {
     private _companyRepository: ICompanyRepository,
     private _jobRepository: IJobRepository,
     private _adminRepository: IAdminRepository,
-    private _fileUrlResolver:IFileResolverService
+    private _fileUrlResolver: IFileResolverService
   ) {}
 
   async execute(userId: string, role: string): Promise<DashboardPendingsDto> {
@@ -43,14 +43,17 @@ export class DashboardPendingsUsecase implements IDashboardPendingsUsecase {
       limit: 3,
     });
     console.log('reported jobs jobs', jobs);
-    const companyCount=await this._companyRepository.getCount({status:StatusEnum.PENDING})
-    const jobCount=await this._jobRepository.getCount({isReported:true})
-    const fileUrlResolver=this._fileUrlResolver.createResolver()
-    const updatedCompanies=await Promise.all(companies.map(async(com)=>{
-       const { country, state, place } = com.address;
+    const companyCount = await this._companyRepository.getCount({
+      status: StatusEnum.PENDING,
+    });
+    const jobCount = await this._jobRepository.getCount({ isReported: true });
+    const fileUrlResolver = this._fileUrlResolver.createResolver();
+    const updatedCompanies = await Promise.all(
+      companies.map(async (com) => {
+        const { country, state } = com.address;
 
         const location = state + ',' + country;
-        const logoUrl=await fileUrlResolver(com.logoUrl)
+        const logoUrl = await fileUrlResolver(com.logoUrl);
 
         return {
           id: com.id?.toString() ?? '',
@@ -58,14 +61,15 @@ export class DashboardPendingsUsecase implements IDashboardPendingsUsecase {
           name: com.companyName,
           industry: com.industry,
 
-          location: location,
-          logoUrl: logoUrl,
+          location,
+          logoUrl,
           submittedAt: com.joinedAt.toDateString(),
         };
-    }))
+      })
+    );
 
     return {
-      companies:updatedCompanies,
+      companies: updatedCompanies,
       jobs: jobs.map((j) => ({
         id: j.id,
 
@@ -74,8 +78,8 @@ export class DashboardPendingsUsecase implements IDashboardPendingsUsecase {
         title: j.role,
         count: j.count,
       })),
-      companyCount:companyCount,
-      jobCount:jobCount
+      companyCount,
+      jobCount,
     };
   }
 }

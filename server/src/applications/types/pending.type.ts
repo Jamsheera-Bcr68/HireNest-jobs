@@ -7,12 +7,12 @@ export interface PendingStatusDataType {
 
 export interface PendingActivityDto {
   id: string;
-  title:string
-  subTitle:string
-  type: 'Company Registration' | 'Reported Job'; 
+  title: string;
+  subTitle: string;
+  type: 'Company Registration' | 'Reported Job';
   details: string;
   submitted: string;
-  tag:string
+  tag: string;
   createdAt: string;
   status: 'pending' | 'reported';
 }
@@ -21,5 +21,5 @@ export interface ReportedJobFilter {
   limit?: number;
   status?: StatusEnum;
   sortBy?: 'newest';
-  search?:string
+  search?: string;
 }

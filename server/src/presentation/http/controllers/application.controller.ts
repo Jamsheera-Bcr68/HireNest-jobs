@@ -11,7 +11,6 @@ import { IGetAllEntitiesUsecase } from '../../../applications/interfaces/usecase
 import {
   ApplicationListDto,
   ApplicationFilterDto,
-  ApplicationStatsCardType,
 } from '../../../applications/dtos/application.dto';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { UserRole } from '../../../domain/enums/user.enums';
@@ -46,7 +45,7 @@ export class ApplicationController {
     const { jobId } = req.params;
     const { resumeId } = req.body;
     //console.log('from application controller', jobId, resumeId);
-    const applicationId = await this._applyJobUseCase.execute(
+await this._applyJobUseCase.execute(
       jobId,
       resumeId,
       user.userId,
@@ -73,7 +72,7 @@ export class ApplicationController {
         statusCodes.BADREQUEST
       );
     const appStatus = await this._getAppStatusUseCase.execute(
-      { jobId: jobId, userId: user.userId },
+      { jobId, userId: user.userId },
       user.role
     );
 
@@ -115,7 +114,7 @@ export class ApplicationController {
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
     }
 
-    let q = {} as Partial<ApplicationFilterDto>;
+    const q = {} as Partial<ApplicationFilterDto>;
     if (user.role == UserRole.CANDIDATE) {
       q.candidateId = user.userId;
     }
@@ -163,7 +162,7 @@ export class ApplicationController {
         statusCodes.BADREQUEST
       );
 
-    let q = { jobId } as Partial<ApplicationFilterDto>;
+    const q = { jobId } as Partial<ApplicationFilterDto>;
     if (user.role == UserRole.CANDIDATE) {
       q.candidateId = user.userId;
     }

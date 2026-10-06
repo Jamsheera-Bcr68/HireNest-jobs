@@ -1,4 +1,4 @@
-import { error } from 'console';
+
 import { Request, Response, NextFunction } from 'express';
 
 export const asyncHandler =

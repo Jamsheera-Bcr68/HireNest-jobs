@@ -62,8 +62,8 @@ export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
     ///////////
     const logoCache = new Map<string, string | null>();
 
-    const resolveLogo = async (key: string|null) => {
-      if(!key)return ''
+    const resolveLogo = async (key: string | null) => {
+      if (!key) return '';
       if (!logoCache.has(key)) {
         logoCache.set(key, await this._fileStorageService.getFileUrl(key));
       }
@@ -75,11 +75,10 @@ export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
       filter.candidateId
     );
 
-
     const updated = await Promise.all(
       interviews.map(async (int) => {
-        int.companyLogo =await resolveLogo(int.companyLogo)
-        int.candidateImageUrl=await resolveLogo(int.candidateImageUrl)
+        int.companyLogo = await resolveLogo(int.companyLogo);
+        int.candidateImageUrl = await resolveLogo(int.candidateImageUrl);
         if (chatAllowed.includes(int.status)) {
           const chat = chatrooms.find(
             (ch) =>
@@ -92,7 +91,7 @@ export class GetInterviewsUsecase implements IGetAllEntitiesUsecase<
             );
           return InterviewMapper.toInterviewDto(int, chat.id);
         }
-          return InterviewMapper.toInterviewDto(int) 
+        return InterviewMapper.toInterviewDto(int);
       })
     );
 

@@ -31,7 +31,7 @@ export class GetPendingCompaniesUsecase implements IGetPendingCompaniesUsecase {
     const fileUrlResolver = this._fileUrlResolverService.createResolver();
     const updatedCompanies = await Promise.all(
       companies.map(async (com) => {
-        const { country, state, place } = com.address;
+        const { country, state } = com.address;
 
         const location = state + ',' + country;
 
@@ -41,7 +41,7 @@ export class GetPendingCompaniesUsecase implements IGetPendingCompaniesUsecase {
           name: com.companyName,
           industry: com.industry,
 
-          location: location,
+          location,
           logoUrl: await fileUrlResolver(com.logoUrl),
           submittedAt: com.joinedAt.toDateString(),
         };

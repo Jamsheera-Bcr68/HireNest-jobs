@@ -13,8 +13,7 @@ export interface IGetUnreadMessageCountUsecase {
 export class GetUnreadMessageCountUsecase implements IGetUnreadMessageCountUsecase {
   constructor(
     private _messageRepository: IMessageRepository,
-    private _companyRepository: ICompanyRepository,
-
+    private _companyRepository: ICompanyRepository
   ) {}
 
   async execute(userId: string, role: UserRole): Promise<number> {
@@ -28,11 +27,10 @@ export class GetUnreadMessageCountUsecase implements IGetUnreadMessageCountUseca
           statusCodes.NOTFOUND
         );
       paricipantId = company.id;
-      
-     
     }
-     const unreadCount=await this._messageRepository.getUnreadCount(paricipantId)
-      
-      return unreadCount
+    const unreadCount =
+      await this._messageRepository.getUnreadCount(paricipantId);
+
+    return unreadCount;
   }
 }

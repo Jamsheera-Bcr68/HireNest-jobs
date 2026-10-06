@@ -66,17 +66,17 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
 
     const scheduledAt = new Date(`${date}T${time}`);
     const doc = {
-      mode: mode,
-      location: location,
-      meetLink: meetLink,
-      duration: duration,
-      isAddlinkLater: isAddlinkLater,
+      mode,
+      location,
+      meetLink,
+      duration,
+      isAddlinkLater,
       notes,
       scheduledAt,
       jobId: application.jobId,
       candidateId: application.candidateId,
       companyId: application.companyId,
-      applicationId: applicationId,
+      applicationId,
       status: InterviewStatusEnum.SCHEDULED,
     };
 
@@ -156,7 +156,8 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
         hour12: true,
       }
     );
-    await this._emailService.sendInterviewScheduledEmail(candidate.email,
+    await this._emailService.sendInterviewScheduledEmail(
+      candidate.email,
       candidate.name ?? 'Candidate',
       job.title,
       company.companyName,

@@ -19,10 +19,9 @@ export type CandidateStatus = {
   new: number;
 };
 
-export interface UserFilter{
-  role?:UserRole,
-  
-    startDate?:Date,
-    endDate?:Date,
-  
+export interface UserFilter {
+  role?: UserRole;
+
+  startDate?: Date;
+  endDate?: Date;
 }

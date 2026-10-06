@@ -14,7 +14,7 @@ export interface ILogoRemoveUseCase {
 export class LogoRemoveUseCase implements ILogoRemoveUseCase {
   constructor(
     private _companyRepository: ICompanyRepository,
-   private _fileUrlResolverService:IFileResolverService
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(userId: string): Promise<Company> {
     const company = await this._companyRepository.findByUserId(userId);
@@ -32,14 +32,14 @@ export class LogoRemoveUseCase implements ILogoRemoveUseCase {
         statusCodes.NOTFOUND
       );
     }
-      const fileUrlResolver=this._fileUrlResolverService.createResolver()
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
     return {
       ...updated,
       logoUrl: await fileUrlResolver(updated.logoUrl),
       document: {
         ...updated.document,
-        file: await fileUrlResolver(updated.document.file)??'',
+        file: (await fileUrlResolver(updated.document.file)) ?? '',
       },
-    };;
+    };
   }
 }

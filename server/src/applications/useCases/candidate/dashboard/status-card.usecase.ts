@@ -22,7 +22,7 @@ export class CandidateDashboardStatusDataUsecase implements IDashboardCardDataUs
     private _userRepository: IUserRepository,
     private _jobRepository: IJobRepository,
     private _interviewRepository: IInterviewRepository,
-    private _notificationRepository:INotificationRepository
+    private _notificationRepository: INotificationRepository
   ) {}
   async execute(
     userId: string,
@@ -45,8 +45,9 @@ export class CandidateDashboardStatusDataUsecase implements IDashboardCardDataUs
       endDate: new Date(),
     });
 
-    const appStatusData =
-      await this._applicationRepository.getCountByStatus({candidateId:userId});
+    const appStatusData = await this._applicationRepository.getCountByStatus({
+      candidateId: userId,
+    });
 
     const appUnderReview = appStatusData.find(
       (data) => data.status == ApplicationStatusEnum.REVIEWED
@@ -81,7 +82,9 @@ export class CandidateDashboardStatusDataUsecase implements IDashboardCardDataUs
     const upcoming = interviews[0];
     const { percentage, remaining } =
       this.getProfileCompletionPercentage(candidate);
-      const unreadNotificationCount=await this._notificationRepository.getCount({userId:userId,isRead:false})
+    const unreadNotificationCount = await this._notificationRepository.getCount(
+      { userId, isRead: false }
+    );
     return {
       totalApplications: totalApp,
       applicationsThisMonth: currentMonthAppCount,
@@ -93,8 +96,7 @@ export class CandidateDashboardStatusDataUsecase implements IDashboardCardDataUs
       savedJobsClosingSoon: recentlyExpiringJobsCount,
       profileCompletion: percentage,
       remainingProfileSections: remaining,
-      newNotificationCount:unreadNotificationCount,
-      
+      newNotificationCount: unreadNotificationCount,
     };
   }
   private getProfileCompletionPercentage(candidate: User): {

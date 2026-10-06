@@ -25,7 +25,7 @@ export class GetCandidateResumesUsecase implements IGetCandidateResumesUsecase {
     return await Promise.all(
       candidate.resumes.map(async (res) => ({
         ...res,
-        url:await fileUrlResolver(res.url)??'',
+        url: (await fileUrlResolver(res.url)) ?? '',
       }))
     );
   }

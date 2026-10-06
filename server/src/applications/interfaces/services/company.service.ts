@@ -1,5 +1,3 @@
 export interface ICompanyService {
-    getCompanyIdByUserId(userId:string):Promise<string>
+  getCompanyIdByUserId(userId: string): Promise<string>;
 }
-
-

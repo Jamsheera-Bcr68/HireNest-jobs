@@ -17,24 +17,27 @@ export interface IApplicationDocument {
   rejectedAt?: string;
 }
 
-export const applicationSchema = new mongoose.Schema<IApplicationDocument>({
-  candidateId: { type: mongoose.Types.ObjectId, ref: 'User' },
-  companyId: { type: mongoose.Types.ObjectId, ref: 'User' },
-  jobId: { type: mongoose.Types.ObjectId, ref: 'User' },
-  rejectedReason: { type: String, default: '' },
-  resumeId: { type: mongoose.Types.ObjectId, default: '' },
-  status: {
-    type: String,
-    enum: Object.values(ApplicationStatusEnum),
-    default: ApplicationStatusEnum.PENDING,
+export const applicationSchema = new mongoose.Schema<IApplicationDocument>(
+  {
+    candidateId: { type: mongoose.Types.ObjectId, ref: 'User' },
+    companyId: { type: mongoose.Types.ObjectId, ref: 'User' },
+    jobId: { type: mongoose.Types.ObjectId, ref: 'User' },
+    rejectedReason: { type: String, default: '' },
+    resumeId: { type: mongoose.Types.ObjectId, default: '' },
+    status: {
+      type: String,
+      enum: Object.values(ApplicationStatusEnum),
+      default: ApplicationStatusEnum.PENDING,
+    },
+    appliedAt: { type: Date, default: new Date() },
+    reviewedAt: { type: String },
+    shortlistedAt: { type: String },
+    interviewSheduledAt: { type: String },
+    offeredAt: { type: String },
+    rejectedAt: { type: String },
   },
-  appliedAt: { type: Date, default: new Date() },
-  reviewedAt: { type: String },
-  shortlistedAt: { type: String },
-  interviewSheduledAt: { type: String },
-  offeredAt: { type: String },
-  rejectedAt: { type: String },
-},{ timestamps: true });
+  { timestamps: true }
+);
 
 export const applicationModel = mongoose.model<IApplicationDocument>(
   'Application',

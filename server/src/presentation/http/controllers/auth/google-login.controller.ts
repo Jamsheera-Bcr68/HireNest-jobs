@@ -14,7 +14,7 @@ export class GoogleLoginController {
 
   handle = asyncHandler(async (req: Request, res: Response) => {
     const { token, role } = req.body;
-  //  console.log('from google login controller, token and role is ', token);
+    //  console.log('from google login controller, token and role is ', token);
 
     const {
       user,
@@ -25,7 +25,7 @@ export class GoogleLoginController {
       isProfileCompleted,
       appliedJobs,
     } = await this._googleLoginUsecase.execute(token, role);
-    const userDto = UserMapper.toDto(user,name);
+    const userDto = UserMapper.toDto(user, name);
 
     res.cookie('refreshToken', refreshToken, {
       secure: process.env.NODE_ENV === 'production',

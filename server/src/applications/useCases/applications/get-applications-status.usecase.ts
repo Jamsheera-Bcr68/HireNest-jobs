@@ -72,11 +72,11 @@ export class GetApplicationStatusUseCase implements IGetApplicationStatusUsecase
       status: ApplicationStatusEnum.INTERVIEW_SCHEDULED,
     });
     return {
-      total: total,
-      rejected: rejected,
-      shortListed: shortListed,
-      pending: pending,
-      interviewScheduled: interviewScheduled,
+      total,
+      rejected,
+      shortListed,
+      pending,
+      interviewScheduled,
     };
   }
 }

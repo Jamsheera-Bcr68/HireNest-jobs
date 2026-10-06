@@ -21,18 +21,18 @@ export class GetReportedJobsUsecase implements IGetReportedJobsUsecase {
         statusCodes.FORBIDDEN
       );
 
-    const jobs = await this._jobRepository.getReportedJobs({isReported:true}
-     
-    );
-    console.log('reported jobs jobs',jobs);
-    
+    const jobs = await this._jobRepository.getReportedJobs({
+      isReported: true,
+    });
+    console.log('reported jobs jobs', jobs);
+
     return jobs.map((j) => ({
       id: j.id,
-      
+
       companyName: j.company,
       type: j.type,
       title: j.role,
-      count: j.count
+      count: j.count,
     }));
   }
 }

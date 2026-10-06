@@ -17,7 +17,7 @@ export class UserController {
     private _getHomeDataUseCase: IGetHomeDataUseCase,
     private _getCompanyDataUseCase: IGetCompanyDataUseCase,
     private _reapplyCompanyUsecase: IReApplyCompanyUsecase,
-    private _getJobsUsecase:IGetAllJobsUseCase
+    private _getJobsUsecase: IGetAllJobsUseCase
   ) {}
 
   getHomeData = asyncHandler(async (req: Request, res: Response) => {
@@ -33,7 +33,6 @@ export class UserController {
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
     const { companyId } = req.params;
-   
 
     if (!companyId)
       throw new AppError(
@@ -51,8 +50,8 @@ export class UserController {
 
   getCompanyPosts = asyncHandler(async (req: Request, res: Response) => {
     const { companyId } = req.params;
-   const user=req.user
-   if (!user)
+    const user = req.user;
+    if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
@@ -64,14 +63,19 @@ export class UserController {
         statusCodes.BADREQUEST
       );
 
-    const {jobs} = await this._getJobsUsecase.execute(user.userId,user.role,{companyId,status:StatusEnum.ACTIVE},3,1);
+    const { jobs } = await this._getJobsUsecase.execute(
+      user.userId,
+      user.role,
+      { companyId, status: StatusEnum.ACTIVE },
+      3,
+      1
+    );
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.COMPANY_POSTS,
       jobs,
     });
   });
-
 
   updateCompany = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
@@ -85,8 +89,8 @@ export class UserController {
     const payload = req.body;
 
     const companyData = await this._reapplyCompanyUsecase.execute(
-      CompanyMapper.toCompanyDto(payload,user.userId,),
-      
+      CompanyMapper.toCompanyDto(payload, user.userId),
+
       user.userId
     );
     return res.status(statusCodes.OK).json({

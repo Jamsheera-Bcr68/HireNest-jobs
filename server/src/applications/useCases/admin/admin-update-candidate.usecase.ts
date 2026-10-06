@@ -39,7 +39,7 @@ export class AdminUpdateCandidateUseCase implements IAdminUpdateCandidateUseCase
       resumes: await Promise.all(
         candidate.resumes.map(async (res) => ({
           ...res,
-          url: await fileResolver(res.url)??'',
+          url: (await fileResolver(res.url)) ?? '',
         }))
       ),
     };

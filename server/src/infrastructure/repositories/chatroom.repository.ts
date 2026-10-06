@@ -2,15 +2,15 @@ import { GenericRepository } from './generic.repository';
 import { IChatroomRepository } from '../../domain/repository-interfaces/chatroom.repository.interface';
 import { Chatroom } from '../../domain/entities/chatroom.entity';
 import { participantConfig } from '../../shared/constants/messages/repository-constants/participant.config';
-import { mongo, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import {
   AggregatedChatroomDto,
-  ChatroomDocType,
-  ChatroomInputDto,
+  ChatroomFilterDto,
+
+
 } from '../../applications/dtos/chatroom.dto';
 import {
-  ChatroomFilterDto,
-  ChatroomDto,
+
 } from '../../applications/dtos/chatroom.dto';
 import { PipelineStage } from 'mongoose';
 import {
@@ -141,7 +141,7 @@ export class ChatroomRepository
   protected mapToPersistance(
     entity: Partial<Chatroom>
   ): Partial<IChatroomDocument> {
-    let data: Partial<IChatroomDocument> = {};
+    const data: Partial<IChatroomDocument> = {};
     if (entity.id) data._id = new mongoose.Types.ObjectId(entity.id);
     if (entity.companyId)
       data.companyId = new mongoose.Types.ObjectId(entity.companyId);
@@ -161,7 +161,7 @@ export class ChatroomRepository
   ): Promise<boolean> {
     const chatroom = await this._model.findById(chatroomId);
     if (!chatroom) return false;
-    let userId = new mongoose.Types.ObjectId(participantId);
+    const userId = new mongoose.Types.ObjectId(participantId);
 
     return (
       chatroom.companyId.equals(userId) || chatroom.candidateId.equals(userId)

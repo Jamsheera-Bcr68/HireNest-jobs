@@ -1,6 +1,5 @@
 import { NotificationType } from '../../domain/enums/notification-enums';
 
-
 export interface NotificationDto {
   id: string;
   message: string;

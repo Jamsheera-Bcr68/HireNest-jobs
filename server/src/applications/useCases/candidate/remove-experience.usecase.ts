@@ -27,6 +27,5 @@ export class RemoveExperienceUseCase implements IRemoveExperienceUseCase {
 
     if (!updated)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-    
   }
 }

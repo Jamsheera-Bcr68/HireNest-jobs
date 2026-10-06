@@ -31,7 +31,7 @@ export class MessageRepository
   protected mapToPersistance(
     entity: Partial<Message>
   ): Partial<IMessageDocument> {
-    let data: Partial<IMessageDocument> = {};
+    const data: Partial<IMessageDocument> = {};
     if (entity.message) data.message = entity.message;
     if (entity.isRead) data.isRead = entity.isRead;
     if (entity.senderId)

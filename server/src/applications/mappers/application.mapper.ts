@@ -13,11 +13,9 @@ import {
   ApplicationDetailsDto,
 } from '../dtos/application.dto';
 import { buildApplicationTimeline } from '../utils/build-application-timeline';
-import { email, string } from 'zod';
 
 export class ApplicationMapper {
   static toApplicationDto(entity: AggregatedApplication): ApplicationDto {
-    type applicantType = { name?: string; email?: string; location?: string };
     let address: string = '';
 
     if (entity.applicant) {
@@ -55,8 +53,8 @@ export class ApplicationMapper {
     return {
       id: app.id,
       status: app.status,
-      resume: resume,
-      chatroomId: chatroomId,
+      resume,
+      chatroomId,
       appliedAt: new Date(app.appliedAt).toDateString(),
 
       reviewedAt: app.reviewedAt

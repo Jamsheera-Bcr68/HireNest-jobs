@@ -52,11 +52,11 @@ export class GetInterviewStatusUseCase implements IGetEntityStatusUseCase<Interv
     });
 
     return {
-      total: total,
-      completed: completed,
+      total,
+      completed,
       action_required: action_needed,
-      upcoming: upcoming,
-      passed: passed,
+      upcoming,
+      passed,
     };
   }
 }

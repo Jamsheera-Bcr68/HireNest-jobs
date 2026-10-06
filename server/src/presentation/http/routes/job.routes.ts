@@ -1,6 +1,9 @@
 import express from 'express';
 import { authValidator } from '../middleweres/auth-validator';
-import { applicationController, tokenService } from '../../../infrastructure/config/di';
+import {
+  applicationController,
+  tokenService,
+} from '../../../infrastructure/config/di';
 import {
   jobValidator,
   reportJobValidator,
@@ -15,8 +18,16 @@ router.post(
   jobValidator,
   jobController.create
 );
-router.get(API_END_POINTS.JOBS,authValidator(tokenService), jobController.getJobs);
-router.get(API_END_POINTS.SAVED_JOBS, authValidator(tokenService), jobController.getSavedJobs);
+router.get(
+  API_END_POINTS.JOBS,
+  authValidator(tokenService),
+  jobController.getJobs
+);
+router.get(
+  API_END_POINTS.SAVED_JOBS,
+  authValidator(tokenService),
+  jobController.getSavedJobs
+);
 router.get(API_END_POINTS.JOB, jobController.getJobDetails);
 router.post(
   API_END_POINTS.REPORT_JOB,
@@ -31,7 +42,7 @@ router.post(
   jobController.saveJob
 );
 router.delete(
- API_END_POINTS.UNSAVE_JOB,
+  API_END_POINTS.UNSAVE_JOB,
   authValidator(tokenService),
 
   jobController.unSaveJob
@@ -53,5 +64,9 @@ router.put(
   jobValidator,
   jobController.updateJob
 );
-router.get(API_END_POINTS.JOB_APPLICATIONS,authValidator(tokenService),applicationController.getJobApplications)
+router.get(
+  API_END_POINTS.JOB_APPLICATIONS,
+  authValidator(tokenService),
+  applicationController.getJobApplications
+);
 export default router;

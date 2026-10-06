@@ -9,31 +9,33 @@ export class PendingActivityMapper {
   ): PendingActivityDto {
     return {
       id: job.id,
-     title:job.role,
-     subTitle:job.company,
+      title: job.role,
+      subTitle: job.company,
       type: 'Reported Job',
-     details:job.reason,
-      submitted:new Date( job.submitted).toDateString(),
+      details: job.reason,
+      submitted: new Date(job.submitted).toDateString(),
       createdAt: new Date(job.createdAt).toDateString(),
-      tag: `${job.count} Report${job.count>1?'s':''}`,
+      tag: `${job.count} Report${job.count > 1 ? 's' : ''}`,
       status: 'reported',
     };
   }
   static mapToPendingCompany(company: Company): PendingActivityDto {
-return {
+    return {
       id: company.id ?? '',
       type: 'Company Registration',
-    title:company.companyName,
-    subTitle:company.industry,
-      details: company.email?company.email:'',
+      title: company.companyName,
+      subTitle: company.industry,
+      details: company.email ? company.email : '',
       submitted: company.reapplyCount
-        ? company.applyDetails[company.reapplyCount - 1].submittedAt.toDateString()
+        ? company.applyDetails[
+            company.reapplyCount - 1
+          ].submittedAt.toDateString()
         : company.joinedAt.toISOString(),
       createdAt: company.joinedAt.toDateString(),
-      tag: company.reapplyCount?`${company.reapplyCount} Reapplication`:'New',
+      tag: company.reapplyCount
+        ? `${company.reapplyCount} Reapplication`
+        : 'New',
       status: 'pending',
-    }
-  
+    };
   }
-    
 }

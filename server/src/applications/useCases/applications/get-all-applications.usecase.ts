@@ -1,8 +1,4 @@
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
-import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
-import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
-import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
-
 import {
   ApplicationListDto,
   ApplicationFilterDto,
@@ -18,7 +14,7 @@ export class GetAllApplicationsUsecase implements IGetAllEntitiesUsecase<
 > {
   constructor(
     private _applicationRepository: IApplicationRepository,
-   
+
     private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(

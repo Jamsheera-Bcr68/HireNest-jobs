@@ -21,7 +21,7 @@ export class GetSkillSatusUseCase implements IGetEntitySatusUseCase<SkillStatusC
     let filter: Partial<Skill> = {};
     if (role == UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(userId);
-   //   console.log('user is company', company);
+      //   console.log('user is company', company);
 
       if (!company || !company.id) {
         throw new AppError(
@@ -50,11 +50,11 @@ export class GetSkillSatusUseCase implements IGetEntitySatusUseCase<SkillStatusC
       });
 
       return {
-        total: total,
-        active: active,
-        pending: pending,
-        rejected: rejected,
-        removed: removed,
+        total,
+        active,
+        pending,
+        rejected,
+        removed,
       };
     }
 
@@ -86,11 +86,11 @@ export class GetSkillSatusUseCase implements IGetEntitySatusUseCase<SkillStatusC
     });
 
     return {
-      total: total,
-      active: active,
-      pending: pending,
-      rejected: rejected,
-      removed: removed,
+      total,
+      active,
+      pending,
+      rejected,
+      removed,
     };
   }
 }

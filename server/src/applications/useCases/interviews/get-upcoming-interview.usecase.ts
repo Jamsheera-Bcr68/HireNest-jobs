@@ -10,7 +10,10 @@ import { DashboardUpcomingInterview } from '../../types/candidate-dashboard.type
 import { getDayAndDate, getTime } from '../../../shared/utils';
 
 export interface IUpcomingInteriewUsecase {
-  execute(userId: string, role: UserRole): Promise<DashboardUpcomingInterview|null>;
+  execute(
+    userId: string,
+    role: UserRole
+  ): Promise<DashboardUpcomingInterview | null>;
 }
 
 export class UpcomingInterviewUsecase implements IUpcomingInteriewUsecase {
@@ -39,7 +42,7 @@ export class UpcomingInterviewUsecase implements IUpcomingInteriewUsecase {
         generalMessages.errors.FORBIDDEN,
         statusCodes.FORBIDDEN
       );
-      filter.dateRange={startDate:new Date().toDateString()}
+    filter.dateRange = { startDate: new Date().toDateString() };
 
     const interview = await this._interviewRepository.getInterview({
       ...filter,
@@ -47,15 +50,15 @@ export class UpcomingInterviewUsecase implements IUpcomingInteriewUsecase {
       limit: 1,
     });
     if (!interview) return null;
-    const time=getTime(interview.scheduledAt)
+    const time = getTime(interview.scheduledAt);
     return {
-      id:interview.id,
+      id: interview.id,
       company: interview.company,
       role: interview.jobTitle,
       mode: interview.mode,
       date: getDayAndDate(interview.scheduledAt),
-      time:time ,
-      link:interview.link
+      time,
+      link: interview.link,
     };
   }
 }

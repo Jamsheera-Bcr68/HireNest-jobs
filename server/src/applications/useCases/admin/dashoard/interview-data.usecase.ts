@@ -22,18 +22,22 @@ export class InterviewDataUsecase implements IDashboardDataListUsecase<Interview
     console.log('interviewdata', interviewData);
 
     const total = interviewData.reduce((acc, val) => acc + val.count, 0);
-    let resultData = await this._interviewRepository.getCountByResult();
-  
-    const updatedResultData = resultData.filter(data=>data._id!==null).map((data) => ({
-      status: data._id,
-      count: data.count,
-      value: getPercentsgeOfTotal(total, data.count),
-    }));
-    const updatedInterviewData = interviewData.filter(data=>data._id!==null).map((data) => ({
-      status: data._id,
-      count: data.count,
-      value: getPercentsgeOfTotal(total, data.count),
-    }));
-    return [ ...updatedInterviewData, ...updatedResultData] ;
+    const resultData = await this._interviewRepository.getCountByResult();
+
+    const updatedResultData = resultData
+      .filter((data) => data._id !== null)
+      .map((data) => ({
+        status: data._id,
+        count: data.count,
+        value: getPercentsgeOfTotal(total, data.count),
+      }));
+    const updatedInterviewData = interviewData
+      .filter((data) => data._id !== null)
+      .map((data) => ({
+        status: data._id,
+        count: data.count,
+        value: getPercentsgeOfTotal(total, data.count),
+      }));
+    return [...updatedInterviewData, ...updatedResultData];
   }
 }

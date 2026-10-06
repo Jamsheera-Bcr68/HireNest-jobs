@@ -62,8 +62,8 @@ export class SendMessageUsecase implements ISendMessageUsecase {
       senderId: participantId,
       recieverId:
         role === UserRole.CANDIDATE ? chatroom.companyId : chatroom.candidateId,
-      chatroomId: chatroomId,
-      message: message,
+      chatroomId,
+      message,
       isRead: false,
     };
 

@@ -28,7 +28,7 @@ export interface AggregatedChatroomDto {
   lastMessage?: string;
   lastMessagedAt?: Date;
   jobTitle: string;
-  jobId:string
+  jobId: string;
   participantName: string;
   imageUrl?: string;
   unreadCount: number;

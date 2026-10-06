@@ -1,7 +1,7 @@
 import mongoose, { mongo } from 'mongoose';
 import { NotificationType } from '../../../domain/enums/notification-enums';
 export interface INotificationDocument {
-    _id:mongoose.Types.ObjectId
+  _id: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
   message: string;
   title: string;
@@ -10,15 +10,18 @@ export interface INotificationDocument {
   type: NotificationType;
 }
 
-const NotificationSchema = new mongoose.Schema<INotificationDocument>({
-  userId: { type: mongoose.Types.ObjectId },
-  message: { type: String },
-  title: { type: String },
+const NotificationSchema = new mongoose.Schema<INotificationDocument>(
+  {
+    userId: { type: mongoose.Types.ObjectId },
+    message: { type: String },
+    title: { type: String },
 
-  isRead: { type: Boolean, default: false },
-  type: { type: String, enum: Object.values(NotificationType) },
-  createdAt: { type: Date, default: Date.now },
-},{ timestamps: true });
+    isRead: { type: Boolean, default: false },
+    type: { type: String, enum: Object.values(NotificationType) },
+    createdAt: { type: Date, default: Date.now },
+  },
+  { timestamps: true }
+);
 
 export const notificationModel = mongoose.model<INotificationDocument>(
   'Notification',

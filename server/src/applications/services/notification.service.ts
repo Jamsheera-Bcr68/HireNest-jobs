@@ -8,13 +8,11 @@ export interface INotificationService {
 }
 
 export class NotificationService implements INotificationService {
-  constructor(
-    private _notificationRepository: INotificationRepository
-  ) {}
+  constructor(private _notificationRepository: INotificationRepository) {}
 
   async create(data: Partial<Notification>): Promise<NotificationDto> {
     const notification = await this._notificationRepository.create(data);
-   // console.log('new notification is ',notification);
-    return NotificationMapper.toNotificationDto(notification)
+    // console.log('new notification is ',notification);
+    return NotificationMapper.toNotificationDto(notification);
   }
 }

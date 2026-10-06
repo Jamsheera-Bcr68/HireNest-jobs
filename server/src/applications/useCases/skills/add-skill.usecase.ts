@@ -86,10 +86,10 @@ export class AddSkillUseCase implements IAddSkillUseCase {
       reviewedAt: role === UserRole.ADMIN ? new Date() : undefined,
       status:
         role === UserRole.ADMIN ? SkillStatus.APPROVED : SkillStatus.PENDING,
-      userId: userId,
+      userId,
       createdAt: new Date(),
     };
-  //  console.log('new skill form usecase', newSkill);
+    //  console.log('new skill form usecase', newSkill);
 
     if (role === UserRole.COMPANY) {
       const admin = await this._adminRepository.findOne({
@@ -110,7 +110,7 @@ export class AddSkillUseCase implements IAddSkillUseCase {
       };
 
       await this._notificationService.create(notificationData);
-      getIO().to(admin.id).emit('notification',notificationData)
+      getIO().to(admin.id).emit('notification', notificationData);
     }
 
     const addedSkill = await this._skillRepository.create(newSkill);

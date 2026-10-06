@@ -60,15 +60,13 @@ export class GetCompaniesUseCase implements IGetCompaniesUseCase {
 
     const updated = await Promise.all(
       companies.map(async (com) => {
-        return { ...com, logoUrl:await fileUrlResolver(com.logoUrl) };
+        return { ...com, logoUrl: await fileUrlResolver(com.logoUrl) };
       })
     );
 
-   
-
     return {
-      companies:updated,
-      totalDocs
+      companies: updated,
+      totalDocs,
     };
   }
 }

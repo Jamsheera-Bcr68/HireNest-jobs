@@ -17,7 +17,7 @@ export class CrateJobUseCase implements ICrateJobUseCase {
   constructor(
     private _userRepository: IUserRepository,
     private _jobRepository: IJobRepository,
-    private _comapanyRepository: ICompanyRepository, 
+    private _comapanyRepository: ICompanyRepository,
     private _skillRepository: ISkillRepository
   ) {}
   async execute(payload: JobDto, userId: string, role: UserRole): Promise<Job> {
@@ -25,7 +25,7 @@ export class CrateJobUseCase implements ICrateJobUseCase {
     if (!user) {
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     }
-    const company = await this._comapanyRepository.findOne({ userId: userId });
+    const company = await this._comapanyRepository.findOne({ userId });
     if (!company || !company.id)
       throw new AppError(
         userMessages.error.COMPANY_NOT_FOUND,

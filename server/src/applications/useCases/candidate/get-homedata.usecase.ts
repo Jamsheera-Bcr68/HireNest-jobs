@@ -28,14 +28,14 @@ export class GetHomeDataUseCase implements IGetHomeDataUseCase {
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
-    let todayJobCount = await this._jobRepository.count(
+    const todayJobCount = await this._jobRepository.count(
       {
         status: StatusEnum.ACTIVE,
       },
       'today'
     );
-    let industryWise = await this._jobRepository.industryBasedJobs();
-    let limit = 6;
+    const industryWise = await this._jobRepository.industryBasedJobs();
+    const limit = 6;
     const { jobs } = await this._jobRepository.getJobs({}, limit, 1);
     const companyCount = await this._userRepository.getCount({
       role: UserRole.COMPANY,

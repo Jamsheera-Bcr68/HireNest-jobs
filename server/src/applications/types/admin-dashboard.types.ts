@@ -1,4 +1,3 @@
-
 import { IndustryType } from '../../domain/types/company-profile.types';
 import { PendingCompany } from '../dtos/company.dto';
 import { AdminDashboardReportedJob } from '../dtos/job.dto';
@@ -62,7 +61,7 @@ export interface InterviewData {
 export interface DashboardPendingsDto {
   companies: PendingCompany[];
   jobs: AdminDashboardReportedJob[];
-  
-companyCount:number
-jobCount:number
+
+  companyCount: number;
+  jobCount: number;
 }

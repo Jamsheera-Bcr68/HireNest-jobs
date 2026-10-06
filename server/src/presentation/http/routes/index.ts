@@ -13,7 +13,6 @@ import messageRouter from './message.routes';
 
 const router = Router();
 
-
 router.use('/auth', authRoutes);
 router.use('/candidate', candidateRoutes);
 router.use('/company', companyRoutes);

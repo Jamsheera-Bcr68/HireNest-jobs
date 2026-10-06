@@ -1,5 +1,5 @@
 import express from 'express';
-import { CANDIDATE_API_END_POINTS } from './api-end-points/candidate';
+
 import { authValidator } from '../middleweres/auth-validator';
 import { tokenService } from '../../../infrastructure/config/di';
 import { applicationController } from '../../../infrastructure/config/di';
@@ -7,7 +7,7 @@ import { API_END_POINTS } from './api-end-points/api-end.points';
 const router = express.Router();
 
 router.post(
- API_END_POINTS.JOB,
+  API_END_POINTS.JOB,
   authValidator(tokenService),
   applicationController.applyJob
 );

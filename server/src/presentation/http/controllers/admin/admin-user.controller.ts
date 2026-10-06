@@ -16,12 +16,12 @@ import { CandidateFilterType } from '../../../../applications/types/candidate.ty
 import { IAdminUpdateCandidateUseCase } from '../../../../applications/useCases/admin/admin-update-candidate.usecase';
 import { IAdminGetEntityUseCase } from '../../../../applications/useCases/admin/admin-get-candidate.usecase';
 import { IGetFileExistUseCase } from '../../../../applications/useCases/admin/file-exist.usecase';
-import { success } from 'zod';
+
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { asyncHandler } from '../../middleweres/async-handler';
 
-export class AdminUserController { 
-  constructor(  
+export class AdminUserController {
+  constructor(
     private _getCompaniesUseCase: IGetCompaniesUseCase,
     private _getCompanyUseCase: IAdminGetCompanyUseCase,
     private _adminUpdateCompanyUseCase: IAdminUpdateCompanyUseCase,
@@ -37,7 +37,7 @@ export class AdminUserController {
     const user = req.user;
     //console.log('user ', user);
 
-    let query = req.query;
+    const query = req.query;
     // console.log('query is ', query);
     const { status, industry } = query;
     if (!status || status == 'all') delete query.status;
@@ -49,11 +49,13 @@ export class AdminUserController {
         statusCodes.UNAUTHERIZED
       );
     }
-    let { page, limit, search = '', sortBy = '', ...rest } = query;
+    const { page, limit, search = '', sortBy = '', ...rest } = query;
     // console.log('page,rest,limit,search', page, rest, limit, search);
     const pagenumber = Number(page);
 
-    const paginated = await this._getCompaniesUseCase.execute(user.userId,user.role,
+    const paginated = await this._getCompaniesUseCase.execute(
+      user.userId,
+      user.role,
       rest,
       pagenumber,
       String(search),
@@ -73,7 +75,7 @@ export class AdminUserController {
   });
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
-    const { companyId, sortBy } = req.params;
+    const { companyId } = req.params;
     const user = req.user;
     //  console.log('user,company id', user, id);
 
@@ -130,7 +132,7 @@ export class AdminUserController {
 
     return res
       .status(statusCodes.OK)
-      .json({ success: true, message: message, company: updated });
+      .json({ success: true, message, company: updated });
   });
 
   getCompanyStatus = asyncHandler(async (req: Request, res: Response) => {
@@ -224,7 +226,7 @@ export class AdminUserController {
 
     return res.status(statusCodes.OK).json({
       success: true,
-      message: message,
+      message,
       candidate: UserMapper.toUserProfileDto(updated, null),
     });
   });
@@ -246,8 +248,8 @@ export class AdminUserController {
       );
     }
     const candidate = await this._adminGetEntityUseCase.execute(candidateId);
-    console.log('admin candidate',candidate);
-    
+    console.log('admin candidate', candidate);
+
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.COMPANY_FETCHED,

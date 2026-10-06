@@ -243,7 +243,7 @@ export class JobRepository
         sortStage = { createdAt: -1 };
     }
 
-    let {
+    const {
       skills,
       industry,
       jobType,
@@ -255,7 +255,7 @@ export class JobRepository
       title,
       ...rest
     } = filter;
-   // console.log('skills form repor', skills);
+    // console.log('skills form repor', skills);
     //console.log('titles from repo', title);
 
     const salaryLookup = Object.fromEntries(
@@ -465,7 +465,7 @@ export class JobRepository
 
     const jobs = result[0]?.data || [];
     const totalDocs = result[0]?.totalCount[0]?.count || 0;
-  console.log('jobs', jobs);
+    console.log('jobs', jobs);
 
     return {
       jobs: jobs.map(({ _id, id, ...job }) => ({
@@ -747,12 +747,11 @@ export class JobRepository
     const { companyId, status, endDate } = filter;
     const count = await this._model.countDocuments({
       companyId: new mongoose.Types.ObjectId(companyId),
-      status: status,
+      status,
       lastDate: { $gte: new Date(endDate) },
     });
     return count;
   }
-
 
   async getReportedJobs(
     filter: Partial<ReportedJobFilter>
@@ -874,7 +873,7 @@ export class JobRepository
   private mapToReported(
     doc: AggregatedReportedJob
   ): MappedAggregatedReportedJob {
-   // console.log('AggregatedReportedJob', doc);
+    // console.log('AggregatedReportedJob', doc);
 
     return {
       id: doc._id.toString(),

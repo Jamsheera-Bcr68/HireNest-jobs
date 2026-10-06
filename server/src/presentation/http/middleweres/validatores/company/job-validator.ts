@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { jobPostSchema } from '../../../validators/company/job-validation';
-import { jobReportSchema } from '../../../validators/company/report-job.validation';
+
 
 export const jobValidator = (
   req: Request,
@@ -8,7 +8,7 @@ export const jobValidator = (
   next: NextFunction
 ) => {
   try {
-    const result = jobPostSchema.safeParse(req.body);
+   jobPostSchema.safeParse(req.body);
     next();
   } catch (error: any) {
     next(error);
@@ -20,7 +20,7 @@ export const reportJobValidator = (
   next: NextFunction
 ) => {
   try {
-    const result = jobPostSchema.safeParse(req.body);
+    jobPostSchema.safeParse(req.body);
     next();
   } catch (error: any) {
     next(error);

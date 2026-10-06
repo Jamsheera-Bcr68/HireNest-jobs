@@ -4,12 +4,12 @@ import { type TokenPayload } from '../../applications/interfaces/services/token.
 import { authMessages } from '../../shared/constants/messages/auth.mesages';
 
 export const getToken = (userId: string, email: string, role: UserRole) => {
- // console.log('from getTokens', userId, email, role);
+  // console.log('from getTokens', userId, email, role);
 
   const jwt_secret = process.env.JWT_ACCESS_SECRET;
   if (!jwt_secret) throw new Error(authMessages.error.ACCESS_SECRET_NOT_FOUND);
 
-  const verify = jwt.sign({ userId, email, role }, jwt_secret, {
+jwt.sign({ userId, email, role }, jwt_secret, {
     expiresIn: '15m',
   });
 

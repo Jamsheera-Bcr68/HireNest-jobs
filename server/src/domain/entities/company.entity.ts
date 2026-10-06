@@ -35,7 +35,7 @@ export interface Company {
   industry: IndustryType;
   socialMediaLinks: ISocialMediaLinks;
   size: CompanySize;
-  reviewedAt?:string
+  reviewedAt?: string;
   address: IAddress;
   document: VerificationDocType;
   reapplyCount: number;

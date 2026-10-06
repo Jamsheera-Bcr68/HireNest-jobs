@@ -1,4 +1,3 @@
-
 import { Experience } from '../entities/experience.entity';
 import { IBaseRepository } from './base-repository.interface';
 

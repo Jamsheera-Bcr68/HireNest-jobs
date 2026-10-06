@@ -52,13 +52,13 @@ export class GetPendingUsecase implements IGetPendingUsecase {
       const skills = await this._skillRepository.getAllSkills({
         status: SkillStatus.PENDING,
       });
-    
+
       return skills;
     };
 
-    const pendingSkills =await getSkills();
-  console.log('pending sklls',pendingSkills);
-  
+    const pendingSkills = await getSkills();
+    console.log('pending sklls', pendingSkills);
+
     const getJobs = async (): Promise<{
       jobs: PendingActivityDto[];
       totalJobs: number;

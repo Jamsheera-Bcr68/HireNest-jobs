@@ -22,7 +22,7 @@ import { EducationType } from '../validators/education-form.validator';
 import { ProfileDataMapper } from '../../../applications/mappers/profile-data.mapper';
 import { asyncHandler } from '../middleweres/async-handler';
 import { IAddEducationUseCase } from '../../../applications/interfaces/candidate/add-education.usecase';
-import { IGetAllEducationUseCase } from '../../../applications/interfaces/candidate/get-educations.usecase';
+
 import { IEditEducationUseCase } from '../../../applications/interfaces/candidate/update-education.usecase';
 import { IRemoveEducationUseCase } from '../../../applications/interfaces/candidate/remove-education.usecase';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
@@ -30,8 +30,7 @@ import { IAddResumeUseCase } from '../../../applications/interfaces/candidate/ad
 import { IRemoveResumeUseCase } from '../../../applications/interfaces/candidate/remove-resume.usecase';
 import { IGetCandidateResumesUsecase } from '../../../applications/useCases/candidate/get-resumes.usecase';
 import { IGetCompanyDataUseCase } from '../../../applications/useCases/company/get-company-data.usecase';
-import { env } from '../../../infrastructure/config/env';
-import { fi } from 'zod/v4/locales';
+
 
 export class CandidateProfileController {
   private _candidateEditProfileUsecase: IProfileEditUsecase;
@@ -198,15 +197,11 @@ export class CandidateProfileController {
       );
     }
 
-    await this._removeProfileImageUseCase.execute(
-      user.userId,
-      user.role
-    );
+    await this._removeProfileImageUseCase.execute(user.userId, user.role);
 
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.USER_PROFILE_IMAGE_REMOVED,
-
     });
   });
 
@@ -444,11 +439,7 @@ export class CandidateProfileController {
         statusCodes.UNAUTHERIZED
       );
 
-    const updatedUser = await this._removeEducationUseCase.execute(
-      eduId,
-      user.userId,
-      user.role
-    );
+    await this._removeEducationUseCase.execute(eduId, user.userId, user.role);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.EDUCATION_REMOVED,
@@ -505,7 +496,7 @@ export class CandidateProfileController {
         statusCodes.BADREQUEST
       );
 
-    const updatedUser = await this.removeResumeUseCase.execute(
+   await this.removeResumeUseCase.execute(
       user.userId,
       resumeId,
       user.role

@@ -25,16 +25,17 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
     private _companyRepository: ICompanyRepository,
     private _skillRepository: ISkillRepository,
     private _userRepository: IUserRepository,
-    private _applicationRepository: IApplicationRepository,private _fileUrlResolverService:IFileResolverService
+    private _applicationRepository: IApplicationRepository,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   private async mapToJobDetailsDto(
     job: Job,
     company: Company,
     skillNames: UserSkillDto[],
-    reports: JobReportType[],count:number
+    reports: JobReportType[],
+    count: number
   ): Promise<JobDetailsDto> {
-
-      const fileUrlResolver=this._fileUrlResolverService.createResolver()
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
     return {
       id: job.id.toString(),
       title: job.title,
@@ -57,7 +58,7 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
       responsibilities: job.responsibilities ?? [],
       skills: skillNames || [],
       companyName: company.companyName,
-      companyLogo:await fileUrlResolver(company.logoUrl) ,
+      companyLogo: await fileUrlResolver(company.logoUrl),
       industry: company.industry,
       benefits: company.benefits ?? [],
       aboutCompany: company.about ?? '',
@@ -66,7 +67,6 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
       companySize: company.size,
     };
   }
-
 
   async execute(id: string): Promise<JobDetailsDto> {
     const job = await this._jobRepository.findById(id);
@@ -82,7 +82,7 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
     const skills = await this._skillRepository.getAll({
       status: SkillStatus.APPROVED,
     });
-    
+
     const skillIds = new Set(job.skills.map(String));
 
     const skillnames = skills.filter((skill) => skillIds.has(String(skill.id)));
@@ -106,6 +106,12 @@ export class GetJobDetailsUseCase implements IGetJobDetailsUseCase {
     const applicationCount: number = await this._applicationRepository.count({
       jobId: job.id,
     });
-    return this.mapToJobDetailsDto(job, company, skillnames, reports,applicationCount);
+    return this.mapToJobDetailsDto(
+      job,
+      company,
+      skillnames,
+      reports,
+      applicationCount
+    );
   }
 }

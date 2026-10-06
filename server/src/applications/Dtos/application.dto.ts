@@ -1,11 +1,9 @@
-
 import { ApplicationStatusEnum } from '../../domain/enums/status.enum';
-import { Job } from '../../domain/entities/job.entity';
 
 import { JobType } from '../../domain/types/job.types';
 import { WorkMode } from '../../domain/enums/work-mode.enum';
 import { IndustryType } from '../../domain/types/company-profile.types';
-import { UserSkillDto } from './skill.dto';
+
 import { IAddress, IResume } from '../../domain/values/profile-types';
 import { EducationStatus } from '../../domain/enums/education.enum';
 

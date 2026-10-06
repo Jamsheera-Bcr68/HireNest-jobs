@@ -30,7 +30,7 @@ export class EditExperienceUseCase implements IEditExperienceUseCase {
   ): Promise<Experience> {
     const exp = await this._experienceRepository.findById(expId);
     console.log('from edit experience usecasse');
-    
+
     if (!exp || !exp.id)
       throw new AppError(
         userMessages.error.EXPEIENCE_NOT_FOUND,

@@ -22,13 +22,12 @@ export class GetCompanyUseCase implements IGetCompanyUseCase {
     private _jobRepository: IJobRepository,
     private _applicationRepository: IApplicationRepository,
     private _interviewRepository: IInterviewRepository,
-    private _fileStorageService:IFileStorageService,
-    private _fileUrlResolverService:IFileResolverService
-   
+    private _fileStorageService: IFileStorageService,
+    private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(userId: string): Promise<CompanyDataDto> {
     const company = await this._companyRepository.findByUserId(userId);
-     console.log('companyUserId', userId,company);
+    console.log('companyUserId', userId, company);
 
     if (!company)
       throw new AppError(
@@ -45,18 +44,24 @@ export class GetCompanyUseCase implements IGetCompanyUseCase {
     const totalApps = await this._applicationRepository.count({
       companyId: company.id,
     });
-    console.log('total apps',totalApps);
-    
+    console.log('total apps', totalApps);
+
     const totalInterviews = await this._interviewRepository.count({
       companyId: company.id,
     });
-    console.log('total interviews',totalInterviews);
-    const urlResolver=this._fileUrlResolverService.createResolver()
-    const logoUrl=await  urlResolver(company.logoUrl)
-    const docUrl=await this._fileStorageService.getFileUrl(company.document.file)
+    console.log('total interviews', totalInterviews);
+    const urlResolver = this._fileUrlResolverService.createResolver();
+    const logoUrl = await urlResolver(company.logoUrl);
+    const docUrl = await this._fileStorageService.getFileUrl(
+      company.document.file
+    );
 
     return {
-      ...CompanyMapper.toCompanyDataDto({...company,logoUrl:logoUrl,document:{...company.document,file:docUrl}}),
+      ...CompanyMapper.toCompanyDataDto({
+        ...company,
+        logoUrl,
+        document: { ...company.document, file: docUrl },
+      }),
       totalJobs,
       hiredCount,
       totalApps,

@@ -26,7 +26,7 @@ export class GetUserUseCase implements IGetUserUseCase {
     applicationRepository: IApplicationRepository,
     interviewRepository: IInterviewRepository,
     private _fileStorageService: IFileStorageService,
-    private _fileUrlResolverService:IFileResolverService
+    private _fileUrlResolverService: IFileResolverService
   ) {
     this._userRepository = userRepository;
     this._companyRepository = companyRepository;
@@ -49,20 +49,19 @@ export class GetUserUseCase implements IGetUserUseCase {
     if (user.isRequested) {
       company = await this._companyRepository.findByUserId(userId);
     }
-  const fileUrlResolver=this._fileUrlResolverService.createResolver()
+    const fileUrlResolver = this._fileUrlResolverService.createResolver();
     const imageUrl = user.imageUrl
       ? await this._fileStorageService.getFileUrl(user.imageUrl, 3600)
       : undefined;
     const resumes = await Promise.all(
       user.resumes.map(async (r) => ({
         ...r,
-        url: await fileUrlResolver(r.url)??'',
+        url: (await fileUrlResolver(r.url)) ?? '',
       }))
     );
-   
 
     const mapped = UserMapper.toUserProfileDto(
-      { ...user, imageUrl: imageUrl, resumes: resumes },
+      { ...user, imageUrl, resumes },
       company
     );
     console.log('mapped user,company', mapped);

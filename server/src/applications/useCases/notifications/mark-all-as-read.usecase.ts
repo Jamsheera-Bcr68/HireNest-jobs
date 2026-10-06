@@ -1,15 +1,13 @@
-import { INotificationRepository } from "../../../domain/repository-interfaces/notification.repository.interface";
+import { INotificationRepository } from '../../../domain/repository-interfaces/notification.repository.interface';
 
 export interface IMarkAllNotificationsAsReadUsecase {
-    execute(userId:string):Promise<void>
+  execute(userId: string): Promise<void>;
 }
 
-export class MarkAllNotificationsAsReadUsecase implements IMarkAllNotificationsAsReadUsecase{
-    constructor(private _notificationRepository:INotificationRepository){}
+export class MarkAllNotificationsAsReadUsecase implements IMarkAllNotificationsAsReadUsecase {
+  constructor(private _notificationRepository: INotificationRepository) {}
 
-    async execute(userId: string): Promise<void> {
-       await this._notificationRepository.markAllAsRead(userId)
-
-
-    }
+  async execute(userId: string): Promise<void> {
+    await this._notificationRepository.markAllAsRead(userId);
+  }
 }

@@ -38,7 +38,6 @@ export class RemoveResumUseCase implements IRemoveResumeUseCase {
       const updated = await this._userRepository.removeResume(userId, resumeId);
       if (!updated)
         throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
-     
     } catch (err: any) {
       if (
         err instanceof AppError &&
@@ -53,7 +52,6 @@ export class RemoveResumUseCase implements IRemoveResumeUseCase {
             userMessages.error.NOT_FOUND,
             statusCodes.NOTFOUND
           );
-     
       } else {
         throw err;
       }

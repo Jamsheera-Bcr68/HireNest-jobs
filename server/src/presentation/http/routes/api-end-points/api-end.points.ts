@@ -4,7 +4,7 @@ export const API_END_POINTS = {
   SKILL_STATUS: '/skill-status',
   REQUESTED_SKILLS: '/requested',
   APPLICATION_STATUS: '/applications-status/:jobId',
-  CANDIDATE_APPLICATION_STATUS:`/applications-status`,
+  CANDIDATE_APPLICATION_STATUS: `/applications-status`,
   APPLICATIONS: '/',
   APPLICATION: '/:applicationId',
   COMPANY_DATA: '/:companyId',
@@ -37,8 +37,8 @@ export const API_END_POINTS = {
   RESUME: '/profile/resume/:resumeId',
   HOME: '/home',
   LOGO: '/logo',
-  COMPANY:'/company/:companyId',
-  COMPANY_POSTS:'/company/:companyId/jobs',
+  COMPANY: '/company/:companyId',
+  COMPANY_POSTS: '/company/:companyId/jobs',
   PROFILE_LOGO: '/profile/logo',
   DOCUMENT: '/profle/document',
   SAVED_JOBS: '/saved',
@@ -58,7 +58,7 @@ export const API_END_POINTS = {
     INTERVIEW_DATA: '/dashboard/interview-data',
     PENDING_COMPANIES: '/dashboard/pending-companies',
     REPORTED_JOBS: '/dashboard/reported-jobs',
-    ACTION_PENDING:'/dashboard/action-pending'
+    ACTION_PENDING: '/dashboard/action-pending',
   },
   CANDIDATE_DASHBOARD: {
     APP_DATA: '/dashboard/application-details',

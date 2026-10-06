@@ -58,7 +58,7 @@ export class AdminGetEntityUseCase implements IAdminGetEntityUseCase {
       resumes: await Promise.all(
         candidate.resumes.map(async (res) => ({
           ...res,
-          url: await fileUrlResolver(res.url)??'',
+          url: (await fileUrlResolver(res.url)) ?? '',
         }))
       ),
     };

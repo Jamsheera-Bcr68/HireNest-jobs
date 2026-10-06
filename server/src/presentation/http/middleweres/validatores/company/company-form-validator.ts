@@ -9,7 +9,7 @@ export const companyRegisterValidator = (
   next: NextFunction
 ) => {
   try {
-    const result = companyRegisterSchema.safeParse(req.body);
+    companyRegisterSchema.safeParse(req.body);
     next();
   } catch (error: any) {
     next(error);
@@ -21,7 +21,7 @@ export const companyProfileEditValidator = (
   next: NextFunction
 ) => {
   try {
-    const result = companyProfileEditSchema.safeParse(req.body);
+    companyProfileEditSchema.safeParse(req.body);
     next();
   } catch (error: any) {
     next(error);
@@ -33,7 +33,7 @@ export const companyProfileUpdateFieldsValidator = (
   next: NextFunction
 ) => {
   try {
-    const result = updateCompanyFieldSchema.safeParse(req.body);
+    updateCompanyFieldSchema.safeParse(req.body);
     next();
   } catch (error: any) {
     next(error);

@@ -74,7 +74,7 @@ export class CompanyDashboardAppDataUsecase implements ICompanyDashboardAppDataU
           name: app.applicant.name,
           status: app.status,
           role: app.jobTitle,
-          imageUrl: imageUrl,
+          imageUrl,
           appliedAt: appdate,
         };
       })

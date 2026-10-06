@@ -17,18 +17,18 @@ export class RefreshTokenController {
     //  console.log('refresh-token endpoint hit');
     try {
       const refreshToken = req.cookies.refreshToken;
-      console.log('refreshtoken from refresh controller',refreshToken);
-      
+      console.log('refreshtoken from refresh controller', refreshToken);
+
       if (!refreshToken) {
         console.log('refresh token not found,cookies', req.cookies);
         throw new AppError(
           authMessages.error.REFRESH_TOKEN_REQUIRED,
           statusCodes.BADREQUEST
         );
-        return
+        return;
       }
 
-       console.log('refresh token found',refreshToken);
+      console.log('refresh token found', refreshToken);
 
       //  verify token
       const payload = this._tokenService.verifyRefreshToken(refreshToken);

@@ -1,4 +1,3 @@
-
 import { IResume } from '../../../domain/values/profile-types';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { UploadFileDto } from '../../dtos/upload-file.dto';

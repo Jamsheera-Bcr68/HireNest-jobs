@@ -24,7 +24,7 @@ const s3Client = new S3Client({
 export class S3FileStorageService implements IFileStorageService {
   async uploadFile(
     file: UploadFileDto,
-    folder: string ,
+    folder: string,
     fileExtension: string = 'jpg'
   ): Promise<string> {
     console.log('from s3 stroage folder name is ', folder);
@@ -50,17 +50,18 @@ export class S3FileStorageService implements IFileStorageService {
   }
 
   async removeFile(key: string): Promise<void> {
-   try {
-     const command = new DeleteObjectCommand({
-      Bucket: env.AWS_S3_BUCKET_NAME,
-      Key: key,
-    });
-    await s3Client.send(command);
-   } catch (error) {
-     throw new AppError(
-      generalMessages.errors.UNABLE_TO_DELETE_FILE,
-      statusCodes.SERVERERROR )
-   }
+    try {
+      const command = new DeleteObjectCommand({
+        Bucket: env.AWS_S3_BUCKET_NAME,
+        Key: key,
+      });
+      await s3Client.send(command);
+    } catch (error) {
+      throw new AppError(
+        generalMessages.errors.UNABLE_TO_DELETE_FILE,
+        statusCodes.SERVERERROR
+      );
+    }
   }
 
   async checkExist(fileName: string): Promise<boolean> {

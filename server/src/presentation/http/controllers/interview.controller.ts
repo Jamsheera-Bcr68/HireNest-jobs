@@ -135,10 +135,7 @@ export class InterviewController {
   });
 
   getInterviews = asyncHandler(async (req: Request, res: Response) => {
-    type DateRangeType = {
-      startDate: string;
-      endDate: string;
-    } | null;
+
     const {
       search,
       status,
@@ -162,7 +159,7 @@ export class InterviewController {
 
     await this._markMissedInterviewUsecase.execute();
 
-    let q = {} as Partial<InterviewFilterDto>;
+    const q = {} as Partial<InterviewFilterDto>;
     if (user.role == UserRole.CANDIDATE) {
       q.candidateId = user.userId;
     }

@@ -1,13 +1,13 @@
-import {  IDashboardDataListUsecase } from '../../../applications/interfaces/dashboard/dashboard-data-list.usecase.interface';
+import { IDashboardDataListUsecase } from '../../../applications/interfaces/dashboard/dashboard-data-list.usecase.interface';
 import { IDashboardCardDataUsecase } from '../../../applications/interfaces/dashboard/status-card-data.usecase.interface';
 import {
   CompanyDashboardCardsDto,
   DashboardInterview,
-  DashboardJobData,
+
   PendingActivityDto,
   RecentActivityDto,
 } from '../../../applications/types/company-dashboard.types';
-import { CompanyDashboardStatusCardDataUsecase } from '../../../applications/useCases/company/dashboard/get-statuscard-data.usecase';
+
 import { AppError } from '../../../domain/errors/app-error';
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { ICompanyDashboardJobDataUsecase } from '../../../applications/useCases/company/dashboard/dashboard-jobdata.usecase';
@@ -16,17 +16,16 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { asyncHandler } from '../middleweres/async-handler';
 import { Request, Response } from 'express';
 
-import { CompanyApplicationChartData } from '../../../applications/types/company-dashboard.types';
 import { ICompanyDashboardAppDataUsecase } from '../../../applications/useCases/company/dashboard/get-application-data.usecase';
 
 export class CompanyDashboardController {
   constructor(
     private _getDashboardStatusCardDataUsecase: IDashboardCardDataUsecase<CompanyDashboardCardsDto>,
     private _getApplicationDataUsecase: ICompanyDashboardAppDataUsecase,
-    private _getDashboardTopJobsUsecase:ICompanyDashboardJobDataUsecase,
-    private _getDashboardInterviewUsecase:IDashboardDataListUsecase<DashboardInterview>,
-    private _recentActivitiesUsecase:IDashboardDataListUsecase<RecentActivityDto>,
-    private _pendingActionsUsecase:IDashboardDataListUsecase<PendingActivityDto>,
+    private _getDashboardTopJobsUsecase: ICompanyDashboardJobDataUsecase,
+    private _getDashboardInterviewUsecase: IDashboardDataListUsecase<DashboardInterview>,
+    private _recentActivitiesUsecase: IDashboardDataListUsecase<RecentActivityDto>,
+    private _pendingActionsUsecase: IDashboardDataListUsecase<PendingActivityDto>
   ) {}
   getStatusData = asyncHandler(async (req: Request, res: Response) => {
     console.log('from getStatusData');
@@ -105,7 +104,6 @@ export class CompanyDashboardController {
       user.userId,
       user.role
     );
-  
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -127,7 +125,6 @@ export class CompanyDashboardController {
       user.userId,
       user.role
     );
- 
 
     return res.status(statusCodes.OK).json({
       success: true,

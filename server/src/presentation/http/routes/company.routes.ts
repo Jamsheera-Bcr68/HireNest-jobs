@@ -15,7 +15,6 @@ import { upload } from '../middleweres/image-upload';
 import { fileUpload } from '../middleweres/pdf-upload';
 import { companyProfileController } from '../../../infrastructure/config/di';
 import { companyProfileUpdateFieldsValidator } from '../middleweres/validatores/company/company-form-validator';
-import { jobValidator } from '../middleweres/validatores/company/job-validator';
 import { API_END_POINTS } from './api-end-points/api-end.points';
 const router = express.Router();
 

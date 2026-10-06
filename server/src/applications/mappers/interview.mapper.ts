@@ -8,25 +8,28 @@ import { Interview } from '../../domain/entities/interview.entity';
 import { Job } from '../../domain/entities/job.entity';
 import { User } from '../../domain/entities/user.entity';
 import { Company } from '../../domain/entities/company.entity';
-import { string } from 'zod';
+
 export class InterviewMapper {
-  static toInterviewDto(data: AggregatedInterviewDto,chatroomId?:string): interviewDto {
+  static toInterviewDto(
+    data: AggregatedInterviewDto,
+    chatroomId?: string
+  ): interviewDto {
     return {
       id: data.id,
       name: data.name,
       mode: data.mode,
       jobTitle: data.jobTitle,
-     candidateImageUrl:data.candidateImageUrl,
+      candidateImageUrl: data.candidateImageUrl,
       result: data.result,
       createdAt: new Date(data.createdAt).toDateString(),
       status: data.status,
       company: data.company,
       isRescheduleRequested: data.isRescheduleRequested,
-      chatroomId:chatroomId,
+      chatroomId,
       companyLogo: data.companyLogo,
       isConfirmed: data.isConfirmed,
-      candidateId:data.candidateId,
-      companyId:data.companyId,
+      candidateId: data.candidateId,
+      companyId: data.companyId,
       scheduledAt: getDateAndTime(data.scheduledAt),
     };
   }
@@ -47,10 +50,10 @@ export class InterviewMapper {
       result: data.result,
       createdAt: new Date(data.createdAt).toDateString(),
       status: data.status,
-     
+
       isConfirmed: data.isConfirmed,
-      candidateId:data.candidateId,
-      companyId:data.companyId,
+      candidateId: data.candidateId,
+      companyId: data.companyId,
       isRescheduleRequested: data.isRescheduleRequested,
       scheduledAt: getDateAndTime(data.scheduledAt),
     };
@@ -81,7 +84,7 @@ export class InterviewMapper {
       feedback: interview.feedback,
       companyLogo: company.logoUrl,
       companyName: company.companyName,
-      candidateImageUrl:candidate.imageUrl,
+      candidateImageUrl: candidate.imageUrl,
       cancelledBy: interview.cancelledBy,
     };
   }

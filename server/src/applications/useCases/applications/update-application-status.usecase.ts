@@ -91,7 +91,7 @@ export class UpdateApplicationStatusUseCase implements IUpdateEntityStatusUseCas
       message: notificationMessages[
         NotificationType.APPLICATION_STATUS_UPDATED
       ]({
-        status: status,
+        status,
         companyName: company.companyName,
 
         jobTitle: job.title,

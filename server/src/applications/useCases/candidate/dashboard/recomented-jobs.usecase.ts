@@ -75,7 +75,8 @@ export class RecomentedJobUsecase implements IRecomentedJobsUsecase {
           .filter(Boolean);
 
         return {
-          ...job,companyLogo:await fileUrlResolver(job.companyLogo),
+          ...job,
+          companyLogo: await fileUrlResolver(job.companyLogo),
           skills: skillArray.map((skill) => skill!.skillName),
         };
       })

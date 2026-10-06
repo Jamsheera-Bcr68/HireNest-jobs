@@ -12,7 +12,11 @@ export class AddDocumentUseCase implements IAddFileUseCase {
     role: UserRole,
     file: UploadFileDto
   ): Promise<String> {
-    const docPath = await this._fileStorageServices.uploadFile(file,'companies/documents','pdf');
+    const docPath = await this._fileStorageServices.uploadFile(
+      file,
+      'companies/documents',
+      'pdf'
+    );
     return docPath;
   }
 }

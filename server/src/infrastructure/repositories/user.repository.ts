@@ -17,11 +17,10 @@ import {
   CandidateStatus,
   UserFilter,
 } from '../../applications/dtos/candidate.dto';
-import { UserMapper } from '../../applications/mappers/user.mapper';
+
 import { PaginatedEntities } from '../../applications/types/candidate.type';
 import { UserRole } from '../../domain/enums/user.enums';
-import { StatusEnum } from '../../domain/enums/status.enum';
-import { lookup } from 'dns';
+
 
 type CandidateQuery = Partial<User> & {
   $or?: {
@@ -357,11 +356,7 @@ export class UserRepository
     imageUrl: string
   ): Promise<User | null> {
     const doc = await this._model
-      .findByIdAndUpdate(
-        userId,
-        { $set: { imageUrl: imageUrl } },
-        { new: true }
-      )
+      .findByIdAndUpdate(userId, { $set: { imageUrl } }, { new: true })
       .populate('skills')
       .populate('experience')
       .populate('education');
@@ -476,7 +471,7 @@ export class UserRepository
       .aggregate(pipeline)
       .skip(skip)
       .limit(Number(limit));
-    let totalDocs = (await this._model.aggregate(pipeline)).length;
+    const totalDocs = (await this._model.aggregate(pipeline)).length;
     // console.log('candidatesss', candidates);
 
     return {
@@ -485,7 +480,7 @@ export class UserRepository
     };
   }
 
-  private mapToCandidateList(doc: any): User&{interviewCount:number} {
+  private mapToCandidateList(doc: any): User & { interviewCount: number } {
     return {
       id: doc._id.toString(),
       email: doc.email,
@@ -503,7 +498,7 @@ export class UserRepository
       title: doc.title ?? undefined,
       imageUrl: doc.imageUrl ?? undefined,
       name: doc.name ?? undefined,
-      interviewCount:doc.intData?.length??0,
+      interviewCount: doc.intData?.length ?? 0,
       savedJobs: doc.savedJobs?.map((_id: Types.ObjectId) => _id.toString()),
     };
   }

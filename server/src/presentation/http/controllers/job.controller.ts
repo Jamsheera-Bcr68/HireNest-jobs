@@ -38,7 +38,7 @@ export class JobController {
     const payload: JobReqDto = req.body;
 
     const user = req.user;
-      console.log('user from job controller', user);
+    console.log('user from job controller', user);
 
     if (!user || !user.userId || user.role !== UserRole.COMPANY) {
       throw new AppError(
@@ -58,18 +58,20 @@ export class JobController {
   });
 
   getJobs = asyncHandler(async (req: Request, res: Response) => {
-    let { search, page, limit, sortBy,mode, ...rest } = req.query;
-      const user = req.user;
+    const { search, page, limit, sortBy, mode, ...rest } = req.query;
+    const user = req.user;
     if (!user || !user.userId) {
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     }
-    if(mode){
-      rest.mode=mode
-     }
-   // console.log('from getjob controller', rest);
+    if (mode) {
+      rest.mode = mode;
+    }
+    // console.log('from getjob controller', rest);
 
-    const jobRes = await this._getAllJobsUseCase.execute(user.userId,user.role,
-    rest,
+    const jobRes = await this._getAllJobsUseCase.execute(
+      user.userId,
+      user.role,
+      rest,
 
       Number(limit),
       Number(page),
@@ -90,7 +92,7 @@ export class JobController {
     if (!user || !user.userId) {
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     }
-    let { search, page, limit, sortBy, ...rest } = req.query;
+    const { search, page, limit, sortBy, ...rest } = req.query;
 
     const jobRes = await this._getSavedJobsUseCase.execute(
       user.userId,
@@ -111,7 +113,7 @@ export class JobController {
   });
 
   getJobDetails = asyncHandler(async (req: Request, res: Response) => {
-    const {jobId} = req.params;
+    const { jobId } = req.params;
     //console.log('job id id ', jobId);
 
     const jobDetails = await this._getJobDetailsUseCase.execute(jobId);
@@ -128,7 +130,7 @@ export class JobController {
     const user = req.user;
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
-    const {jobId} = req.params;
+    const { jobId } = req.params;
     // console.log('job id ', jobId);
 
     if (!jobId)
@@ -146,7 +148,7 @@ export class JobController {
     const user = req.user;
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
-    const {jobId} = req.params;
+    const { jobId } = req.params;
     //console.log('job id ', jobId);
 
     if (!jobId)
@@ -166,7 +168,7 @@ export class JobController {
     const user = req.user;
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
-    const {jobId} = req.params;
+    const { jobId } = req.params;
     // console.log('job id ', jobId);
 
     if (!jobId)
@@ -187,19 +189,19 @@ export class JobController {
 
   getJobStatus = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
-    console.log('user from post controller status',user);
-    
+    console.log('user from post controller status', user);
+
     if (!user)
       throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.NOTFOUND);
     const statusData = await this._companyPostStatusUseCase.execute(
       user.userId,
       user.role
     );
-   // console.log('status data', statusData);
+    // console.log('status data', statusData);
     return res.status(statusCodes.OK).json({
       success: true,
       message: jobMessages.success.JOB_STATUS_FETCHED,
-      statusData: statusData,
+      statusData,
     });
   });
 
@@ -214,8 +216,13 @@ export class JobController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
-  //  console.log('from update status', jobId, data);
-    await this._updateJobStatusUseCase.execute(jobId, user.userId, user.role, data);
+    //  console.log('from update status', jobId, data);
+    await this._updateJobStatusUseCase.execute(
+      jobId,
+      user.userId,
+      user.role,
+      data
+    );
     return res.status(statusCodes.OK).json({
       success: true,
       message: jobMessages.success.JOB_STATUS_UPDATED(data.status),

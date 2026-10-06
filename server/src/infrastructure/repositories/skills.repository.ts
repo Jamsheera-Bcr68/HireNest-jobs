@@ -22,7 +22,7 @@ export class SkillRepository
     sortBy?: string
   ): Promise<Skill[]> {
     limit = limit ?? 10;
-  //  console.log(
+    //  console.log(
     //   'filter,limit,page,search,sortBy',
     //   filter,
     //   limit,
@@ -89,7 +89,7 @@ export class SkillRepository
     return docs.map((doc) => this.mapToEntity(doc));
   }
   protected mapToPersistance(entity: Partial<Skill>): Partial<ISkillDocument> {
-  //  console.log('from map to entity skill');
+    //  console.log('from map to entity skill');
     const data = {} as Partial<ISkillDocument>;
     if (entity.skillName) data.skillName = entity.skillName;
     if (entity.createdAt) data.createdAt = new Date(entity.createdAt);
@@ -110,7 +110,7 @@ export class SkillRepository
     skills: string[],
     action: 'add' | 'remove'
   ): Promise<void> {
-    let count = action == 'add' ? 1 : -1;
+    const count = action == 'add' ? 1 : -1;
     const skillIds = skills.map((id) => new Types.ObjectId(id));
 
     await this._model.updateMany(
@@ -123,7 +123,7 @@ export class SkillRepository
     id: string,
     action: 'add' | 'remove'
   ): Promise<void> {
-    let count = action == 'add' ? 1 : -1;
+    const count = action == 'add' ? 1 : -1;
     await this._model.findByIdAndUpdate(id, {
       $inc: { candidateUsedCount: count },
     });

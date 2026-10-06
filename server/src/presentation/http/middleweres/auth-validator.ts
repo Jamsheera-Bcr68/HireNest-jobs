@@ -8,20 +8,15 @@ import {
 } from '../../../applications/interfaces/services/token.service';
 import { TokenExpiredError } from 'jsonwebtoken';
 
-
-
 export function authValidator(tokenService: ITokenService) {
-
   return async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
-   
 
     if (!authHeader)
       return next(
         new AppError(authMessages.error.UNAUTHORIZED, statusCodes.UNAUTHERIZED)
       );
     const token = authHeader.split(' ')[1];
-   
 
     if (!token)
       throw new AppError(
@@ -29,8 +24,6 @@ export function authValidator(tokenService: ITokenService) {
         statusCodes.UNAUTHERIZED
       );
     try {
-    
-
       const user: TokenPayload = tokenService.verifyAccessToken(token);
       // console.log('user from validator', user);
 
@@ -38,7 +31,6 @@ export function authValidator(tokenService: ITokenService) {
       next();
     } catch (error) {
       if (error instanceof TokenExpiredError) {
-        
         return next(
           new AppError(
             authMessages.error.ACCESSTOKEN_EXPIRED,

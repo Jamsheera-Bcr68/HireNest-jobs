@@ -1,5 +1,8 @@
 import mongoose, { Schema, Types, model } from 'mongoose';
-import { RegisterStatusEnum, StatusEnum } from '../../../domain/enums/status.enum';
+import {
+  RegisterStatusEnum,
+  StatusEnum,
+} from '../../../domain/enums/status.enum';
 
 import {
   Document_Types,
@@ -36,7 +39,7 @@ export interface ICompanyDocument {
   isAgreed: boolean;
   isConsent: boolean;
   logoUrl: string;
-reviewedAt?:Date
+  reviewedAt?: Date;
   reapplyCount: number;
   applyDetails: IApplyDetails[];
 
@@ -65,7 +68,7 @@ const companySchema = new Schema<ICompanyDocument>(
     userId: Types.ObjectId,
     startedIn: Number,
     isAgreed: Boolean,
-    reviewedAt:Date,
+    reviewedAt: Date,
     isConsent: Boolean,
     status: {
       type: String,
@@ -117,8 +120,8 @@ const companySchema = new Schema<ICompanyDocument>(
           type: String,
           enum: Object.values(RegisterStatusEnum),
         },
-        reviewedAt:Date,
-        attempt:Number,
+        reviewedAt: Date,
+        attempt: Number,
         rejectedReason: String,
       },
     ],

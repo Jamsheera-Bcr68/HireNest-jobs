@@ -60,6 +60,5 @@ export class UpdateInterviewResultUsecase implements IUpdateEntityUseCase<
         status: InterviewStatusEnum.COMPLETED,
       }),
     ]);
-   
   }
 }

@@ -8,7 +8,7 @@ import {
   markAsChatroomMessagesRead,
   presenceService,
 } from '../infrastructure/config/di';
-import { MarkAsReadUsecase } from '../applications/useCases/notifications/mark-as-read.usecase';
+
 import {} from '../infrastructure/config/di';
 const httpServer = createServer(app);
 
@@ -33,10 +33,7 @@ io.on('connection', (socket) => {
   presenceService.setOnline(userId);
 
   socket.on('mark_as_read', async ({ chatroomId }) => {
-    const upDatedhatroomId = await markAsChatroomMessagesRead.execute(
-      chatroomId,
-      userId
-    );
+    await markAsChatroomMessagesRead.execute(chatroomId, userId);
   });
 
   socket.on('join-meeting', ({ meetId }) => {
@@ -98,12 +95,12 @@ io.on('connection', (socket) => {
 
   socket.on('camera-state', ({ meetId, enabled }) => {
     console.log('from camera state,enabled', enabled);
-    socket.to(meetId).emit('camera-state',{enabled:enabled})
+    socket.to(meetId).emit('camera-state', { enabled });
   });
 
   socket.on('mic-state', ({ meetId, enabled }) => {
     console.log('from mic state,enabled', enabled);
-    socket.to(meetId).emit('mic-state',{enabled:enabled})
+    socket.to(meetId).emit('mic-state', { enabled });
   });
 
   socket.on('disconnect', () => {

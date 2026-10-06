@@ -50,14 +50,13 @@ export class CompanyDashboardInterviewDataUsecase implements IDashboardDataListU
           id: int.id,
           name: int.name,
           role: int.jobTitle,
-          time: time,
-          date: date,
+          time,
+          date,
           type: int.mode,
-          imageUrl: imageUrl,
+          imageUrl,
         };
       })
     );
     return updated;
-   
   }
 }

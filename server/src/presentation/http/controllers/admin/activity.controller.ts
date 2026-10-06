@@ -29,8 +29,6 @@ export class ActivityController {
     });
   });
 
- 
-
   getAllPendings = asyncHandler(async (req: Request, res: Response) => {
     console.log('from pending actiivity controoler');
     const user = req.user;
@@ -39,7 +37,6 @@ export class ActivityController {
     const item = (req.query.item as 'jobs' | 'companies' | '') || '';
     const { search } = req.query;
 
-   
     // console.log(req);
 
     const { activities, totalDocs } = await this._getPendingsUsecase.execute(

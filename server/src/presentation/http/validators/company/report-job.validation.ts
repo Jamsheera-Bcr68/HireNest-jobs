@@ -1,4 +1,4 @@
-import z, { object } from 'zod';
+import z from 'zod';
 export const jobReportSchema = z.object({
   reason: z.string().trim().min(1, 'Choose a reason'),
   info: z

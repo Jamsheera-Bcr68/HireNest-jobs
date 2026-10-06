@@ -20,8 +20,6 @@
 // import prettierPlugin from 'eslint-plugin-prettier';
 // import globals from 'globals';
 
-
-
 // import tseslint from 'typescript-eslint';
 // import { defineConfig, globalIgnores } from 'eslint/config';
 // import configPrettier from 'eslint-config-prettier';
@@ -91,7 +89,7 @@
 // ];
 
 // eslint.config.js
-import js from '@eslint/js';
+
 import tseslint from '@typescript-eslint/eslint-plugin';
 import prettier from 'eslint-plugin-prettier';
 
@@ -102,7 +100,7 @@ export default [
   },
 
   // Base JS rules
-  js.configs.recommended,
+  // js.configs.recommended,
 
   // TypeScript files
   {
@@ -117,12 +115,15 @@ export default [
       prettier,
     },
     rules: {
-      ...tseslint.configs.recommended.rules,
+      // ...tseslint.configs.recommended.rules,
       'prettier/prettier': 'error',
-
+      'no-var': 'error',
+      'prefer-const': 'error', 
+      'no-extra-boolean-cast': 'error',
+       'object-shorthand': 'warn',
       // Optional relaxations
       '@typescript-eslint/no-unused-vars': ['warn'],
-      '@typescript-eslint/explicit-function-return-type': 'off',
+      // '@typescript-eslint/explicit-function-return-type': 'off',
     },
   },
 ];

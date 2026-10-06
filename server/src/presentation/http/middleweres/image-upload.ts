@@ -1,7 +1,5 @@
 import multer from 'multer';
-import { generalMessages } from '../../../shared/constants/messages/general.messages';
-import { AppError } from '../../../domain/errors/app-error';
-import { statusCodes } from '../../../shared/enums/statuscodes';
+
 const storage = multer.memoryStorage();
 // const fileFilter = (req: any, file: any, cb: any) => {
 //   const allowedTypes = ['image/jpeg', 'image/png','image/jpg'];

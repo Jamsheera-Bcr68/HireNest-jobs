@@ -1,5 +1,3 @@
-import { success } from 'zod';
-
 export const generalMessages = {
   success: {
     RESUME_EXISTANCE_IDENTIFIED: 'Resume existance checked',

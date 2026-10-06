@@ -76,6 +76,6 @@ export class CandidateProfileEditUsecase implements IProfileEditUsecase {
           url: (await fileUrlResolver(res.url)) ?? '',
         }))
       ),
-    }
+    };
   }
 }

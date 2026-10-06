@@ -17,7 +17,7 @@ export class OtpRepository implements IOtpRepository {
     await this._model.findOneAndUpdate(
       { email },
       {
-        otp: otp,
+        otp,
         expiredAt: expiresAt,
         createdAt: new Date(),
       },

@@ -1,10 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
-import multer, { memoryStorage } from 'multer';
+import multer from 'multer';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { AppError } from '../../../domain/errors/app-error';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 
-export const fileSize=5
+export const fileSize = 5;
 
 const documentFilter = (req: any, file: any, cb: any) => {
   const allowedTypes = [

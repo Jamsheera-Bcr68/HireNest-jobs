@@ -16,7 +16,7 @@ export class CompanyProfileUpdate implements ICompanyUpdateProfileUseCase {
     private _fileUrlResolverService: IFileResolverService
   ) {}
   async execute(data: CompanyUpdateDto, userId: string): Promise<Company> {
-    const company = await this.companyRepository.findOne({ userId: userId });
+    const company = await this.companyRepository.findOne({ userId });
 
     if (!company || !company.id)
       throw new AppError(
@@ -26,7 +26,7 @@ export class CompanyProfileUpdate implements ICompanyUpdateProfileUseCase {
 
     const updated = await this.companyRepository.save(company.id, {
       ...data,
-      userId: userId,
+      userId,
     });
     if (!updated)
       throw new AppError(

@@ -47,13 +47,13 @@ export class GetInterviewByMeetingIdUsecase implements IGetEntityDetailsUsecase<
       );
 
     if (role == UserRole.COMPANY) {
-      if (userId!==company.userId)
+      if (userId !== company.userId)
         throw new AppError(
           generalMessages.errors.FORBIDDEN,
           statusCodes.FORBIDDEN
         );
     } else {
-      if (userId!== candidate.id) {
+      if (userId !== candidate.id) {
         throw new AppError(
           generalMessages.errors.FORBIDDEN,
           statusCodes.FORBIDDEN

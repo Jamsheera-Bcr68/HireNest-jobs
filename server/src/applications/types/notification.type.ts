@@ -8,6 +8,7 @@ export type NotificationFilterType = {
 
 export type NotificationListType = NotificationDto[];
 
-export const notificationTitleTypes={
-APP_STATUS_UPDATED:(status:ApplicationStatusEnum)=>`Application ${status}`
-}
+export const notificationTitleTypes = {
+  APP_STATUS_UPDATED: (status: ApplicationStatusEnum) =>
+    `Application ${status}`,
+};

@@ -14,10 +14,10 @@ import { IRecomentedJobsUsecase } from '../../../applications/useCases/candidate
 export class CandidateDashboardController {
   constructor(
     private _candidateDashboardStatusDataUsecase: IDashboardCardDataUsecase<CandidateDashboardCardsDto>,
-    private _candidateDashboardAppDataUsecase:IDashboardAppDataUsecase,
-    private _getUpcomingInterviewUsecase:IUpcomingInteriewUsecase,
-    private _dashboardProfileDataUsecase:IDashboardProfileDataUsecase,
-    private _recomentedJobUsecase:IRecomentedJobsUsecase
+    private _candidateDashboardAppDataUsecase: IDashboardAppDataUsecase,
+    private _getUpcomingInterviewUsecase: IUpcomingInteriewUsecase,
+    private _dashboardProfileDataUsecase: IDashboardProfileDataUsecase,
+    private _recomentedJobUsecase: IRecomentedJobsUsecase
   ) {}
   statuscardData = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
@@ -75,15 +75,14 @@ export class CandidateDashboardController {
       user.userId,
       user.role
     );
-   // console.log(`candidateDashboard upcoming interview details`, interview);
+    // console.log(`candidateDashboard upcoming interview details`, interview);
 
     return res.status(statusCodes.OK).json({
       success: true,
       message: generalMessages.success.DASHBOARD_STATUS_DATA_FETCHED,
-      interview: interview,
+      interview,
     });
   });
-  
 
   getProfileData = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
@@ -103,10 +102,9 @@ export class CandidateDashboardController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: generalMessages.success.DASHBOARD_STATUS_DATA_FETCHED,
-     profileData:profile
+      profileData: profile,
     });
   });
-
 
   getRecomentedJobs = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
@@ -126,7 +124,7 @@ export class CandidateDashboardController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: generalMessages.success.DASHBOARD_STATUS_DATA_FETCHED,
-     recomented:jobs
+      recomented: jobs,
     });
   });
 }

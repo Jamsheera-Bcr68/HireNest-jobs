@@ -7,7 +7,11 @@ import { generalMessages } from '../../../shared/constants/messages/general.mess
 import { statusCodes } from '../../../shared/enums/statuscodes';
 
 export interface IDeleteNotificationUsecase {
-  execute(notificationId: string, userId: string,role:UserRole): Promise<void>;
+  execute(
+    notificationId: string,
+    userId: string,
+    role: UserRole
+  ): Promise<void>;
 }
 
 export class DeleteNotificationUsecase implements IDeleteNotificationUsecase {
@@ -16,7 +20,11 @@ export class DeleteNotificationUsecase implements IDeleteNotificationUsecase {
     private _companyRepository: ICompanyRepository
   ) {}
 
-  async execute(notificationId: string, userId: string,role:UserRole): Promise<void> {
+  async execute(
+    notificationId: string,
+    userId: string,
+    role: UserRole
+  ): Promise<void> {
     const notification =
       await this._notificationRepository.findById(notificationId);
     if (!notification)

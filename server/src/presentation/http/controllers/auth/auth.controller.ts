@@ -40,7 +40,7 @@ export class AuthController {
     res.status(statusCodes.CREATED).json({
       sucess: true,
       message: authMessages.success.PENDING_SIGNUP,
-      otp_expiry: otp_expiry,
+      otp_expiry,
     });
   });
 
@@ -64,7 +64,7 @@ export class AuthController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: authMessages.success.OTP_RESEND,
-      otp_expiry: otp_expiry,
+      otp_expiry,
     });
   });
 

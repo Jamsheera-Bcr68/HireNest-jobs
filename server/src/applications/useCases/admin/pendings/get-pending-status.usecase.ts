@@ -38,11 +38,10 @@ export class GetPendingStatusUsecase implements IGetPendingStatusUsecase {
 
     const pendingRegistrationCount = await this._companyRepository.getCount({
       status: StatusEnum.PENDING,
-    })
+    });
 
     const reportedJobCount = await this._jobRepository.count({
       isReported: true,
-     
     });
 
     return {

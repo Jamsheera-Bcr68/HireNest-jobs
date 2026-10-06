@@ -17,23 +17,26 @@ export interface ISkillDocument extends Document {
   reasonForReject?: string;
 }
 
-const skillSchema = new mongoose.Schema<ISkillDocument>({
-  skillName: String,
-  createdBy: { type: String, enum: Object.values(UserRole) },
-  createdAt: { type: Date, default: new Date() },
-  reviewedAt: { type: Date },
-  userId: { type: Types.ObjectId },
+const skillSchema = new mongoose.Schema<ISkillDocument>(
+  {
+    skillName: String,
+    createdBy: { type: String, enum: Object.values(UserRole) },
+    createdAt: { type: Date, default: new Date() },
+    reviewedAt: { type: Date },
+    userId: { type: Types.ObjectId },
 
-  status: {
-    type: String,
-    enum: Object.values(SkillStatus),
-    default: SkillStatus.PENDING,
+    status: {
+      type: String,
+      enum: Object.values(SkillStatus),
+      default: SkillStatus.PENDING,
+    },
+    reasonForReject: { type: String, default: null },
+    reasonForRemove: { type: String, default: null },
+    postUsedCount: { type: Number, default: 0 },
+    candidateUsedCount: { type: Number, default: 0 },
   },
-  reasonForReject: { type: String, default: null },
-  reasonForRemove: { type: String, default: null },
-  postUsedCount: { type: Number, default: 0 },
-  candidateUsedCount: { type: Number, default: 0 },
-},{ timestamps: true });
+  { timestamps: true }
+);
 
 export const skillModel: Model<ISkillDocument> = model<ISkillDocument>(
   'Skill',

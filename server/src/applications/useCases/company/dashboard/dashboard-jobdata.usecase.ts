@@ -24,15 +24,15 @@ export class CompanyDashboardTopJobsUsecase implements ICompanyDashboardJobDataU
       throw new AppError(
         generalMessages.errors.FORBIDDEN,
         statusCodes.FORBIDDEN
-      )
+      );
 
-    const company = await this._companyRepository.findByUserId(userId)
+    const company = await this._companyRepository.findByUserId(userId);
 
     if (!company)
       throw new AppError(
         generalMessages.errors.NOT_FOUND('Company'),
         statusCodes.NOTFOUND
-      )
+      );
 
     const { jobs } = await this._jobRepository.getJobs(
       { companyId: company.id },
@@ -66,7 +66,7 @@ export class CompanyDashboardTopJobsUsecase implements ICompanyDashboardJobDataU
           id: job.id,
           title: job.title,
           type: job.jobType,
-          location: location,
+          location,
           applicants: job.appCount ?? 0,
           status: job.status,
         };

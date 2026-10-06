@@ -31,7 +31,7 @@ export const getTime = (data: Date): string => {
   return formatted;
 };
 
-export const formatDate = (date:Date): string => {
+export const formatDate = (date: Date): string => {
   const today = new Date(date);
   const formatted = today.toLocaleDateString('en-Us', {
     weekday: 'long',
@@ -58,10 +58,10 @@ export function percentageCalculator(
 }
 
 export function getPercentsgeOfTotal(total: number, value: number): number {
-  return Number(((value / total) * 100).toFixed(2))
+  return Number(((value / total) * 100).toFixed(2));
 }
 
-export const getDayAndDate = (date:Date): string => {
+export const getDayAndDate = (date: Date): string => {
   const today = new Date(date);
   const formatted = today.toLocaleDateString('en-Us', {
     weekday: 'long',

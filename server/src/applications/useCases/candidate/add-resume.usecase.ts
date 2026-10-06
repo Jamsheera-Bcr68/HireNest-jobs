@@ -45,7 +45,10 @@ export class AddResumeUseCase implements IAddResumeUseCase {
         statusCodes.NOTFOUND
       );
     }
-    resume={...resume,url:await this._fileStorageService.getFileUrl(resume.url)}
-    return resume
+    resume = {
+      ...resume,
+      url: await this._fileStorageService.getFileUrl(resume.url),
+    };
+    return resume;
   }
 }

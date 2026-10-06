@@ -14,7 +14,10 @@ export interface IGetCompanyDataUseCase {
 }
 
 export class GetCompanyDataUseCase implements IGetCompanyDataUseCase {
-  constructor(private companyRepository: ICompanyRepository,private _fileStorageService:IFileStorageService) {}
+  constructor(
+    private companyRepository: ICompanyRepository,
+    private _fileStorageService: IFileStorageService
+  ) {}
   async execute(companyId: string): Promise<CompanyDataDto> {
     const company = await this.companyRepository.findById(companyId);
 
@@ -23,13 +26,12 @@ export class GetCompanyDataUseCase implements IGetCompanyDataUseCase {
         userMessages.error.COMPANY_NOT_FOUND,
         statusCodes.NOTFOUND
       );
-      if(company){
-           company.document.file=await this._fileStorageService.getFileUrl(company.document.file)
-         }
-     
-     return CompanyMapper.toCompanyDataDto(company);
-    
-      
-    
+    if (company) {
+      company.document.file = await this._fileStorageService.getFileUrl(
+        company.document.file
+      );
+    }
+
+    return CompanyMapper.toCompanyDataDto(company);
   }
 }

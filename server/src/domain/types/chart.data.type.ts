@@ -1,4 +1,4 @@
-export type chartDataDto={
-    _id:number,
-    count:number
-}
+export type chartDataDto = {
+  _id: number;
+  count: number;
+};

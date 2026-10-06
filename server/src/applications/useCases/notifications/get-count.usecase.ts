@@ -18,23 +18,21 @@ export class GetNewNotificationCountUsecase implements IGetNewNotificationCountU
   ) {}
 
   async execute(userId: string, role: UserRole): Promise<number> {
-    let targetedUserId:string
-
+    let targetedUserId: string;
 
     if (role === UserRole.COMPANY) {
       const company = await this._companyRepository.findByUserId(userId);
-      if (!company||!company.id)
+      if (!company || !company.id)
         throw new AppError(
           generalMessages.errors.NOT_FOUND('Company'),
           statusCodes.NOTFOUND
         );
-       targetedUserId=company.id
-    }else targetedUserId=userId
-      
-  
-   
-    const unReadCount = await this._notificationRepository.count(targetedUserId);
-  //  console.log('not read count from usecase is ', unReadCount);
+      targetedUserId = company.id;
+    } else targetedUserId = userId;
+
+    const unReadCount =
+      await this._notificationRepository.count(targetedUserId);
+    //  console.log('not read count from usecase is ', unReadCount);
 
     return unReadCount;
   }

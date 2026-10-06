@@ -13,7 +13,7 @@ export class AdminRepository
   }
   async findByEmail(email: string): Promise<Admin | null> {
     const admin = await this._model.findOne({ email });
-  //  console.log('admin', admin);
+    //  console.log('admin', admin);
 
     if (!admin) return null;
     return admin;
@@ -58,14 +58,14 @@ export class AdminRepository
   }
 
   async updatePassword(id: string, password: string): Promise<void> {
-    let admin = await this._model.findByIdAndUpdate(id, {
+    const admin = await this._model.findByIdAndUpdate(id, {
       $set: { password },
       $unset: {
         resetToken: '',
         resetTokenExpiry: '',
       },
     });
-   // console.log('new admin', admin);
+    // console.log('new admin', admin);
   }
 
   async clearResetToken(id: string): Promise<void> {

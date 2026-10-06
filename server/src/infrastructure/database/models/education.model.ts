@@ -1,4 +1,4 @@
-import { model, Model, Schema, Types, Document } from 'mongoose';
+import { model, Schema, Types, Document } from 'mongoose';
 import {
   EducationLevel,
   EducationStatus,

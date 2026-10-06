@@ -3,7 +3,7 @@ import { CompanyRegisterType } from '../validators/company/register-validation';
 import { AppError } from '../../../domain/errors/app-error';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { CompanyUpdateFiedType } from '../validators/company/company-update-fields-validation';
+
 import {
   companyDto,
   CompanyUpdateDto,
@@ -29,12 +29,11 @@ export class CompanyProfileController {
     private _changeLogoUseCase: IChangeLogogUseCase,
     private _removeLogoUseCase: ILogoRemoveUseCase,
     private _compantProfieUpdateUseCase: ICompanyUpdateProfileUseCase,
-    private _companyAboutUpdateUseCase: ICompanyAboutUpdateUseCase,
-  
+    private _companyAboutUpdateUseCase: ICompanyAboutUpdateUseCase
   ) {}
 
   getCompany = asyncHandler(async (req: Request, res: Response) => {
-   console.log('from company controller');
+    console.log('from company controller');
     const user = req.user;
 
     if (!user || !user.userId) {
@@ -51,7 +50,6 @@ export class CompanyProfileController {
 
   companyRegister = asyncHandler(async (req: Request, res: Response) => {
     const payload: CompanyRegisterType = req.body;
-  
 
     const user = req.user;
 
@@ -63,14 +61,12 @@ export class CompanyProfileController {
       user.userId
     );
 
-    
-   await this._companyRegisterUseCase.execute(
+    await this._companyRegisterUseCase.execute(
       companyData,
-      user.userId, 
+      user.userId,
       user.role
     );
-   // console.log('new company',company);
-    
+    // console.log('new company',company);
 
     return res.status(statusCodes.CREATED).json({
       success: true,
@@ -137,13 +133,13 @@ export class CompanyProfileController {
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.LOGO_UPLOADED,
-      logoUrl
+      logoUrl,
     });
   });
 
   addDocument = asyncHandler(async (req: Request, res: Response) => {
     console.log('from company add document');
-    
+
     const user = req.user;
     const file = req.file;
 
@@ -200,7 +196,7 @@ export class CompanyProfileController {
       payload,
       user.userId
     );
-  //  console.log('new updated company', updated);
+    //  console.log('new updated company', updated);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.COMPANY_UPDATED,
@@ -209,7 +205,7 @@ export class CompanyProfileController {
   });
 
   updateFields = asyncHandler(async (req: Request, res: Response) => {
-   // console.log('from update field controller', req.body);
+    // console.log('from update field controller', req.body);
 
     const user = req.user;
 
@@ -218,8 +214,8 @@ export class CompanyProfileController {
     }
 
     const payload = CompanyMapper.CompanyUpdateFiedTypeToCompanyDto(req.body);
-   // console.log(
-     // 'after converting to CompanyUpdateFiedTypeToCompanyDto',
+    // console.log(
+    // 'after converting to CompanyUpdateFiedTypeToCompanyDto',
     //  payload
     //);
 
@@ -227,7 +223,7 @@ export class CompanyProfileController {
       payload,
       user.userId
     );
-   // console.log('new updated company', data);
+    // console.log('new updated company', data);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.COMPANY_UPDATED,

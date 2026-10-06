@@ -82,7 +82,7 @@ export class CompanyDashboardStatusCardDataUsecase implements IDashboardCardData
 
     const jobs = {
       value: activeJobsCount,
-      currentMonthJobCount: currentMonthJobCount,
+      currentMonthJobCount,
       change: percentage,
       isPositive,
       jobExpiringSoon: expiring,
@@ -145,10 +145,10 @@ export class CompanyDashboardStatusCardDataUsecase implements IDashboardCardData
 
     return {
       activeJobs: jobs,
-      applications: applications,
-      interviews: interviews,
+      applications,
+      interviews,
       notifications: notification,
-      skills: skills,
+      skills,
       profile: {
         completion: profileData.percentage,
         remainingSections: profileData.remaining,

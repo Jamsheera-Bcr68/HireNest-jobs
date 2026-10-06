@@ -15,10 +15,7 @@ import { Request, Response } from 'express';
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { IDashboardDataListUsecase } from '../../../../applications/interfaces/dashboard/dashboard-data-list.usecase.interface';
 import { IIndustryWiseJobCountUsecase } from '../../../../applications/useCases/admin/dashoard/job-count-by-industry.usecase';
-import { ApplcationDistributionUsecase } from '../../../../applications/useCases/admin/dashoard/application-distributiion.usecase';
-import { IGetCompaniesUseCase } from '../../../../applications/useCases/admin/get-companies.usecase';
-import { IGetAllJobsUseCase } from '../../../../applications/useCases/job/get-jobs.usecase';
-import { StatusEnum } from '../../../../domain/enums/status.enum';
+
 import { IGetPendingCompaniesUsecase } from '../../../../applications/useCases/admin/dashoard/pending-companies.usecase';
 import { IGetReportedJobsUsecase } from '../../../../domain/get-reported-jobs.usecase';
 import { IDashboardPendingsUsecase } from '../../../../applications/useCases/admin/dashoard/dashboard-pendings.usecase';
@@ -218,8 +215,6 @@ export class AdminDashboardController {
           authMessages.error.UNAUTHORIZED,
           statusCodes.NOTFOUND
         );
-
-     
 
       const activities = await this._getDashboardPendingsUsecase.execute(
         user.userId,

@@ -18,8 +18,12 @@ export class AddSkillsToProfieUseCase implements IAddSkillToProfileUseCase {
     this._userRepository = userRepository;
     this._skillRepository = skillRepository;
   }
-  async execute(id: string, skillId: string, role: UserRole): Promise<CandidateSkillDto> {
- //   console.log('from add skill to profiel usercase');
+  async execute(
+    id: string,
+    skillId: string,
+    role: UserRole
+  ): Promise<CandidateSkillDto> {
+    //   console.log('from add skill to profiel usercase');
 
     const user = await this._userRepository.findById(id);
     if (!user || !user.id || user.role !== role)
@@ -39,10 +43,8 @@ export class AddSkillsToProfieUseCase implements IAddSkillToProfileUseCase {
         statusCodes.CONFLICT
       );
     }
- 
 
-     await this._userRepository.addSkill(user.id, skill.id);
-  
+    await this._userRepository.addSkill(user.id, skill.id);
 
     return skill;
   }

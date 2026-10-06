@@ -2,7 +2,7 @@ import { JobReqDto } from '../validators/company/job-validation';
 import { JobDto } from '../../../applications/dtos/job.dto';
 import { WorkMode } from '../../../domain/enums/work-mode.enum';
 import { JobType, ExperienceType } from '../../../domain/types/job.types';
-import { UserSkillDto } from '../../../applications/dtos/skill.dto';
+
 import { Job } from '../../../domain/entities/job.entity';
 
 export class JobMapper {

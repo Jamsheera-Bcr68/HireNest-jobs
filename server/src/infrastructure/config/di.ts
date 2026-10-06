@@ -257,7 +257,8 @@ const removeExperienceUseCase = new RemoveExperienceUseCase(
 
 //candidate
 const candidateEditProfileUsecase = new CandidateProfileEditUsecase(
-  userRepository,fileUrlResolverService
+  userRepository,
+  fileUrlResolverService
 );
 const addSkilltoProfileUseCase = new AddSkillsToProfieUseCase(
   userRepository,
@@ -280,7 +281,8 @@ const getUserUserCase = new GetUserUseCase(
   companyRepository,
   applicationRepository,
   interviewRepository,
-  s3FileStorageService,fileUrlResolverService
+  s3FileStorageService,
+  fileUrlResolverService
 );
 const editProfileImageUseCase = new EditProfileImageUseCase(
   userRepository,
@@ -325,7 +327,8 @@ const companyRegisterUseCase = new CompanyRegisterUseCase(
   companyRepository,
   userRepository,
   adminRepository,
-  notificatinService,fileUrlResolverService
+  notificatinService,
+  fileUrlResolverService
 );
 const addLogoUseCase = new AddLogoUseCase(s3FileStorageService);
 const addDocumentUseCase = new AddDocumentUseCase(s3FileStorageService);
@@ -358,9 +361,13 @@ const logoRemoveUseCase = new LogoRemoveUseCase(
   companyRepository,
   fileUrlResolverService
 );
-const companyProfileUpdateUseCase = new CompanyProfileUpdate(companyRepository,fileUrlResolverService);
+const companyProfileUpdateUseCase = new CompanyProfileUpdate(
+  companyRepository,
+  fileUrlResolverService
+);
 const companyAboutUpdateUseCase = new CompanyAboutUpdateUseCase(
-  companyRepository,fileUrlResolverService
+  companyRepository,
+  fileUrlResolverService
 );
 
 const getCompaniesUseCase = new GetCompaniesUseCase(
@@ -407,7 +414,8 @@ const getHomeDataUseCase = new GetHomeDataUseCase(
 const getAllJobsUsecase = new GetAllJobssUseCase(
   jobRepository,
   skillRepository,
-  userRepository,fileUrlResolverService
+  userRepository,
+  fileUrlResolverService
 );
 const getJobDetailsUseCase = new GetJobDetailsUseCase(
   jobRepository,
@@ -557,7 +565,8 @@ const updateInterviewUsecase = new UpdateInterviewUsecase(
 
   jobRepository,
   userRepository,
-  notificatinService,fileUrlResolverService
+  notificatinService,
+  fileUrlResolverService
 );
 const upateInterviewResultUsecase = new UpdateInterviewResultUsecase(
   interviewRepository,
@@ -605,7 +614,8 @@ const reapplyUsecase = new ReApplyCompanyUsecase(
 const getChatroomsUsecase = new GetChatroomsUsecase(
   chatromRepository,
   companyRepository,
-  presenceService,fileUrlResolverService
+  presenceService,
+  fileUrlResolverService
 );
 const getChatroomMessagesUsecase = new GetChatroomMessagesUsecase(
   messageRepository,

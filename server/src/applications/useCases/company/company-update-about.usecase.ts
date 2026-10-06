@@ -42,7 +42,7 @@ export class CompanyAboutUpdateUseCase implements ICompanyAboutUpdateUseCase {
       logoUrl: await fileUrlResolver(entity.logoUrl),
       document: {
         ...entity.document,
-        file: await fileUrlResolver(entity.document.file)??'',
+        file: (await fileUrlResolver(entity.document.file)) ?? '',
       },
     };
   }

@@ -8,8 +8,7 @@ import { generalMessages } from '../../../shared/constants/messages/general.mess
 import { NotificationDto } from '../../../applications/dtos/notification.dto';
 import { IGetAllEntitiesUsecase } from '../../../applications/interfaces/usecases/get-all-entities.usecase.interface';
 import { NotificationFilterType } from '../../../applications/types/notification.type';
-import { boolean } from 'zod';
-import { partial } from 'zod/v4/core/util.cjs';
+
 import { IMarkAsReadUsecase } from '../../../applications/useCases/notifications/mark-as-read.usecase';
 import { IMarkAllNotificationsAsReadUsecase } from '../../../applications/useCases/notifications/mark-all-as-read.usecase';
 import { IDeleteNotificationUsecase } from '../../../applications/useCases/notifications/delete-notification.usecase';
@@ -47,7 +46,7 @@ export class NotificationControlller {
 
   getNotifications = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
-  //  console.log('user', user);
+    //  console.log('user', user);
     if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -55,7 +54,7 @@ export class NotificationControlller {
       );
     const { value } = req.query;
 
-   // console.log(value, user.userId);
+    // console.log(value, user.userId);
     const filter: Partial<NotificationFilterType> = {};
     if (value == 'new') {
       filter.isRead = false;
@@ -77,7 +76,7 @@ export class NotificationControlller {
   });
 
   markAsRead = asyncHandler(async (req: Request, res: Response) => {
-   // console.log('from notification controller');
+    // console.log('from notification controller');
 
     const user = req.user;
     //console.log('user', user);
@@ -87,7 +86,6 @@ export class NotificationControlller {
         statusCodes.UNAUTHERIZED
       );
 
-
     const { notificationId } = req.params;
 
     if (!notificationId)
@@ -96,7 +94,7 @@ export class NotificationControlller {
         statusCodes.BADREQUEST
       );
 
-   // console.log(notificationId);
+    // console.log(notificationId);
 
     await this._markAsReadUsecase.execute(
       notificationId,
@@ -110,10 +108,10 @@ export class NotificationControlller {
   });
 
   markAllAsRead = asyncHandler(async (req: Request, res: Response) => {
-   // console.log('from notification controller');
+    // console.log('from notification controller');
 
     const user = req.user;
-   // console.log('user', user);
+    // console.log('user', user);
     if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -128,10 +126,10 @@ export class NotificationControlller {
   });
 
   deleteNotification = asyncHandler(async (req: Request, res: Response) => {
-   // console.log('from notification controller');
+    // console.log('from notification controller');
 
     const user = req.user;
-   // console.log('user', user);
+    // console.log('user', user);
     if (!user)
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -146,7 +144,7 @@ export class NotificationControlller {
         statusCodes.BADREQUEST
       );
 
-   // console.log(notificationId);
+    // console.log(notificationId);
 
     await this._deleteNotificationUsecase.execute(
       notificationId,
