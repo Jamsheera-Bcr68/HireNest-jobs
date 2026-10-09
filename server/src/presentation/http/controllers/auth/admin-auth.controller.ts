@@ -26,7 +26,7 @@ export class AdminAuthController {
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: '/api/auth/refresh-token',
+      path: '/auth/refresh-token',
     });
 
     console.log('res.cookie', res.getHeader('Set-Cookie'));

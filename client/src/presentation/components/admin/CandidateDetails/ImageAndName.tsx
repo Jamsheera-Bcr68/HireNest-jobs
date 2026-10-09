@@ -3,24 +3,23 @@ import { useState } from 'react';
 import { type UserProfileType } from '../../../../types/dtos/profile-types/user.types';
 import { adminService } from '../../../../services/api-services/adminService';
 import { useToast } from '../../../../shared/toast/use-toast';
-import { Phone,Mail,MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
 import { Avatar } from '../../common/Avatar';
 type Props = {
   candidate: UserProfileType;
   updateCandidate: (candidate: UserProfileType) => void;
 };
 function ImageAndName({ candidate, updateCandidate }: Props) {
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [approveModalOpen, setApproveModalOpen] = useState(false);
   const [id, setId] = useState('');
   const { showToast } = useToast();
 
   const handleSuspend = async () => {
-   // console.log('id', id);
+    // console.log('id', id);
 
     if (!id) return;
-   // console.log('from handle suspend,suspend id', id);
+    // console.log('from handle suspend,suspend id', id);
     try {
       const data = await adminService.updateCandidate(id, { isBlocked: true });
       const updated = data.candidate;
@@ -38,7 +37,7 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
 
   const handleActivate = async () => {
     if (!id) return;
-   // console.log('from handle activate, id', id);
+    // console.log('from handle activate, id', id);
     try {
       const data = await adminService.updateCandidate(id, { isBlocked: false });
       const updated = data.candidate;
@@ -59,8 +58,13 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
       <div className="bg-white rounded-xl mt-5 shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center gap-4">
           {/* Logo */}
-          <Avatar item='candidate' name={candidate.name??'Candidate'} logoUrl={candidate.imageUrl}  imageClassName="w-full h-full border rounded-full object-contain" className='w-16 h-16 border rounded-full flex items-center justify-center'/>
-   
+          <Avatar
+            item="candidate"
+            name={candidate.name ?? 'Candidate'}
+            logoUrl={candidate.imageUrl}
+            imageClassName="w-full h-full border rounded-full object-contain"
+            className="w-16 h-16 border rounded-full flex items-center justify-center"
+          />
 
           <div>
             <h1 className="text-xl md:text-xl font-bold text-slate-800">
@@ -123,13 +127,21 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
       </div>
       <div className="flex flex-wrap gap-4 text-sm text-slate-500 mt-2 ml-4">
         {[
-          { icon: <Mail className='text-blue-600' size={20}/>, value: candidate.email },
-          { icon: <Phone className='text-green-600' size={20}/>, value: candidate.phone },
-          { icon: <MapPin className='text-blue-600' size={20}/>, value: candidate.address?.state },
-          
+          {
+            icon: <Mail className="text-blue-600" size={20} />,
+            value: candidate.email,
+          },
+          {
+            icon: <Phone className="text-green-600" size={20} />,
+            value: candidate.phone,
+          },
+          {
+            icon: <MapPin className="text-blue-600" size={20} />,
+            value: candidate.address?.state,
+          },
         ].map((item, i) => (
           <span key={i} className="flex items-center gap-1.5">
-            <span>{item.value? item.icon:''}</span>
+            <span>{item.value ? item.icon : ''}</span>
             <span className="text-slate-600">{item.value}</span>
           </span>
         ))}

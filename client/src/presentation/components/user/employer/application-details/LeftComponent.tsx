@@ -1,9 +1,10 @@
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { appStatusStyles } from '../../../candidate/applications/ApplicationCard';
 import type { ApplicationDetailsDto } from '../../../../../types/dtos/application.dto';
 import { File, Mail, MapPin, Phone } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../../../redux/store';
+import { env } from '../../../../../config/env';
 
 export function Section({
   title,
@@ -26,7 +27,6 @@ type Props = {
 };
 
 function LeftComponent({ application }: Props) {
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
   const role = useSelector((state: RootState) => state.auth.user).role;
   return (
     <div className="lg:col-span-2 flex flex-col gap-5">
@@ -111,7 +111,9 @@ function LeftComponent({ application }: Props) {
         <Section title="Resume ">
           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200 mb-4">
             <div className="flex items-center gap-3">
-              <div className={`w-9 h-9  rounded-lg flex items-center justify-center text-xs font-bold ${role=='admin'?'bg-indigo-100 text-indigo-600 ':'bg-fuchsia-100 text-fuchsia-600 '}`} >
+              <div
+                className={`w-9 h-9  rounded-lg flex items-center justify-center text-xs font-bold ${role == 'admin' ? 'bg-indigo-100 text-indigo-600 ' : 'bg-fuchsia-100 text-fuchsia-600 '}`}
+              >
                 <File size={14} />
               </div>
               <div>
@@ -125,11 +127,11 @@ function LeftComponent({ application }: Props) {
               <button
                 onClick={() =>
                   window.open(
-                    `${import.meta.env.VITE_BACKEND_URL}${application.resume.url}`,
+                    `${env.backendUrl}${application.resume.url}`,
                     '_blank'
                   )
                 }
-                className={`text-sm px-3 py-1.5 border  rounded-lg  ${role==='admin'?'border-indigo-300 text-indigo-600 hover:bg-indigo-100':'border-fuchsia-300 text-fuchsia-600 hover:bg-fuchsia-100'}`}
+                className={`text-sm px-3 py-1.5 border  rounded-lg  ${role === 'admin' ? 'border-indigo-300 text-indigo-600 hover:bg-indigo-100' : 'border-fuchsia-300 text-fuchsia-600 hover:bg-fuchsia-100'}`}
               >
                 Preview
               </button>

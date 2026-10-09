@@ -3,8 +3,6 @@ import { useState } from 'react';
 
 import type { JobFilterType } from '../../candidate/jobListing/ListingContainter';
 
-
-
 type Props = {
   jobCountOfToday: number;
   handleFilterChange: (data: Partial<JobFilterType>) => void;
@@ -29,8 +27,6 @@ function Hero({ jobCountOfToday, handleFilterChange, filter }: Props) {
           <div className="hero-glow absolute inset-0" />
         </div>
 
-      
-      
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="inline-flex bg-teal-50 items-center mt-20 gap-2 mb-6 px-4 py-1.5 rounded-full text-xs font-medium text-teal-800">
             ✦ {jobCountOfToday} new jobs added today

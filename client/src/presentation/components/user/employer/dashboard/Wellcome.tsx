@@ -1,14 +1,11 @@
-
-
-
-type Props={
-    recruiter:string
-    data:string
-}
-export function WelcomeBanner({ recruiter, data }:Props) {
-  const needsAttention = data.notifications.filter(
-    (n) => n.priority === 'high'
-  ).length;
+type Props = {
+  recruiter: string;
+  data: string;
+};
+export function WelcomeBanner({ recruiter }: Props) {
+  // const needsAttention = data.notifications.filter(
+  //   (n) => n.priority === 'high'
+  // ).length;
   return (
     <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-600 px-8 py-9 md:px-10 md:py-10">
       <div className="absolute -right-16 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
@@ -16,7 +13,7 @@ export function WelcomeBanner({ recruiter, data }:Props) {
       <div className="relative flex flex-col lg:flex-row lg:items-end justify-between gap-8">
         <div>
           <p className="text-emerald-100/90 text-sm font-medium mb-2">
-            Good afternoon, {recruiter.name.split(' ')[0]} 👋
+            Good afternoon, {recruiter.split(' ')[0]} 👋
           </p>
           <h1
             className="text-2xl md:text-[28px] font-semibold text-white max-w-md leading-snug"
@@ -49,7 +46,7 @@ export function WelcomeBanner({ recruiter, data }:Props) {
               className="text-3xl font-semibold text-white"
               style={{ fontFamily: "'Fraunces', serif" }}
             >
-              {needsAttention}
+              {'attension'}
             </p>
             <p className="text-xs text-emerald-100/80 mt-1">Needs attention</p>
           </div>
@@ -58,5 +55,3 @@ export function WelcomeBanner({ recruiter, data }:Props) {
     </div>
   );
 }
-
-

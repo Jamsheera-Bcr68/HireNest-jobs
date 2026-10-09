@@ -3,7 +3,7 @@ import {
   companyModel,
   ICompanyDocument,
 } from '../database/models/company.model';
-import {  PipelineStage } from 'mongoose';
+import { PipelineStage } from 'mongoose';
 import { StatusEnum } from '../../domain/enums/status.enum';
 import {
   IApplyDetails,
@@ -15,12 +15,10 @@ import {
   PaginatedCompanies,
   CompanyListDTO,
   CompanyStatus,
-
 } from '../../applications/dtos/company.dto';
 import { CompanyFilterDto } from '../../applications/dtos/company.dto';
 import mongoose from 'mongoose';
 import { chartDataDto } from '../../domain/types/chart.data.type';
-
 
 type CompanyQuery = {
   status?: StatusEnum;

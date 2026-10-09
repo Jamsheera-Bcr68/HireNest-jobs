@@ -9,7 +9,7 @@ type Props = {
 };
 function HeroHeader({ application }: Props) {
   if (!application) return null;
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
   return (
     <Card className="mb-5 overflow-hidden">
       <div className="relative p-7">

@@ -3,7 +3,7 @@ import { type ResumeType } from '../../../../types/dtos/profile-types/resume.typ
 import { profileService } from '../../../../services/api-services/candidateService';
 import { useToast } from '../../../../shared/toast/use-toast';
 import type { UserProfileType } from '../../../../types/dtos/profile-types/user.types';
-import { Upload, User } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { Trash, X, LucideLoader } from 'lucide-react';
 import { FormatDate } from '../../../../utils/date-conversion';
 import DeleteConfirmationModal from '../../../modals/DeleteConfirmationModal';
@@ -14,9 +14,7 @@ import type { RootState } from '../../../../redux/store';
 import { useTheme } from '../../../../contexts/ThemeContext';
 
 type ResumeProps = {
-  onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | null>
-  >;
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>;
   resumes: ResumeType[] | [];
 };
 
@@ -72,7 +70,7 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
       setFile(null);
       setIsUploading(false);
     } catch (error: any) {
-       setIsUploading(false);
+      setIsUploading(false);
       console.log(error);
       showToast({
         msg: error?.response?.data?.message || error.message,
@@ -128,158 +126,158 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
     setRenameModal(false);
   };
 
-  const {t}=useTheme()
+  const { t } = useTheme();
   return (
-  <div>
-    <div className={`${t.cardBg} ${t.cardBorder} border rounded-lg shadow-md p-6`}>
-      <div className="flex justify-between items-center mb-6">
-        <h3 className={`text-xl font-semibold ${t.cardTitle}`}>Resume </h3>
+    <div>
+      <div
+        className={`${t.cardBg} ${t.cardBorder} border rounded-lg shadow-md p-6`}
+      >
+        <div className="flex justify-between items-center mb-6">
+          <h3 className={`text-xl font-semibold ${t.cardTitle}`}>Resume </h3>
 
-        {!file && (
-          <label
-            className={`cursor-pointer ${t.successText} ${t.successHover} text-sm font-medium`}
-          >
-            Add
-            <input
-              accept=".pdf,.doc,.docx"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-              type="file"
-              className="hidden"
-            />
-          </label>
-        )}
-      </div>
-
-      {file ? (
-        <div
-          className={`flex items-center gap-3 border ${t.cardBorder} rounded-xl p-3 ${t.surface} shadow-sm hover:shadow-md transition`}
-        >
-          <div
-            className={`flex-1 flex items-center gap-3 border border-dashed ${t.dashedBorder} rounded-lg px-3 py-2 text-sm ${t.subheading}`}
-          >
-            <span className="text-lg">📄</span>
-            <span>{file.name}</span>
-          </div>
-
-          <button
-            onClick={handleUpload}
-            disabled={isUploading}
-            className={`cursor-pointer ${t.successText} ${t.successHover} text-sm font-medium ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            {isUploading ? <LucideLoader size={18} /> : <Upload size={18} />}
-          </button>
-
-          <button
-            onClick={() => {
-              setIsUploading(false);
-              setFile(null);
-            }}
-            disabled={isUploading}
-            className={`${t.dangerText} text-bold ${t.dangerHover} text-lg px-2 transition`}
-          >
-            <X size={18} />
-          </button>
+          {!file && (
+            <label
+              className={`cursor-pointer ${t.successText} ${t.successHover} text-sm font-medium`}
+            >
+              Add
+              <input
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                type="file"
+                className="hidden"
+              />
+            </label>
+          )}
         </div>
-      ) : (
-        ''
-      )}
 
-      <div className="space-y-4 mt-2">
-        {resumes.length ? (
-          resumes.map((res) => {
-            return (
-              <div
-                className={`flex items-center justify-between border ${t.cardBorder} rounded-lg p-4 hover:shadow-sm transition`}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className={`${t.metaBadgeBg} p-2 rounded-lg`}>
-                    📄
+        {file ? (
+          <div
+            className={`flex items-center gap-3 border ${t.cardBorder} rounded-xl p-3 ${t.surface} shadow-sm hover:shadow-md transition`}
+          >
+            <div
+              className={`flex-1 flex items-center gap-3 border border-dashed ${t.dashedBorder} rounded-lg px-3 py-2 text-sm ${t.subheading}`}
+            >
+              <span className="text-lg">📄</span>
+              <span>{file.name}</span>
+            </div>
+
+            <button
+              onClick={handleUpload}
+              disabled={isUploading}
+              className={`cursor-pointer ${t.successText} ${t.successHover} text-sm font-medium ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {isUploading ? <LucideLoader size={18} /> : <Upload size={18} />}
+            </button>
+
+            <button
+              onClick={() => {
+                setIsUploading(false);
+                setFile(null);
+              }}
+              disabled={isUploading}
+              className={`${t.dangerText} text-bold ${t.dangerHover} text-lg px-2 transition`}
+            >
+              <X size={18} />
+            </button>
+          </div>
+        ) : (
+          ''
+        )}
+
+        <div className="space-y-4 mt-2">
+          {resumes.length ? (
+            resumes.map((res) => {
+              return (
+                <div
+                  className={`flex items-center justify-between border ${t.cardBorder} rounded-lg p-4 hover:shadow-sm transition`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className={`${t.metaBadgeBg} p-2 rounded-lg`}>📄</div>
+
+                    <div>
+                      <p className={`text-sm font-medium ${t.cardTitle}`}>
+                        {res.name}
+                      </p>
+
+                      <p className={`text-xs ${t.iconMuted}`}>
+                        Uploaded on{' '}
+                        {res.uploadedAt ? FormatDate(res.uploadedAt) : ''}
+                      </p>
+                    </div>
                   </div>
 
-                  <div>
-                    <p className={`text-sm font-medium ${t.cardTitle}`}>
-                      {res.name}
-                    </p>
-
-                    <p className={`text-xs ${t.iconMuted}`}>
-                      Uploaded on{' '}
-                      {res.uploadedAt ? FormatDate(res.uploadedAt) : ''}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-3">
-                  {/* Default Badge */}
-                  {/* <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-md">
+                  <div className="flex items-center space-x-3">
+                    {/* Default Badge */}
+                    {/* <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-md">
                 Default
               </span> */}
 
-                  <button
-                    className={`px-2 py-1 rounded-md border ${t.cardBorder}
+                    <button
+                      className={`px-2 py-1 rounded-md border ${t.cardBorder}
              ${t.filterHover}
              ${t.filterText}
              transition-all duration-200
              ${t.viewHover}
              hover:shadow-md`}
-                  >
-                    <a
-                      href={`${res.url}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm"
                     >
-                      View
-                    </a>
-                  </button>
+                      <a
+                        href={`${res.url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm"
+                      >
+                        View
+                      </a>
+                    </button>
 
-                  <button
-                    onClick={() => {
-                      setDeleteId(res.id);
-                      setIsOpen(true);
-                    }}
-                    className={`${t.dangerText} px-2 py-1 rounded-2xl
+                    <button
+                      onClick={() => {
+                        setDeleteId(res.id);
+                        setIsOpen(true);
+                      }}
+                      className={`${t.dangerText} px-2 py-1 rounded-2xl
              transition-all duration-200
              ${t.dangerHover}
              hover:shadow-md`}
-                  >
-                    <Trash size={16} />
-                  </button>
+                    >
+                      <Trash size={16} />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            );
-          })
-        ) : (
-          <div className={`text-center ${t.subheading} text-sm italic`}>
-            No resumes uploaded yet
-          </div>
-        )}
+              );
+            })
+          ) : (
+            <div className={`text-center ${t.subheading} text-sm italic`}>
+              No resumes uploaded yet
+            </div>
+          )}
+        </div>
+
+        <DeleteConfirmationModal
+          isOpen={isOpen}
+          item="Resume"
+          onDelete={handleRemove}
+          onClose={() => {
+            setDeleteId(null);
+            setIsOpen(false);
+          }}
+        />
       </div>
 
-      <DeleteConfirmationModal
-        isOpen={isOpen}
-        item="Resume"
-        onDelete={handleRemove}
-        onClose={() => {
-          setDeleteId(null);
-          setIsOpen(false);
+      <DuplicateResumeModal
+        onRename={onRenameFile}
+        error={nameErr}
+        onCancel={() => {
+          setIsUploading(false);
+          setFile(null);
+          setRenameModal(false);
         }}
+        fileName={file?.name ?? ''}
+        isOpen={renameModal}
+        setError={(err: string) => setNameErr(err)}
       />
     </div>
-
-    <DuplicateResumeModal
-      onRename={onRenameFile}
-      error={nameErr}
-      onCancel={() => {
-        setIsUploading(false);
-        setFile(null);
-        setRenameModal(false);
-      }}
-      fileName={file?.name ?? ''}
-      isOpen={renameModal}
-      setError={(err: string) => setNameErr(err)}
-    />
-  </div>
-);
+  );
   // return (
   //   <div>
   //     <div className="bg-white rounded-lg shadow-md p-6">
@@ -357,7 +355,7 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
   //            text-fuchsia-600
   //            transition-all duration-200
   //            hover:bg-fuchsia-100
-            
+
   //            hover:shadow-md"
   //                   >
   //                     <a
@@ -379,7 +377,7 @@ function Resume({ onUserUpdate, resumes }: ResumeProps) {
   //                     className='text-red-600 px-2 py-1 rounded-2xl
   //            transition-all duration-200
   //            hover:bg-red-100
-            
+
   //            hover:shadow-md"'
   //                   >
   //                     <Trash size={16} />

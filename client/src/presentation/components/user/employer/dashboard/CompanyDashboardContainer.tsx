@@ -12,8 +12,6 @@ import {
   SkeletonCard,
   ApplicationRow,
   JobSummaryCard,
-
-  QuickActionCard,
   HiringReminders,
   RecentActivities,
 } from './Components';
@@ -22,10 +20,7 @@ import {
   Briefcase,
   CheckCircle2,
   FileText,
-  Plus,
   CalendarClock,
-  ClipboardList,
-  Send,
   Users,
   type LucideIcon,
   Lightbulb,
@@ -144,7 +139,6 @@ const APP_STATUS_CONFIG: Record<
 
 export type QuickAction = { label: string; icon: LucideIcon; path: string };
 
-
 export type StatType = {
   id: Field;
   label: string;
@@ -260,15 +254,13 @@ export type Application = {
   style: string;
 };
 
-
-
 function CompanyDashboardContainer() {
   const [statusData, setStatusData] = useState<StatType[]>([]);
   const [pendingActions, setPendingActions] = useState<PendingActions[]>([]);
-  const [appChartData, setAppChartData] = useState<CompanyAppChartData[]>([]);
+
   const [appStatusData, setAppStatusData] = useState<AppStatusData[]>([]);
   const [interviews, setInterviews] = useState<Interview[]>([]);
-  const [topJobs, setTopJobs] = useState<TopJob[]>([]);
+
   const [activeJobs, setActiveJobs] = useState<ActiveJob[]>([]);
   const [recentActivities, setRecentActivities] = useState<
     RecentActivityType[]
@@ -389,7 +381,7 @@ function CompanyDashboardContainer() {
           notData,
           profileData,
         ]);
-        setTopJobs(jobData.jobData.topJobs);
+
         const activeJobRes: Omit<ActiveJob, 'style'>[] =
           jobData.jobData.activeJobs;
         setActiveJobs(
@@ -405,13 +397,11 @@ function CompanyDashboardContainer() {
             ...PENDING_CONFIG[data.item],
           }))
         );
-        setAppChartData(applicationsData.appData.chartData);
+
         const backendStatusData: {
           stage: ApplicationStatusType;
           count: number;
         }[] = applicationsData.appData.appStatusData;
-        
-        
 
         const completeStatusData: AppStatusData[] = PIPELINE_STAGES.map(
           (stage) => {
@@ -485,7 +475,6 @@ function CompanyDashboardContainer() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-5">
           <HiringReminders reminders={pendingActions} isLoading={isLoading} />
-      
 
           <RecentActivities
             activities={recentActivities}
@@ -583,34 +572,34 @@ function CompanyDashboardContainer() {
         </div>
 
         <HiringPipeline stages={appStatusData} isLoading={isLoading} />
- <section className="rounded-3xl bg-white border border-stone-100 shadow-sm p-6">
-            <SectionHeading
-              eyebrow="Active postings"
-              title="Job performance summary"
-              action={{
-                label: "Manage jobs",
-                onclick: () => navigate("/company/jobs"),
-              }}
-            />
-            {isLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <SkeletonCard className="" key={i} />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-wrap justify-center gap-4">
-                {activeJobs.map((job) => (
-                  <div
-                    key={job.id}
-                    className="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)]"
-                  >
-                    <JobSummaryCard job={job} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
+        <section className="rounded-3xl bg-white border border-stone-100 shadow-sm p-6">
+          <SectionHeading
+            eyebrow="Active postings"
+            title="Job performance summary"
+            action={{
+              label: 'Manage jobs',
+              onclick: () => navigate('/company/jobs'),
+            }}
+          />
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <SkeletonCard className="" key={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-center gap-4">
+              {activeJobs.map((job) => (
+                <div
+                  key={job.id}
+                  className="w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)]"
+                >
+                  <JobSummaryCard job={job} />
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
         {/* <ActiveJobs jobs={data.activeJobs} isLoading={isLoading} onManage={onManageJob} onCreateJob={onCreateJob} /> */}
       </div>
     </div>

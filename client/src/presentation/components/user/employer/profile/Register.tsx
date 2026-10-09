@@ -105,7 +105,6 @@ const HISTORY_STATUS_UI: Record<
 
 const MUTED = 'text-neutral-600 dark:text-neutral-400';
 
-
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
@@ -135,7 +134,6 @@ function resolveState(status: unknown, isVerified: boolean): ViewState {
   return isVerified ? 'verified' : 'pending';
 }
 
-
 function formatDate(
   value?: string | Date,
   style: 'long' | 'short' = 'long'
@@ -151,7 +149,6 @@ function formatDate(
   }).format(d);
 }
 
-
 function humanize(value?: string): string {
   if (!value) return 'Registration document';
   const text = value.replace(/[_-]+/g, ' ').trim();
@@ -166,8 +163,6 @@ const stripProtocol = (site: string) =>
 /* ------------------------------------------------------------------ */
 /* Small UI pieces                                                     */
 /* ------------------------------------------------------------------ */
-
-
 
 const PANEL =
   'mt-3 rounded-lg border border-neutral-200 bg-white px-3.5 py-3 text-neutral-900 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100';
@@ -253,69 +248,69 @@ function ReapplyMeter({
 /** Single timeline entry for the verification/reapplication history. */
 function HistoryEntry({ item }: { item: ApplyType }) {
   const status = HISTORY_STATUS_UI[item.status];
-  const {t}=useTheme()
+  const { t } = useTheme();
 
- return (
-  <li className="relative pb-5 last:pb-0">
-    {/* Timeline dot */}
-    <span
-      aria-hidden="true"
-      className={cx(
-        `absolute -left-6 top-[5px] h-2.5 w-2.5 rounded-full border-2 ${t.cardBg}`,
-        DOT_TONE[item.status]
-      )}
-    />
-
-    {/* Header */}
-    <div className="flex flex-wrap items-center gap-2">
-      <span className={`text-sm font-medium ${t.cardTitle}`}>
-        Application #{item.attempt}
-      </span>
-
+  return (
+    <li className="relative pb-5 last:pb-0">
+      {/* Timeline dot */}
       <span
+        aria-hidden="true"
         className={cx(
-          'rounded-full px-2 py-0.5 text-[11px] font-medium',
-          status.pill
+          `absolute -left-6 top-[5px] h-2.5 w-2.5 rounded-full border-2 ${t.cardBg}`,
+          DOT_TONE[item.status]
         )}
-      >
-        {status.label}
-      </span>
-    </div>
+      />
 
-    {/* Details */}
-    <div className="mt-1 space-y-1 text-[13px]">
-      <div className={t.subheading}>
-        Submitted:{' '}
-        <span className={`font-medium ${t.inputText}`}>
-          {formatDate(item.submittedAt, 'short') ?? '-'}
+      {/* Header */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className={`text-sm font-medium ${t.cardTitle}`}>
+          Application #{item.attempt}
+        </span>
+
+        <span
+          className={cx(
+            'rounded-full px-2 py-0.5 text-[11px] font-medium',
+            status.pill
+          )}
+        >
+          {status.label}
         </span>
       </div>
 
-      {item.reviewedAt && (
+      {/* Details */}
+      <div className="mt-1 space-y-1 text-[13px]">
         <div className={t.subheading}>
-          Reviewed:{' '}
+          Submitted:{' '}
           <span className={`font-medium ${t.inputText}`}>
-            {formatDate(item.reviewedAt, 'short')}
+            {formatDate(item.submittedAt, 'short') ?? '-'}
           </span>
         </div>
-      )}
 
-      {item.status === 'rejected' && item.rejectedReason && (
-        <div
-          className={`mt-2 rounded-md border ${t.errorIconBorder} ${t.errorIconBg} px-3 py-2`}
-        >
-          <div className={`text-xs font-medium ${t.errorIconText}`}>
-            Rejection reason
+        {item.reviewedAt && (
+          <div className={t.subheading}>
+            Reviewed:{' '}
+            <span className={`font-medium ${t.inputText}`}>
+              {formatDate(item.reviewedAt, 'short')}
+            </span>
           </div>
+        )}
 
-          <div className={`mt-0.5 text-[13px] ${t.errorIconText}`}>
-            {item.rejectedReason}
+        {item.status === 'rejected' && item.rejectedReason && (
+          <div
+            className={`mt-2 rounded-md border ${t.errorIconBorder} ${t.errorIconBg} px-3 py-2`}
+          >
+            <div className={`text-xs font-medium ${t.errorIconText}`}>
+              Rejection reason
+            </div>
+
+            <div className={`mt-0.5 text-[13px] ${t.errorIconText}`}>
+              {item.rejectedReason}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  </li>
-);
+        )}
+      </div>
+    </li>
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -366,7 +361,7 @@ export default function CompanyRegistrationDetails({
     return [...(company.applyDetails ?? [])]
       .map((entry) => ({
         ...entry,
-       
+
         submittedAt:
           entry.submittedAt instanceof Date
             ? entry.submittedAt
@@ -384,7 +379,7 @@ export default function CompanyRegistrationDetails({
 
   // return (
   //   <>
-     
+
   //     <section className={CARD} aria-labelledby="reg-details-title">
   //       <h2 id="reg-details-title" className="m-0 mb-4 text-base font-medium">
   //         Registration details
@@ -634,312 +629,303 @@ export default function CompanyRegistrationDetails({
   //     </section>
   //   </>
   // );
-  const {t}=useTheme()
+  const { t } = useTheme();
   const BTN = `inline-flex cursor-pointer items-center gap-1.5 rounded-lg border px-3.5 py-[7px] text-[13px] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${t.surfaceBorder} ${t.inputText} ${t.dropdownHover}`;
   return (
-  <>
-
-    <section
-      className={`${t.cardBg} ${t.cardBorder} border rounded-lg shadow-md p-6`}
-      aria-labelledby="reg-details-title"
-    >
-      <h2
-        id="reg-details-title"
-        className={`m-0 mb-4 text-base font-medium ${t.cardTitle}`}
+    <>
+      <section
+        className={`${t.cardBg} ${t.cardBorder} border rounded-lg shadow-md p-6`}
+        aria-labelledby="reg-details-title"
       >
-        Registration details
-      </h2>
-
-      <dl className="m-0 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-        <Field label="Company name">
-          <span className="inline-flex items-center gap-1.5">
-            {company.companyName}
-            {company.isVerified && (
-              <BadgeCheck
-                size={16}
-                className="text-green-600 dark:text-green-400"
-                aria-label="Verified company"
-              />
-            )}
-          </span>
-        </Field>
-
-        <Field label="Industry">{company.industry || '-'}</Field>
-        <Field label="Company size">{company.size || '-'}</Field>
-        <Field label="Started in">{company.startedIn || '-'}</Field>
-
-        <Field label="Location">
-          {[company.address?.state, company.address?.country]
-            .filter(Boolean)
-            .join(', ') || '-'}
-        </Field>
-
-        <Field label="Website">
-          {company.website ? (
-            <a
-              href={toUrl(company.website)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${t.filterActiveText} hover:underline`}
-            >
-              {stripProtocol(company.website)}
-              <ExternalLink size={13} aria-hidden="true" />
-            </a>
-          ) : (
-            '-'
-          )}
-        </Field>
-
-        <Field label="Official email">
-          <a
-            href={`mailto:${company.email}`}
-            className={`${t.filterActiveText} hover:underline`}
-          >
-            {company.email}
-          </a>
-        </Field>
-
-        <Field label="Phone">{company.phone || '-'}</Field>
-      </dl>
-    </section>
-
-    {/* ============================================================ */}
-    {/* 2. Verification / request details                             */}
-    {/* ============================================================ */}
-
-    <section
-      className={`${t.cardBg} ${t.cardBorder} border rounded-lg shadow-md p-6`}
-      aria-labelledby="verification-title"
-    >
-      <header className="mb-1 flex flex-wrap items-center justify-between gap-3">
         <h2
-          id="verification-title"
-          className={`m-0 text-base font-medium ${t.cardTitle}`}
+          id="reg-details-title"
+          className={`m-0 mb-4 text-base font-medium ${t.cardTitle}`}
         >
-          Company verification
+          Registration details
         </h2>
 
-        <Pill tone={ui.tone} Icon={ui.Icon}>
-          {ui.label}
-        </Pill>
-      </header>
+        <dl className="m-0 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+          <Field label="Company name">
+            <span className="inline-flex items-center gap-1.5">
+              {company.companyName}
+              {company.isVerified && (
+                <BadgeCheck
+                  size={16}
+                  className="text-green-600 dark:text-green-400"
+                  aria-label="Verified company"
+                />
+              )}
+            </span>
+          </Field>
 
-      <p className={cx('mb-4 mt-0 text-[13px]', t.subheading)}>
-        {ui.blurb}
-      </p>
+          <Field label="Industry">{company.industry || '-'}</Field>
+          <Field label="Company size">{company.size || '-'}</Field>
+          <Field label="Started in">{company.startedIn || '-'}</Field>
 
-      {meta.length > 0 && (
-        <div className="mb-4 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
-          {meta.map(([label, value]) => (
-            <div
-              key={label}
-              className={`${t.metaBadgeBg} rounded-lg px-3.5 py-3`}
+          <Field label="Location">
+            {[company.address?.state, company.address?.country]
+              .filter(Boolean)
+              .join(', ') || '-'}
+          </Field>
+
+          <Field label="Website">
+            {company.website ? (
+              <a
+                href={toUrl(company.website)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${t.filterActiveText} hover:underline`}
+              >
+                {stripProtocol(company.website)}
+                <ExternalLink size={13} aria-hidden="true" />
+              </a>
+            ) : (
+              '-'
+            )}
+          </Field>
+
+          <Field label="Official email">
+            <a
+              href={`mailto:${company.email}`}
+              className={`${t.filterActiveText} hover:underline`}
             >
-              <div className={cx('text-xs', t.subheading)}>{label}</div>
+              {company.email}
+            </a>
+          </Field>
 
+          <Field label="Phone">{company.phone || '-'}</Field>
+        </dl>
+      </section>
+
+      {/* ============================================================ */}
+      {/* 2. Verification / request details                             */}
+      {/* ============================================================ */}
+
+      <section
+        className={`${t.cardBg} ${t.cardBorder} border rounded-lg shadow-md p-6`}
+        aria-labelledby="verification-title"
+      >
+        <header className="mb-1 flex flex-wrap items-center justify-between gap-3">
+          <h2
+            id="verification-title"
+            className={`m-0 text-base font-medium ${t.cardTitle}`}
+          >
+            Company verification
+          </h2>
+
+          <Pill tone={ui.tone} Icon={ui.Icon}>
+            {ui.label}
+          </Pill>
+        </header>
+
+        <p className={cx('mb-4 mt-0 text-[13px]', t.subheading)}>{ui.blurb}</p>
+
+        {meta.length > 0 && (
+          <div className="mb-4 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
+            {meta.map(([label, value]) => (
               <div
-                className={`mt-0.5 text-[15px] font-medium ${t.inputText}`}
+                key={label}
+                className={`${t.metaBadgeBg} rounded-lg px-3.5 py-3`}
               >
-                {value}
+                <div className={cx('text-xs', t.subheading)}>{label}</div>
+
+                <div
+                  className={`mt-0.5 text-[15px] font-medium ${t.inputText}`}
+                >
+                  {value}
+                </div>
               </div>
+            ))}
+          </div>
+        )}
+
+        {/* ---- rejected ---- */}
+        {state === 'rejected' && (
+          <div
+            role="alert"
+            className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3.5 py-3 text-red-800 dark:border-red-800 dark:bg-red-950/60 dark:text-red-200"
+          >
+            <div className="mb-0.5 text-xs font-medium">Reason</div>
+
+            <p className="mb-3 mt-0 text-sm">
+              {reason ||
+                'The submitted company registration document could not be verified.'}
+            </p>
+
+            <div className="flex flex-wrap gap-2">
+              {canReapply && onReapply && (
+                <button
+                  type="button"
+                  className={BTN}
+                  onClick={() => setConfirming((c) => !c)}
+                >
+                  Reapply
+                </button>
+              )}
+
+              {!canReapply && onContactSupport && (
+                <button
+                  type="button"
+                  className={BTN}
+                  onClick={onContactSupport}
+                >
+                  Contact support
+                </button>
+              )}
             </div>
-          ))}
-        </div>
-      )}
 
-      {/* ---- rejected ---- */}
-      {state === 'rejected' && (
-        <div
-          role="alert"
-          className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3.5 py-3 text-red-800 dark:border-red-800 dark:bg-red-950/60 dark:text-red-200"
-        >
-          <div className="mb-0.5 text-xs font-medium">Reason</div>
-
-          <p className="mb-3 mt-0 text-sm">
-            {reason ||
-              'The submitted company registration document could not be verified.'}
-          </p>
-
-          <div className="flex flex-wrap gap-2">
-            {canReapply && onReapply && (
-              <button
-                type="button"
-                className={BTN}
-                onClick={() => setConfirming((c) => !c)}
-              >
-                Reapply
-              </button>
+            {!canReapply && (
+              <p className="mb-0 mt-2.5 text-xs">
+                You have used all {maxReapply} reapplications
+                {onContactSupport ? '. Contact support to continue.' : '.'}
+              </p>
             )}
 
-            {!canReapply && onContactSupport && (
-              <button
-                type="button"
-                className={BTN}
-                onClick={onContactSupport}
-              >
+            {confirming && canReapply && (
+              <div className={PANEL}>
+                <div className="mb-0.5 text-[13px] font-medium">
+                  Use reapplication {used + 1} of {maxReapply}?
+                </div>
+
+                <p className={cx('mb-2.5 mt-0 text-[13px]', t.subheading)}>
+                  You will have {maxReapply - used - 1} left after this one.
+                  Upload the corrected document to continue.
+                </p>
+
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    className={BTN}
+                    onClick={confirmReapply}
+                  >
+                    Continue
+                  </button>
+
+                  <button
+                    type="button"
+                    className={BTN}
+                    onClick={() => setConfirming(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ---- suspended ---- */}
+        {state === 'suspended' && (
+          <div
+            role="alert"
+            className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3.5 py-3 text-red-800 dark:border-red-800 dark:bg-red-950/60 dark:text-red-200"
+          >
+            <div className="mb-0.5 text-xs font-medium">Reason</div>
+
+            <p className="mb-3 mt-0 text-sm">
+              {reason ||
+                'Your account is under review by the HireNest team. Your listings are paused.'}
+            </p>
+
+            {onContactSupport && (
+              <button type="button" className={BTN} onClick={onContactSupport}>
                 Contact support
               </button>
             )}
           </div>
+        )}
 
-          {!canReapply && (
-            <p className="mb-0 mt-2.5 text-xs">
-              You have used all {maxReapply} reapplications
-              {onContactSupport ? '. Contact support to continue.' : '.'}
-            </p>
-          )}
+        {/* ---- document ---- */}
 
-          {confirming && canReapply && (
-            <div className={PANEL}>
-              <div className="mb-0.5 text-[13px] font-medium">
-                Use reapplication {used + 1} of {maxReapply}?
-              </div>
+        <h3 className={`mb-2 mt-0 text-[13px] font-medium ${t.cardTitle}`}>
+          Submitted document
+        </h3>
 
-              <p className={cx('mb-2.5 mt-0 text-[13px]', t.subheading)}>
-                You will have {maxReapply - used - 1} left after this one.
-                Upload the corrected document to continue.
-              </p>
-
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  className={BTN}
-                  onClick={confirmReapply}
-                >
-                  Continue
-                </button>
-
-                <button
-                  type="button"
-                  className={BTN}
-                  onClick={() => setConfirming(false)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ---- suspended ---- */}
-      {state === 'suspended' && (
         <div
-          role="alert"
-          className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3.5 py-3 text-red-800 dark:border-red-800 dark:bg-red-950/60 dark:text-red-200"
+          className={`mb-4 flex items-center gap-3 rounded-lg border ${t.cardBorder} px-3.5 py-2.5`}
         >
-          <div className="mb-0.5 text-xs font-medium">Reason</div>
-
-          <p className="mb-3 mt-0 text-sm">
-            {reason ||
-              'Your account is under review by the HireNest team. Your listings are paused.'}
-          </p>
-
-          {onContactSupport && (
-            <button
-              type="button"
-              className={BTN}
-              onClick={onContactSupport}
-            >
-              Contact support
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* ---- document ---- */}
-
-      <h3
-        className={`mb-2 mt-0 text-[13px] font-medium ${t.cardTitle}`}
-      >
-        Submitted document
-      </h3>
-
-      <div
-        className={`mb-4 flex items-center gap-3 rounded-lg border ${t.cardBorder} px-3.5 py-2.5`}
-      >
-        <span
-          aria-hidden="true"
-          className={cx(
-            `flex h-8 w-8 flex-none items-center justify-center rounded-lg ${t.metaBadgeBg}`,
-            t.subheading
-          )}
-        >
-          <FileText size={18} />
-        </span>
-
-        <div className="min-w-0 flex-1">
-          <div className={`text-sm ${t.inputText}`}>
-            {humanize(company.document?.type)}
-          </div>
-
-          <div className={cx('text-xs', t.iconMuted)}>
-            {company.document?.file ? 'File uploaded' : 'No file uploaded'}
-          </div>
-        </div>
-
-        {company.document?.file && (
-          <a
-            href={`${company.document.file}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cx(BTN, 'px-2.5 py-1 text-xs')}
+          <span
+            aria-hidden="true"
+            className={cx(
+              `flex h-8 w-8 flex-none items-center justify-center rounded-lg ${t.metaBadgeBg}`,
+              t.subheading
+            )}
           >
-            View
-            <ExternalLink size={12} aria-hidden="true" />
-          </a>
+            <FileText size={18} />
+          </span>
+
+          <div className="min-w-0 flex-1">
+            <div className={`text-sm ${t.inputText}`}>
+              {humanize(company.document?.type)}
+            </div>
+
+            <div className={cx('text-xs', t.iconMuted)}>
+              {company.document?.file ? 'File uploaded' : 'No file uploaded'}
+            </div>
+          </div>
+
+          {company.document?.file && (
+            <a
+              href={`${company.document.file}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cx(BTN, 'px-2.5 py-1 text-xs')}
+            >
+              View
+              <ExternalLink size={12} aria-hidden="true" />
+            </a>
+          )}
+
+          {docStatus && (
+            <Pill tone={docStatus.tone} Icon={docStatus.Icon}>
+              {docStatus.label}
+            </Pill>
+          )}
+        </div>
+
+        {/* ---- reapplications ---- */}
+
+        {showMeter && (
+          <ReapplyMeter
+            used={used}
+            max={maxReapply}
+            paused={state === 'suspended'}
+          />
         )}
 
-        {docStatus && (
-          <Pill tone={docStatus.tone} Icon={docStatus.Icon}>
-            {docStatus.label}
-          </Pill>
-        )}
-      </div>
+        {/* ---- history (single source of truth) ---- */}
 
-      {/* ---- reapplications ---- */}
-
-      {showMeter && (
-        <ReapplyMeter
-          used={used}
-          max={maxReapply}
-          paused={state === 'suspended'}
-        />
-      )}
-
-      {/* ---- history (single source of truth) ---- */}
-
-      <button
-        type="button"
-        className={BTN}
-        aria-expanded={showHistory}
-        aria-controls={historyId}
-        onClick={() => setShowHistory((s) => !s)}
-      >
-        <History size={16} aria-hidden="true" />
-
-        {showHistory
-          ? 'Hide verification history'
-          : 'View verification history'}
-
-        {showHistory ? (
-          <ChevronUp size={16} aria-hidden="true" />
-        ) : (
-          <ChevronDown size={16} aria-hidden="true" />
-        )}
-      </button>
-
-      {showHistory && (
-        <ol
-          id={historyId}
-          className={`mb-0 ml-1 mt-4 list-none border-l ${t.cardBorder} p-0 pl-[18px]`}
+        <button
+          type="button"
+          className={BTN}
+          aria-expanded={showHistory}
+          aria-controls={historyId}
+          onClick={() => setShowHistory((s) => !s)}
         >
-          {history.map((item) => (
-            <HistoryEntry key={item.attempt} item={item} />
-          ))}
-        </ol>
-      )}
-    </section>
-  </>
-);
+          <History size={16} aria-hidden="true" />
+
+          {showHistory
+            ? 'Hide verification history'
+            : 'View verification history'}
+
+          {showHistory ? (
+            <ChevronUp size={16} aria-hidden="true" />
+          ) : (
+            <ChevronDown size={16} aria-hidden="true" />
+          )}
+        </button>
+
+        {showHistory && (
+          <ol
+            id={historyId}
+            className={`mb-0 ml-1 mt-4 list-none border-l ${t.cardBorder} p-0 pl-[18px]`}
+          >
+            {history.map((item) => (
+              <HistoryEntry key={item.attempt} item={item} />
+            ))}
+          </ol>
+        )}
+      </section>
+    </>
+  );
 }

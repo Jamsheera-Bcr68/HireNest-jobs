@@ -7,19 +7,32 @@ export const SideBox = ({ text, isActive }: ISidebarProps) => {
   return <div className={classname}>{text}</div>;
 };
 
-
- export function StatTile({ icon: Icon, label, value }:{icon:LucideIcon,label:string,value:string}) {
+export function StatTile({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+}) {
   return (
     <div className="vc-stat">
       <div className="flex items-center justify-between">
         <span className="vc-stat-icon">
           <Icon className="h-4 w-4" />
         </span>
-        <span className="text-[26px] font-semibold leading-none tracking-tight" style={{ color: "var(--ink)" }}>
-          {value !== undefined ? value : "—"}
+        <span
+          className="text-[26px] font-semibold leading-none tracking-tight"
+          style={{ color: 'var(--ink)' }}
+        >
+          {value !== undefined ? value : '—'}
         </span>
       </div>
-      <p className="mt-3 text-xs font-medium" style={{ color: "var(--ink-faint)" }}>
+      <p
+        className="mt-3 text-xs font-medium"
+        style={{ color: 'var(--ink-faint)' }}
+      >
         {label}
       </p>
     </div>

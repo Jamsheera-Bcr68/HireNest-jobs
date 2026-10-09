@@ -17,7 +17,6 @@ import Company from '../../user/employer/job-details/Company';
 import { Reports } from './ReporData';
 import type { RootState } from '../../../../redux/store';
 
-
 const tabs = [
   { id: 'overview', label: 'Overview' },
   { id: 'responsibilities', label: 'Responsibilities' },
@@ -25,8 +24,14 @@ const tabs = [
   { id: 'company', label: 'Company' },
   { id: 'reports', label: 'Reports' },
 ];
-function AdminJobDetailscontainer({ jobId,activeTab }: { jobId: string,activeTab?:string }) {
-const role=useSelector((state:RootState)=>state.auth.user).role
+function AdminJobDetailscontainer({
+  jobId,
+  activeTab,
+}: {
+  jobId: string;
+  activeTab?: string;
+}) {
+  const role = useSelector((state: RootState) => state.auth.user).role;
   const { showToast } = useToast();
   const user = useSelector((state: RootState) => state.auth.user);
   console.log('job id from details is role is admin', jobId);
@@ -36,7 +41,7 @@ const role=useSelector((state:RootState)=>state.auth.user).role
   const [showSuspendReasonModal, setShowSuspendReasonModal] =
     useState<boolean>(false);
 
-  const [tab, setTab] = useState<string>(activeTab?activeTab:'overview');
+  const [tab, setTab] = useState<string>(activeTab ? activeTab : 'overview');
   useEffect(() => {
     const getJobDetails = async () => {
       try {
@@ -102,24 +107,26 @@ const role=useSelector((state:RootState)=>state.auth.user).role
       <NavPart
         title="Jobs"
         onBackPath="/admin/jobs"
-       role={role} 
+        role={role}
         job={job}
         handleUpdateStatus={handleUpdateStatus}
         handleDeactivateAction={updateStatus}
       />
       <div className="max-w-6xl mx-auto px-6 py-7 space-y-6">
-        <HeroPart job={job}  role={role}  />
+        <HeroPart job={job} role={role} />
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 items-start">
           <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
             <Tabs role={role} tab={tab} tabs={tabs} setTab={setTab} />
             <div className="p-6 lg:p-7 space-y-6">
-              {tab == 'overview' && <OverView role={role} tab={tab} job={job} />}
+              {tab == 'overview' && (
+                <OverView role={role} tab={tab} job={job} />
+              )}
               {tab == 'responsibilities' && (
-                <Responsibilities  role={role}  job={job} tab={tab} />
+                <Responsibilities role={role} job={job} tab={tab} />
               )}
 
               {tab == 'benefits' && (
-                <Benefits  role={role}  benefits={job.benefits} tab={tab} />
+                <Benefits role={role} benefits={job.benefits} tab={tab} />
               )}
               {tab == 'company' && <Company job={job} />}
               {tab == 'reports' && <Reports tab={tab} job={job} />}

@@ -1,11 +1,10 @@
 import { type ResumeType } from '../../../../types/dtos/profile-types/resume.type';
 import { useLockBodyScroll } from '../../../hooks/useBodyLock';
 import { useState } from 'react';
-import { Upload, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { profileService } from '../../../../services/api-services/candidateService';
 import { useToast } from '../../../../shared/toast/use-toast';
 import DuplicateResumeModal from '../../user/profile/RenameModal';
-import { fi } from 'zod/locales';
 
 type Props = {
   resumes: ResumeType[];
@@ -13,8 +12,6 @@ type Props = {
   onClose: () => void;
   onApply: (resumeId: string) => void;
 };
-
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function SelectResumeModal({
   resumes,

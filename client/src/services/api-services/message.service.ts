@@ -8,7 +8,7 @@ export const messageService = {
   },
 
   async sendMessaage(msg: string, chatroomId: string) {
-   // console.log('message from service', msg, chatroomId);
+    // console.log('message from service', msg, chatroomId);
 
     const res = await axiosInstance.post(API_ENDPOINTS.MESSAGES(chatroomId), {
       text: msg,

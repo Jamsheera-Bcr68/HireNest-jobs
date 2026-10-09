@@ -37,7 +37,7 @@ export const useRegister = () => {
   };
   const submitHandle = async (
     //e: React.SyntheticEvent<HTMLButtonElement>
-    e:React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
 

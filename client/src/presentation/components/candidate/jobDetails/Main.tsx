@@ -18,8 +18,6 @@ import type {
   ErrorType,
   ReportFormType,
 } from '../jobListing/ListingContainter';
-import { reportFormSchema } from '../../../../libraries/validations/company/job-form.validation';
-import { jobService } from '../../../../services/api-services/jobService';
 
 export function Main({
   job,
@@ -40,12 +38,6 @@ export function Main({
   const user = useSelector((state: RootState) => state.auth.user);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   console.log('from main,onreportsubmit', onReportsubmit);
-
-  const handleReportFormChange = (data: Partial<ReportFormType>) => {
-    console.log('from handle form change', data);
-
-    // setReportForm((prev) => ({ ...prev, ...data }));
-  };
 
   const handleReportClick = () => {
     console.log('from handle report click');

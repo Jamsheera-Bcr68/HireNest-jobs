@@ -173,25 +173,6 @@ const navItems = [
   'Settings',
 ];
 
-const statusColor = {
-  Active: 'bg-emerald-100 text-emerald-700',
-  Paused: 'bg-amber-100 text-amber-700',
-  Closed: 'bg-red-100 text-red-700',
-};
-
-const applicantStatusColor = {
-  New: 'bg-sky-100 text-sky-700',
-  Reviewed: 'bg-violet-100 text-violet-700',
-  Interview: 'bg-emerald-100 text-emerald-700',
-  Rejected: 'bg-red-100 text-red-700',
-};
-
-const interviewTypeColor = {
-  Video: 'bg-sky-100 text-sky-700',
-  'On-site': 'bg-violet-100 text-violet-700',
-  Phone: 'bg-amber-100 text-amber-700',
-};
-
 const avatarColors = [
   'bg-violet-500',
   'bg-sky-500',

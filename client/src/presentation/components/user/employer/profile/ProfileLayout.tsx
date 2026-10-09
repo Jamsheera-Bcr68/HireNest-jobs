@@ -51,12 +51,11 @@ function ProfileLayout() {
         </div>
         <div className="lg:col-span-2 lg:overflow-y-auto space-y-6 pr-2">
           <CompanyStatistics company={company} stats={stats} />
-         
           <AboutCompany company={company} onUpdate={setCompany} />{' '}
-           <ContactLinks company={company} onUpdate={setCompany} />
+          <ContactLinks company={company} onUpdate={setCompany} />
           <MissionVision company={company} onUpdate={setCompany} />
           <CultureSection company={company} onUpdate={setCompany} />
-       {company&& <CompanyRegistrationDetails company={company}/>}
+          {company && <CompanyRegistrationDetails company={company} />}
         </div>
       </div>
     </div>
@@ -64,4 +63,3 @@ function ProfileLayout() {
 }
 
 export default ProfileLayout;
-

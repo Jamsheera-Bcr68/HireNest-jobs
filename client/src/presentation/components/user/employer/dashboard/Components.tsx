@@ -2,19 +2,14 @@ import {
   ChevronRight,
   Video,
   Building2,
-  CheckCircle2,
   Sparkles,
-  MapPin,
   ArrowUpRight,
   type LucideIcon,
   CircleAlert,
   BellRing,
   Activity,
   Workflow,
-  Clock3,
   BriefcaseBusiness,
-  Users,
-  UserCheck,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type {
@@ -27,7 +22,6 @@ import type {
   RecentActivityType,
 } from './CompanyDashboardContainer';
 import type { InterviewMode } from '../../../../../types/dtos/interview.dto';
-import { is } from 'zod/v4/locales';
 
 type SectionHeadingProps = {
   eyebrow: string;
@@ -141,10 +135,7 @@ export function ApplicationRow({ app }: ApplicationRowProps) {
     <div className="flex items-center gap-3.5 py-3">
       <div className="h-10 w-10 shrink-0 rounded-full bg-emerald-50 flex items-center justify-center text-xs font-semibold text-emerald-700">
         {app.imageUrl ? (
-          <img
-            src={`${app.imageUrl}`}
-            className="shrink-0 rounded-full"
-          />
+          <img src={`${app.imageUrl}`} className="shrink-0 rounded-full" />
         ) : (
           <>{initials}</>
         )}
@@ -329,9 +320,7 @@ export const JobSummaryCard: React.FC<{ job: ActiveJob }> = ({ job }) => {
     </div>
   );
 };
-type RecentActivityProps = {
-  items: RecentActivityType[];
-};
+
 // export function RecentActivity({ items }: RecentActivityProps) {
 //   console.log('items ', items);
 
@@ -375,45 +364,45 @@ export const RecentActivities: React.FC<RecentActivitiesProps> = ({
 
   // Loading state
   if (isLoading) {
-  return (
-    <section className="rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50/70 via-white to-purple-50/40 p-4 shadow-sm sm:p-5">
-      {/* Header Skeleton */}
-      <div className="mb-4 flex items-center gap-2.5">
-        <div className="h-8 w-8 animate-pulse rounded-xl bg-fuchsia-100" />
+    return (
+      <section className="rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50/70 via-white to-purple-50/40 p-4 shadow-sm sm:p-5">
+        {/* Header Skeleton */}
+        <div className="mb-4 flex items-center gap-2.5">
+          <div className="h-8 w-8 animate-pulse rounded-xl bg-fuchsia-100" />
 
-        <div className="space-y-1.5">
-          <div className="h-3.5 w-32 animate-pulse rounded-md bg-slate-200" />
-          <div className="h-2.5 w-44 animate-pulse rounded-md bg-slate-100" />
-        </div>
-      </div>
-
-      {/* Activities Skeleton */}
-      <div className="space-y-2.5">
-        {[1, 2, 3, 4].map((item) => (
-          <div
-            key={item}
-            className="rounded-xl border border-fuchsia-100 bg-white/80 p-3.5"
-          >
-            <div className="flex items-center gap-3">
-              {/* Icon */}
-              <div className="h-9 w-9 shrink-0 animate-pulse rounded-xl bg-fuchsia-100" />
-
-              {/* Content */}
-              <div className="min-w-0 flex-1 space-y-2">
-                <div className="h-3.5 w-2/5 animate-pulse rounded-md bg-slate-200" />
-
-                <div className="h-2.5 w-4/5 animate-pulse rounded-md bg-slate-100" />
-              </div>
-
-              {/* Time */}
-              <div className="h-2.5 w-14 shrink-0 animate-pulse rounded-md bg-slate-100" />
-            </div>
+          <div className="space-y-1.5">
+            <div className="h-3.5 w-32 animate-pulse rounded-md bg-slate-200" />
+            <div className="h-2.5 w-44 animate-pulse rounded-md bg-slate-100" />
           </div>
-        ))}
-      </div>
-    </section>
-  );
-}
+        </div>
+
+        {/* Activities Skeleton */}
+        <div className="space-y-2.5">
+          {[1, 2, 3, 4].map((item) => (
+            <div
+              key={item}
+              className="rounded-xl border border-fuchsia-100 bg-white/80 p-3.5"
+            >
+              <div className="flex items-center gap-3">
+                {/* Icon */}
+                <div className="h-9 w-9 shrink-0 animate-pulse rounded-xl bg-fuchsia-100" />
+
+                {/* Content */}
+                <div className="min-w-0 flex-1 space-y-2">
+                  <div className="h-3.5 w-2/5 animate-pulse rounded-md bg-slate-200" />
+
+                  <div className="h-2.5 w-4/5 animate-pulse rounded-md bg-slate-100" />
+                </div>
+
+                {/* Time */}
+                <div className="h-2.5 w-14 shrink-0 animate-pulse rounded-md bg-slate-100" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50/70 via-white to-purple-50/40 p-4 shadow-sm sm:p-5">
@@ -530,9 +519,6 @@ export const RecentActivities: React.FC<RecentActivitiesProps> = ({
   );
 };
 
-type PendingActionsListProps = {
-  items: PendingActions[];
-};
 // export function PendingActionsList({items}:PendingActionsListProps) {
 //   const navigate=useNavigate()
 //   if (!items.length) {

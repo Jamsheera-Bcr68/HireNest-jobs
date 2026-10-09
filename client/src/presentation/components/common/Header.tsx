@@ -1,21 +1,8 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './header.css';
-import { MessageCircle, MessageSquare, MessageSquareText } from 'lucide-react';
-import { useHeader } from '../../hooks/user/useHeader';
-import { BellRing } from 'lucide-react';
-import { type NotificationType } from '../../../types/notification.type';
-import { useNotifications } from '../../hooks/notifications';
-import { useEffect, useState } from 'react';
-import NotificationModal from './Notifications';
-import { useSelector, useDispatch } from 'react-redux';
-import { type RootState } from '../../../redux/store';
-import { setChatrooms } from '../../../redux/slices/chatroom.slice';
-import { setNotifications } from '../../../redux/slices/notification.slice';
 
-import { chatService } from '../../../services/api-services/chat.service';
-
-const Header = ({ title }: { title?: string }) => {
- const [isMenuOpen, setIsMenuOpen]=useState<boolean>(false)
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
 

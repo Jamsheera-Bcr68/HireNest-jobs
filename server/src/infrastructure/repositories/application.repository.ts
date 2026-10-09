@@ -9,7 +9,6 @@ import mongoose from 'mongoose';
 import {
   AggregatedApplication,
   ApplicationDto,
-
   type ApplicationFilterDto,
 } from '../../applications/dtos/application.dto';
 import { PipelineStage } from 'mongoose';

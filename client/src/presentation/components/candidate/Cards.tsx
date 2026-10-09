@@ -8,11 +8,11 @@ import type { StateType } from '../../../constants/types/user';
 import { useState } from 'react';
 import { cx } from './jobListing/ListingContainter';
 import { useNavigate } from 'react-router-dom';
-import { useTheme}from '../../../contexts/ThemeContext'
+import { useTheme } from '../../../contexts/ThemeContext';
 
 type JobCardProps = {
   job: JobCardDto;
-  
+
   handleSave: (id: string) => Promise<void>;
   handleUnSave: (id: string) => Promise<void>;
 };
@@ -27,10 +27,10 @@ const JobCard = ({ job, handleSave, handleUnSave }: JobCardProps) => {
   const extraSkills = Math.max(0, job.skills.length - VISIBLE_SKILLS);
   const navigate = useNavigate();
 
-const {t}=useTheme()
+  const { t } = useTheme();
   return (
-  <div
-    className={`
+    <div
+      className={`
       max-w-sm w-full rounded-3xl
       ${t.cardBg}
       border ${t.cardBorder}
@@ -39,48 +39,43 @@ const {t}=useTheme()
       transition-all duration-300
       hover:-translate-y-1.5 hover:shadow-xl
     `}
-  >
-    {/* Top accent bar */}
-    <div className="h-2.5 bg-gradient-to-r from-fuchsia-400 to-fuchsia-600 rounded-t-3xl" />
+    >
+      {/* Top accent bar */}
+      <div className="h-2.5 bg-gradient-to-r from-fuchsia-400 to-fuchsia-600 rounded-t-3xl" />
 
-    <div className="p-5">
-
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-
-          {/* Company Logo */}
-          <div
-            className={`
+      <div className="p-5">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex items-center gap-3">
+            {/* Company Logo */}
+            <div
+              className={`
               w-11 h-11 rounded-xl
               ${t.metaBadgeBg}
               border ${t.cardBorder}
               flex items-center justify-center
               overflow-hidden flex-shrink-0
             `}
-          >
-            <CompanyLogo
-              name={job.companyName}
-              src={job.companyLogo}
-            />
-          </div>
+            >
+              <CompanyLogo name={job.companyName} src={job.companyLogo} />
+            </div>
 
-          <div>
-            <div className="flex items-center gap-2">
-              <h2
-                className={`
+            <div>
+              <div className="flex items-center gap-2">
+                <h2
+                  className={`
                   text-[15px] font-medium
                   ${t.cardTitle}
                   leading-tight
                 `}
-              >
-                {job.title}
-              </h2>
+                >
+                  {job.title}
+                </h2>
 
-              {/* Applied */}
-              {isApplied && (
-                <span
-                  className={`
+                {/* Applied */}
+                {isApplied && (
+                  <span
+                    className={`
                     inline-flex items-center gap-1
                     text-[11px]
                     ${t.appliedBg}
@@ -89,69 +84,54 @@ const {t}=useTheme()
                     rounded-full px-2 py-0.5
                     font-medium
                   `}
-                >
-                  <Check size={11} />
-                  Applied
-                </span>
-              )}
-            </div>
+                  >
+                    <Check size={11} />
+                    Applied
+                  </span>
+                )}
+              </div>
 
-            <p
-              className={`
+              <p
+                className={`
                 text-[13px]
                 ${t.companyName}
                 mt-0.5
               `}
-            >
-              {job.companyName}
-            </p>
+              >
+                {job.companyName}
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Bookmark */}
-        <button
-          type="button"
-          aria-label={
-            isSaved
-              ? "Remove from saved jobs"
-              : "Save job"
-          }
-          onClick={(e) => {
-            e.stopPropagation();
+          {/* Bookmark */}
+          <button
+            type="button"
+            aria-label={isSaved ? 'Remove from saved jobs' : 'Save job'}
+            onClick={(e) => {
+              e.stopPropagation();
 
-            isSaved
-              ? handleUnSave(job.id)
-              : handleSave(job.id);
-          }}
-          className={`
+              isSaved ? handleUnSave(job.id) : handleSave(job.id);
+            }}
+            className={`
             p-2 rounded-full
             ${t.navIconBg}
             transition-colors
             mt-0.5
           `}
-        >
-          <Bookmark
-            size={18}
-            className={
-              isSaved
-                ? "text-red-700"
-                : t.iconMuted
-            }
-            fill={
-              isSaved
-                ? "currentColor"
-                : "none"
-            }
-          />
-        </button>
-      </div>
+          >
+            <Bookmark
+              size={18}
+              className={isSaved ? 'text-red-700' : t.iconMuted}
+              fill={isSaved ? 'currentColor' : 'none'}
+            />
+          </button>
+        </div>
 
-      {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-4">
-
-        {/* Location */}
-        <span
-          className={`
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {/* Location */}
+          <span
+            className={`
             inline-flex items-center gap-1.5
             text-[12px]
             ${t.filterBg}
@@ -159,14 +139,14 @@ const {t}=useTheme()
             border ${t.filterBorder}
             rounded-full px-3 py-1
           `}
-        >
-          <MapPin size={12} />
-          {job.location.state}, {job.location.country}
-        </span>
+          >
+            <MapPin size={12} />
+            {job.location.state}, {job.location.country}
+          </span>
 
-        {/* Mode */}
-        <span
-          className={`
+          {/* Mode */}
+          <span
+            className={`
             inline-flex items-center gap-1.5
             text-[12px]
             ${t.filterBg}
@@ -174,14 +154,14 @@ const {t}=useTheme()
             border ${t.filterBorder}
             rounded-full px-3 py-1
           `}
-        >
-          <Briefcase size={12} />
-          {job.mode}
-        </span>
+          >
+            <Briefcase size={12} />
+            {job.mode}
+          </span>
 
-        {/* Job Type */}
-        <span
-          className={`
+          {/* Job Type */}
+          <span
+            className={`
             inline-flex items-center gap-1.5
             text-[12px]
             ${t.filterBg}
@@ -189,14 +169,14 @@ const {t}=useTheme()
             border ${t.filterBorder}
             rounded-full px-3 py-1
           `}
-        >
-          <Clock size={12} />
-          {job.jobType}
-        </span>
+          >
+            <Clock size={12} />
+            {job.jobType}
+          </span>
 
-        {/* Experience */}
-        <span
-          className={`
+          {/* Experience */}
+          <span
+            className={`
             inline-flex items-center gap-1.5
             text-[12px]
             ${t.filterBg}
@@ -204,31 +184,27 @@ const {t}=useTheme()
             border ${t.filterBorder}
             rounded-full px-3 py-1
           `}
-        >
-          <Clock size={12} />
-          {job.experience} years
-        </span>
-      </div>
+          >
+            <Clock size={12} />
+            {job.experience} years
+          </span>
+        </div>
 
-      {/* Salary + Vacancy */}
-      <div className="flex items-center justify-between mb-4">
-
-        <p
-          className={`
+        {/* Salary + Vacancy */}
+        <div className="flex items-center justify-between mb-4">
+          <p
+            className={`
             text-[13px]
             font-medium
             ${t.salaryText}
           `}
-        >
-          {formatSalary(
-            job.min_salary,
-            job.max_salary
-          )}
-        </p>
+          >
+            {formatSalary(job.min_salary, job.max_salary)}
+          </p>
 
-        {job.vacancyCount !== undefined && (
-          <span
-            className={`
+          {job.vacancyCount !== undefined && (
+            <span
+              className={`
               inline-flex items-center gap-1.5
               text-[12px]
               ${t.vacancyBg}
@@ -237,39 +213,27 @@ const {t}=useTheme()
               rounded-full px-3 py-1
               font-medium
             `}
-          >
-            <Users size={12} />
+            >
+              <Users size={12} />
+              {job.vacancyCount}{' '}
+              {Number(job.vacancyCount) === 1 ? 'vacancy' : 'vacancies'}
+            </span>
+          )}
+        </div>
 
-            {job.vacancyCount}{" "}
-            {Number(job.vacancyCount) === 1
-              ? "vacancy"
-              : "vacancies"}
-          </span>
-        )}
-      </div>
-
-      {/* Skills */}
-      <div className="flex flex-wrap gap-1.5">
-        {job.skills
-          .slice(0, VISIBLE_SKILLS)
-          .map((s) => (
-            <SkillChip
-              key={s}
-              label={s}
-            />
+        {/* Skills */}
+        <div className="flex flex-wrap gap-1.5">
+          {job.skills.slice(0, VISIBLE_SKILLS).map((s) => (
+            <SkillChip key={s} label={s} />
           ))}
 
-        {extraSkills > 0 && (
-          <SkillChip
-            label={`+${extraSkills}`}
-          />
-        )}
-      </div>
+          {extraSkills > 0 && <SkillChip label={`+${extraSkills}`} />}
+        </div>
 
-      {/* Deadline */}
-      {job.lastDate && (
-        <div
-          className={`
+        {/* Deadline */}
+        {job.lastDate && (
+          <div
+            className={`
             flex items-center gap-2
             mt-2
             ${t.deadlineBg}
@@ -278,74 +242,67 @@ const {t}=useTheme()
             px-3 py-1
             mb-4
           `}
-        >
-          <span
-            className={`
+          >
+            <span
+              className={`
               text-[12px]
               ${t.deadlineText}
               mt-2
               font-medium
             `}
-          >
-            Application deadline
-          </span>
+            >
+              Application deadline
+            </span>
 
-          <span
-            className={`
+            <span
+              className={`
               text-[12px]
               ${t.deadlineDate}
               font-medium
               ml-auto
             `}
-          >
-            {new Date(job.lastDate).toLocaleDateString(
-              "en-US",
-              {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              }
-            )}
-          </span>
-        </div>
-      )}
+            >
+              {new Date(job.lastDate).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </span>
+          </div>
+        )}
 
-      {/* Footer */}
-      <div
-        className={`
+        {/* Footer */}
+        <div
+          className={`
           border-t ${t.dividerH}
           pt-2 
           flex items-center
           justify-between gap-2
         `}
-      >
-        {/* Posted Date */}
-        <span
-          className={`
+        >
+          {/* Posted Date */}
+          <span
+            className={`
             text-[12px]
             ${t.footerText}
             whitespace-nowrap
           `}
-        >
-          Posted:{" "}
-          {job?.createdAt
-            ? new Date(
-                job.createdAt
-              ).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })
-            : ""}
-        </span>
+          >
+            Posted:{' '}
+            {job?.createdAt
+              ? new Date(job.createdAt).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })
+              : ''}
+          </span>
 
-        {/* View Button */}
-        <button
-          onClick={() =>
-            navigate(`/jobs/${job.id}`)
-          }
-          type="button"
-          className={`
+          {/* View Button */}
+          <button
+            onClick={() => navigate(`/jobs/${job.id}`)}
+            type="button"
+            className={`
             px-4 py-1.5
             text-[13px]
             font-medium
@@ -358,14 +315,13 @@ const {t}=useTheme()
 
             ${t.viewHover}
           `}
-        >
-          View
-        </button>
+          >
+            View
+          </button>
+        </div>
       </div>
-
     </div>
-  </div>
-);
+  );
   // return (
   //   <div className="max-w-sm w-full rounded-3xl bg-white border border-gray-200 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl">
   //     {/* Top accent bar */}
@@ -510,9 +466,11 @@ const {t}=useTheme()
 export default JobCard;
 
 function CompanyLogo({ src, name }: { src: string; name: string }) {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  console.log(`company logo  is ${src}`);
+
   const { t } = useTheme();
   const [broken, setBroken] = useState(false);
+  console.log(broken);
   const initials = name
     .split(' ')
     .map((w) => w[0])
@@ -523,7 +481,7 @@ function CompanyLogo({ src, name }: { src: string; name: string }) {
   if (src) {
     return (
       <img
-        src={`${backendUrl}${src}`}
+        src={`${src}`}
         alt={name}
         onError={() => setBroken(true)}
         className={cx(

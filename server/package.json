@@ -4,6 +4,8 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/main/server.ts",
     "start": "ts-node src/main/server.ts",
+    "build": "tsc",
+    "start:prod": "node dist/main/server.js",
     "lint": "eslint \"src/**/*.{ts,js}\"",
     "lint:fix": "eslint \"src/**/*.{ts,js}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,js,json}\""

@@ -1,7 +1,5 @@
 import type { CompanyDataDto } from '../../../../types/dtos/company.dto';
 
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
-
 function CompanyModalContent({ company }: { company: CompanyDataDto | null }) {
   if (!company) return null;
   return (

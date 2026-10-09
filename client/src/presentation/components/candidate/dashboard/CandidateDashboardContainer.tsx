@@ -91,6 +91,8 @@ const StatusConfig: Record<
   rejected: { label: 'Rejected', color: '#e11d48' },
   interviewScheduled: { label: 'Interview Scheduled', color: '#196407' },
   withdrawn: { label: 'Withdrew', color: '#816e72' },
+  hired: { label: 'Hired', color: '#1cd429' },
+  interviewCompleted: { label: 'Completed', color: '#51d195' },
 };
 
 const STATUS_BADGE: Record<
@@ -121,6 +123,14 @@ const STATUS_BADGE: Record<
   interviewScheduled: {
     color: 'bg-blue-100 text-blue-700',
     className: 'bg-emerald-50 text-emerald-700 ring-emerald-600/15',
+  },
+  interviewCompleted: {
+    color: 'bg-green-100 text-green-700',
+    className: 'bg-emerald-50 text-emerald-700 ring-emerald-600/15',
+  },
+  hired: {
+    color: 'bg-yellow-100 text-yellow-700',
+    className: 'bg-yellow-50 text-yellow-700 ring-yellow-600/15',
   },
 };
 
@@ -337,11 +347,19 @@ function CandidateDashboardContainer() {
           profileData={profileData}
         />
       </div>
-      <RecomentedJobs isLoading={isLoading} jobs={jobs} handleApplyClick={handleApplyClick} saveJobHandle={saveJobHandle} unSaveJobHandle={unSaveJobHandle}  />
-     <SelectResumeModal resumes={resumes}
+      <RecomentedJobs
+        isLoading={isLoading}
+        jobs={jobs}
+        handleApplyClick={handleApplyClick}
+        saveJobHandle={saveJobHandle}
+        unSaveJobHandle={unSaveJobHandle}
+      />
+      <SelectResumeModal
+        resumes={resumes}
         isOpen={showResumeModal}
         onClose={() => setShowResumeModal(false)}
-        onApply={(resumeId: string) => applyJob(resumeId)} />
+        onApply={(resumeId: string) => applyJob(resumeId)}
+      />
     </div>
   );
 }

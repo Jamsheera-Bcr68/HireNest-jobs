@@ -68,7 +68,6 @@ function RightComponent({ application, updateStatus, role }: Props) {
                 );
                 const nextIndex = APP_STATUS_ORDER.indexOf(s.value);
 
-                const isPast = nextIndex < currentIndex;
                 const isCurrent = nextIndex === currentIndex;
                 const isFuture = nextIndex > currentIndex;
 

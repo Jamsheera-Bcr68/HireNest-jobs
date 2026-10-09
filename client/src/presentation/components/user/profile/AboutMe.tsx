@@ -9,9 +9,7 @@ const AboutMe = ({
   onUserUpdate,
 }: {
   user: UserProfileType | null;
-  onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | null>
-  >,
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>;
 }) => {
   const { showToast } = useToast();
   const {
@@ -36,12 +34,11 @@ const AboutMe = ({
   useEffect(() => {
     autoResize();
   }, [value]);
-  const {t}=useTheme()
-
+  const { t } = useTheme();
 
   return (
     <div
-    className={`
+      className={`
       ${t.cardBg}
       ${t.cardBorder}
       border
@@ -49,7 +46,7 @@ const AboutMe = ({
       shadow-md
       p-6
     `}
-  >
+    >
       <div className="flex justify-between items-center mb-4">
         <h3 className={`text-xl font-bold ${t.cardTitle}`}>About Me</h3>
 
@@ -85,7 +82,6 @@ const AboutMe = ({
         readOnly={!!user?.about && !isEditing}
         onChange={handleChange}
         onBlur={onBlur}
-         
         ref={textref}
         className={`w-full ${t.inputText}
         ${t.placeholder} resize-none bg-transparent rounded p-2 ${isEditing ? 'border border_grey-300' : ''}  focus:outline-none text-gray-700 leading-relaxed`}

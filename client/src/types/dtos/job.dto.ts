@@ -3,7 +3,6 @@ import { Experience_Types } from './profile-types/experience.type';
 import { type SkillDto } from './skill.dto';
 import type { StatusType } from './profile-types/user.types';
 import { type AddressType } from '../profile.types';
-import type { EducationType } from './profile-types/education.types';
 
 export const JOB_TYPES = ['partTime', 'fullTime'] as const;
 export type JobType = (typeof JOB_TYPES)[number];
@@ -39,7 +38,7 @@ export type JobCardDto = {
   mode: WorkMode;
   min_salary: number;
   max_salary: number;
-  appCount:number
+  appCount: number;
   createdAt: string;
   lastDate: string;
   skills: string[];

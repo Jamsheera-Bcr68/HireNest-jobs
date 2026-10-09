@@ -11,14 +11,13 @@ export default function ReportJobModal({
 }: {
   handleChange: (data: Partial<ReportFormType>) => void;
   formData: ReportFormType;
-  error: ErrorType|null;
+  error: ErrorType | null;
   onSubmit: () => void;
   open: boolean;
   onClose: () => void;
 }) {
   if (!open) return null;
-  console.log('onSubmit',onSubmit);
-  
+  console.log('onSubmit', onSubmit);
 
   return (
     <div

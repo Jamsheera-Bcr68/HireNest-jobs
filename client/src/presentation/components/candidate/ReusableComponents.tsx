@@ -131,15 +131,15 @@ type FilterProps<T extends BaseFilter> = {
 
   filterOptions: FilterOption<T>[];
   filter: T;
-  sortOrder: SortOption
-  onResetFilter:()=>void
+  sortOrder: SortOption;
+  onResetFilter: () => void;
 };
 export const Filters = <T extends BaseFilter>({
   onFilterChange,
   filterOptions,
   filter,
   sortOrder,
-  onResetFilter
+  onResetFilter,
 }: FilterProps<T>) => {
   const [search, setSearch] = useState('');
   useEffect(() => {

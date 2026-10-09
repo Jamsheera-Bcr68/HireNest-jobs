@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { type CompanyProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import { Gift, SquarePenIcon } from 'lucide-react';
-import ModalLayout from '../../../../Layoutes/ModalLayout';
-import CompanyProfileInputForm from './CompanyProfileInputForm';
+
 export function BenefitsPerks({
   company,
 }: {
@@ -11,12 +10,11 @@ export function BenefitsPerks({
   if (!company) return null;
 
   const perks = company?.benefits || [];
-  const [benefits, setBenefits] = useState<string[] | []>([]);
-  const [benefit, setBenefit] = useState<string>('');
-  const [open, setOpen] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
 
-  const addBenefits = () => {};
+  const [open, setOpen] = useState<boolean>(false);
+
+  console.log(open);
+
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <div className="flex justify-between">

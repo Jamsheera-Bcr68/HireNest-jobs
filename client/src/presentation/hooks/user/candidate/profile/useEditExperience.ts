@@ -21,8 +21,7 @@ export const useExperience = (
   open: boolean,
   onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>,
   onClose: () => void,
-  exp: ExperienceType | null,
-  user?: UserProfileType
+  exp: ExperienceType | null
 ) => {
   const { showToast } = useToast();
 
@@ -177,11 +176,14 @@ export const useExperience = (
       const data = await profileService.editExperience(formData, exp.id);
       console.log('user after adding experience', data);
       showToast({ msg: data.message, type: 'success' });
-      onUserUpdate((prev)=>{
-        if(!prev)return prev
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
         return {
-          ...prev,experience:prev.experience.map(ex=>ex.id!==exp.id?ex:data.experience)
-        }
+          ...prev,
+          experience: prev.experience.map((ex) =>
+            ex.id !== exp.id ? ex : data.experience
+          ),
+        };
       });
       onClose();
       setFormData({

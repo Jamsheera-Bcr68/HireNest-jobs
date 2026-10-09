@@ -32,7 +32,7 @@ export const applicationService = {
     page = 1,
     limit = 5
   ) {
- //   console.log('application filter form sercice', filter);
+    //   console.log('application filter form sercice', filter);
 
     const res = await axiosInstance.get(API_ENDPOINTS.APPLICATIONS, {
       params: { ...filter, page, limit },
@@ -45,7 +45,7 @@ export const applicationService = {
     page = 1,
     limit = 5
   ) {
- //   console.log('application filter form sercice', filter);
+    //   console.log('application filter form sercice', filter);
 
     const res = await axiosInstance.get(API_ENDPOINTS.JOB_APPLICATIONS(jobId), {
       params: { ...filter, page, limit },
@@ -59,7 +59,7 @@ export const applicationService = {
   },
 
   async withdrawApplication(id: string, status?: ApplicationStatusType) {
-   // console.log('application id', id);
+    // console.log('application id', id);
 
     const res = await axiosInstance.patch(API_ENDPOINTS.APPLICATION(id), {
       status,
@@ -71,7 +71,7 @@ export const applicationService = {
     status?: ApplicationStatusType,
     reason?: string
   ) {
-   // console.log('application id reason', id, status, reason);
+    // console.log('application id reason', id, status, reason);
 
     const res = await axiosInstance.patch(API_ENDPOINTS.APPLICATION(id), {
       status,

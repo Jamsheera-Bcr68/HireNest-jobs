@@ -1,16 +1,5 @@
-import {
-  Mic,
-  MicOff,
-  Video,
-  VideoOff,
-  MonitorUp,
-  ChevronRight,
-  MessageSquare,
-  Users,
-  MoreHorizontal,
-  PhoneOff,
-} from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { Mic, MicOff, Video, VideoOff, PhoneOff } from 'lucide-react';
+import { type ReactNode } from 'react';
 type Props = {
   micOn: boolean;
   toggleMic: () => void;
@@ -27,11 +16,8 @@ function ControllBar({
   toggleMic,
   camOn,
   togleCam,
-  sharingScreen,
-  toggleSharing,
-  onEndCall,
+
   setEndForm,
-  panel,
 }: Props) {
   return (
     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 rounded-full bg-[#17181b]/95 backdrop-blur-md border border-white/10 px-3 py-2.5 shadow-2xl">

@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { type DashboardCompany, type PendingJobs } from './DashbordContainer';
 
-const bseUrl = import.meta.env.VITE_BACKEND_URL;
+//const bseUrl = import.meta.env.VITE_BACKEND_URL;
 
 function initials(name: string) {
   return name
@@ -82,7 +82,7 @@ function CompanyRow({ company }: CompanyRowProps) {
         <div className="w-10 h-10 shrink-0 rounded-lg bg-slate-900 text-white flex items-center justify-center text-xs font-semibold overflow-hidden">
           {company.logoUrl ? (
             <img
-              src={`${bseUrl}${company.logoUrl}`}
+              src={`${company.logoUrl}`}
               alt=""
               className="w-full h-full object-cover"
             />
@@ -380,14 +380,14 @@ export default function ActionPending({
   totalJobs,
 }: Props) {
   const [tab, setTab] = useState(totalCompanies ? 'companies' : 'jobs');
- 
-useEffect(() => {
-  if (totalCompanies > 0) {
-    setTab('companies');
-  } else if (totalJobs > 0) {
-    setTab('jobs');
-  }
-}, [totalCompanies, totalJobs]);
+
+  useEffect(() => {
+    if (totalCompanies > 0) {
+      setTab('companies');
+    } else if (totalJobs > 0) {
+      setTab('jobs');
+    }
+  }, [totalCompanies, totalJobs]);
   console.log('pending companies from action pending ', companies);
   console.log('pending jobs from action pending ', jobs);
 

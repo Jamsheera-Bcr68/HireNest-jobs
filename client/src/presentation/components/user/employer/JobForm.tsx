@@ -9,7 +9,6 @@ import PermissionModal from '../../../modals/PermissionModal';
 import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
 import { jobService } from '../../../../services/api-services/jobService';
 import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
-import { useSelector } from 'react-redux';
 
 const workMode = ['hybrid', 'remote', 'onsite'];
 type Props = {
@@ -26,7 +25,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
   const {
     formData,
     handleChange,
-    handleSubmit,
+
     handleSubmitForm,
     setFormData,
     error,
@@ -39,7 +38,6 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
   const [allSkills, setAllSkills] = useState<SkillType[] | []>([]);
   const [res, setRes] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
-  
 
   const ErrorText = ({ error }: { error: string }) => {
     return <p className="text-sm text-red-600"> * {error}</p>;

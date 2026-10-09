@@ -10,7 +10,7 @@ type FeedbackModalProps = {
   onSubmit: (data: {
     result: InterviewResult;
     feedback?: string;
-    score:number
+    score: number;
   }) => Promise<void>;
 };
 
@@ -44,7 +44,7 @@ export default function InterviewFeedbackModal({
       setError({ score: 'Score cannot be greater than 10' });
     }
     setError(null);
-    onSubmit({ feedback, result,score });
+    onSubmit({ feedback, result, score });
   };
 
   return (

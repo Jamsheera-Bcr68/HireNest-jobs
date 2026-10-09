@@ -11,7 +11,6 @@ import {
   BanIcon,
 } from 'lucide-react';
 
-import AddReasonModal from '../../../admin/jobs/AddReasonModal';
 import ConfirmationModal from '../../../../modals/ConfirmationModal';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

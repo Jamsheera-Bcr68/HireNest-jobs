@@ -6,10 +6,7 @@ import { logout } from '../../../redux/slices/auth.slice';
 
 import { authService } from '../../../services/api-services/authServices';
 import { useEffect, useState } from 'react';
-import {
-  setNotifications,
- 
-} from '../../../redux/slices/notification.slice';
+import { setNotifications } from '../../../redux/slices/notification.slice';
 import { type NotificationType } from '../../../types/notification.type';
 import { useToast } from '../../../shared/toast/use-toast';
 import { type RootState } from '../../../redux/store';
@@ -28,7 +25,7 @@ function Header({
   const { showToast } = useToast();
   const dispatch = useDispatch();
   const notifications = useSelector(
-    (state: RootState) => state.notification.notifications??[]
+    (state: RootState) => state.notification.notifications ?? []
   );
 
   const [nots, setNots] = useState<NotificationType[]>([]);
@@ -41,7 +38,7 @@ function Header({
     //   console.log('form logout function');
     try {
       const data = await authService.logout();
-      //  console.log(data);
+    
       showToast({ msg: data.message, type: 'success' });
 
       dispatch(logout());
@@ -55,12 +52,11 @@ function Header({
     }
   };
 
-   useEffect(() => {
+  useEffect(() => {
     if (notificationOpen) {
       setNots(notifications.filter((n) => n.isRead === false));
     }
   }, [notifications, notificationOpen]);
-
 
   useEffect(() => {
     //console.log(user?.role, 'from header');
@@ -78,12 +74,12 @@ function Header({
 
   const newCount = notifications.filter((n) => n.isRead == false).length;
 
-  const fetchNotifications = async (tab: 'new' | 'all') => {
-    const not = await getNotifications(tab);
-    console.log('notifications', not);
+  // const fetchNotifications = async (tab: 'new' | 'all') => {
+  //   const not = await getNotifications(tab);
+  //   console.log('notifications', not);
 
-    setNotifications(not);
-  };
+  //   setNotifications(not);
+  // };
 
   const handleNotificationClick = async () => {
     // console.log('from notification click');

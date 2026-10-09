@@ -47,7 +47,7 @@ export function Avatar({
     </div>
   );
 }
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
 function ConversationItem({ conversation, isActive, onClick }: Props) {
   return (
     <button

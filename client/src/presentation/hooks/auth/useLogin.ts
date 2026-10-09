@@ -87,8 +87,8 @@ export const useLogin = (role: UserRole) => {
       setErrors({});
       const { accessToken, user, admin } = data.data;
       console.log('login admin,accecc token', accessToken);
-      console.log('admin',admin);
-      
+      console.log('admin', admin);
+
       localStorage.setItem('accessToken', accessToken);
       if (user) {
         localStorage.setItem('user', user);

@@ -7,7 +7,6 @@ import {
 } from '../database/models/notification.model';
 import mongoose, { Types } from 'mongoose';
 
-
 export class NotificationRepository
   extends GenericRepository<Notification, INotificationDocument>
   implements INotificationRepository

@@ -5,8 +5,8 @@ import EmployerHome from './employer/Home';
 
 function Home() {
   const { user } = useSelector((state: RootState) => state.auth);
-  console.log('usr is  home ',user);
-  
+  console.log('usr is  home ', user);
+
   return <> {user.role == 'company' ? <EmployerHome /> : <HomeConatiner />}</>;
 }
 

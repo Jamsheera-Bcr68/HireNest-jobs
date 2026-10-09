@@ -15,8 +15,6 @@ export default function EditJobModal({
   open,
   onClose,
   children,
-
-  loading = false,
 }: Props) {
   if (!open) return null;
 

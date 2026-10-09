@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { InterviewDto } from '../../../../../types/dtos/interview.dto';
 
-import {
-  convertDateStringToInputDate,
-  formatTimeForInput,
-} from '../../../../../utils/date-conversion';
+import { formatTimeForInput } from '../../../../../utils/date-conversion';
 import { useLockBodyScroll } from '../../../../hooks/useBodyLock';
 
 type ErrorType = {
@@ -29,7 +26,7 @@ function RescheduleModal({
 
   const [error, setError] = useState<ErrorType | null>(null);
   const [time, setTime] = useState<string | null>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading] = useState<boolean>(false);
 
   useLockBodyScroll(isOpen);
 

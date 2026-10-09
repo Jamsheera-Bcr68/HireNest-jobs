@@ -1,9 +1,9 @@
 import { type UserProfileType } from '../../../../types/dtos/profile-types/user.types';
-import type { SkillType } from '../../../../types/dtos/profile-types/skill.types';
+
 import { useToast } from '../../../../shared/toast/use-toast';
 import { useEditProfileDetails } from '../../../hooks/user/candidate/profile/useEditProfileDetails';
 import { X } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useProfile } from '../../../hooks/user/candidate/profile/useProfile';
 import { useTheme } from '../../../../contexts/ThemeContext';
 
@@ -14,9 +14,7 @@ const Skills = ({
 }: {
   user: UserProfileType | null;
 
-  onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | null>
-  >;
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>;
 }) => {
   const { showToast } = useToast();
   const { updateFilter, allSkills } = useProfile();
@@ -30,7 +28,6 @@ const Skills = ({
     setIsAddSkill,
   } = useEditProfileDetails(showToast, onUserUpdate, user, allSkills);
   const inputRef = useRef<HTMLDivElement>(null);
-  const [isLoading,setIsLoading]=useState<boolean>(false)
 
   const closeSkillInput = () => {
     setIsAddSkill(false);
@@ -60,22 +57,24 @@ const Skills = ({
       clearTimeout(timer);
     };
   }, [skillName]);
-  const {t}=useTheme()
+  const { t } = useTheme();
 
   return (
-    <div className={`
+    <div
+      className={`
       ${t.cardBg}
       ${t.cardBorder}
       border
       rounded-lg
       shadow-md
       p-6
-    `}   >
+    `}
+    >
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-           <h3 className={`text-xl font-bold ${t.cardTitle}`}>Skills</h3>
+        <h3 className={`text-xl font-bold ${t.cardTitle}`}>Skills</h3>
 
-        {!isAddSkill &&(
+        {!isAddSkill && (
           <button
             onClick={() => setIsAddSkill(true)}
             className={`
@@ -87,8 +86,8 @@ const Skills = ({
           >
             Add Skill
           </button>
-        )  }
-        {isAddSkill&&(
+        )}
+        {isAddSkill && (
           <button
             onClick={(e) => {
               if (
@@ -115,7 +114,7 @@ const Skills = ({
           user.skills.map((skill) => (
             <span
               key={skill.id}
-               className={`
+              className={`
               flex items-center
               ${t.skillChipBg}
               ${t.skillChipText}
@@ -150,7 +149,7 @@ const Skills = ({
               setSkillName(e.target.value);
             }}
             placeholder="Enter a skill"
-                className={`
+            className={`
             w-full
             ${t.surface}
 ${t.surfaceBorder}
@@ -166,7 +165,8 @@ ${t.surfaceBorder}
           />
 
           {filteredSkills.length > 0 && (
-            <div className={`
+            <div
+              className={`
               absolute
               ${t.dropdownBg}
               ${t.dropdownBorder}
@@ -176,7 +176,8 @@ ${t.surfaceBorder}
               rounded-md
               z-10
               overflow-hidden
-            `}>
+            `}
+            >
               {filteredSkills.map((skill) => (
                 <div
                   key={skill.id}
@@ -184,7 +185,7 @@ ${t.surfaceBorder}
                     setSkillName(skill.skillName);
                     selectSkill(skill.id);
                   }}
-                        className={`
+                  className={`
                   ${t.dropdownHover}
                   ${t.inputText}
                   p-2

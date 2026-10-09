@@ -1,6 +1,3 @@
-// import React from 'react';
-import { useState } from "react";
-
 import Statistics from '../../components/admin/dashboard/Statistics';
 
 const Dashboard: React.FC = () => {
@@ -14,4 +11,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-

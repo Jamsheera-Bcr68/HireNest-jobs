@@ -2,7 +2,10 @@ import { ChevronRight, TrendingUp, Inbox, FilePenLine } from 'lucide-react';
 import { SkeletonBlock } from './StatusCards';
 import { EmptyState } from './Common';
 import { useMemo } from 'react';
-import { type AppStatusData, type RecentApps } from './CandidateDashboardContainer';
+import {
+  type AppStatusData,
+  type RecentApps,
+} from './CandidateDashboardContainer';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -16,29 +19,25 @@ import { formatCurrentDate } from '../../../../utils/date-conversion';
 type Props = {
   appData: AppStatusData[];
   isLoading: boolean;
-  recentApps:RecentApps[]
+  recentApps: RecentApps[];
 };
 
+function AppStatusChart({ appData, isLoading, recentApps }: Props) {
+  const max = appData.reduce((a, c) => Math.max(a, c.count), 0);
+  const ap = appData.find((a) => a.count == max);
 
-
-const baseUrl=import.meta.env.VITE_BACKEND_URL
-function AppStatusChart({ appData, isLoading ,recentApps}: Props) {
-
-  const max=appData.reduce((a,c)=>Math.max(a,c.count),0)
-  const ap=appData.find(a=>a.count==max)
-  
-  console.log('app data',isLoading,appData);
-  console.log('recent app data',recentApps);
+  console.log('app data', isLoading, appData);
+  console.log('recent app data', recentApps);
   const totalStatus = useMemo(
-    () => appData.reduce((sum, d) => sum + d.count, 0),[isLoading,appData]
-    
+    () => appData.reduce((sum, d) => sum + d.count, 0),
+    [isLoading, appData]
   );
-const naviage=useNavigate()
+  const naviage = useNavigate();
 
-const onViewAllClick=()=>{
-  naviage('/candidate/applications')
-}
-  
+  const onViewAllClick = () => {
+    naviage('/candidate/applications');
+  };
+
   return (
     <div className="lg:col-span-2 space-y-5">
       {/* Application status chart */}
@@ -76,7 +75,7 @@ const onViewAllClick=()=>{
                     //  onMouseEnter={(_, idx) => setActiveSlice(idx)}
                     // onMouseLeave={() => setActiveSlice(null)}
                   >
-                    {appData?.map((d, i) => (
+                    {appData?.map((d) => (
                       <Cell
                         key={d.label}
                         fill={d.color}
@@ -122,17 +121,27 @@ const onViewAllClick=()=>{
                 ))}
               </div>
               <div className="mt-4 pt-3 border-t border-slate-100 flex items-start gap-2">
-                {ap?(<><TrendingUp
-                  size={14}
-                  className="text-teal-600 mt-0.5 shrink-0"
-                />
-                <p className="text-[11.5px] text-slate-500 leading-relaxed">
-                  Most of your applications are  {' '}
-                  <span className="font-medium text-slate-700">
-                    {`${ap?.label}`}
-                  </span>{' '}
-                 
-                </p></>):(<><FilePenLine/><p className="text-[11.5px] text-slate-500 leading-relaxed">You don't have any applications</p></>)}
+                {ap ? (
+                  <>
+                    <TrendingUp
+                      size={14}
+                      className="text-teal-600 mt-0.5 shrink-0"
+                    />
+                    <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                      Most of your applications are{' '}
+                      <span className="font-medium text-slate-700">
+                        {`${ap?.label}`}
+                      </span>{' '}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <FilePenLine />
+                    <p className="text-[11.5px] text-slate-500 leading-relaxed">
+                      You don't have any applications
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -167,7 +176,7 @@ const onViewAllClick=()=>{
             icon={Inbox}
             title="No applications yet"
             subtitle="Jobs you apply to will show up here so you can track their progress."
-           cta='cta'
+            cta="cta"
           />
         ) : (
           <div className="divide-y divide-slate-100">
@@ -179,15 +188,19 @@ const onViewAllClick=()=>{
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-semibold shrink-0 ${a.color}`}
                 >
-                  {a.logoUrl?<img className='rounded-xl' src={`${a.logoUrl}`} alt="" />:a.companyName.slice(-1)}
-                 
+                  {a.logoUrl ? (
+                    <img className="rounded-xl" src={`${a.logoUrl}`} alt="" />
+                  ) : (
+                    a.companyName.slice(-1)
+                  )}
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-[13.5px] font-medium text-slate-800 truncate">
                     {a.title}
                   </p>
                   <p className="text-[11.5px] text-slate-400 truncate">
-                    {a.companyName}  · Applied  {formatCurrentDate(new Date(a.appliedAt))}
+                    {a.companyName} · Applied{' '}
+                    {formatCurrentDate(new Date(a.appliedAt))}
                   </p>
                 </div>
                 <span
@@ -201,19 +214,30 @@ const onViewAllClick=()=>{
         )}
       </div>
 
-     
       <div
         className="rise bg-white rounded-2xl p-5 sm:p-6 ring-1 ring-slate-900/[0.05] lg:hidden"
         style={{ animationDelay: '200ms' }}
       >
-        <SectionHeader title="Recent Notifications" actionLabel="View all" onClick={onViewAllClick}/>
+        <SectionHeader
+          title="Recent Notifications"
+          actionLabel="View all"
+          onClick={onViewAllClick}
+        />
         {/* <NotificationList notifications={notifications} isLoading={isLoading} /> */}
       </div>
     </div>
   );
 }
 
-export function SectionHeader({ title, actionLabel ,onClick}:{title:string,actionLabel:string,onClick?:()=>void}) {
+export function SectionHeader({
+  title,
+  actionLabel,
+  onClick,
+}: {
+  title: string;
+  actionLabel: string;
+  onClick?: () => void;
+}) {
   return (
     <div className="flex items-center justify-between mb-4">
       <h3 className="font-display text-[15px] font-semibold text-slate-900 tracking-tight">

@@ -3,17 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from './Button';
 import { useSelector } from 'react-redux';
 
-import type { StateType} from '../../../constants/types/user'
+import type { StateType } from '../../../constants/types/user';
 
-
-import CompanyRegistrationPendingModal from '../../modals/CompanyRegistrationPendingModal'
-import ModalLayout from '../../Layoutes/ModalLayout'
+import CompanyRegistrationPendingModal from '../../modals/CompanyRegistrationPendingModal';
+import ModalLayout from '../../Layoutes/ModalLayout';
 import { useState } from 'react';
-type HeroProps = {
-  heroImage: string;
-};
 
-const CommonHome = ({ heroImage }: HeroProps) => {
+const CommonHome = () => {
   const user = useSelector((state: StateType) => state.auth.user);
 
   const [pendingOpen, setPendingOpen] = useState(false);

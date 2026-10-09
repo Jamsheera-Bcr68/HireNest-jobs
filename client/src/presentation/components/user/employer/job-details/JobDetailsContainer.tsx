@@ -22,13 +22,12 @@ const tabs = [
   { id: 'overview', label: 'Overview' },
   { id: 'responsibilities', label: 'Responsibilities' },
   { id: 'benefits', label: 'Benefits' },
-
 ];
 
 function JobDetailsContainer() {
   const { jobId } = useParams();
-  const role=useSelector((state:RootState)=>state.auth.user?.role)
-if(role==='admin')tabs.push(  { id: 'company', label: 'Company' },)
+  const role = useSelector((state: RootState) => state.auth.user?.role);
+  if (role === 'admin') tabs.push({ id: 'company', label: 'Company' });
   const { showToast } = useToast();
   const [job, setJob] = useState<JobDetailsDto | null>(null);
   const [tab, setTab] = useState<string>('overview');
@@ -107,9 +106,11 @@ if(role==='admin')tabs.push(  { id: 'company', label: 'Company' },)
         <HeroPart job={job} />
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6 items-start">
           <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-            <Tabs tab={tab} tabs={tabs} setTab={setTab} role={role}/>
+            <Tabs tab={tab} tabs={tabs} setTab={setTab} role={role} />
             <div className="p-6 lg:p-7 space-y-6">
-              {tab == 'overview' && <OverView tab={tab} job={job} role={role}/>}
+              {tab == 'overview' && (
+                <OverView tab={tab} job={job} role={role} />
+              )}
               {tab == 'responsibilities' && (
                 <Responsibilities job={job} tab={tab} role={role} />
               )}
@@ -121,7 +122,11 @@ if(role==='admin')tabs.push(  { id: 'company', label: 'Company' },)
             </div>
           </div>
           <div className="space-y-4">
-            <RightSideBar role={role} updateStatus={handleUpdateStatus} job={job}  />
+            <RightSideBar
+              role={role}
+              updateStatus={handleUpdateStatus}
+              job={job}
+            />
           </div>
         </div>
       </div>

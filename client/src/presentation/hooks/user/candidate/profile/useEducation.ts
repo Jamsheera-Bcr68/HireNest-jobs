@@ -1,7 +1,6 @@
 import {
   type EducationStatus,
   type EducationLevel,
-  EDUCATION_STATUS,
   type EducationType,
 } from '../../../../../types/dtos/profile-types/education.types';
 import { educationSchema } from '../../../../../libraries/validations/auth/candidate/education-form.validation';
@@ -53,9 +52,7 @@ const initialError: FormError = {
   cgpa: '',
 };
 export const useEducation = (
-  onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | null>
-  >,
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>,
   onClose: () => void,
   editEdu: EducationType | null
 ) => {
@@ -118,24 +115,27 @@ export const useEducation = (
       const data = editEdu
         ? await profileService.editEducation(result.data, editEdu.id)
         : await profileService.addEducation(result.data);
-      if (editEdu) onUserUpdate((prev) => {
-        if (!prev) return prev;
+      if (editEdu)
+        onUserUpdate((prev) => {
+          if (!prev) return prev;
 
-        return {
-          ...prev,
-          education: prev.education.map(edu=>edu.id===editEdu.id?data.education:edu),
-        };
-      });
-      else  onUserUpdate((prev) => {
-        if (!prev) return prev;
+          return {
+            ...prev,
+            education: prev.education.map((edu) =>
+              edu.id === editEdu.id ? data.education : edu
+            ),
+          };
+        });
+      else
+        onUserUpdate((prev) => {
+          if (!prev) return prev;
 
-        return {
-          ...prev,
-          education:[...prev.education, data.education],
-        };
-      });
+          return {
+            ...prev,
+            education: [...prev.education, data.education],
+          };
+        });
 
-     
       if (!editEdu) {
         dispatch(
           updateUser({ educationCount: (user.educationCount || 0) + 1 })

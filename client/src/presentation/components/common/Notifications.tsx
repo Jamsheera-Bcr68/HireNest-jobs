@@ -578,7 +578,7 @@ type Props = {
   onMarkRead: (id: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
   onMarkAll: () => void;
-  onTabChange: (tab: 'new' | 'all') =>void;
+  onTabChange: (tab: 'new' | 'all') => void;
 };
 
 // const TYPE_CONFIG = {
@@ -611,7 +611,7 @@ function NotificationItem({
 }: {
   notification: NotificationType;
   onMarkRead: (id: string) => Promise<void>;
-  onDelete: (id: string ) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }) {
   // const cfg =
   //   TYPE_CONFIG[notification.type] || TYPE_CONFIG.alert;
@@ -698,7 +698,7 @@ export default function NotificationModal({
   onMarkRead,
   onTabChange,
 
-   onDelete,
+  onDelete,
   onMarkAll,
 }: Props) {
   const unreadCount = notifications.filter((n) => !n.isRead).length;
@@ -827,7 +827,7 @@ export default function NotificationModal({
                 key={notification.id}
                 notification={notification}
                 onMarkRead={onMarkRead}
-                 onDelete={onDelete}
+                onDelete={onDelete}
               />
             ))
           )}

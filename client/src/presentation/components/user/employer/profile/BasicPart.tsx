@@ -7,9 +7,7 @@ import ChangePasswordModal from '../../../../modals/ChangePasswordModal';
 
 type Props = {
   company: CompanyProfileType | null;
-  onUpdate: React.Dispatch<
-    React.SetStateAction<CompanyProfileType | null>
-  >;
+  onUpdate: React.Dispatch<React.SetStateAction<CompanyProfileType | null>>;
 };
 function BasicPart({ company, onUpdate }: Props) {
   const [open, setOpen] = useState<boolean>(false);

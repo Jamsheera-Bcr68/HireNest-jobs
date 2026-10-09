@@ -125,7 +125,6 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
         isOpen={showInterview}
         onClose={() => setShowInterview(false)}
         onSchedule={onSchedule}
-
         candidate={{
           name: application.candidate.candidateName,
           email: application.candidate.email,

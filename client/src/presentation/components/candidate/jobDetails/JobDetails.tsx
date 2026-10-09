@@ -1,5 +1,5 @@
 import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
-import SelectResumeModal from '../applications/ResumeModal';
+
 import { useTheme } from '../../../../contexts/ThemeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../../redux/store';
@@ -7,29 +7,29 @@ import { ArrowLeft } from 'lucide-react';
 import Hero from './Hero';
 import { jobService } from '../../../../services/api-services/jobService';
 import { updateUser } from '../../../../redux/slices/auth.slice';
-import ReportJobModal from '../jobListing/JobReportForm';
-import { useApplications } from '../../../hooks/user/candidate/profile/useApplication';
-import { useState } from 'react';
-import { type ResumeType } from '../../../../types/dtos/profile-types/resume.type';
+
 import Main from './Main';
-import type { ErrorType, ReportFormType } from '../jobListing/ListingContainter';
-import { ReportJobForm } from '../../admin/pending/ActivityModal';
+import type {
+  ErrorType,
+  ReportFormType,
+} from '../jobListing/ListingContainter';
 
 type Props = {
   job: JobDetailsDto | null;
   onReportSubmit: () => void;
   isDark: boolean;
-handleChange:(data: Partial<ReportFormType>) => void;
-    onApplyClick:(jobId:string)=>Promise<void>
-reportError:ErrorType|null
+  handleChange: (data: Partial<ReportFormType>) => void;
+  onApplyClick: (jobId: string) => Promise<void>;
+  reportError: ErrorType | null;
   onBack: () => void;
-  reportForm:ReportFormType
+  reportForm: ReportFormType;
 };
 export const JobDetails = ({
   job,
-onReportSubmit,handleChange,
-  isDark,reportError,
-reportForm,
+  onReportSubmit,
+  handleChange,
+  reportError,
+  reportForm,
   onApplyClick,
   // onToggleSave,
   onBack,
@@ -38,15 +38,11 @@ reportForm,
 
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const [resumeModalOpen, setResumeModalOpen] = useState<boolean>(false);
-  const [resumes, setResumes] = useState<ResumeType[]>([]);
   const dispatch = useDispatch();
-  const { applyJob } = useApplications();
 
-    if (!job) return null;
+  if (!job) return null;
 
   const handleSave = async () => {
-
     try {
       const data = await jobService.saveJob(job.id);
       console.log('after saving', data);
@@ -82,13 +78,10 @@ reportForm,
     else await handleSave();
   };
 
-  
-  const isExpired = job.status === 'expired';
   const isSaved: boolean = user.savedJobs.includes(job.id);
   const isApplied: boolean = user.appliedJobs.includes(job.id);
   console.log('from job details');
-  
-  
+
   return (
     <div
       className={`min-h-screen ${t.pageBg} ${t.pageText} transition-colors duration-300`}
@@ -105,15 +98,21 @@ reportForm,
 
         {/* HERO — decorative blobs shrink on mobile, grow on desktop */}
         <Hero
-        onApplyClick={onApplyClick}
+          onApplyClick={onApplyClick}
           isApplied={isApplied}
           isSaved={isSaved}
           job={job}
           onToggleSave={onToggleSave}
         />
 
-      <Main reportForm={reportForm} onReportsubmit={onReportSubmit} handleChange={handleChange} job={job} reportError= {reportError} />
+        <Main
+          reportForm={reportForm}
+          onReportsubmit={onReportSubmit}
+          handleChange={handleChange}
+          job={job}
+          reportError={reportError}
+        />
+      </div>
     </div>
-    </div>
-  )
+  );
 };

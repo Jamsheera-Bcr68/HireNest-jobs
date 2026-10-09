@@ -156,7 +156,7 @@ export function JobFilterControls({
   setSelectedSalary: React.Dispatch<SetStateAction<string[]>>;
 }) {
   //const [selectedSalary, setSelectedSalary] = useState<string[]>([]);
-  const {t}=useTheme()
+  const { t } = useTheme();
   const activeCount = Object.values(filters)
     .filter((item) => typeof item === 'string' || Array.isArray(item))
     .reduce((sum, arr) => sum + arr.length, 0);
@@ -254,7 +254,7 @@ function FilterDropdown({
   active?: string[];
   onToggle: (v: string) => void;
 }) {
-  const {t}=useTheme()
+  const { t } = useTheme();
   const [open, setOpen] = useState(false);
   const count = active?.length ?? 0;
 
@@ -317,7 +317,7 @@ export function ActiveFilterChips({
   onRemove: (value: string) => void;
   onClearAll: () => void;
 }) {
-  const {t}=useTheme()
+  const { t } = useTheme();
   if (chips.length === 0) return null;
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -367,7 +367,7 @@ export function JobResultsHeader({
   sortOptions: { label: string; value: string }[];
   setSort: (item: string) => void;
 }) {
-  const {t}=useTheme()
+  const { t } = useTheme();
   const [open, setOpen] = useState(false);
   return (
     <div className="flex items-center justify-between flex-wrap gap-3">
@@ -429,8 +429,7 @@ export function JobResultsHeader({
 export function MobileFilterDrawer({
   open,
   onClose,
-  filters,
-  onToggleFilter,
+
   onClearAll,
 
   setSelectedModes,
@@ -461,7 +460,7 @@ export function MobileFilterDrawer({
   selectedSalary: string[];
   setSelectedSalary: React.Dispatch<SetStateAction<string[]>>;
 }) {
-  const {t}=useTheme()
+  const { t } = useTheme();
   const toggle = (
     setter: React.Dispatch<React.SetStateAction<string[]>>,
     arr: string[],

@@ -1,4 +1,3 @@
-
 import CandidateDashboardContainer from '../../../components/candidate/dashboard/CandidateDashboardContainer';
 
 function CandidateDashboardPage() {

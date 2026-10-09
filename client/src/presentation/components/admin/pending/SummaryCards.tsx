@@ -1,5 +1,4 @@
-import React from 'react';
-import { ClipboardList, Flag, Building2, type LucideIcon } from 'lucide-react';
+import { type LucideIcon } from 'lucide-react';
 import type { CardType } from './Container';
 
 type SummaryCardsProps = {

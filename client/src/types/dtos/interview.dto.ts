@@ -23,11 +23,11 @@ export type InterviewDto = {
   result?: string;
   company: string;
   companyLogo: string;
-  candidateImageUrl?:string
-  chatroomId?:string
+  candidateImageUrl?: string;
+  chatroomId?: string;
   isConfirmed: boolean;
-  createdAt:string
-  score?:number
+  createdAt: string;
+  score?: number;
 };
 
 export type interviewDetailDto = {
@@ -39,7 +39,7 @@ export type interviewDetailDto = {
   mode: InterviewMode;
   companyName: string;
   companyLogo: string;
-  candidateImageUrl?:string
+  candidateImageUrl?: string;
   status: InterviewStatusType;
   meetLink?: string;
   location?: string;
@@ -49,13 +49,13 @@ export type interviewDetailDto = {
   reasonForRescheduleRequest: string;
   note?: string;
   feedback?: string;
-  score?:number
+  score?: number;
   result?: InterviewResult;
   cancelledBy: UserRole;
 };
 
-export type interviewFeedbackDto={
-  result:InterviewResult
-  score:number
-  feedback?:string
-}
+export type interviewFeedbackDto = {
+  result: InterviewResult;
+  score: number;
+  feedback?: string;
+};

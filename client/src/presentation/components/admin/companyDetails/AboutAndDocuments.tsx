@@ -1,5 +1,5 @@
 import type { CompanyProfileType } from '../../../../types/dtos/profile-types/user.types';
-import { Document, RegistrationDetails } from './RegistrationDetails';
+import { RegistrationDetails } from './RegistrationDetails';
 
 function AboutAndDocuments({
   company,
@@ -63,8 +63,7 @@ function AboutAndDocuments({
           </div>
         </div>
       </div>
-      <RegistrationDetails company={company}/>
-
+      <RegistrationDetails company={company} />
     </div>
   );
 }

@@ -1,13 +1,13 @@
 import { ShieldAlert } from 'lucide-react';
 import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
 
-type Report = {
-  id: number;
-  reportedBy: string;
-  reason: string;
-  info?: string;
-  reportedAt: string;
-};
+// type Report = {
+//   id: number;
+//   reportedBy: string;
+//   reason: string;
+//   info?: string;
+//   reportedAt: string;
+// };
 
 type Props = {
   job: JobDetailsDto;

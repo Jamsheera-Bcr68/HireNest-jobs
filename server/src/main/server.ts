@@ -13,7 +13,13 @@ import {} from '../infrastructure/config/di';
 const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
-  cors: { origin: env.FRONTEND_URL, credentials: true },
+ cors: {
+    origin: [
+      env.FRONTEND_URL??'http://localhost:5173',
+      'http://localhost:8080',
+    ],
+    credentials: true,
+  },
 });
 
 setIo(io);
@@ -116,6 +122,6 @@ io.on('connection', (socket) => {
     presenceService.setOffline(userId);
   });
 });
-httpServer.listen(env.Port, () => {
-  console.log('server is listening');
+httpServer.listen(env.PORT, () => {
+  console.log('server is listening at ', env.PORT);
 });

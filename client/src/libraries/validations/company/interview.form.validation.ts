@@ -14,7 +14,7 @@ export const interviewSchema = z
 
     meetLink: z
       .string()
-      
+
       .optional()
       .or(z.literal('')),
 

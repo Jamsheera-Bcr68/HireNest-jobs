@@ -24,7 +24,9 @@ function Companies() {
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
 
-  const [filter, setFilter] = useState<Partial<CompanyFilter>>({status:'active'});
+  const [filter, setFilter] = useState<Partial<CompanyFilter>>({
+    status: 'active',
+  });
 
   useEffect(() => {
     async function getCompanies() {
@@ -106,7 +108,7 @@ function Companies() {
           <StatusCards stats={stats} />
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <Table
-            filter={filter}
+              filter={filter}
               companies={companies}
               onUpdate={handleCompanyUpdate}
               updateFilter={handleFilterChange}

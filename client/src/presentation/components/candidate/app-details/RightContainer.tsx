@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ApplicationDetailsDto } from '../../../../types/dtos/application.dto';
 import { Card, SectionTitle } from '../ReusableComponents';
-import { useToast } from '../../../../shared/toast/use-toast';
+
 import ModalFormat from '../../common/ModalFormat';
 import CompanyData from './CompanyData';
 import {
@@ -23,23 +23,23 @@ import { useNavigate } from 'react-router-dom';
 type Props = {
   application: ApplicationDetailsDto | null;
 };
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
 function RightContainer({ application }: Props) {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const [showJobModal, setShowJobModal] = useState<boolean>(false);
   const [showCompanyModal, setShowCompanyModal] = useState<boolean>(false);
-  const [job, setJob] = useState<JobDetailsDto | null>(null);
-  const [company, setCompany] = useState<CompanyDataDto | null>(null);
+  const [job] = useState<JobDetailsDto | null>(null);
+  const [company] = useState<CompanyDataDto | null>(null);
   if (!application) return null;
 
   const handleViewJob = async () => {
-      navigate(`/jobs/${application.job.id}`)
-  
+    navigate(`/jobs/${application.job.id}`);
   };
 
   const handleViewCompany = async () => {
-  navigate(`/candidate/company/${application.company.id}`) };
+    navigate(`/candidate/company/${application.company.id}`);
+  };
 
   return (
     <div className="flex flex-col gap-5">

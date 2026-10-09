@@ -1,6 +1,16 @@
-import type { LucideIcon } from "lucide-react";
+import type { LucideIcon } from 'lucide-react';
 
-export function EmptyState({ icon: Icon, title, subtitle, cta }:{icon:LucideIcon,title:string,subtitle:string,cta:string}) {
+export function EmptyState({
+  icon: Icon,
+  title,
+  subtitle,
+  cta,
+}: {
+  icon: LucideIcon;
+  title: string;
+  subtitle: string;
+  cta: string;
+}) {
   return (
     <div className="flex flex-col items-center justify-center text-center py-10 px-4">
       <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center mb-3">
@@ -10,18 +20,15 @@ export function EmptyState({ icon: Icon, title, subtitle, cta }:{icon:LucideIcon
       <p className="text-xs text-slate-400 mt-1 max-w-[220px]">{subtitle}</p>
       {cta && (
         <button
-        //  onClick={onCta}
+          //  onClick={onCta}
           className="mt-4 text-xs font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 transition-colors px-4 py-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40"
         >
           {cta}
         </button>
       )}
     </div>
-
-
   );
 }
-
 
 export function JobCard() {
   return (
@@ -54,7 +61,9 @@ export function JobCard() {
 
         <button className="flex items-center gap-1 text-emerald-600 text-sm font-medium whitespace-nowrap transition-all group-hover:gap-2">
           View Job
-          <span className="transition-transform group-hover:translate-x-0.5">→</span>
+          <span className="transition-transform group-hover:translate-x-0.5">
+            →
+          </span>
         </button>
       </div>
     </div>
@@ -65,7 +74,7 @@ type Props = {
   count?: number;
 };
 
-export  function JobCardSkeleton({ count = 3 }: Props) {
+export function JobCardSkeleton({ count = 3 }: Props) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {Array.from({ length: count }).map((_, index) => (

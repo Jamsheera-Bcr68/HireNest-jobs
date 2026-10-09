@@ -35,27 +35,24 @@ function ChatContainer() {
   };
 
   useEffect(() => {
-    const timer=setTimeout(()=>{
- if (!search.trim()) {
-      setFilteredConversations(chatrooms);
-      return;
-    }
+    const timer = setTimeout(() => {
+      if (!search.trim()) {
+        setFilteredConversations(chatrooms);
+        return;
+      }
 
-    const term = search.trim().toLowerCase();
-    setFilteredConversations(
-      chatrooms.filter((ch) =>
-        ch.participantName.toLowerCase().startsWith(term)
-      )
-    );
-    },300)
-   
-return ()=>{
-  clearTimeout(timer)
-}
-  }, [chatrooms,search]);
+      const term = search.trim().toLowerCase();
+      setFilteredConversations(
+        chatrooms.filter((ch) =>
+          ch.participantName.toLowerCase().startsWith(term)
+        )
+      );
+    }, 300);
 
-
-
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [chatrooms, search]);
 
   useEffect(() => {
     if (chatroomId) {

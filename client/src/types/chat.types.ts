@@ -1,5 +1,4 @@
-import type { UserRole } from "../constants/types/user";
-
+import type { UserRole } from '../constants/types/user';
 
 export type ChatroomType = {
   id: string;
@@ -7,9 +6,9 @@ export type ChatroomType = {
   participantRole: UserRole;
   context: string;
   unreadCount: number;
-  imageUrl?:string
+  imageUrl?: string;
   isOnline: boolean;
   lastMessage?: string;
   lastMessagedAt?: string;
-  time?:string
+  time?: string;
 };

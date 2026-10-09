@@ -21,8 +21,8 @@ const ResetPasswordForm = () => {
         {/* <h2 className="text-2xl font-bold text-gray-800 text-center mb-2">
           Reset Your Password
         </h2> */}
-        <AuthForms title='Reset Password'/>
-       
+        <AuthForms title="Reset Password" />
+
         {error?.server ? (
           <p className="text-sm  text-red-500 text-center mb-2">
             {error.server}

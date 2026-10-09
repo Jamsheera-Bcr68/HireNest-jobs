@@ -1,11 +1,17 @@
 import { HoverBox } from './HoverBox';
-import { FeatureCard, TrackStep, WhyCard, CtaPanel,TrustBadge, FooterLink } from './Components';
+import {
+  FeatureCard,
+  TrackStep,
+  WhyCard,
+  CtaPanel,
+  TrustBadge,
+  FooterLink,
+} from './Components';
 import { Eyebrow, Button } from './Components';
-import { CheckCircle2, Users2, ArrowRight } from 'lucide-react';
+import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { useToast } from '../../../../shared/toast/use-toast';
 import { useNavigate } from 'react-router-dom';
 const display = { fontFamily: "'Fraunces', serif" };
-
 
 const mono = { fontFamily: "'JetBrains Mono', monospace" };
 export function Hirenest() {
@@ -403,13 +409,13 @@ export function Properties() {
   );
 }
 
- const trustBadges = [
-    { icon: ShieldCheck, label: "Secure Authentication" },
-    { icon: UserCircle2, label: "Candidate-Focused Design" },
-    { icon: Building2, label: "Employer-Friendly Tools" },
-    { icon: ClipboardList, label: "Streamlined Hiring" },
-    { icon: CheckCircle2, label: "Easy Application Management" },
-  ];
+const trustBadges = [
+  { icon: ShieldCheck, label: 'Secure Authentication' },
+  { icon: UserCircle2, label: 'Candidate-Focused Design' },
+  { icon: Building2, label: 'Employer-Friendly Tools' },
+  { icon: ClipboardList, label: 'Streamlined Hiring' },
+  { icon: CheckCircle2, label: 'Easy Application Management' },
+];
 export function HighLights() {
   return (
     <section className="max-w-6xl mx-auto px-6 py-16">

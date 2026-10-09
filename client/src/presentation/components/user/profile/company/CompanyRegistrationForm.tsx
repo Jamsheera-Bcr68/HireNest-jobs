@@ -17,6 +17,7 @@ import {
   Document_Types,
 } from '../../../../../types/dtos/profile-types/industry.type';
 import { useNavigate } from 'react-router-dom';
+import { env } from '../../../../../config/env';
 
 const IconCamera = () => (
   <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
@@ -143,39 +144,39 @@ const Card = ({
 );
 
 /* ─── step indicator ─── */
-const steps = ['Account', 'Company Info', 'Verification', 'Complete'];
-const Stepper = ({ current = 1 }) => (
-  <div className="flex items-center max-w-2xl mx-auto w-full px-4">
-    {steps.map((s, i) => {
-      const done = i < current;
-      const active = i === current;
-      return (
-        <div key={s} className="flex items-center flex-1 last:flex-none">
-          <div className="flex flex-col items-center gap-1.5">
-            <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all
-                ${done ? 'bg-slate-800 text-white' : active ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-200' : 'bg-white border-2 border-slate-200 text-slate-400'}`}
-              style={{ fontFamily: "'Syne',sans-serif" }}
-            >
-              {done ? '✓' : i + 1}
-            </div>
-            <span
-              className={`text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${active ? 'text-indigo-500' : done ? 'text-slate-700' : 'text-slate-400'}`}
-              style={{ fontFamily: "'Syne',sans-serif" }}
-            >
-              {s}
-            </span>
-          </div>
-          {i < steps.length - 1 && (
-            <div
-              className={`h-0.5 flex-1 mx-2 mb-5 rounded-full transition-all ${done ? 'bg-slate-800' : 'bg-slate-200'}`}
-            />
-          )}
-        </div>
-      );
-    })}
-  </div>
-);
+//const steps = ['Account', 'Company Info', 'Verification', 'Complete'];
+// const Stepper = ({ current = 1 }) => (
+//   <div className="flex items-center max-w-2xl mx-auto w-full px-4">
+//     {steps.map((s, i) => {
+//       const done = i < current;
+//       const active = i === current;
+//       return (
+//         <div key={s} className="flex items-center flex-1 last:flex-none">
+//           <div className="flex flex-col items-center gap-1.5">
+//             <div
+//               className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all
+//                 ${done ? 'bg-slate-800 text-white' : active ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-200' : 'bg-white border-2 border-slate-200 text-slate-400'}`}
+//               style={{ fontFamily: "'Syne',sans-serif" }}
+//             >
+//               {done ? '✓' : i + 1}
+//             </div>
+//             <span
+//               className={`text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${active ? 'text-indigo-500' : done ? 'text-slate-700' : 'text-slate-400'}`}
+//               style={{ fontFamily: "'Syne',sans-serif" }}
+//             >
+//               {s}
+//             </span>
+//           </div>
+//           {i < steps.length - 1 && (
+//             <div
+//               className={`h-0.5 flex-1 mx-2 mb-5 rounded-full transition-all ${done ? 'bg-slate-800' : 'bg-slate-200'}`}
+//             />
+//           )}
+//         </div>
+//       );
+//     })}
+//   </div>
+// );
 
 /* ─── checkbox ─── */
 type CheckboxProps = {
@@ -205,7 +206,7 @@ type Props = {
   isReapply?: boolean;
   companyId?: string;
 };
-export default function CompanyRegistration({ companyId, isReapply }: Props) {
+export default function CompanyRegistration({ isReapply }: Props) {
   const {
     formData,
     handleChange,
@@ -231,7 +232,7 @@ export default function CompanyRegistration({ companyId, isReapply }: Props) {
   const handleCameraClick = () => {
     inputRef.current?.click();
   };
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  const baseUrl =env.backendUrl;
   useEffect(() => {
     if (formData.logoUrl.trim() && isReapply) {
       setPreview(baseUrl + formData.logoUrl);

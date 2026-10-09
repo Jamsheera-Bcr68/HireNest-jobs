@@ -1,6 +1,4 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { iso } from 'zod/mini';
-import { is } from 'zod/v4/locales';
 
 type ModalProps = {
   isOpen: boolean;

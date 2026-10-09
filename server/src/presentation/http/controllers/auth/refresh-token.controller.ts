@@ -25,26 +25,29 @@ export class RefreshTokenController {
           authMessages.error.REFRESH_TOKEN_REQUIRED,
           statusCodes.BADREQUEST
         );
-        return;
       }
 
-      console.log('refresh token found', refreshToken);
+      console.log("Refresh cookie received:", !!refreshToken);
 
       //  verify token
       const payload = this._tokenService.verifyRefreshToken(refreshToken);
-      // console.log('verified payload', payload);
+      console.log('verified payload', payload);
 
       const newToken = this._tokenService.generateAccessToken(
         payload.userId,
         payload.email,
         payload.role
       );
+      console.log('new token',newToken);
+      
       return res.status(statusCodes.OK).json({
         success: true,
         accessToken: newToken,
         message: authMessages.success.REFRESH_TOKEN_SUCCESS,
       });
     } catch (error) {
+      console.log(error);
+      
       return next(error);
     }
   });

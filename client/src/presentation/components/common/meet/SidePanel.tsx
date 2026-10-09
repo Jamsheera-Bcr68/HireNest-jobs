@@ -1,10 +1,10 @@
-import { X } from "lucide-react";
+import { X } from 'lucide-react';
 
-type Props={
-    panel:string
-    setPanel:(str:string|null)=>void
-}
-function SidePanel({panel,setPanel}:Props) {
+type Props = {
+  panel: string;
+  setPanel: (str: string | null) => void;
+};
+function SidePanel({ panel, setPanel }: Props) {
   return (
     <div className="absolute top-0 right-0 bottom-0 w-full sm:w-96 bg-[#151619] border-l border-white/10 z-30 flex flex-col">
       <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">

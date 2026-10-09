@@ -26,6 +26,7 @@ function JobContainer() {
   const { t, mode } = useTheme();
   const [job, setJob] = useState<JobDetailsDto | null>(null);
   const [errMessage, setErrorMessage] = useState<string>('');
+  console.log(errMessage);
   const isDark = mode === 'dark';
   const { jobId } = useParams();
   console.log('job id is ', jobId);

@@ -10,7 +10,8 @@ export type ApplicationStatusType =
   | 'rejected'
   | 'interviewScheduled'
   | 'interviewCompleted'
-  | 'withdrawn'|'hired'
+  | 'withdrawn'
+  | 'hired';
 
 export type ApplicationDto = {
   id: string;

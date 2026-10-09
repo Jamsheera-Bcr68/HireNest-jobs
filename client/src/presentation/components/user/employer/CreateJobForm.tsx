@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { Experience_Types } from '../../../../types/dtos/profile-types/experience.type';
 import type { SkillFilter } from '../../../hooks/user/candidate/profile/useProfile';
 
-
 const workMode = ['hybrid', 'remote', 'onsite'];
 
 const CreateJobPost = () => {
@@ -20,7 +19,7 @@ const CreateJobPost = () => {
     useJobs();
   const [addSkill, setAddSkill] = useState(false);
   const [addRes, setAddRes] = useState(false);
- // const [skill, setSkill] = useState<string>('');
+  // const [skill, setSkill] = useState<string>('');
   //const [filteredSkills, setFilteredSkills] = useState<SkillType[]>([]);
   const [skills, setSkills] = useState<SkillType[]>([]);
   const [filter] = useState<SkillFilter>({ status: 'approved' });
@@ -52,16 +51,21 @@ const CreateJobPost = () => {
     //setFilteredSkills([]);
   };
 
-  const handlSkillInput = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    if (search.trim().length) {
-      filter.search = search;
-    }else{return}
-    const data = await skillService.getSkills({ ...filter });
-    console.log('data after getting skills',data);
-    
-    setSkills(data.data.skills);
-  },[filter,search])
+  const handlSkillInput = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(e.target.value);
+      if (search.trim().length) {
+        filter.search = search;
+      } else {
+        return;
+      }
+      const data = await skillService.getSkills({ ...filter });
+      console.log('data after getting skills', data);
+
+      setSkills(data.data.skills);
+    },
+    [filter, search]
+  );
 
   // useEffect(() => {
   //   async function fetchskill() {
@@ -159,7 +163,7 @@ const CreateJobPost = () => {
     if (!search.trim()) {
       showToast({ msg: 'Nothing to add', type: 'error' });
       setAddSkill(false);
-      setSearch('')
+      setSearch('');
       return;
     }
     const normalized = search.trim().toLowerCase();
@@ -168,7 +172,7 @@ const CreateJobPost = () => {
     );
     if (skillExisInJob) {
       showToast({ msg: 'Skill aready exist', type: 'error' });
-      setSearch('')
+      setSearch('');
       return;
     }
     const skillExist = skills.find(
@@ -499,8 +503,8 @@ const CreateJobPost = () => {
                       onMouseDown={() => {
                         setSearch(skill.skillName);
                         selectSkill(skill);
-                        setSearch('')
-                        setSkills([])
+                        setSearch('');
+                        setSkills([]);
                       }}
                       className="p-2 hover:bg-gray-100 border cursor-pointer"
                     >

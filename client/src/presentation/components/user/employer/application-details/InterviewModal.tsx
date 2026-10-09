@@ -6,7 +6,6 @@ import {
   Durations,
   type InterviewMode,
 } from '../../../../../types/dtos/interview.dto';
-import { url } from 'zod';
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const GlobeIcon = () => (
@@ -179,7 +178,7 @@ export default function InterviewModal({
   };
 
   if (!isOpen) return null;
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
   console.log('candidate', candidate);
 
   return (

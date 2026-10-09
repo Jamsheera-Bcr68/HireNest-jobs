@@ -173,40 +173,43 @@ export const VisionAndMission = ({
   );
 };
 
-export const Culture=({company}:{company:CompanyProfileType|null})=>{
-    const {t}=useTheme()
-    return( <section>
-          <h2 className={`text-lg sm:text-xl font-bold ${t.heading}`}>
-            Life at {company?.companyName.split(' ')[0]}
-          </h2>
-          <p className={`mt-1 text-sm ${t.subheading}`}>
-            A glimpse into what it's like to work here.
-          </p>
-          <div className="mt-5 grid sm:grid-cols-2 gap-4">
-            
-              <div
-              
-                className={`rounded-2xl border ${t.cardBorder} ${t.cardBg} p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${t.cardHoverBorder}`}
-              >
-                <div className="flex items-start gap-3">
-                  <div
-                    className={`h-9 w-9 shrink-0 rounded-xl flex items-center justify-center ${t.sectionIconBg}`}
-                  >
-                    <Sparkle className={`h-4 w-4 ${t.sectionIconText}`} />
-                  </div>
-                  <div>
-                    <h3 className={`text-sm font-semibold ${t.cardTitle}`}>
-                     Company Culture
-                    </h3>
-                    <p
-                      className={`mt-1 text-sm leading-relaxed ${t.subheading}`}
-                    >
-                      {company?.culture?company.culture:'Culture is not added yet'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-           
+export const Culture = ({
+  company,
+}: {
+  company: CompanyProfileType | null;
+}) => {
+  const { t } = useTheme();
+  return (
+    <section>
+      <h2 className={`text-lg sm:text-xl font-bold ${t.heading}`}>
+        Life at {company?.companyName.split(' ')[0]}
+      </h2>
+      <p className={`mt-1 text-sm ${t.subheading}`}>
+        A glimpse into what it's like to work here.
+      </p>
+      <div className="mt-5 grid sm:grid-cols-2 gap-4">
+        <div
+          className={`rounded-2xl border ${t.cardBorder} ${t.cardBg} p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md ${t.cardHoverBorder}`}
+        >
+          <div className="flex items-start gap-3">
+            <div
+              className={`h-9 w-9 shrink-0 rounded-xl flex items-center justify-center ${t.sectionIconBg}`}
+            >
+              <Sparkle className={`h-4 w-4 ${t.sectionIconText}`} />
+            </div>
+            <div>
+              <h3 className={`text-sm font-semibold ${t.cardTitle}`}>
+                Company Culture
+              </h3>
+              <p className={`mt-1 text-sm leading-relaxed ${t.subheading}`}>
+                {company?.culture
+                  ? company.culture
+                  : 'Culture is not added yet'}
+              </p>
+            </div>
           </div>
-        </section>)
-}
+        </div>
+      </div>
+    </section>
+  );
+};

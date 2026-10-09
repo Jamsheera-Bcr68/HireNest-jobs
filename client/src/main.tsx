@@ -7,6 +7,7 @@ import App from './app/App.tsx';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ToastProvider } from './shared/toast/ToastContext.tsx';
+import { env } from './config/env.ts';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -17,7 +18,7 @@ createRoot(rootElement).render(
     <ToastProvider>
       <BrowserRouter>
         <Provider store={store}>
-          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+          <GoogleOAuthProvider clientId={env.googleClientId}>
             <App />
           </GoogleOAuthProvider>
         </Provider>

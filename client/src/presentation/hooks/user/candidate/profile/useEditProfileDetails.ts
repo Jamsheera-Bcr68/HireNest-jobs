@@ -11,9 +11,7 @@ import { updateUser } from '../../../../../redux/slices/auth.slice';
 
 export const useEditProfileDetails = (
   showToast: (data: typeOfToast) => void,
-  onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | null>
-  >,
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>,
   user: UserProfileType | null,
   skills: SkillType[] | []
 ) => {
@@ -86,7 +84,7 @@ export const useEditProfileDetails = (
         if (!prev) return prev;
         return {
           ...prev,
-          skills: [...prev.skills,data.skill],
+          skills: [...prev.skills, data.skill],
         };
       });
       dispatch(updateUser({ skillCount: (reduxUser.skillCount || 0) + 1 }));

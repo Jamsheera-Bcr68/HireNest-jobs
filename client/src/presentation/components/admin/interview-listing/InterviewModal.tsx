@@ -2,7 +2,6 @@ import { X } from 'lucide-react';
 
 import type { interviewDetailDto } from '../../../../types/dtos/interview.dto';
 import { useLockBodyScroll } from '../../../hooks/useBodyLock';
-import { useState } from 'react';
 
 type InterviewDetailsModalProps = {
   isOpen: boolean;
@@ -11,7 +10,6 @@ type InterviewDetailsModalProps = {
   setCancel: (id: string) => void;
 };
 
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
 export default function InterviewDetailsModal({
   isOpen,
   onClose,
@@ -19,16 +17,16 @@ export default function InterviewDetailsModal({
   setCancel,
 }: InterviewDetailsModalProps) {
   useLockBodyScroll(isOpen);
-  const [activeTab, setActiveTab] = useState('details');
+  // const [activeTab, setActiveTab] = useState('details');
 
   if (!isOpen || !interview) return null;
-  const tabs = [
-    { label: 'Interview Details', value: 'details' },
+  // const tabs = [
+  //   { label: 'Interview Details', value: 'details' },
 
-    ...(interview.status === 'completed'
-      ? [{ label: 'Feedback', value: 'feedback' }]
-      : []),
-  ];
+  //   ...(interview.status === 'completed'
+  //     ? [{ label: 'Feedback', value: 'feedback' }]
+  //     : []),
+  // ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-2">

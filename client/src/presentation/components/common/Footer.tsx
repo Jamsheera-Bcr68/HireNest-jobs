@@ -1,9 +1,7 @@
 import { Eye, Info, Sparkles, UserPlus, Users } from 'lucide-react';
-import { useTheme } from '../../../contexts/ThemeContext'
+import { useTheme } from '../../../contexts/ThemeContext';
 import { useLocation } from 'react-router-dom';
 const Footer = () => {
-  const { t } = useTheme();
- 
   return (
     <footer className="border-t bg-gray-500 text-white bg-card py-12">
       {' '}
@@ -150,11 +148,7 @@ export const BottomNav = () => {
                   flex h-full min-w-[70px] flex-col items-center justify-center
                   gap-1 rounded-xl px-3 text-[11px] font-medium
                   transition-all duration-200
-                  ${
-                    isActive
-                      ? t.navActive
-                      : `${t.navMuted} ${t.navIconBg}`
-                  }
+                  ${isActive ? t.navActive : `${t.navMuted} ${t.navIconBg}`}
                 `}
               >
                 <Icon
@@ -180,11 +174,7 @@ export const BottomNav = () => {
                 flex h-full min-w-[70px] flex-col items-center justify-center
                 gap-1 rounded-xl px-3 text-[11px] font-medium
                 transition-all duration-200
-                ${
-                  isActive
-                    ? t.navActive
-                    : `${t.navMuted} ${t.navIconBg}`
-                }
+                ${isActive ? t.navActive : `${t.navMuted} ${t.navIconBg}`}
                 `
               }
             >

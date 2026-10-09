@@ -1,5 +1,5 @@
 import type { ISocialLinks } from '../../../../../types/profile.types';
-import { Github, Twitter, Youtube, Globe } from 'lucide-react';
+import { Github, Twitter, Globe } from 'lucide-react';
 import { YoutubeIcon } from 'lucide-react';
 type Props = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -19,7 +19,9 @@ function ContactInputForm({
 }: Props) {
   return (
     <div>
-      <h2 className="text-lg text-fuchsia-800 text-center mt-0 font-semibold mb-2">{title}</h2>
+      <h2 className="text-lg text-fuchsia-800 text-center mt-0 font-semibold mb-2">
+        {title}
+      </h2>
 
       <div className="mt-3 space-y-3">
         {
@@ -143,7 +145,7 @@ function ContactInputForm({
       </div>
 
       <div className="flex mt-4 gap-4 justify-end mr-4">
-         <button
+        <button
           onClick={onCancel}
           className="bg-red-600 text-sm text-white rounded-md px-4 py-2"
         >
@@ -155,7 +157,6 @@ function ContactInputForm({
         >
           Save
         </button>
-       
       </div>
     </div>
   );

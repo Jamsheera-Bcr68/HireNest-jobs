@@ -135,7 +135,6 @@ export class InterviewController {
   });
 
   getInterviews = asyncHandler(async (req: Request, res: Response) => {
-
     const {
       search,
       status,
