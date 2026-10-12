@@ -191,6 +191,10 @@ export class AdminUserController {
       await this._adminGetCandidatesUseCase.execute(
         filter as CandidateFilterType
       );
+      console.log('candidates from controller', entities.map((entity) =>
+        UserMapper.toUserProfileDto(entity, null)
+      ),);
+      
     return res.status(statusCodes.OK).json({
       success: true,
       message: adminMessages.success.CANDIDATES_FETCHED,
