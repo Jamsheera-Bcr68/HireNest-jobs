@@ -5,7 +5,7 @@ import type {
   InterviewResult,
 } from '../../../../../types/dtos/interview.dto';
 import { useLockBodyScroll } from '../../../../hooks/useBodyLock';
-import { Camera, Link, MapPinIcon, Video } from 'lucide-react';
+import { Link, MapPinIcon } from 'lucide-react';
 import { useInterviews } from '../../../../hooks/user/useInterview';
 import { type InterviewMode } from '../../../../../types/dtos/interview.dto';
 
@@ -94,22 +94,6 @@ const ClockIcon = () => (
   </svg>
 );
 
-const VideoIcon = () => (
-  <svg
-    width="14"
-    height="14"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="blue"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polygon points="23 7 16 12 23 17 23 7" />
-    <rect x="1" y="5" width="15" height="14" rx="2" />
-  </svg>
-);
-
 const XIcon = () => (
   <svg
     width="16"
@@ -152,14 +136,8 @@ export default function InterviewDetailsModal({
     onClose();
   };
   useLockBodyScroll(isOpen);
-  const {
-    formData,
-    updateFormdata,
-    submitInterviewForm,
-    initialData,
-    error,
-    upsateStatus,
-  } = useInterviews();
+  const { formData, updateFormdata, submitInterviewForm, initialData, error } =
+    useInterviews();
 
   const handleUpdate = async () => {
     if (!interview) return;
@@ -234,7 +212,6 @@ export default function InterviewDetailsModal({
     onUpdate({ status: 'completed' });
   };
 
-
   if (!interview) return null;
 
   return (
@@ -289,17 +266,17 @@ export default function InterviewDetailsModal({
               <div className="flex items-center justify-between">
                 {/* Left side (candidate info) */}
                 <div className="flex items-center gap-3">
-                 <div className="w-11 h-11 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 font-semibold text-sm flex-shrink-0 overflow-hidden">
-  {interview?.candidateImageUrl ? (
-    <img
-      src={interview.candidateImageUrl}
-      alt={interview.name}
-      className="w-full h-full object-cover"
-    />
-  ) : (
-    interview?.name?.charAt(0).toUpperCase()
-  )}
-</div>
+                  <div className="w-11 h-11 rounded-full bg-violet-100 flex items-center justify-center text-violet-700 font-semibold text-sm flex-shrink-0 overflow-hidden">
+                    {interview?.candidateImageUrl ? (
+                      <img
+                        src={interview.candidateImageUrl}
+                        alt={interview.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      interview?.name?.charAt(0).toUpperCase()
+                    )}
+                  </div>
                   <div>
                     <p className="text-sm font-semibold text-gray-800">
                       {interview?.name}

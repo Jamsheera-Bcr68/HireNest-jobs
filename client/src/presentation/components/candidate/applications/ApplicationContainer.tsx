@@ -21,11 +21,13 @@ function ApplicationContainer() {
   const [limit] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
   const [totalDocs, setTotalDocs] = useState<number>(0);
-  const { filter, updateFilter,setFilter } = useApplications((page?: number) => {
-    if (page) {
-      setPage(page);
+  const { filter, updateFilter, setFilter } = useApplications(
+    (page?: number) => {
+      if (page) {
+        setPage(page);
+      }
     }
-  });
+  );
   useEffect(() => {
     const getStatus = async () => {
       const data = await applicationService.getCandidateApplicationStatus();
@@ -107,9 +109,9 @@ function ApplicationContainer() {
       { label: 'Oldest ', value: 'oldest' },
     ],
   };
-const onResetfilter=()=>{
-  setFilter({})
-}
+  const onResetfilter = () => {
+    setFilter({});
+  };
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
       <div className="max-w-4xl mx-auto">

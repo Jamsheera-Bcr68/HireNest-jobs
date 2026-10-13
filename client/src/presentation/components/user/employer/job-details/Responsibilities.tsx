@@ -1,4 +1,3 @@
-import React from 'react';
 import type { JobDetailsDto } from '../../../../../types/dtos/job.dto';
 import SectionTitle from './SectionTitle';
 import type { UserRole } from '../../../../../constants/types/user';

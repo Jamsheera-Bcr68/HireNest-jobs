@@ -1,10 +1,7 @@
-import JobContainer from "../../../components/candidate/jobDetails/JobContainer"
+import JobContainer from '../../../components/candidate/jobDetails/JobContainer';
 
 function JobDetailsPage() {
-  return (
-    
-    <JobContainer/>
-  )
+  return <JobContainer />;
 }
 
-export default JobDetailsPage
+export default JobDetailsPage;

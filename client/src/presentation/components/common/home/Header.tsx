@@ -14,8 +14,8 @@ import { setNotifications } from '../../../../redux/slices/notification.slice';
 import { cx } from '../../candidate/jobListing/ListingContainter';
 
 import { chatService } from '../../../../services/api-services/chat.service';
-import { useTheme } from '../../../../contexts/ThemeContext'
-const Header = ({ title }: { title?: string }) => {
+import { useTheme } from '../../../../contexts/ThemeContext';
+const Header = () => {
   const { isMenuOpen, setIsMenuOpen, HandleLogout, user } = useHeader();
   const notifications = useSelector(
     (state: RootState) => state.notification.notifications
@@ -33,7 +33,7 @@ const Header = ({ title }: { title?: string }) => {
     //console.log(user?.role, 'from header');
 
     const loadNotifications = async () => {
-    //  console.log('from useeffect');
+      //  console.log('from useeffect');
 
       const nots = await getNotifications('all');
       dispatch(setNotifications(nots));
@@ -44,7 +44,7 @@ const Header = ({ title }: { title?: string }) => {
   useEffect(() => {
     const getChatrooms = async () => {
       const data = await chatService.getConversations();
-    //  console.log('chatroms afrer getting chatroom', data);
+      //  console.log('chatroms afrer getting chatroom', data);
       dispatch(setChatrooms(data.chatrooms));
     };
 
@@ -80,7 +80,7 @@ const Header = ({ title }: { title?: string }) => {
   };
 
   const deleteHandle = async (id: string) => {
-  //  console.log('from delete notifivation', id);
+    //  console.log('from delete notifivation', id);
 
     await deleteNotification(id);
     const updated = notifications.filter((n) => n.id !== id);
@@ -90,7 +90,7 @@ const Header = ({ title }: { title?: string }) => {
   const navigate = useNavigate();
 
   const onMarkRead = async (id: string) => {
-   // console.log('form mark as read', id);
+    // console.log('form mark as read', id);
     await markAsRead(id);
     const updated = notifications.map((n) =>
       n.id !== id ? n : { ...n, isRead: true }
@@ -99,7 +99,7 @@ const Header = ({ title }: { title?: string }) => {
   };
 
   const onMarkAll = async () => {
-  //  console.log('form mark as read');
+    //  console.log('form mark as read');
     await markAllAsRead();
     dispatch(
       setNotifications(notifications.map((n) => ({ ...n, isRead: true })))
@@ -206,7 +206,7 @@ const Header = ({ title }: { title?: string }) => {
                 )}
               </div>
             </div>
-          {user.role==='candidate'&&  <ThemeToggle />}
+            {user.role === 'candidate' && <ThemeToggle />}
             {/* Auth Buttons */}
             {user && (
               <button
@@ -267,7 +267,7 @@ const Header = ({ title }: { title?: string }) => {
                   </span>
                 )}
               </div>
-             {user.role=='candidate'&& <ThemeToggle/>}
+              {user.role == 'candidate' && <ThemeToggle />}
             </div>
 
             {/* Menu Button */}

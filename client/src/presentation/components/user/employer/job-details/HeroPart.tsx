@@ -2,14 +2,7 @@ import { statusStyles } from '../../../../pages/admin/Candidates';
 import { formatSalary } from '../../../../../utils/salary-format';
 import type { JobDetailsDto } from '../../../../../types/dtos/job.dto';
 import { useNavigate } from 'react-router-dom';
-import {
-  MapPin,
-  BriefcaseBusiness,
-  Clock,
-  Calendar,
-  TvMinimal,
-  Users,
-} from 'lucide-react';
+import { MapPin, Calendar, TvMinimal, Users } from 'lucide-react';
 import type { UserRole } from '../../../../../constants/types/user';
 
 function Chip({
@@ -38,7 +31,7 @@ type Props = { job: JobDetailsDto | null; role?: UserRole };
 
 function HeroPart({ job, role }: Props) {
   if (!job) return null;
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
   const navigate = useNavigate();
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-6 lg:p-7">
@@ -52,7 +45,9 @@ function HeroPart({ job, role }: Props) {
               className="w-16 h-16 rounded-2xl object-cover border border-gray-100"
             />
           ) : (
-            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${role=='admin'?'from-blue-500 to-violet-500':'from-fuchsia-500 to-violet-500'} flex items-center justify-center`}>
+            <div
+              className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${role == 'admin' ? 'from-blue-500 to-violet-500' : 'from-fuchsia-500 to-violet-500'} flex items-center justify-center`}
+            >
               <span className="text-white font-bold text-xl tracking-tight">
                 {job.companyName.charAt(0)}
               </span>
@@ -64,7 +59,9 @@ function HeroPart({ job, role }: Props) {
 
         <div className="flex-1 min-w-0">
           {/* Company */}
-          <p className={`text-xs font-semibold font-bold ${role=='admin'?'text-indigo-700':'text-fuchsia-700'} uppercase tracking-wide mb-1`}>
+          <p
+            className={`text-xs font-semibold font-bold ${role == 'admin' ? 'text-indigo-700' : 'text-fuchsia-700'} uppercase tracking-wide mb-1`}
+          >
             {job.companyName}
           </p>
 
@@ -108,7 +105,7 @@ function HeroPart({ job, role }: Props) {
           <div className="flex flex-wrap gap-2">
             <Chip
               label={job.mode.charAt(0).toUpperCase() + job.mode.slice(1)}
-              variant={`${role=='admin'?"blue":"fuchsia"}`}
+              variant={`${role == 'admin' ? 'blue' : 'fuchsia'}`}
             />
 
             <Chip
@@ -145,7 +142,14 @@ function HeroPart({ job, role }: Props) {
           {role == 'admin' && (
             <>
               {' '}
-              <button onClick={()=>navigate('/admin/jobs',{state:{companyId:job.companyId}})} className="w-full flex items-center justify-center gap-2 px-2 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 transition-colors text-sm font-semibold text-indigo-600">
+              <button
+                onClick={() =>
+                  navigate('/admin/jobs', {
+                    state: { companyId: job.companyId },
+                  })
+                }
+                className="w-full flex items-center justify-center gap-2 px-2 py-2 rounded-xl bg-gray-200 hover:bg-gray-300 transition-colors text-sm font-semibold text-indigo-600"
+              >
                 View All posts
               </button>
               <button

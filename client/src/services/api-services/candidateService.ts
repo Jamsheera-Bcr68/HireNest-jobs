@@ -23,7 +23,7 @@ export const profileService = {
   },
 
   async editExperience(formData: AddExperienceFormData, expId: string) {
-   console.log('from editing experience', formData);
+    console.log('from editing experience', formData);
 
     const response = await axiosInstance.put(
       CANDIDATE_API_ENDPOINTS.UPDATE_EXPERIENCE(expId),

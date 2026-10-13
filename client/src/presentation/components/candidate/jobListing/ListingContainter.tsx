@@ -8,7 +8,7 @@ import {
 } from './Filter';
 
 import Pagination from '../../common/Pagination';
-import { useApplications } from '../../../hooks/user/candidate/profile/useApplication';
+
 import Header from '../../common/home/Header';
 import SearchBar from './SearchBar';
 
@@ -22,7 +22,6 @@ import {
 import { useToast } from '../../../../shared/toast/use-toast';
 import { jobService } from '../../../../services/api-services/jobService';
 
-import { reportFormSchema } from '../../../../libraries/validations/company/job-form.validation';
 import { useSearchParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import type { StateType } from '../../../../constants/types/user';
@@ -63,7 +62,7 @@ function JobListingContainer({ mode }: Props) {
   const industryFilter = searchParams.get('industry');
 
   console.log('job,location,industry', job, location, industryFilter);
- 
+
   const { showToast } = useToast();
   const [filter, setFilter] = useState<JobFilterType>({
     search: {
@@ -71,13 +70,8 @@ function JobListingContainer({ mode }: Props) {
       location,
     },
     industry: industryFilter ? [industryFilter] : [],
-    status:'active'
+    status: 'active',
   });
-  const initialReportForm: ReportFormType = {
-    jobId: '',
-    reason: '',
-    info: '',
-  };
 
   const removeChip = (value: string) => {
     setFilter((prev) => ({
@@ -105,7 +99,7 @@ function JobListingContainer({ mode }: Props) {
   const [sortBy, setSortBy] = useState('Newest');
   const [activeJobId, setActiveJobId] = useState<string>('');
   const [activeJob, setActiveJob] = useState<JobDetailsDto | null>(null);
-  const [error, setError] = useState<ReportFormType>(initialReportForm);
+  console.log(activeJob);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [viewState, setViewState] = useState<
     'loading' | 'loaded' | 'empty' | 'error'
@@ -114,19 +108,14 @@ function JobListingContainer({ mode }: Props) {
   const user = useSelector((state: StateType) => state.auth.user);
   const dispatch = useDispatch();
 
-
-function isFilterActive(value: unknown): boolean {
-  if (value == null) return false;
-  if (typeof value === 'string') return value.trim() !== '';
-  if (typeof value === 'object') {
-    return Object.values(value).some(isFilterActive);
+  function isFilterActive(value: unknown): boolean {
+    if (value == null) return false;
+    if (typeof value === 'string') return value.trim() !== '';
+    if (typeof value === 'object') {
+      return Object.values(value).some(isFilterActive);
+    }
+    return Boolean(value);
   }
-  return Boolean(value);
-}
-
-
-  const [reportForm, setReportForm] =
-    useState<ReportFormType>(initialReportForm);
 
   useEffect(() => {
     async function fetchJobs() {
@@ -141,12 +130,7 @@ function isFilterActive(value: unknown): boolean {
             page
           );
         } else {
-          data = await jobService.getJobs(
-            { ...filter},
-            sortBy,
-            limit,
-            page
-          );
+          data = await jobService.getJobs({ ...filter }, sortBy, limit, page);
         }
 
         console.log('after fetching jobs', data);
@@ -214,55 +198,6 @@ function isFilterActive(value: unknown): boolean {
       });
     }
   }, [activeJobId]);
-
-  const handleReportFormChange = (data: Partial<ReportFormType>) => {
-    console.log('from handle form change', data);
-
-    setReportForm((prev) => ({ ...prev, ...data }));
-  };
-
-  const reportHandle = async () => {
-    if (!activeJob) return null;
-    const payload = { ...reportForm, jobId: activeJob.id };
-    setReportForm(payload);
-    const result = reportFormSchema.safeParse(payload);
-    if (result.success) {
-      try {
-        const data = await jobService.reportJob(payload);
-        console.log('data after submitting report', data);
-        setActiveJob((prev) =>
-          prev
-            ? {
-                ...prev,
-                isReported: true,
-                reportedBy: [...(prev.reportedBy || []), user.id],
-              }
-            : prev
-        );
-
-        showToast({
-          msg: data.message,
-          type: 'success',
-        });
-        setReportForm(initialReportForm);
-      } catch (error: any) {
-        showToast({
-          msg: error?.response?.data.message || error.message,
-          type: error,
-        });
-      }
-    } else {
-      const error = result.error.format();
-
-      const formattedErrors: ErrorType = {
-        jobId: error.jobId?._errors[0] || '',
-        reason: error.reason?._errors[0] || '',
-        info: error.info?._errors[0] || '',
-      };
-      setError(formattedErrors);
-      return;
-    }
-  };
 
   const saveJobHandle = async (jobId: string) => {
     if (!jobId) return;
@@ -383,8 +318,8 @@ function isFilterActive(value: unknown): boolean {
     setSelectedIndustries([]);
     setSelectedSalary([]);
     setSelectedModes([]);
-  }
-  
+  };
+
   return (
     <div
       className={cx(
@@ -417,8 +352,6 @@ function isFilterActive(value: unknown): boolean {
               setSelectedLevels={setSelectedLevels}
               setSelectedTypes={setSelectedTypes}
             />
-
-           
           </div>
           <ActiveFilterChips
             chips={activeChips}
@@ -447,7 +380,11 @@ function isFilterActive(value: unknown): boolean {
           )}
 
           {viewState === 'loaded' && jobs.length === 0 && (
-            <EmptyJobsState onClear={clearAll} mode={mode}  hasActiveFilters={Object.values(filter).some(isFilterActive)} />
+            <EmptyJobsState
+              onClear={clearAll}
+              mode={mode}
+              hasActiveFilters={Object.values(filter).some(isFilterActive)}
+            />
           )}
 
           {viewState === 'loaded' &&
@@ -457,7 +394,7 @@ function isFilterActive(value: unknown): boolean {
                 job={job}
                 handleSave={saveJobHandle}
                 handleUnSave={unSaveJobHandle}
-               
+
                 // saved={saved.has(job.id)}
                 // onToggleSave={toggleSave}
                 // onView={handleView}

@@ -54,7 +54,7 @@ export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
   const [activeNav, setActiveNav] = useState(nav ?? 'Dashboard');
   const navigate = useNavigate();
   const { HandleLogout } = useHeader();
-  useEffect(()=>setActiveNav(nav),[nav])
+  useEffect(() => setActiveNav(nav), [nav]);
   return (
     <div
       style={{ fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}
@@ -96,7 +96,7 @@ export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
               onClick={() => {
                 if (item === 'Logout') {
                   handleLogout();
-                  return
+                  return;
                 }
                 setTitle(item);
                 setActiveNav(item);

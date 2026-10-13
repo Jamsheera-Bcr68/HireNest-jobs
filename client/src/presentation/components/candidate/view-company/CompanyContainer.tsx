@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTheme } from '../../../../contexts/ThemeContext';
 import Header from '../../common/home/Header';
 import { useEffect, useState } from 'react';
@@ -7,7 +7,7 @@ import { companyService } from '../../../../services/api-services/companyService
 import { candidateService } from '../../../../services/api-services/candidateService';
 import { ErrorPlaceHolder, LoadingPlaceHolder } from './StateView';
 import { Main } from './Main';
-import {type JobCardDto } from '../../../../types/dtos/job.dto';
+import { type JobCardDto } from '../../../../types/dtos/job.dto';
 
 function CompanyContainer() {
   const { t } = useTheme();

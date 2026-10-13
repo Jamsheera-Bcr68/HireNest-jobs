@@ -4,7 +4,6 @@ import type { interviewFormType } from '../../libraries/validations/company/inte
 import type { InterviewFilter } from '../../presentation/hooks/user/useInterview';
 import { type interviewFeedbackDto } from '../../types/dtos/interview.dto';
 import type {
-  interviewDetailDto,
   InterviewDto,
   InterviewStatusType,
 } from '../../types/dtos/interview.dto';
@@ -105,8 +104,10 @@ export const interviewService = {
     return response.data;
   },
 
-  async getMeetInfo(meetId:string) {
-    const response = await axiosInstance.get(API_ENDPOINTS.GET_MEET_INFO(meetId));
+  async getMeetInfo(meetId: string) {
+    const response = await axiosInstance.get(
+      API_ENDPOINTS.GET_MEET_INFO(meetId)
+    );
     return response.data;
   },
 };

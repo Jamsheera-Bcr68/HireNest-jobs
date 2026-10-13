@@ -1,4 +1,3 @@
-import type { Dispatch } from '@reduxjs/toolkit';
 import type {
   ApplicationDetailsDto,
   ApplicationStatusType,
@@ -11,8 +10,8 @@ type Props = {
   updateStatus: (status: ApplicationStatusType) => Promise<void>;
   role: 'admin' | 'company';
   onScheduleClick: () => void;
-  chatroomId: string | null
-onViewClick: React.Dispatch<React.SetStateAction<boolean>>;
+  chatroomId: string | null;
+  onViewClick: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function CandidateData({
@@ -21,7 +20,7 @@ function CandidateData({
   role,
   onScheduleClick,
   chatroomId,
-  onViewClick
+  onViewClick,
 }: Props) {
   const navigate = useNavigate();
   return (
@@ -43,8 +42,8 @@ function CandidateData({
           {application.status === 'interviewScheduled' && (
             <button
               onClick={() => {
-                console.log('from chat click',chatroomId);
-                
+                console.log('from chat click', chatroomId);
+
                 if (!chatroomId) return;
 
                 navigate('/company/messages', {
@@ -56,15 +55,23 @@ function CandidateData({
               Send Message
             </button>
           )}
-          {application.status!=='rejected'&& <button
-            onClick={!['pending','reviewed','shortListed','rejected'].includes(application.status)?()=>onViewClick(true):onScheduleClick}
-            className="px-4 py-2 text-sm bg-fuchsia-800 text-white rounded-lg hover:bg-fuchsia-600 font-medium transition"
-          >
-            {application.status === 'interviewScheduled'
-              ? 'View Interview'
-              : 'Schedule Interview'}
-          </button>}
-         
+          {application.status !== 'rejected' && (
+            <button
+              onClick={
+                !['pending', 'reviewed', 'shortListed', 'rejected'].includes(
+                  application.status
+                )
+                  ? () => onViewClick(true)
+                  : onScheduleClick
+              }
+              className="px-4 py-2 text-sm bg-fuchsia-800 text-white rounded-lg hover:bg-fuchsia-600 font-medium transition"
+            >
+              {application.status === 'interviewScheduled'
+                ? 'View Interview'
+                : 'Schedule Interview'}
+            </button>
+          )}
+
           <button
             disabled={application.status === 'rejected'}
             onClick={() => updateStatus('rejected')}

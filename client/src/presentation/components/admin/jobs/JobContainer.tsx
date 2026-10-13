@@ -17,8 +17,7 @@ import { useLocation } from 'react-router-dom';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { type UpdateStatusType } from '../../user/employer/company-joblisting/CompanyJobListingContainer';
 import type { StatusType } from '../../../../types/dtos/profile-types/user.types';
- import {MapPin, CalendarDays, Briefcase, Flag } from 'lucide-react';
-
+import { MapPin, CalendarDays, Briefcase, Flag } from 'lucide-react';
 
 import AddReasonModal from './AddReasonModal';
 
@@ -42,7 +41,7 @@ const filterOptions = [
     label: 'Experience',
     options: experience_filterOption,
   },
- // {key:'Type',label:'Job Type',options:[{ label: 'Part Time', value: 'partTime' },{ label: 'Full Time', value: 'fullTime' },]},
+  // {key:'Type',label:'Job Type',options:[{ label: 'Part Time', value: 'partTime' },{ label: 'Full Time', value: 'fullTime' },]},
   {
     key: 'mode',
     label: 'Work Mode',
@@ -55,7 +54,6 @@ const filterOptions = [
 ];
 
 function JobContainer() {
-
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [stats, setStats] = useState<StatusCardType[]>([]);
@@ -65,7 +63,8 @@ function JobContainer() {
   const [page, setPage] = useState(1);
   const [totalDocs, setTotalDocs] = useState(0);
   const [filter, setFilter] = useState<JobFilterType>({
-    search: { job: '', location: '' },status:'active'
+    search: { job: '', location: '' },
+    status: 'active',
   });
 
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
@@ -75,13 +74,12 @@ function JobContainer() {
   const [showSuspendReasonModal, setShowSuspendReasonModal] =
     useState<boolean>(false);
 
-const location=useLocation()
-const companyId=location.state?.companyId
-console.log('comapny id frm jobs',companyId);
+  const location = useLocation();
+  const companyId = location.state?.companyId;
+  console.log('comapny id frm jobs', companyId);
 
   //getting status cards
   useEffect(() => {
-
     async function getPostStatusData() {
       try {
         const data = await adminService.getJobstatus(companyId);
@@ -123,8 +121,12 @@ console.log('comapny id frm jobs',companyId);
   useEffect(() => {
     const getJobs = async () => {
       try {
-       
-        const data = await adminService.getJobs({ ...filter,companyId }, '', limit, page);
+        const data = await adminService.getJobs(
+          { ...filter, companyId },
+          '',
+          limit,
+          page
+        );
         console.log('datas after fetching compnay jobs', data);
         setJobs(data.jobs);
         setTotalDocs(data.totalDocs);
@@ -268,136 +270,187 @@ console.log('comapny id frm jobs',companyId);
   //   },
   // ];
 
-const postColumns = [
-  {
-    key: 'title',
-    label: 'Job',
-    mobile: 'primary',
-    render: (j: JobCardDto) => (
-      <div className="min-w-0 w-full">
-        <p className="font-semibold text-slate-800 truncate">{j.title}</p>
-        <p className="flex items-center gap-1 text-xs text-slate-400 mt-0.5 min-w-0">
-          <Building2 size={12} className="flex-shrink-0" />
-          <span className="truncate min-w-0">{j.companyName}</span>
-        </p>
-      </div>
-    ),
-    width:'20%'
-    // mobileRender omitted — identical to render, falls back automatically
-  },
-  {
-    key: 'type',
-    label: 'Type',
-    icon: <Briefcase size={13} />,
-    render: (j: JobCardDto) => (
-      <span className="font-semibold text-slate-800 whitespace-nowrap">
-        {j.jobType === 'partTime' ? 'Part Time' : 'Full Time'}
-      </span>
-    ),
-  },
-  {
-    key: 'location',
-    label: 'Location',
-    icon: <MapPin size={13} />,
-    render: (j: JobCardDto) => j.location.state,
-  },
-  {
-    key: 'createdAt',
-    label: 'Posted',
-    icon: <CalendarDays size={13} />,
-    render: (j: JobCardDto) => new Date(j.createdAt).toLocaleDateString(),
-  },
-  {
-    key: 'app-count',
-    label: 'App_count',
-   
-    render: (j: JobCardDto) => (
-      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full `}>
-        {j.appCount}
-      </span>
-    ),
-  },
-  {
-    key: 'status',
-    label: 'Status',
-    mobile: 'status',
-    render: (j: JobCardDto) => (
-      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusStyles[j.status]}`}>
-        {j.status}
-      </span>
-    ),
-  },
-  {
-    key: 'reports',
-    label: 'Reports',
-    icon: <Flag size={13} />,
-    render: (j: JobCardDto) => {
-      const count = j.reportDetails?.length ?? 0;
-      return (
-        <span
-          className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
-            count > 0 ? 'bg-amber-50 text-amber-700' : 'text-slate-400'
-          }`}
-        >
-          {count}
-        </span>
-      );
+  const postColumns = [
+    {
+      key: 'title',
+      label: 'Job',
+      mobile: 'primary',
+      render: (j: JobCardDto) => (
+        <div className="min-w-0 w-full">
+          <p className="font-semibold text-slate-800 truncate">{j.title}</p>
+          <p className="flex items-center gap-1 text-xs text-slate-400 mt-0.5 min-w-0">
+            <Building2 size={12} className="flex-shrink-0" />
+            <span className="truncate min-w-0">{j.companyName}</span>
+          </p>
+        </div>
+      ),
+      width: '20%',
+      // mobileRender omitted — identical to render, falls back automatically
     },
-  },
-  {
-    key: 'actions',
-    label: 'Actions',
-    mobile: 'actions',
-    render: (j: JobCardDto) => (
-      <div className="flex items-center gap-2">
-        <button onClick={() => navigate(`/admin/jobs/${j.id}`)} className="text-indigo-600 hover:text-indigo-800" title="View">
-          <Eye size={18} />
-        </button>
-        {j.status !== 'removed' && (
-          <button onClick={() => { setSelectedJob(j); setDeleteModalOpen(true); }} className="font-semibold text-red-700 hover:text-red-800" title="Remove">
-            <Trash size={16} />
+    {
+      key: 'type',
+      label: 'Type',
+      icon: <Briefcase size={13} />,
+      render: (j: JobCardDto) => (
+        <span className="font-semibold text-slate-800 whitespace-nowrap">
+          {j.jobType === 'partTime' ? 'Part Time' : 'Full Time'}
+        </span>
+      ),
+    },
+    {
+      key: 'location',
+      label: 'Location',
+      icon: <MapPin size={13} />,
+      render: (j: JobCardDto) => j.location.state,
+    },
+    {
+      key: 'createdAt',
+      label: 'Posted',
+      icon: <CalendarDays size={13} />,
+      render: (j: JobCardDto) => new Date(j.createdAt).toLocaleDateString(),
+    },
+    {
+      key: 'app-count',
+      label: 'App_count',
+
+      render: (j: JobCardDto) => (
+        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full `}>
+          {j.appCount}
+        </span>
+      ),
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      mobile: 'status',
+      render: (j: JobCardDto) => (
+        <span
+          className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusStyles[j.status]}`}
+        >
+          {j.status}
+        </span>
+      ),
+    },
+    {
+      key: 'reports',
+      label: 'Reports',
+      icon: <Flag size={13} />,
+      render: (j: JobCardDto) => {
+        const count = j.reportDetails?.length ?? 0;
+        return (
+          <span
+            className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
+              count > 0 ? 'bg-amber-50 text-amber-700' : 'text-slate-400'
+            }`}
+          >
+            {count}
+          </span>
+        );
+      },
+    },
+    {
+      key: 'actions',
+      label: 'Actions',
+      mobile: 'actions',
+      render: (j: JobCardDto) => (
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate(`/admin/jobs/${j.id}`)}
+            className="text-indigo-600 hover:text-indigo-800"
+            title="View"
+          >
+            <Eye size={18} />
           </button>
-        )}
-        {j.status === 'active' && (
-          <button onClick={() => { setSelectedJob(j); setSuspendModalOpen(true); }} className="font-bold text-red-700 hover:text-red-800" title="Suspend">
-            <Ban size={16} />
+          {j.status !== 'removed' && (
+            <button
+              onClick={() => {
+                setSelectedJob(j);
+                setDeleteModalOpen(true);
+              }}
+              className="font-semibold text-red-700 hover:text-red-800"
+              title="Remove"
+            >
+              <Trash size={16} />
+            </button>
+          )}
+          {j.status === 'active' && (
+            <button
+              onClick={() => {
+                setSelectedJob(j);
+                setSuspendModalOpen(true);
+              }}
+              className="font-bold text-red-700 hover:text-red-800"
+              title="Suspend"
+            >
+              <Ban size={16} />
+            </button>
+          )}
+          {j.status === 'suspended' && (
+            <button
+              onClick={() => {
+                setSelectedJob(j);
+                setActivateModalOpen(true);
+              }}
+              className="font-bold text-green-700 hover:text-green-800"
+              title="Activate"
+            >
+              <ThumbsUp size={16} />
+            </button>
+          )}
+        </div>
+      ),
+      mobileRender: (j: JobCardDto) => (
+        <div
+          className="flex items-center flex-wrap gap-2"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={() => navigate(`/admin/jobs/${j.id}`)}
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+          >
+            <Eye size={14} />
+            View
           </button>
-        )}
-        {j.status === 'suspended' && (
-          <button onClick={() => { setSelectedJob(j); setActivateModalOpen(true); }} className="font-bold text-green-700 hover:text-green-800" title="Activate">
-            <ThumbsUp size={16} />
-          </button>
-        )}
-      </div>
-    ),
-    mobileRender: (j: JobCardDto) => (
-      <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
-        <button onClick={() => navigate(`/admin/jobs/${j.id}`)} className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all">
-          <Eye size={14} />
-          View
-        </button>
-        {j.status !== 'removed' && (
-          <button onClick={() => { setSelectedJob(j); setDeleteModalOpen(true); }} className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all">
-            <Trash size={14} />
-            Remove
-          </button>
-        )}
-        {j.status === 'active' && (
-          <button onClick={() => { setSelectedJob(j); setSuspendModalOpen(true); }} className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all">
-            <Ban size={14} />
-            Suspend
-          </button>
-        )}
-        {j.status === 'suspended' && (
-          <button onClick={() => { setSelectedJob(j); setActivateModalOpen(true); }} className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all">
-            <ThumbsUp size={14} />
-            Activate
-          </button>
-        )}
-      </div>
-    ),
-  },
-];
+          {j.status !== 'removed' && (
+            <button
+              onClick={() => {
+                setSelectedJob(j);
+                setDeleteModalOpen(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+            >
+              <Trash size={14} />
+              Remove
+            </button>
+          )}
+          {j.status === 'active' && (
+            <button
+              onClick={() => {
+                setSelectedJob(j);
+                setSuspendModalOpen(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+            >
+              <Ban size={14} />
+              Suspend
+            </button>
+          )}
+          {j.status === 'suspended' && (
+            <button
+              onClick={() => {
+                setSelectedJob(j);
+                setActivateModalOpen(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+            >
+              <ThumbsUp size={14} />
+              Activate
+            </button>
+          )}
+        </div>
+      ),
+    },
+  ];
 
   const handleFilterChange = (
     incomingFilter: Partial<JobFilterType> & { search?: string }
@@ -493,11 +546,9 @@ const postColumns = [
       setSelectedJob(null);
     }
   };
-const onResetFilter=()=>{
- 
-  
-  setFilter({ search: { job: '', location: '' },status:'active'})
-}
+  const onResetFilter = () => {
+    setFilter({ search: { job: '', location: '' }, status: 'active' });
+  };
   return (
     <>
       <div>
@@ -511,7 +562,7 @@ const onResetFilter=()=>{
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
               {' '}
               <ReusableTable
-              filter={filter}
+                filter={filter}
                 totalDocs={totalDocs}
                 columns={postColumns as ColumnType<JobCardDto>[]}
                 tabs={tabs}
@@ -522,7 +573,6 @@ const onResetFilter=()=>{
                 onResetfilter={onResetFilter}
               />
               <Pagination
-             
                 onPageChange={setPage}
                 totalPages={Math.ceil(totalDocs / limit)}
                 count={jobs.length}

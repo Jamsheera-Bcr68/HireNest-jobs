@@ -46,5 +46,11 @@ export const useNotifications = () => {
     } catch (error) {}
   };
 
-  return { getNotifications, getNotificationCount, markAsRead, markAllAsRead,deleteNotification };
+  return {
+    getNotifications,
+    getNotificationCount,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+  };
 };

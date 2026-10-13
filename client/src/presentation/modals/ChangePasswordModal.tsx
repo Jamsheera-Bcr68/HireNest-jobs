@@ -2,7 +2,6 @@ import * as Dialog from '@radix-ui/react-dialog';
 
 import { EyeClosedIcon, Eye } from 'lucide-react';
 import { useChangePassword } from '../hooks/auth/useChangePassword';
-import { useToast } from '../../shared/toast/use-toast';
 
 export default function ChangePasswordModal({
   open,

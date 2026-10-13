@@ -125,7 +125,6 @@ export default function EditCompanyProfileModal({
   };
   useEffect(() => {
     if (company) {
-      const add = company.address;
       console.log('company', company);
 
       setFormData(company);

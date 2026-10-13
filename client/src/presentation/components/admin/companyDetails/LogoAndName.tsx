@@ -29,7 +29,6 @@ function LogoAndName({
   onUpdate: (updated: CompanyProfileType) => void;
 }) {
   const navigate = useNavigate();
- 
 
   const [open, setOpen] = useState(false);
   const [rejectReasonOpen, setRejectReasonOpen] = useState(false);
@@ -38,9 +37,7 @@ function LogoAndName({
 
   const { showToast } = useToast();
 
- 
-  
- if (!company) return null;
+  if (!company) return null;
   const approveCompany = async () => {
     //   console.log('approve company');
     try {
@@ -132,8 +129,13 @@ function LogoAndName({
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div className="flex items-center gap-4">
-       
-        <Avatar name={company.companyName} item='company' imageClassName='w-full h-full border rounded-full object-contain' logoUrl={company.logoUrl} className="w-16 h-16  rounded-full flex items-center justify-center"/>
+        <Avatar
+          name={company.companyName}
+          item="company"
+          imageClassName="w-full h-full border rounded-full object-contain"
+          logoUrl={company.logoUrl}
+          className="w-16 h-16  rounded-full flex items-center justify-center"
+        />
 
         <div>
           <h1 className="text-xl md:text-2xl font-semibold text-slate-800">

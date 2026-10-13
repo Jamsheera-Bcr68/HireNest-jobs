@@ -18,10 +18,8 @@ const LoginForm = ({ role }: ILoginFormProps) => {
 
   return (
     <form onSubmit={submitHandle} className="rounded-md">
-      <div className="text-center  mb-5">
-      
-      </div>
-      <AuthForms title='Login'  error={errors.server}/>
+      <div className="text-center  mb-5"></div>
+      <AuthForms title="Login" error={errors.server} />
 
       <div className="space-y-4">
         <button
@@ -61,7 +59,8 @@ const LoginForm = ({ role }: ILoginFormProps) => {
             placeholder="Password"
             className="w-full  px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent outline-none transition"
           />{' '}
-          <button type='button'
+          <button
+            type="button"
             className="absolute inset-y-0 right-3 flex items-center text-gray-500"
             onClick={() => setShowPassword((state) => !state)}
           >
@@ -74,14 +73,15 @@ const LoginForm = ({ role }: ILoginFormProps) => {
         )}
         {/* Submit */}
         <button
-          type='submit'
+          type="submit"
           className="w-full bg-fuchsia-800 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-fuchsia-700 transition duration-200 shadow-md hover:shadow-lg"
         >
           Login
         </button>
       </div>
       <div className="w-full ">
-        <button color='white'
+        <button
+          color="white"
           onClick={handleForgotPassword}
           className="ml-60 text-sm text-fuchsia-800 hover:text-fuchsia-500 transition"
         >

@@ -67,11 +67,10 @@ export const useApplications = (setPage?: (page?: number) => void) => {
       showToast({ msg: 'You are not allowed to apply job', type: 'error' });
       return;
     }
-    if (!user.skillCount  || !user.educationCount) {
+    if (!user.skillCount || !user.educationCount) {
       if (!user.skillCount) {
         showToast({ msg: 'Your Profile is missing skills', type: 'error' });
-      } else 
-  if (!user.educationCount) {
+      } else if (!user.educationCount) {
         showToast({ msg: 'Your Profile is missing Educations', type: 'error' });
       }
 
@@ -128,8 +127,6 @@ export const useApplications = (setPage?: (page?: number) => void) => {
     setPage(1);
   };
 
- 
-
   return {
     handleApplyClick,
     filter,
@@ -138,6 +135,6 @@ export const useApplications = (setPage?: (page?: number) => void) => {
     showResumeModal,
     resumes,
     applyJob,
-    setFilter
+    setFilter,
   };
 };

@@ -7,7 +7,6 @@ import {
   Users,
   Briefcase,
   CalendarDays,
-  FileUser,
   ListTodo,
   LogOut,
 } from 'lucide-react';
@@ -22,7 +21,8 @@ const navItems = [
   'Interviews',
 
   'Skills',
-  'Pendings',"Logout"
+  'Pendings',
+  'Logout',
 ];
 const navIcons = [
   <LayoutDashboard />,
@@ -31,7 +31,8 @@ const navIcons = [
   <Briefcase />,
   <CalendarDays />,
   <Lightbulb />,
-  <ListTodo />,<LogOut/>
+  <ListTodo />,
+  <LogOut />,
 ];
 const navLinks: Record<string, string> = {
   Dashboard: '/admin',
@@ -55,7 +56,7 @@ function Sidebar({
 }) {
   const [activeNav, setActiveNav] = useState(nav);
   const navigate = useNavigate();
-const {HandleLogout}=useHeader()
+  const { HandleLogout } = useHeader();
   return (
     <aside
       className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all h-screen sticky top-0 duration-300 bg-slate-900 flex flex-col shrink-0`}
@@ -83,10 +84,10 @@ const {HandleLogout}=useHeader()
             onClick={() => {
               setTitle(item);
               //console.log('item,navLinks[item]', item, navLinks[item]);
-if(item==='Logout'){
-HandleLogout()
-return
-}
+              if (item === 'Logout') {
+                HandleLogout();
+                return;
+              }
               navigate(navLinks[item]);
               setActiveNav(item);
             }}

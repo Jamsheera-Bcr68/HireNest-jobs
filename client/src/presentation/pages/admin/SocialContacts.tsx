@@ -68,7 +68,7 @@ export function SocialLinks({ socialLinks }: SocialLinksProps) {
 
   const availableLinks = links.filter((link) => link.value?.trim());
   return (
-    <SectionCard className='' title="Social Media & Links">
+    <SectionCard className="" title="Social Media & Links">
       {' '}
       {availableLinks.length > 0 ? (
         <div className="space-y-3">
@@ -110,7 +110,10 @@ export function SocialLinks({ socialLinks }: SocialLinksProps) {
           })}{' '}
         </div>
       ) : (
-        <CompactEmptyState icon={Link2Off} text="No social media links available." />
+        <CompactEmptyState
+          icon={Link2Off}
+          text="No social media links available."
+        />
       )}{' '}
     </SectionCard>
   );

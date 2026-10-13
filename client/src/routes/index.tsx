@@ -3,7 +3,7 @@ import MeetPage from '../presentation/pages/user/MeetPage';
 
 import ProtectedRoutes from './PrivateRoutes';
 import { CandidateRoutes } from './user.routes/candidate.route';
-import ViewCompanyPage from '../presentation/pages/user/candidate/ViewCompanyPage';
+
 import NotFound from '../presentation/pages/NotFound';
 import Landing from '../presentation/pages/user/Landing';
 import PublicRoutes from './PublicOnlyRoutes';
@@ -23,17 +23,16 @@ import Home from '../presentation/pages/user/Home';
 import type { RootState } from '../redux/store';
 import JobDetailsPage from '../presentation/pages/user/candidate/JobDetailsPage';
 
-
 export const AppRoutes = () => {
   const { user } = useSelector((state: RootState) => state?.auth);
   return (
     <Routes>
       <Route path="/" element={user ? <Home /> : <Landing />} />
       {/* <Route path="/job" element={<JobListingPage />} /> */}
-{/* 
+      {/* 
       <Route path="/jobs" element={<JobListing />} />
       <Route path="/jobs/:jobId" element={<JobDetailsPage />} /> */}
-       <Route
+      <Route
         path="/jobs"
         element={
           user?.role === 'candidate' ? (
@@ -54,7 +53,6 @@ export const AppRoutes = () => {
           )
         }
       />
-     
 
       {/* Public routes */}
       <Route element={<PublicRoutes />}>
@@ -63,12 +61,8 @@ export const AppRoutes = () => {
         <Route path="/otp" element={<Otp />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route
-          path="/reset-password/:resetToken"
-          element={<ResetPassword />}
-        />
+        <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
       </Route>
-
 
       <Route element={<PublicRoutes />}>
         {' '}

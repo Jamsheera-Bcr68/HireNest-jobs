@@ -14,7 +14,6 @@ type Props = {
   onViewClick: (id: string) => Promise<void>;
 };
 
-
 export function CandidateInterviewList({
   interviews,
   onConfirmClick,
@@ -96,7 +95,7 @@ export function CandidateInterviewList({
                   <div className="flex items-center gap-2 flex-wrap justify-end">
                     <span
                       className={`text-xs px-2.5 py-1 rounded-full font-medium ${
-                        interview.status === 'confirmed'
+                        interview.isConfirmed
                           ? 'bg-green-100 text-green-700'
                           : interview.status === 'completed'
                             ? 'bg-gray-200 text-gray-700'

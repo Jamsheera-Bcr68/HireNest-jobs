@@ -1,24 +1,23 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../../../redux/store";
-
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../redux/store';
 
 interface CompanyAvatarProps {
   name?: string | null;
   logoUrl?: string | null;
   className?: string;
   imageClassName?: string;
-    item:'company'|'candidate'
+  item: 'company' | 'candidate';
 }
 
 export function Avatar({
   name,
   item,
   logoUrl,
-  className = "",
-  imageClassName = "",
+  className = '',
+  imageClassName = '',
 }: CompanyAvatarProps) {
   const getInitials = (name?: string | null) => {
-    if (!name?.trim()) return "C";
+    if (!name?.trim()) return 'C';
 
     const words = name.trim().split(/\s+/);
 
@@ -28,19 +27,17 @@ export function Avatar({
 
     return `${words[0][0]}${words[1][0]}`.toUpperCase();
   };
-const role=useSelector((state:RootState)=>state.auth.user).role
+  const role = useSelector((state: RootState) => state.auth.user).role;
   const initials = getInitials(name);
-
-   const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
   return (
     <div
-      className={`flex shrink-0 items-center justify-center overflow-hidden  ${role=='admin'?'bg-indigo-100 text-indigo-600':'bg-fuchsia-100 text-fuchsia-600'}  font-bold  ${className}`}
+      className={`flex shrink-0 items-center justify-center overflow-hidden  ${role == 'admin' ? 'bg-indigo-100 text-indigo-600' : 'bg-fuchsia-100 text-fuchsia-600'}  font-bold  ${className}`}
     >
       {logoUrl ? (
         <img
           src={`${logoUrl}`}
-          alt={`${name ??item=='company'?'Company Logo':'Candidate'} `}
+          alt={`${(name ?? item == 'company') ? 'Company Logo' : 'Candidate'} `}
           className={`h-full w-full object-cover ${imageClassName}`}
         />
       ) : (

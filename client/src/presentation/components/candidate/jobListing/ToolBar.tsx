@@ -1,4 +1,3 @@
-import { ChevronDown } from 'lucide-react';
 import type { JobCardDto } from '../../../../types/dtos/job.dto';
 
 type Props = {
@@ -109,7 +108,6 @@ function ToolBar({
     </div>
   );
 }
-
 
 export default ToolBar;
 

@@ -33,7 +33,6 @@ function RightSideBar({
   const { showToast } = useToast();
   const checkResumeExist = async (url: string) => {
     try {
-      
       const data = await adminService.checkExist(url);
 
       if (data.isExist) {
@@ -52,7 +51,6 @@ function RightSideBar({
       });
     }
   };
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
   return (
     <div className="space-y-6 mt-4">

@@ -45,7 +45,7 @@ export class ApplicationController {
     const { jobId } = req.params;
     const { resumeId } = req.body;
     //console.log('from application controller', jobId, resumeId);
-await this._applyJobUseCase.execute(
+    await this._applyJobUseCase.execute(
       jobId,
       resumeId,
       user.userId,

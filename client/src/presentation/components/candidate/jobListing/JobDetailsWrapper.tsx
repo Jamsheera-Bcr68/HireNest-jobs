@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import JobDetails from './JobDetails';
 import { jobService } from '../../../../services/api-services/jobService';
 import { type JobDetailsDto } from '../../../../types/dtos/job.dto';
 import Header from '../../common/Header';
@@ -14,7 +13,7 @@ export default function JobDetailsPage() {
     passedJob ? passedJob : null
   );
   const [error, setError] = useState('');
-
+  console.log(error);
   useEffect(() => {
     const fetchJob = async () => {
       try {

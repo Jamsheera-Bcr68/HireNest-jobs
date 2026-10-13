@@ -21,7 +21,6 @@ import {
 import { PaginatedEntities } from '../../applications/types/candidate.type';
 import { UserRole } from '../../domain/enums/user.enums';
 
-
 type CandidateQuery = Partial<User> & {
   $or?: {
     name?: { $regex: string; $options: string };

@@ -3,7 +3,6 @@ import { IDashboardCardDataUsecase } from '../../../applications/interfaces/dash
 import {
   CompanyDashboardCardsDto,
   DashboardInterview,
-
   PendingActivityDto,
   RecentActivityDto,
 } from '../../../applications/types/company-dashboard.types';

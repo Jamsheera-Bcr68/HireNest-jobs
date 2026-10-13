@@ -24,10 +24,12 @@ export const EmployerLayout = () => {
   }
 
   const [isSidebarOpen, setsidebarOpen] = useState(true);
-  console.log('active item',activeItem);
-  
-  const [title, seTitle] = useState(activeItem?.label || 'Dashboard');
+  console.log('active item', activeItem);
+
+  const [title, setTitle] = useState(activeItem?.label || 'Dashboard');
   useEffect(() => {
+    console.log(title);
+
     const handleResize = () => {
       if (window.innerWidth < 768) {
         setsidebarOpen(false);
@@ -40,22 +42,20 @@ export const EmployerLayout = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
-    
-      <div className="flex min-h-screen ">
-        <SideBar
-          isOpen={isSidebarOpen}
-          setOpen={setsidebarOpen}
-          setTitle={seTitle}
-          nav={`${activeItem?.label || 'Dashboard'}`}
-        />
-        <div className="flex-1  bg-gray-100">
-          <Header />
+    <div className="flex min-h-screen ">
+      <SideBar
+        isOpen={isSidebarOpen}
+        setOpen={setsidebarOpen}
+        setTitle={setTitle}
+        nav={`${activeItem?.label || 'Dashboard'}`}
+      />
+      <div className="flex-1  bg-gray-100">
+        <Header />
 
-          <div className="p-3  ">
-            <Outlet />
-          </div>
+        <div className="p-3  ">
+          <Outlet />
         </div>
       </div>
-    
+    </div>
   );
 };

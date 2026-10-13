@@ -1,5 +1,4 @@
-import { type JobFilterType } from '../../../pages/user/JobListing';
-
+import { type JobFilterType } from '../../../components/candidate/jobListing/ListingContainter';
 type statsType = {
   icon: string;
   label: string;

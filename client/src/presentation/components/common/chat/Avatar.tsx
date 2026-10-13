@@ -1,4 +1,10 @@
-export function Avatar({ name, size = "w-12 h-12" }:{name:string,size:string}) {
+export function Avatar({
+  name,
+  size = 'w-12 h-12',
+}: {
+  name: string;
+  size: string;
+}) {
   return (
     <div
       className={`${size} } rounded-full flex items-center justify-center text-white font-semibold shrink-0 select-none`}
@@ -8,12 +14,11 @@ export function Avatar({ name, size = "w-12 h-12" }:{name:string,size:string}) {
   );
 }
 
-function getInitials(name:string) {
+function getInitials(name: string) {
   return name
-    .split(" ")
+    .split(' ')
     .map((w) => w[0])
     .slice(0, 2)
-    .join("")
+    .join('')
     .toUpperCase();
 }
-

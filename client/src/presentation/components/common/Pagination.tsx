@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useTheme} from '../../../contexts/ThemeContext'
+import { useTheme } from '../../../contexts/ThemeContext';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../redux/store';
 
@@ -21,43 +21,35 @@ function Pagination({
   onPageChange,
 }: PaginationProps) {
   console.log('totalPages', totalPages);
-const {t}=useTheme()
-const role=useSelector((state:RootState)=>state.auth.user).role
+  const { t } = useTheme();
+  const role = useSelector((state: RootState) => state.auth.user).role;
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
-  <div>
-    <div
-      className={`text-sm flex mt-4 mr-4 justify-end ${t.resultsMuted}`}
-    >
-      <span className="text-sm">
-        Showing{" "}
-        <span className={`font-medium ${t.navActive}`}>
-          {count}
-        </span>{" "}
-        of{" "}
-        <span className={`font-medium ${t.navActive}`}>
-          {totalItem}
-        </span>{" "}
-        {item}
-      </span>
-    </div>
+    <div>
+      <div className={`text-sm flex mt-4 mr-4 justify-end ${t.resultsMuted}`}>
+        <span className="text-sm">
+          Showing <span className={`font-medium ${t.navActive}`}>{count}</span>{' '}
+          of <span className={`font-medium ${t.navActive}`}>{totalItem}</span>{' '}
+          {item}
+        </span>
+      </div>
 
-    {totalPages > 1 && (
-      <div
-        className={`
+      {totalPages > 1 && (
+        <div
+          className={`
           py-4
           border-t ${t.dividerH}
           flex flex-col sm:flex-row
           items-center justify-center
           text-sm ${t.paginationText}
         `}
-      >
-        <div className="flex items-center gap-1">
-          {/* Previous */}
-          <button
-            disabled={currentPage === 1}
-            onClick={() => onPageChange(currentPage - 1)}
-            className={`
+        >
+          <div className="flex items-center gap-1">
+            {/* Previous */}
+            <button
+              disabled={currentPage === 1}
+              onClick={() => onPageChange(currentPage - 1)}
+              className={`
               px-3 py-1.5
               border ${t.surfaceBorder}
               ${t.surface}
@@ -66,35 +58,35 @@ const role=useSelector((state:RootState)=>state.auth.user).role
               transition
               disabled:opacity-40
             `}
-          >
-            <ChevronLeft size={18} />
-          </button>
+            >
+              <ChevronLeft size={18} />
+            </button>
 
-          {/* Page Numbers */}
-          {pages.map((page, ind) => (
-            <button
-              onClick={() => onPageChange(page)}
-              key={ind}
-              className={`
+            {/* Page Numbers */}
+            {pages.map((page, ind) => (
+              <button
+                onClick={() => onPageChange(page)}
+                key={ind}
+                className={`
                 px-3 py-1.5
                 rounded-lg
                 font-medium
                 ${
                   page === currentPage
-                    ?`${role==='admin'?"bg-indigo-600 text-white": "bg-fuchsia-600 text-white"}`
+                    ? `${role === 'admin' ? 'bg-indigo-600 text-white' : 'bg-fuchsia-600 text-white'}`
                     : `${t.surface} ${t.paginationText} ${t.paginationHover}`
                 }
               `}
-            >
-              {page}
-            </button>
-          ))}
+              >
+                {page}
+              </button>
+            ))}
 
-          {/* Next */}
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => onPageChange(currentPage + 1)}
-            className={`
+            {/* Next */}
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => onPageChange(currentPage + 1)}
+              className={`
               px-3 py-1.5
               ${t.surface}
               border ${t.surfaceBorder}
@@ -103,14 +95,14 @@ const role=useSelector((state:RootState)=>state.auth.user).role
               transition
               disabled:opacity-40
             `}
-          >
-            <ChevronRight size={18} />
-          </button>
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
         </div>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
   // return (
   //   <div>
   //     <div className="text-sm flex mt-4 text-bold mr-4 justify-end">

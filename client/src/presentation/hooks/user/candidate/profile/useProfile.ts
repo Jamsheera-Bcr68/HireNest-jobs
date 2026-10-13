@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { type UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import { useToast } from '../../../../../shared/toast/use-toast';
 
-import { data, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { type SkillType } from '../../../../../types/dtos/profile-types/skill.types';
 import { skillService } from '../../../../../services/api-services/skillServices';
 import { profileService } from '../../../../../services/api-services/candidateService';
@@ -13,16 +13,16 @@ export type SkillFilter = {
 };
 
 export const useProfile = () => {
-  const [user, setUser] = useState<UserProfileType|null>(null);
+  const [user, setUser] = useState<UserProfileType | null>(null);
   const [allSkills, setAllSkills] = useState<SkillType[]>([]);
-    const [loading,setLoading]=useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
   const { showToast } = useToast();
   const navigate = useNavigate();
 
   const initialSkillFilter: SkillFilter = {
     status: 'approved',
   };
-
+  console.log(loading);
   const [skillFilter, setSkillFilter] =
     useState<SkillFilter>(initialSkillFilter);
   const updateFilter = (search: string) => {
@@ -31,18 +31,17 @@ export const useProfile = () => {
   };
   useEffect(() => {
     async function getUser() {
-      
       try {
         const data = await profileService.getProfile();
         console.log(`data candidate`, data);
 
-        let user :UserProfileType= data.user;
-       
-        const company=data.company
-        console.log('user', user,'company',company);
-         if(user.isRequested&&company){
-          user.requestedCompany=company
-         }
+        let user: UserProfileType = data.user;
+
+        const company = data.company;
+        console.log('user', user, 'company', company);
+        if (user.isRequested && company) {
+          user.requestedCompany = company;
+        }
 
         setUser(user);
       } catch (error: any) {
@@ -57,7 +56,7 @@ export const useProfile = () => {
     }
 
     async function getAllSkills() {
-      setLoading(true)
+      setLoading(true);
       try {
         const data = await skillService.getSkills(skillFilter);
         console.log('candidate skills', data);
@@ -65,10 +64,10 @@ export const useProfile = () => {
         const skills = data.data.skills;
         console.log('skills ', skills);
         setAllSkills(skills);
-        setLoading(false)
+        setLoading(false);
       } catch (error: any) {
         // console.log(error);
-setLoading(false)
+        setLoading(false);
         showToast({
           msg: error.response?.data.message || error.message,
           type: 'error',

@@ -1,11 +1,11 @@
-import PendingActivitiesContainer from "../../components/admin/pending/Container"
+import PendingActivitiesContainer from '../../components/admin/pending/Container';
 
 function PendingPage() {
   return (
     <div>
       <PendingActivitiesContainer />
     </div>
-  )
+  );
 }
 
-export default PendingPage
+export default PendingPage;

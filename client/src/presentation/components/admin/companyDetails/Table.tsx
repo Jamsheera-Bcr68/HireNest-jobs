@@ -290,7 +290,6 @@ function Table({
                 >
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-3">
-                     
                       <Avatar
                         item="company"
                         logoUrl={company.logoUrl}
@@ -409,146 +408,147 @@ function Table({
               ))}
             </tbody>
           </table>
-         
         </div>
-         <div className="md:hidden divide-y divide-slate-100">
-            {companies.map((company) => {
-              const isExpanded = expandedIds.has(company.id);
+        <div className="md:hidden divide-y divide-slate-100">
+          {companies.map((company) => {
+            const isExpanded = expandedIds.has(company.id);
 
-              return (
-                <div key={company.id} className="py-3 px-1">
-                  {/* Collapsed row */}
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <Avatar
-                        item="company"
-                        logoUrl={company.logoUrl}
-                        name={company.companyName}
-                        className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0"
-                      />
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-semibold text-slate-800 truncate">
-                            {company.companyName}
-                          </span>
-                          {company.isVerified && (
-                            <svg
-                              className="w-4 h-4 text-blue-500 flex-shrink-0"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          )}
-                        </div>
-                        <p className="text-xs text-slate-400 truncate">
-                          {company.industry}
-                        </p>
+            return (
+              <div key={company.id} className="py-3 px-1">
+                {/* Collapsed row */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <Avatar
+                      item="company"
+                      logoUrl={company.logoUrl}
+                      name={company.companyName}
+                      className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-semibold text-slate-800 truncate">
+                          {company.companyName}
+                        </span>
+                        {company.isVerified && (
+                          <svg
+                            className="w-4 h-4 text-blue-500 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
                       </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 flex-shrink-0">
-                      <span
-                        className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusStyles[company.status]}`}
-                      >
-                        {company.status}
-                      </span>
-                      <button
-                        onClick={() => toggleExpanded(company.id)}
-                        className="p-1 text-slate-400 hover:text-slate-600 rounded-lg transition"
-                        title={isExpanded ? 'Show less' : 'Show more'}
-                      >
-                        <ChevronDown
-                          size={18}
-                          className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                        />
-                      </button>
+                      <p className="text-xs text-slate-400 truncate">
+                        {company.industry}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Expanded details */}
-                  {isExpanded && (
-                    <div className="mt-3 ml-12 pl-1 border-l-2 border-slate-100 space-y-2">
-                      <p className="text-xs text-slate-400">{company.email}</p>
-                      <div className="flex items-center gap-4 text-xs text-slate-600">
-                        <span>Jobs: {company.jobCount || 0}</span>
-                        <span>
-                          Joined:{' '}
-                          {new Date(
-                            company?.joinedAt || company.createdAt
-                          ).toLocaleDateString()}
-                        </span>
-                      </div>
-                     <div className="flex items-center flex-wrap gap-2 pt-1">
-  <button
-    onClick={() => navigate(`/admin/companies/${company.id}`)}
-    className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-full transition"
-  >
-    <Eye size={14} />
-    View
-  </button>
-
-  {company.status === 'active' && (
-    <button
-      onClick={() => {
-        setCompanyId(company.id);
-        setSuspendOpen(true);
-      }}
-      className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-full transition"
-    >
-      <BanIcon size={14} />
-      Suspend
-    </button>
-  )}
-
-  {company.status === 'suspended' && (
-    <button
-      onClick={() => {
-        setCompanyId(company.id);
-        setReactivateOpen(true);
-      }}
-      className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-600 bg-green-50 hover:bg-green-100 border border-green-200 rounded-full transition"
-    >
-      <ThumbsUpIcon size={14} />
-      Activate
-    </button>
-  )}
-
-  {company.status === 'pending' && (
-    <>
-      <button
-        onClick={() => {
-          setCompanyId(company.id);
-          setOpen(true);
-        }}
-        className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-600 bg-green-50 hover:bg-green-100 border border-green-200 rounded-full transition"
-      >
-        <ThumbsUpIcon size={14} />
-        Approve
-      </button>
-      <button
-        onClick={() => {
-          setCompanyId(company.id);
-          setShowReasonModal(true);
-        }}
-        className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-full transition"
-      >
-        <ThumbsDownIcon size={14} />
-        Reject
-      </button>
-    </>
-  )}
-</div>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span
+                      className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusStyles[company.status]}`}
+                    >
+                      {company.status}
+                    </span>
+                    <button
+                      onClick={() => toggleExpanded(company.id)}
+                      className="p-1 text-slate-400 hover:text-slate-600 rounded-lg transition"
+                      title={isExpanded ? 'Show less' : 'Show more'}
+                    >
+                      <ChevronDown
+                        size={18}
+                        className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                      />
+                    </button>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
+
+                {/* Expanded details */}
+                {isExpanded && (
+                  <div className="mt-3 ml-12 pl-1 border-l-2 border-slate-100 space-y-2">
+                    <p className="text-xs text-slate-400">{company.email}</p>
+                    <div className="flex items-center gap-4 text-xs text-slate-600">
+                      <span>Jobs: {company.jobCount || 0}</span>
+                      <span>
+                        Joined:{' '}
+                        {new Date(
+                          company?.joinedAt || company.createdAt
+                        ).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex items-center flex-wrap gap-2 pt-1">
+                      <button
+                        onClick={() =>
+                          navigate(`/admin/companies/${company.id}`)
+                        }
+                        className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-full transition"
+                      >
+                        <Eye size={14} />
+                        View
+                      </button>
+
+                      {company.status === 'active' && (
+                        <button
+                          onClick={() => {
+                            setCompanyId(company.id);
+                            setSuspendOpen(true);
+                          }}
+                          className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-full transition"
+                        >
+                          <BanIcon size={14} />
+                          Suspend
+                        </button>
+                      )}
+
+                      {company.status === 'suspended' && (
+                        <button
+                          onClick={() => {
+                            setCompanyId(company.id);
+                            setReactivateOpen(true);
+                          }}
+                          className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-600 bg-green-50 hover:bg-green-100 border border-green-200 rounded-full transition"
+                        >
+                          <ThumbsUpIcon size={14} />
+                          Activate
+                        </button>
+                      )}
+
+                      {company.status === 'pending' && (
+                        <>
+                          <button
+                            onClick={() => {
+                              setCompanyId(company.id);
+                              setOpen(true);
+                            }}
+                            className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-600 bg-green-50 hover:bg-green-100 border border-green-200 rounded-full transition"
+                          >
+                            <ThumbsUpIcon size={14} />
+                            Approve
+                          </button>
+                          <button
+                            onClick={() => {
+                              setCompanyId(company.id);
+                              setShowReasonModal(true);
+                            }}
+                            className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-full transition"
+                          >
+                            <ThumbsDownIcon size={14} />
+                            Reject
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
 
         {companies.length === 0 && (
           <div className="text-center py-16 text-slate-400">

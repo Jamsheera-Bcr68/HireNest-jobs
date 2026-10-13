@@ -18,7 +18,9 @@ function CompanyProfileInputForm({
 }: Props) {
   return (
     <>
-      <h2 className="text-lg text-center mt-0 text-fuchsia-800 font-semibold mb-2">{title}</h2>
+      <h2 className="text-lg text-center mt-0 text-fuchsia-800 font-semibold mb-2">
+        {title}
+      </h2>
 
       <textarea
         value={value}

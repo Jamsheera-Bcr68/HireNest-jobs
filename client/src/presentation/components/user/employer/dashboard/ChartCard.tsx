@@ -108,48 +108,46 @@ type TopJobsChartProps = {
   data: TopJob[];
 };
 export function TopJobsChart({ data }: TopJobsChartProps) {
-  
   return (
     <ResponsiveContainer width="100%" height={230}>
-     <BarChart data={data} margin={{ top: 8, left: 8, right: 20 }}>
-  <CartesianGrid stroke="#f0ede6" vertical={false} />
+      <BarChart data={data} margin={{ top: 8, left: 8, right: 20 }}>
+        <CartesianGrid stroke="#f0ede6" vertical={false} />
 
-  
-  <XAxis
-  dataKey="title"
-  interval={0}
-  angle={-35}
-  textAnchor="end"
-  height={70}
-  tickLine={false}
-  axisLine={false}
-  tick={{ fontSize: 11.5, fill: "#57534e" }}
-/>
+        <XAxis
+          dataKey="title"
+          interval={0}
+          angle={-35}
+          textAnchor="end"
+          height={70}
+          tickLine={false}
+          axisLine={false}
+          tick={{ fontSize: 11.5, fill: '#57534e' }}
+        />
 
-  <YAxis
-    type="number"
-    tickLine={false}
-    axisLine={false}
-    tick={{ fontSize: 11.5, fill: "#57534e" }}
-  />
+        <YAxis
+          type="number"
+          tickLine={false}
+          axisLine={false}
+          tick={{ fontSize: 11.5, fill: '#57534e' }}
+        />
 
-  <Tooltip
-    cursor={{ fill: "#f5f4f0" }}
-    contentStyle={{
-      borderRadius: 14,
-      border: "1px solid #f0ede6",
-      boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
-      fontSize: 12,
-    }}
-  />
+        <Tooltip
+          cursor={{ fill: '#f5f4f0' }}
+          contentStyle={{
+            borderRadius: 14,
+            border: '1px solid #f0ede6',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.06)',
+            fontSize: 12,
+          }}
+        />
 
-  <Bar
-    dataKey="applicants"
-    fill="#059669"
-    radius={[8, 8, 0, 0]} // top-left, top-right, bottom-right, bottom-left
-    barSize={16}
-  />
-</BarChart>
+        <Bar
+          dataKey="applicants"
+          fill="#059669"
+          radius={[8, 8, 0, 0]} // top-left, top-right, bottom-right, bottom-left
+          barSize={16}
+        />
+      </BarChart>
     </ResponsiveContainer>
   );
 }
@@ -162,7 +160,7 @@ export function HiringFunnelChart({ data }: HiringFunnelChartProps) {
   const max = useMemo(() => data.reduce((acc, d) => acc + d.count, 0), [data]);
   return (
     <div className="space-y-3 pt-1">
-      {data.map((stage, i) => (
+      {data.map((stage) => (
         <div key={stage.stage}>
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-xs font-medium text-stone-600">

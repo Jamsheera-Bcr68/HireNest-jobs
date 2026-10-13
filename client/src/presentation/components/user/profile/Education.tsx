@@ -11,9 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../../redux/store';
 import { useTheme } from '../../../../contexts/ThemeContext';
 type EducationProps = {
-  onUserUpdate: React.Dispatch<
-    React.SetStateAction<UserProfileType | null>
-  >;
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>;
   educations: EducationType[] | [];
 };
 type ModalOpen = { type: 'edit' | 'delete' | 'add'; isOpen: boolean };
@@ -57,10 +55,10 @@ const Education = ({ onUserUpdate, educations }: EducationProps) => {
       return;
     }
   };
-  const {t}=useTheme()
+  const { t } = useTheme();
   return (
-  <div
-    className={`
+    <div
+      className={`
       ${t.cardBg}
       ${t.cardBorder}
       border
@@ -68,34 +66,32 @@ const Education = ({ onUserUpdate, educations }: EducationProps) => {
       shadow-md
       p-6
     `}
-  >
-    <div className="flex justify-between items-center mb-4">
-      <h3 className={`text-xl font-bold ${t.cardTitle}`}>
-        Education
-      </h3>
+    >
+      <div className="flex justify-between items-center mb-4">
+        <h3 className={`text-xl font-bold ${t.cardTitle}`}>Education</h3>
 
-      <button
-        onClick={() => {
-          setIsOpen({ type: 'add', isOpen: true });
-          setEditEdu(null);
-        }}
-        className={`
+        <button
+          onClick={() => {
+            setIsOpen({ type: 'add', isOpen: true });
+            setEditEdu(null);
+          }}
+          className={`
           ${t.successText}
           ${t.successHover}
           text-sm font-medium
         `}
-      >
-        Add
-      </button>
-    </div>
+        >
+          Add
+        </button>
+      </div>
 
-    <div className="space-y-4">
-      {educations.length ? (
-        educations.map((edu) => {
-          return (
-            <div
-              key={edu.id}
-              className={`
+      <div className="space-y-4">
+        {educations.length ? (
+          educations.map((edu) => {
+            return (
+              <div
+                key={edu.id}
+                className={`
                 border-l-4
                 border-fuchsia-600
                 ${t.surface}
@@ -106,98 +102,94 @@ const Education = ({ onUserUpdate, educations }: EducationProps) => {
                 ${t.dropdownHover}
                 transition
               `}
-            >
-              <div className="flex justify-between items-start">
-                <div>
-                  <h4
-                    className={`
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4
+                      className={`
                       text-lg
                       font-semibold
                       ${t.cardTitle}
                     `}
-                  >
-                    {edu.level}
-                  </h4>
+                    >
+                      {edu.level}
+                    </h4>
 
-                  <p className={t.subheading}>
-                    {edu.university}
-                  </p>
+                    <p className={t.subheading}>{edu.university}</p>
 
-                  <p className={`${t.iconMuted} text-sm`}>
-                    {edu.location}
-                  </p>
-                </div>
+                    <p className={`${t.iconMuted} text-sm`}>{edu.location}</p>
+                  </div>
 
-                <div className="flex flex-col items-end gap-2">
-                  <div className="flex gap-3">
-                    <PenIcon
-                      onClick={() => {
-                        setEditEdu(edu);
-                        setIsOpen({ type: 'edit', isOpen: true });
-                      }}
-                      className="text-fuchsia-600 cursor-pointer hover:scale-150 duration-300"
-                      size={18}
-                    />
+                  <div className="flex flex-col items-end gap-2">
+                    <div className="flex gap-3">
+                      <PenIcon
+                        onClick={() => {
+                          setEditEdu(edu);
+                          setIsOpen({ type: 'edit', isOpen: true });
+                        }}
+                        className="text-fuchsia-600 cursor-pointer hover:scale-150 duration-300"
+                        size={18}
+                      />
 
-                    <Trash
-                      onClick={() => {
-                        setIsOpen({ type: 'delete', isOpen: true });
-                        setDeleteEduId(edu.id);
-                      }}
-                      className={`
+                      <Trash
+                        onClick={() => {
+                          setIsOpen({ type: 'delete', isOpen: true });
+                          setDeleteEduId(edu.id);
+                        }}
+                        className={`
                         ${t.dangerText}
                         ${t.dangerHover}
                         cursor-pointer
                         hover:scale-150
                         duration-300
                       `}
-                      size={18}
-                    />
+                        size={18}
+                      />
+                    </div>
+
+                    <span className={`${t.iconMuted} text-sm`}>
+                      {edu.startYear} - {edu.completedYear || 'Ongoing'}
+                    </span>
                   </div>
-
-                  <span className={`${t.iconMuted} text-sm`}>
-                    {edu.startYear} - {edu.completedYear || 'Ongoing'}
-                  </span>
                 </div>
+
+                <p className={`mt-1 ${t.inputText} text-sm`}>
+                  CGPA: {edu.cgpa} %
+                </p>
               </div>
+            );
+          })
+        ) : (
+          <p className={`${t.subheading} text-sm italic`}>
+            Showcase your experience here
+          </p>
+        )}
+      </div>
 
-              <p className={`mt-1 ${t.inputText} text-sm`}>
-                CGPA: {edu.cgpa} %
-              </p>
-            </div>
-          );
-        })
-      ) : (
-        <p className={`${t.subheading} text-sm italic`}>
-          Showcase your experience here
-        </p>
-      )}
+      <EducationModal
+        isOpen={isOpen?.type === 'edit' || isOpen?.type == 'add'}
+        onClose={() => {
+          setIsOpen(null);
+
+          setEditEdu(null);
+        }}
+        onUserUpdate={onUserUpdate}
+        editEdu={editEdu}
+      />
+
+      <DeleteConfirmationModal
+        isOpen={isOpen?.type == 'delete'}
+        onDelete={handleDelete}
+        onClose={() => {
+          setIsOpen(null);
+          setDeleteEduId('');
+        }}
+        item={'Qualification'}
+      />
+
+      {/* <DeleteConfirmationModal isOpen={} /> */}
     </div>
-
-    <EducationModal
-      isOpen={isOpen?.type === 'edit' || isOpen?.type == 'add'}
-      onClose={() => {
-        setIsOpen(null);
-
-        setEditEdu(null);
-      }}
-      onUserUpdate={onUserUpdate}
-      editEdu={editEdu}
-    />
-
-    <DeleteConfirmationModal
-      isOpen={isOpen?.type == 'delete'}
-      onDelete={handleDelete}
-      onClose={() => {
-        setIsOpen(null);
-        setDeleteEduId('');
-      }}
-      item={'Qualification'}
-    />
-
-    {/* <DeleteConfirmationModal isOpen={} /> */}
-  </div>
-);
+  );
   // return (
   //   <div className="bg-white  rounded-lg shadow-md p-6">
   //     <div className="flex  justify-between items-center mb-4">

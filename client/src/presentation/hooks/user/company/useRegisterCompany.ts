@@ -135,44 +135,42 @@ export const useRegisterCompany = (isReapply?: boolean) => {
         const data = await companyService.getCompany();
         console.log('data after fetching company from useregster', data);
 
-        if (data.company)
-          console.log('data .company s present');
-          
-          setFormData({
-            ...formData,
-            companyName: data.company.companyName,
-            website: data.company.website ?? '',
-            logoUrl: data.company.logoUrl,
-            industry: data.company.industry,
-            tagLine: data.company.tagLine,
-            size: data.company.size,
-            links: {
-              gitHub: data.company.socialMediaLinks.gitHub ?? '',
-              linkedIn: data.company.socialMediaLinks.linkedIn ?? '',
-              portfolio: data.company.socialMediaLinks.portfolio ?? '',
-              whatsapp: data.company.socialMediaLinks.whatsapp ?? '',
-              youtube: data.company.socialMediaLinks.Youtube ?? '',
-              twitter: data.company.socialMediaLinks.twitter ?? '',
-            },
-            adress: {
-              state: data.company.address.state ?? '',
-              country: data.company.address.country ?? '',
-            },
-            email: data.company.email ?? '',
-            phone: data.company.phone ?? '',
-            about: data.company.about ?? '',
-            documents: {
-              type: data.company.document.type ?? '',
-              file: data.company.document.file,
-              name: data.company.document.name ?? '',
-            },
+        if (data.company) console.log('data .company s present');
+
+        setFormData({
+          ...formData,
+          companyName: data.company.companyName,
+          website: data.company.website ?? '',
+          logoUrl: data.company.logoUrl,
+          industry: data.company.industry,
+          tagLine: data.company.tagLine,
+          size: data.company.size,
+          links: {
+            gitHub: data.company.socialMediaLinks.gitHub ?? '',
+            linkedIn: data.company.socialMediaLinks.linkedIn ?? '',
+            portfolio: data.company.socialMediaLinks.portfolio ?? '',
+            whatsapp: data.company.socialMediaLinks.whatsapp ?? '',
+            youtube: data.company.socialMediaLinks.Youtube ?? '',
+            twitter: data.company.socialMediaLinks.twitter ?? '',
+          },
+          adress: {
+            state: data.company.address.state ?? '',
+            country: data.company.address.country ?? '',
+          },
+          email: data.company.email ?? '',
+          phone: data.company.phone ?? '',
+          about: data.company.about ?? '',
+          documents: {
+            type: data.company.document.type ?? '',
+            file: data.company.document.file,
+            name: data.company.document.name ?? '',
+          },
           startedIn: String(data.company.startedIn),
-            isAgreed: data.company.isAgreed,
-            isConsent: data.company.isConsent,
-          });
+          isAgreed: data.company.isAgreed,
+          isConsent: data.company.isConsent,
+        });
       } catch (error) {
-        console.log('error',error);
-        
+        console.log('error', error);
       }
     };
     if (isReapply) fetchCompany();
@@ -226,7 +224,7 @@ export const useRegisterCompany = (isReapply?: boolean) => {
 
     if (!verify_file && !formData.documents.file) {
       console.log('no verify file and formadat.documents');
-      
+
       setError((prev) => ({
         ...prev,
         documents: {
@@ -234,13 +232,18 @@ export const useRegisterCompany = (isReapply?: boolean) => {
           file: 'Please select a file',
         },
       }));
-      console.log('formData.documents.file',formData.documents.file,'verfy file',verify_file);
-   
+      console.log(
+        'formData.documents.file',
+        formData.documents.file,
+        'verfy file',
+        verify_file
+      );
+
       return;
     }
     console.log('from handle submit', formData);
     const result = companyRegisterSchema.safeParse(formData);
-  console.log('validation result',result);
+    console.log('validation result', result);
     if (!result.success) {
       const error = result.error.format();
       const Err: FormError = {
@@ -280,8 +283,7 @@ export const useRegisterCompany = (isReapply?: boolean) => {
       setError(Err);
       return;
     }
-  
-    
+
     setError(initialError);
 
     console.log('validation success');
@@ -292,8 +294,8 @@ export const useRegisterCompany = (isReapply?: boolean) => {
         const docData = new FormData();
         docData.append('verification_document', verify_file);
         const docResposnse = await companyService.uploadDocument(docData);
-      console.log('after submitting the document',docResposnse);
-      
+        console.log('after submitting the document', docResposnse);
+
         docUrl = docResposnse.data.docUrl;
         docName = verify_file.name;
       }
@@ -329,8 +331,8 @@ export const useRegisterCompany = (isReapply?: boolean) => {
       dispatch(updateUser({ isRequested: true }));
       showToast({ msg: data.message, type: 'success' });
     } catch (error: any) {
-      console.log('error',error);
-      
+      console.log('error', error);
+
       showToast({
         msg: error?.response?.data.message || error.message,
         type: 'error',

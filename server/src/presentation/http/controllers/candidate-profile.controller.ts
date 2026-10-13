@@ -31,7 +31,6 @@ import { IRemoveResumeUseCase } from '../../../applications/interfaces/candidate
 import { IGetCandidateResumesUsecase } from '../../../applications/useCases/candidate/get-resumes.usecase';
 import { IGetCompanyDataUseCase } from '../../../applications/useCases/company/get-company-data.usecase';
 
-
 export class CandidateProfileController {
   private _candidateEditProfileUsecase: IProfileEditUsecase;
   private _getUserUseCase: IGetUserUseCase;
@@ -496,11 +495,7 @@ export class CandidateProfileController {
         statusCodes.BADREQUEST
       );
 
-   await this.removeResumeUseCase.execute(
-      user.userId,
-      resumeId,
-      user.role
-    );
+    await this.removeResumeUseCase.execute(user.userId, resumeId, user.role);
     return res.status(statusCodes.OK).json({
       success: true,
       message: userMessages.success.RESUME_DELETED,

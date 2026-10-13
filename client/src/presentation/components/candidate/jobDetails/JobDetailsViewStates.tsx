@@ -85,7 +85,7 @@ export const JobDetailsError = ({
           {message}
         </p>
         <div className="flex justify-center">
-          <PrimaryButton className='' onClick={onBack}>
+          <PrimaryButton className="" onClick={onBack}>
             <ArrowLeft size={14} />
             Back to Jobs
           </PrimaryButton>
@@ -94,4 +94,3 @@ export const JobDetailsError = ({
     </div>
   );
 };
-

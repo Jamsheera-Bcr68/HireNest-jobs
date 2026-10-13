@@ -50,7 +50,7 @@ export interface UserProfileType {
   applicationCount?: number;
   shortListedCount?: number;
   offeredCount?: number;
-  requestedCompany?:CompanyProfileType
+  requestedCompany?: CompanyProfileType;
 }
 
 export interface CompanyProfileType {

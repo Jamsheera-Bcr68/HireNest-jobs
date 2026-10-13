@@ -7,18 +7,16 @@ import {
   Working,
   Properties,
   HighLights,
- 
 } from '../../components/candidate/landing/Sections';
 import HeroHome from '../../components/candidate/landing/Hero';
 import { BottomNav } from '../../components/common/Footer';
-
 
 import Footer from '../../components/common/Footer';
 import { candidateService } from '../../../services/api-services/candidateService';
 import { useToast } from '../../../shared/toast/use-toast';
 import { useEffect, useState } from 'react';
 import { type HomeResponseDto } from '../../../types/dtos/home-response.dto';
-import { industryIcons } from '../../../types/dtos/profile-types/industry.type';
+
 import { type JobFilterType } from '../../components/candidate/jobListing/ListingContainter';
 import { Hirenest } from '../../components/candidate/landing/Sections';
 
@@ -43,7 +41,6 @@ const Landing = () => {
       try {
         const data = await candidateService.getHomeData();
         setHomeData(data.data);
-     
       } catch (error: any) {
         showToast({
           msg: error?.response?.data.message || error.message,
@@ -53,15 +50,6 @@ const Landing = () => {
     }
     getHomeData();
   }, []);
-
-  const stats = homeData?.industries.map((item) => {
-    //console.log('items', item);
-    return {
-      icon: industryIcons[item.industry],
-      label: item.industry,
-      count: item.count.toLocaleString(),
-    };
-  });
 
   const handleFilterChange = async (value: Partial<JobFilterType>) => {
     // console.log('value:', value);
@@ -110,7 +98,7 @@ const Landing = () => {
       <Working />
       <Properties />
       <HighLights />
-      <BottomNav/>
+      <BottomNav />
       <Footer />
     </div>
   );

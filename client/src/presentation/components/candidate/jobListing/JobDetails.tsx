@@ -9,7 +9,6 @@ import JobReportForm from './JobReportForm';
 import { Check } from 'lucide-react';
 import { type ErrorType, type ReportFormType } from './ListingContainter';
 
-
 type Props = {
   reportForm: ReportFormType;
   error: ErrorType;
@@ -22,7 +21,6 @@ type Props = {
   onApply: (resumeId: string) => Promise<void>;
 };
 
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
 function JobDetails({
   reportForm,
   error,
@@ -92,7 +90,7 @@ function JobDetails({
                       e.stopPropagation();
                       handleUnSave(activeJob.id);
                     }}
-                    title='UnSave'
+                    title="UnSave"
                     className="text-gray-300 hover:bg-gray-200 p-2 rounded-full hover:text-red-400 transition-colors text-lg leading-none mt-0.5"
                   >
                     <Bookmark size={18} className="text-red-700" />
@@ -103,7 +101,7 @@ function JobDetails({
                       e.stopPropagation();
                       handleSave(activeJob.id);
                     }}
-                    title='Save'
+                    title="Save"
                     className="text-gray-300 hover:bg-gray-200 p-2 rounded-full hover:text-red-400 transition-colors text-lg leading-none mt-0.5"
                   >
                     <Bookmark size={18} className="text-gray-400" />
@@ -118,8 +116,14 @@ function JobDetails({
                     icon: <MapPinIcon size={16} className="text-red-400" />,
                     text: `${activeJob.location.place ?? ''},${activeJob.location.state},${activeJob.location.country}`,
                   },
-                  { icon: <Briefcase size={18}/>, text: `${activeJob.jobType==='partTime'?"Part Time":"Full Time"}` },
-                  { icon: '⭐', text: `${activeJob.mode=='remote'?"Remote":activeJob.mode=='hybrid'?"Hybrid":"Onsite"}` },
+                  {
+                    icon: <Briefcase size={18} />,
+                    text: `${activeJob.jobType === 'partTime' ? 'Part Time' : 'Full Time'}`,
+                  },
+                  {
+                    icon: '⭐',
+                    text: `${activeJob.mode == 'remote' ? 'Remote' : activeJob.mode == 'hybrid' ? 'Hybrid' : 'Onsite'}`,
+                  },
                   { icon: '🏢', text: activeJob.industry },
                 ].map((m) => (
                   <span

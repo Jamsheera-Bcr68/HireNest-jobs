@@ -6,11 +6,8 @@ import type { StateType } from '../../../../../constants/types/user';
 import CompanyRegistrationPendingModal from '../../../../modals/CompanyRegistrationPendingModal';
 import ModalLayout from '../../../../Layoutes/ModalLayout';
 import { useState } from 'react';
-type HeroProps = {
-  heroImage: string;
-};
 
-const HeroSection = ({ heroImage }: HeroProps) => {
+const HeroSection = () => {
   const user = useSelector((state: StateType) => state.auth.user);
 
   const [pendingOpen, setPendingOpen] = useState(false);
@@ -57,7 +54,8 @@ const HeroSection = ({ heroImage }: HeroProps) => {
             🚀 #1 Hiring Platform for Employers
           </span>
           <h1 className="text-3xl text-white font-extrabold leading-tight tracking-tight text-primary-foreground sm:text-5xl lg:text-6xl">
-            Find the Right Talent, <span className="text-[#8A0999]">Faster</span>
+            Find the Right Talent,{' '}
+            <span className="text-[#8A0999]">Faster</span>
           </h1>
           <p className="mt-6 text-lg text-white leading-relaxed text-primary-foreground/80 sm:text-xl">
             Post jobs, review candidates, and hire top professionals — all in

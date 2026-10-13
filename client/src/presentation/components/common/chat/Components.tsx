@@ -90,10 +90,10 @@ export function MessageInput({
           onChange={(e) => setValue(e.target.value)}
           placeholder="Type a message"
           onKeyDown={(e) => {
-             console.log('e',e);
+            console.log('e', e);
             if (e.key == 'Enter') {
-            console.log('key is enter');
-            
+              console.log('key is enter');
+
               e.preventDefault();
               handleSendMessage();
             }

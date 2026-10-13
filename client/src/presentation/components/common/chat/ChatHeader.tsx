@@ -3,15 +3,15 @@ import { Avatar } from './ConversationItem';
 
 import { useDispatch } from 'react-redux';
 import { setActiveChatroomId } from '../../../../redux/slices/chatroom.slice';
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
 export function ChatHeader({ conversation }: { conversation: ChatroomType }) {
-  console.log('conversation',conversation);
- const dispatch=useDispatch()
- 
+  console.log('conversation', conversation);
+  const dispatch = useDispatch();
+
   return (
     <div className="flex items-center gap-3 px-4 py-3 bg-white border-b border-slate-200 shrink-0">
       <button
-         onClick={()=>dispatch(setActiveChatroomId(null))}
+        onClick={() => dispatch(setActiveChatroomId(null))}
         className="md:hidden text-slate-600 -ml-1 p-1"
         aria-label="Back to chats"
       >

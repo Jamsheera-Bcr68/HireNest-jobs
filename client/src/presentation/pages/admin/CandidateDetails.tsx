@@ -85,8 +85,8 @@ function CandidateDetails() {
             icon: <Phone size={18} className="text-green-700" />,
             value: data.candidate?.phone,
           });
-       console.log('links',links)
-         setContactLinks(links);
+        console.log('links', links);
+        setContactLinks(links);
         console.log('candidate phone', candidate?.phone);
       } catch (error: any) {
         setCandidate(null);

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Building, MapPin, Users } from 'lucide-react';
 import type { JobDetailsDto } from '../../../../../types/dtos/job.dto';
 import SectionTitle from './SectionTitle';
@@ -6,7 +5,7 @@ import SectionTitle from './SectionTitle';
 type Props = {
   job: JobDetailsDto;
 };
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
 function Company({ job }: Props) {
   if (!job) return null;
 

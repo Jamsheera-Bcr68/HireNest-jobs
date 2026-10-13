@@ -15,14 +15,9 @@ import {
   ThumbsDownIcon,
   CheckCheck,
   SquarePenIcon,
-  CalendarCheck,
-  User,
-  Users,
-  CalendarDays,
-  FileText,
 } from 'lucide-react';
 const tabs = [
-    { label: 'Active', value: 'approved' },
+  { label: 'Active', value: 'approved' },
   { label: 'All', value: '' },
 
   { label: 'Rejected', value: 'rejected' },
@@ -36,7 +31,6 @@ import SkillModal from './SkillModal';
 import ViewSkillModal from './ViewModal';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
 import AddReasonModal from '../jobs/AddReasonModal';
-
 
 // ActionsMenu.tsx
 import { useState, useRef, useEffect } from 'react';
@@ -117,7 +111,9 @@ export function ActionsMenu({
             ref={triggerRef}
             onClick={openMenu}
             className={`p-1.5 rounded-lg transition ${
-              open ? 'bg-slate-100 text-slate-700' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'
+              open
+                ? 'bg-slate-100 text-slate-700'
+                : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'
             }`}
             title="More"
           >
@@ -128,7 +124,11 @@ export function ActionsMenu({
             createPortal(
               <div
                 ref={menuRef}
-                style={{ position: 'absolute', top: coords.top, left: coords.left }}
+                style={{
+                  position: 'absolute',
+                  top: coords.top,
+                  left: coords.left,
+                }}
                 className="w-36 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50"
               >
                 {overflow.map((action) => (
@@ -154,7 +154,6 @@ export function ActionsMenu({
 }
 
 export type SkillFilterType = {
-
   status?: SkillStatusType;
   createdBy?: 'admin' | 'company';
   search?: string;
@@ -203,477 +202,500 @@ function SkillsContainer() {
   const [error, setError] = useState<string>('');
   const [skill, setSkill] = useState<SkillType | null>(null);
 
-const skillColumns: ColumnType<SkillType>[] = [
-  {
-    key: 'skillName',
-    label: 'Skill',
-    mobile: 'primary',
-    render: (s: SkillType) => (
-      <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
-        {s.skillName}
-      </div>
-    ),
-    // Mobile — same badge, but truncating-safe wrapper since primary cards are narrower
-    mobileRender: (s: SkillType) => (
-      <div className="min-w-0 w-full">
-        <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block max-w-full truncate">
+  const skillColumns: ColumnType<SkillType>[] = [
+    {
+      key: 'skillName',
+      label: 'Skill',
+      mobile: 'primary',
+      render: (s: SkillType) => (
+        <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block">
           {s.skillName}
         </div>
-      </div>
-    ),
-  },
-  {
-    key: 'createdBy',
-    label: 'Created By',
-    icon: <User size={13} />,
-    render: (s: SkillType) => (
-      <div className="w-9 h-9 flex items-center justify-center font-bold text-xs flex-shrink-0">
+      ),
+      // Mobile — same badge, but truncating-safe wrapper since primary cards are narrower
+      mobileRender: (s: SkillType) => (
+        <div className="min-w-0 w-full">
+          <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block max-w-full truncate">
+            {s.skillName}
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: 'createdBy',
+      label: 'Created By',
+
+      render: (s: SkillType) => (
+        <div className="w-9 h-9 flex items-center justify-center font-bold text-xs flex-shrink-0">
+          <span className="font-semibold text-slate-800">{s.createdBy}</span>
+        </div>
+      ),
+      // Mobile detail rows are label/value pairs — plain text reads cleaner than the fixed-width box
+      mobileRender: (s: SkillType) => (
         <span className="font-semibold text-slate-800">{s.createdBy}</span>
-      </div>
-    ),
-    // Mobile detail rows are label/value pairs — plain text reads cleaner than the fixed-width box
-    mobileRender: (s: SkillType) => (
-      <span className="font-semibold text-slate-800">{s.createdBy}</span>
-    ),
-  },
-  {
-    key: 'candidatesCount',
-    label: 'Used Candidates',
-    icon: <Users size={13} />,
-    render: (s: SkillType) => (
-      <div className="flex items-center gap-1.5">
-        <span className="font-semibold text-slate-800">{s.usedCandidateCount}</span>
-      </div>
-    ),
-    mobileRender: (s: SkillType) => (
-      <span className="font-semibold text-slate-800">{s.usedCandidateCount}</span>
-    ),
-  },
-  {
-    key: 'usedCount',
-    label: 'Used Posts',
-    icon: <FileText size={13} />,
-    render: (s: SkillType) => (
-      <div className="flex items-center gap-1.5">
+      ),
+    },
+    {
+      key: 'candidatesCount',
+      label: 'Used Candidates',
+
+      render: (s: SkillType) => (
+        <div className="flex items-center gap-1.5">
+          <span className="font-semibold text-slate-800">
+            {s.usedCandidateCount}
+          </span>
+        </div>
+      ),
+      mobileRender: (s: SkillType) => (
+        <span className="font-semibold text-slate-800">
+          {s.usedCandidateCount}
+        </span>
+      ),
+    },
+    {
+      key: 'usedCount',
+      label: 'Used Posts',
+
+      render: (s: SkillType) => (
+        <div className="flex items-center gap-1.5">
+          <span className="font-semibold text-slate-800">{s.usedCount}</span>
+        </div>
+      ),
+      mobileRender: (s: SkillType) => (
         <span className="font-semibold text-slate-800">{s.usedCount}</span>
-      </div>
-    ),
-    mobileRender: (s: SkillType) => (
-      <span className="font-semibold text-slate-800">{s.usedCount}</span>
-    ),
-  },
-  {
-    key: 'createdAt',
-    label: 'Created At',
-    icon: <CalendarDays size={13} />,
-    render: (s: SkillType) => new Date(s.createdAt).toLocaleDateString(),
-  },
-  {
-    key: 'reviewedAt',
-    label: 'Reviewed At',
-    icon: <CalendarCheck size={13} />,
-    render: (s: SkillType) =>
-      s.reviewedAt
-        ? new Date(s.reviewedAt).toLocaleDateString()
-        : s.createdBy == 'admin'
-          ? null
-          : 'pending',
-  },
-  {
-    key: 'status',
-    label: 'Status',
-    mobile: 'status',
-    render: (s: SkillType) => (
-      <span
-        className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusStyles[s.status!]}`}
-      >
-        {s.status}
-      </span>
-    ),
-  },
+      ),
+    },
+    {
+      key: 'createdAt',
+      label: 'Created At',
 
-// {
-//   key: 'actions',
-//   label: 'Actions',
-//   mobile: 'actions',
-//   // Desktop — Edit + Approve/Reject visible, View + Remove under "More"
-//   render: (s: SkillType) => {
-//     const primary: ActionItem[] = [];
-//     const overflow: ActionItem[] = [];
+      render: (s: SkillType) => new Date(s.createdAt).toLocaleDateString(),
+    },
+    {
+      key: 'reviewedAt',
+      label: 'Reviewed At',
 
-//     if (['approved', 'pending'].includes(s.status!)) {
-//       primary.push({
-//         key: 'edit',
-//         label: 'Edit',
-//         icon: <SquarePenIcon size={16} />,
-//         onClick: () => {
-//           setSkillName(s.skillName);
-//           setSkill(s);
-//           setShowEditModal(true);
-//         },
-//         className: 'text-amber-500 hover:bg-amber-50',
-//       });
-//     }
+      render: (s: SkillType) =>
+        s.reviewedAt
+          ? new Date(s.reviewedAt).toLocaleDateString()
+          : s.createdBy == 'admin'
+            ? null
+            : 'pending',
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      mobile: 'status',
+      render: (s: SkillType) => (
+        <span
+          className={`text-xs font-semibold px-2.5 py-1 rounded-full ${statusStyles[s.status!]}`}
+        >
+          {s.status}
+        </span>
+      ),
+    },
 
-//     if (s.status === 'pending') {
-//       primary.push({
-//         key: 'approve',
-//         label: 'Approve',
-//         icon: <CheckCheck size={16} />,
-//         onClick: () => {
-//           setSkill(s);
-//           setShowApproveModal(true);
-//         },
-//         className: 'text-green-700 hover:bg-green-50',
-//       });
-//       primary.push({
-//         key: 'reject',
-//         label: 'Reject',
-//         icon: <ThumbsDownIcon size={16} />,
-//         onClick: () => {
-//           setSkill(s);
-//           setShowRejectModal(true);
-//         },
-//         className: 'text-red-700 hover:bg-red-50',
-//       });
-//     }
+    // {
+    //   key: 'actions',
+    //   label: 'Actions',
+    //   mobile: 'actions',
+    //   // Desktop — Edit + Approve/Reject visible, View + Remove under "More"
+    //   render: (s: SkillType) => {
+    //     const primary: ActionItem[] = [];
+    //     const overflow: ActionItem[] = [];
 
-//     overflow.push({
-//       key: 'view',
-//       label: 'View',
-//       icon: <Eye size={16} />,
-//       onClick: () => {
-//         setSkill(s);
-//         setShowViewModal(true);
-//       },
-//       className: 'text-indigo-600',
-//     });
+    //     if (['approved', 'pending'].includes(s.status!)) {
+    //       primary.push({
+    //         key: 'edit',
+    //         label: 'Edit',
+    //         icon: <SquarePenIcon size={16} />,
+    //         onClick: () => {
+    //           setSkillName(s.skillName);
+    //           setSkill(s);
+    //           setShowEditModal(true);
+    //         },
+    //         className: 'text-amber-500 hover:bg-amber-50',
+    //       });
+    //     }
 
-//     if (s.status !== 'removed') {
-//       overflow.push({
-//         key: 'remove',
-//         label: 'Remove',
-//         icon: <Trash size={16} />,
-//         onClick: () => {
-//           setSkill(s);
-//           setShowDeleteModal(true);
-//         },
-//         className: 'text-red-700',
-//       });
-//     }
+    //     if (s.status === 'pending') {
+    //       primary.push({
+    //         key: 'approve',
+    //         label: 'Approve',
+    //         icon: <CheckCheck size={16} />,
+    //         onClick: () => {
+    //           setSkill(s);
+    //           setShowApproveModal(true);
+    //         },
+    //         className: 'text-green-700 hover:bg-green-50',
+    //       });
+    //       primary.push({
+    //         key: 'reject',
+    //         label: 'Reject',
+    //         icon: <ThumbsDownIcon size={16} />,
+    //         onClick: () => {
+    //           setSkill(s);
+    //           setShowRejectModal(true);
+    //         },
+    //         className: 'text-red-700 hover:bg-red-50',
+    //       });
+    //     }
 
-//     return <ActionsMenu primary={primary} overflow={overflow} />;
-//   },
+    //     overflow.push({
+    //       key: 'view',
+    //       label: 'View',
+    //       icon: <Eye size={16} />,
+    //       onClick: () => {
+    //         setSkill(s);
+    //         setShowViewModal(true);
+    //       },
+    //       className: 'text-indigo-600',
+    //     });
 
-//   // Mobile — unchanged, all buttons visible as labeled pills (space isn't tight there since it's a stacked panel)
-//   mobileRender: (s: SkillType) => (
-//     <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
-//       <button
-//         onClick={() => { setSkill(s); setShowViewModal(true); }}
-//         className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
-//       >
-//         <Eye size={14} />
-//         View
-//       </button>
-//       {['approved', 'pending'].includes(s.status!) && (
-//         <button
-//           onClick={() => { setSkillName(s.skillName); setSkill(s); setShowEditModal(true); }}
-//           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
-//         >
-//           <SquarePenIcon size={14} />
-//           Edit
-//         </button>
-//       )}
-//       {s.status !== 'removed' && (
-//         <button
-//           onClick={() => { setSkill(s); setShowDeleteModal(true); }}
-//           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
-//         >
-//           <Trash size={14} />
-//           Remove
-//         </button>
-//       )}
-//       {s.status == 'pending' && (
-//         <button
-//           onClick={() => { setSkill(s); setShowApproveModal(true); }}
-//           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
-//         >
-//           <CheckCheck size={14} />
-//           Approve
-//         </button>
-//       )}
-//       {s.status == 'pending' && (
-//         <button
-//           onClick={() => { setSkill(s); setShowRejectModal(true); }}
-//           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
-//         >
-//           <ThumbsDownIcon size={14} />
-//           Reject
-//         </button>
-//       )}
-//     </div>
-//   ),
-// },
-{
-  key: 'actions',
-  label: 'Actions',
-  mobile: 'actions',
-  // Desktop — View + Edit visible, Remove/Approve/Reject under "More"
-  render: (s: SkillType) => {
-    const primary: ActionItem[] = [];
-    const overflow: ActionItem[] = [];
+    //     if (s.status !== 'removed') {
+    //       overflow.push({
+    //         key: 'remove',
+    //         label: 'Remove',
+    //         icon: <Trash size={16} />,
+    //         onClick: () => {
+    //           setSkill(s);
+    //           setShowDeleteModal(true);
+    //         },
+    //         className: 'text-red-700',
+    //       });
+    //     }
 
-    primary.push({
-      key: 'view',
-      label: 'View',
-      icon: <Eye size={16} />,
-      onClick: () => {
-        setSkill(s);
-        setShowViewModal(true);
+    //     return <ActionsMenu primary={primary} overflow={overflow} />;
+    //   },
+
+    //   // Mobile — unchanged, all buttons visible as labeled pills (space isn't tight there since it's a stacked panel)
+    //   mobileRender: (s: SkillType) => (
+    //     <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
+    //       <button
+    //         onClick={() => { setSkill(s); setShowViewModal(true); }}
+    //         className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+    //       >
+    //         <Eye size={14} />
+    //         View
+    //       </button>
+    //       {['approved', 'pending'].includes(s.status!) && (
+    //         <button
+    //           onClick={() => { setSkillName(s.skillName); setSkill(s); setShowEditModal(true); }}
+    //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
+    //         >
+    //           <SquarePenIcon size={14} />
+    //           Edit
+    //         </button>
+    //       )}
+    //       {s.status !== 'removed' && (
+    //         <button
+    //           onClick={() => { setSkill(s); setShowDeleteModal(true); }}
+    //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+    //         >
+    //           <Trash size={14} />
+    //           Remove
+    //         </button>
+    //       )}
+    //       {s.status == 'pending' && (
+    //         <button
+    //           onClick={() => { setSkill(s); setShowApproveModal(true); }}
+    //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+    //         >
+    //           <CheckCheck size={14} />
+    //           Approve
+    //         </button>
+    //       )}
+    //       {s.status == 'pending' && (
+    //         <button
+    //           onClick={() => { setSkill(s); setShowRejectModal(true); }}
+    //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+    //         >
+    //           <ThumbsDownIcon size={14} />
+    //           Reject
+    //         </button>
+    //       )}
+    //     </div>
+    //   ),
+    // },
+    {
+      key: 'actions',
+      label: 'Actions',
+      mobile: 'actions',
+      // Desktop — View + Edit visible, Remove/Approve/Reject under "More"
+      render: (s: SkillType) => {
+        const primary: ActionItem[] = [];
+        const overflow: ActionItem[] = [];
+
+        primary.push({
+          key: 'view',
+          label: 'View',
+          icon: <Eye size={16} />,
+          onClick: () => {
+            setSkill(s);
+            setShowViewModal(true);
+          },
+          className: 'text-indigo-600 hover:bg-indigo-50',
+        });
+
+        if (['approved', 'pending'].includes(s.status!)) {
+          primary.push({
+            key: 'edit',
+            label: 'Edit',
+            icon: <SquarePenIcon size={16} />,
+            onClick: () => {
+              setSkillName(s.skillName);
+              setSkill(s);
+              setShowEditModal(true);
+            },
+            className: 'text-amber-500 hover:bg-amber-50',
+          });
+        }
+
+        if (s.status !== 'removed') {
+          overflow.push({
+            key: 'remove',
+            label: 'Remove',
+            icon: <Trash size={16} />,
+            onClick: () => {
+              setSkill(s);
+              setShowDeleteModal(true);
+            },
+            className: 'text-red-700',
+          });
+        }
+
+        if (s.status === 'pending') {
+          overflow.push({
+            key: 'approve',
+            label: 'Approve',
+            icon: <CheckCheck size={16} />,
+            onClick: () => {
+              setSkill(s);
+              setShowApproveModal(true);
+            },
+            className: 'text-green-700',
+          });
+          overflow.push({
+            key: 'reject',
+            label: 'Reject',
+            icon: <ThumbsDownIcon size={16} />,
+            onClick: () => {
+              setSkill(s);
+              setShowRejectModal(true);
+            },
+            className: 'text-red-700',
+          });
+        }
+
+        return <ActionsMenu primary={primary} overflow={overflow} />;
       },
-      className: 'text-indigo-600 hover:bg-indigo-50',
-    });
 
-    if (['approved', 'pending'].includes(s.status!)) {
-      primary.push({
-        key: 'edit',
-        label: 'Edit',
-        icon: <SquarePenIcon size={16} />,
-        onClick: () => {
-          setSkillName(s.skillName);
-          setSkill(s);
-          setShowEditModal(true);
-        },
-        className: 'text-amber-500 hover:bg-amber-50',
-      });
-    }
-
-    if (s.status !== 'removed') {
-      overflow.push({
-        key: 'remove',
-        label: 'Remove',
-        icon: <Trash size={16} />,
-        onClick: () => {
-          setSkill(s);
-          setShowDeleteModal(true);
-        },
-        className: 'text-red-700',
-      });
-    }
-
-    if (s.status === 'pending') {
-      overflow.push({
-        key: 'approve',
-        label: 'Approve',
-        icon: <CheckCheck size={16} />,
-        onClick: () => {
-          setSkill(s);
-          setShowApproveModal(true);
-        },
-        className: 'text-green-700',
-      });
-      overflow.push({
-        key: 'reject',
-        label: 'Reject',
-        icon: <ThumbsDownIcon size={16} />,
-        onClick: () => {
-          setSkill(s);
-          setShowRejectModal(true);
-        },
-        className: 'text-red-700',
-      });
-    }
-
-    return <ActionsMenu primary={primary} overflow={overflow} />;
-  },
-
-  // Mobile — unchanged, all buttons shown as labeled pills
-  mobileRender: (s: SkillType) => (
-    <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
-      <button
-        onClick={() => { setSkill(s); setShowViewModal(true); }}
-        className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
-      >
-        <Eye size={14} />
-        View
-      </button>
-      {['approved', 'pending'].includes(s.status!) && (
-        <button
-          onClick={() => { setSkillName(s.skillName); setSkill(s); setShowEditModal(true); }}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
+      // Mobile — unchanged, all buttons shown as labeled pills
+      mobileRender: (s: SkillType) => (
+        <div
+          className="flex items-center flex-wrap gap-2"
+          onClick={(e) => e.stopPropagation()}
         >
-          <SquarePenIcon size={14} />
-          Edit
-        </button>
-      )}
-      {s.status !== 'removed' && (
-        <button
-          onClick={() => { setSkill(s); setShowDeleteModal(true); }}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
-        >
-          <Trash size={14} />
-          Remove
-        </button>
-      )}
-      {s.status == 'pending' && (
-        <button
-          onClick={() => { setSkill(s); setShowApproveModal(true); }}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
-        >
-          <CheckCheck size={14} />
-          Approve
-        </button>
-      )}
-      {s.status == 'pending' && (
-        <button
-          onClick={() => { setSkill(s); setShowRejectModal(true); }}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
-        >
-          <ThumbsDownIcon size={14} />
-          Reject
-        </button>
-      )}
-    </div>
-  ),
-},
-  // {
-  //   key: 'actions',
-  //   label: 'Actions',
-  //   mobile: 'actions',
-  //   // Desktop — unchanged, icon-only
-  //   render: (s: SkillType) => (
-  //     <div className="flex items-center justify-center gap-3 w-full">
-  //       <button
-  //         onClick={() => {
-  //           setSkill(s);
-  //           setShowViewModal(true);
-  //         }}
-  //         className="text-indigo-600 hover:text-indigo-800"
-  //         title="view"
-  //       >
-  //         <Eye size={18} />
-  //       </button>
-  //       {['approved', 'pending'].includes(s.status!) && (
-  //         <button
-  //           onClick={() => {
-  //             setSkillName(s.skillName);
-  //             setSkill(s);
-  //             setShowEditModal(true);
-  //             console.log('skill on edit click', skill);
-  //           }}
-  //           className="font-bold text-red-700 hover:text-red-800"
-  //           title="Edit"
-  //         >
-  //           <SquarePenIcon size={16} className="text-amber-500" />
-  //         </button>
-  //       )}
-  //       {s.status !== 'removed' && (
-  //         <button
-  //           onClick={() => {
-  //             setSkill(s);
-  //             setShowDeleteModal(true);
-  //           }}
-  //           className="font-semibold text-red-700 hover:text-indigo-800"
-  //           title="Remove"
-  //         >
-  //           <Trash size={16} />
-  //         </button>
-  //       )}
-  //       {s.status == 'pending' && (
-  //         <button
-  //           onClick={() => {
-  //             setSkill(s);
-  //             setShowApproveModal(true);
-  //           }}
-  //           className="font-semibold text-green-700 hover:text-indigo-800 hover:bg-gray-200 rounded-full p-1.5"
-  //           title="Approve"
-  //         >
-  //           <CheckCheck size={16} />
-  //         </button>
-  //       )}
-  //       {s.status == 'pending' && (
-  //         <button
-  //           onClick={() => {
-  //             setSkill(s);
-  //             setShowRejectModal(true);
-  //           }}
-  //           className="font-semibold text-red-700 hover:text-red-800 hover:bg-gray-200 rounded-full p-1.5"
-  //           title="Reject"
-  //         >
-  //           <ThumbsDownIcon size={16} />
-  //         </button>
-  //       )}
-  //     </div>
-  //   ),
-  //   // Mobile — labeled pills, same visual language as your other tables
-  //   mobileRender: (s: SkillType) => (
-  //     <div
-  //       className="flex items-center flex-wrap gap-2"
-  //       onClick={(e) => e.stopPropagation()}
-  //     >
-  //       <button
-  //         onClick={() => {
-  //           setSkill(s);
-  //           setShowViewModal(true);
-  //         }}
-  //         className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
-  //       >
-  //         <Eye size={14} />
-  //         View
-  //       </button>
-  //       {['approved', 'pending'].includes(s.status!) && (
-  //         <button
-  //           onClick={() => {
-  //             setSkillName(s.skillName);
-  //             setSkill(s);
-  //             setShowEditModal(true);
-  //           }}
-  //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
-  //         >
-  //           <SquarePenIcon size={14} />
-  //           Edit
-  //         </button>
-  //       )}
-  //       {s.status !== 'removed' && (
-  //         <button
-  //           onClick={() => {
-  //             setSkill(s);
-  //             setShowDeleteModal(true);
-  //           }}
-  //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
-  //         >
-  //           <Trash size={14} />
-  //           Remove
-  //         </button>
-  //       )}
-  //       {s.status == 'pending' && (
-  //         <button
-  //           onClick={() => {
-  //             setSkill(s);
-  //             setShowApproveModal(true);
-  //           }}
-  //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
-  //         >
-  //           <CheckCheck size={14} />
-  //           Approve
-  //         </button>
-  //       )}
-  //       {s.status == 'pending' && (
-  //         <button
-  //           onClick={() => {
-  //             setSkill(s);
-  //             setShowRejectModal(true);
-  //           }}
-  //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
-  //         >
-  //           <ThumbsDownIcon size={14} />
-  //           Reject
-  //         </button>
-  //       )}
-  //     </div>
-  //   ),
-  // },
-];
+          <button
+            onClick={() => {
+              setSkill(s);
+              setShowViewModal(true);
+            }}
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+          >
+            <Eye size={14} />
+            View
+          </button>
+          {['approved', 'pending'].includes(s.status!) && (
+            <button
+              onClick={() => {
+                setSkillName(s.skillName);
+                setSkill(s);
+                setShowEditModal(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
+            >
+              <SquarePenIcon size={14} />
+              Edit
+            </button>
+          )}
+          {s.status !== 'removed' && (
+            <button
+              onClick={() => {
+                setSkill(s);
+                setShowDeleteModal(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+            >
+              <Trash size={14} />
+              Remove
+            </button>
+          )}
+          {s.status == 'pending' && (
+            <button
+              onClick={() => {
+                setSkill(s);
+                setShowApproveModal(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+            >
+              <CheckCheck size={14} />
+              Approve
+            </button>
+          )}
+          {s.status == 'pending' && (
+            <button
+              onClick={() => {
+                setSkill(s);
+                setShowRejectModal(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+            >
+              <ThumbsDownIcon size={14} />
+              Reject
+            </button>
+          )}
+        </div>
+      ),
+    },
+    // {
+    //   key: 'actions',
+    //   label: 'Actions',
+    //   mobile: 'actions',
+    //   // Desktop — unchanged, icon-only
+    //   render: (s: SkillType) => (
+    //     <div className="flex items-center justify-center gap-3 w-full">
+    //       <button
+    //         onClick={() => {
+    //           setSkill(s);
+    //           setShowViewModal(true);
+    //         }}
+    //         className="text-indigo-600 hover:text-indigo-800"
+    //         title="view"
+    //       >
+    //         <Eye size={18} />
+    //       </button>
+    //       {['approved', 'pending'].includes(s.status!) && (
+    //         <button
+    //           onClick={() => {
+    //             setSkillName(s.skillName);
+    //             setSkill(s);
+    //             setShowEditModal(true);
+    //             console.log('skill on edit click', skill);
+    //           }}
+    //           className="font-bold text-red-700 hover:text-red-800"
+    //           title="Edit"
+    //         >
+    //           <SquarePenIcon size={16} className="text-amber-500" />
+    //         </button>
+    //       )}
+    //       {s.status !== 'removed' && (
+    //         <button
+    //           onClick={() => {
+    //             setSkill(s);
+    //             setShowDeleteModal(true);
+    //           }}
+    //           className="font-semibold text-red-700 hover:text-indigo-800"
+    //           title="Remove"
+    //         >
+    //           <Trash size={16} />
+    //         </button>
+    //       )}
+    //       {s.status == 'pending' && (
+    //         <button
+    //           onClick={() => {
+    //             setSkill(s);
+    //             setShowApproveModal(true);
+    //           }}
+    //           className="font-semibold text-green-700 hover:text-indigo-800 hover:bg-gray-200 rounded-full p-1.5"
+    //           title="Approve"
+    //         >
+    //           <CheckCheck size={16} />
+    //         </button>
+    //       )}
+    //       {s.status == 'pending' && (
+    //         <button
+    //           onClick={() => {
+    //             setSkill(s);
+    //             setShowRejectModal(true);
+    //           }}
+    //           className="font-semibold text-red-700 hover:text-red-800 hover:bg-gray-200 rounded-full p-1.5"
+    //           title="Reject"
+    //         >
+    //           <ThumbsDownIcon size={16} />
+    //         </button>
+    //       )}
+    //     </div>
+    //   ),
+    //   // Mobile — labeled pills, same visual language as your other tables
+    //   mobileRender: (s: SkillType) => (
+    //     <div
+    //       className="flex items-center flex-wrap gap-2"
+    //       onClick={(e) => e.stopPropagation()}
+    //     >
+    //       <button
+    //         onClick={() => {
+    //           setSkill(s);
+    //           setShowViewModal(true);
+    //         }}
+    //         className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+    //       >
+    //         <Eye size={14} />
+    //         View
+    //       </button>
+    //       {['approved', 'pending'].includes(s.status!) && (
+    //         <button
+    //           onClick={() => {
+    //             setSkillName(s.skillName);
+    //             setSkill(s);
+    //             setShowEditModal(true);
+    //           }}
+    //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
+    //         >
+    //           <SquarePenIcon size={14} />
+    //           Edit
+    //         </button>
+    //       )}
+    //       {s.status !== 'removed' && (
+    //         <button
+    //           onClick={() => {
+    //             setSkill(s);
+    //             setShowDeleteModal(true);
+    //           }}
+    //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+    //         >
+    //           <Trash size={14} />
+    //           Remove
+    //         </button>
+    //       )}
+    //       {s.status == 'pending' && (
+    //         <button
+    //           onClick={() => {
+    //             setSkill(s);
+    //             setShowApproveModal(true);
+    //           }}
+    //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-green-700 bg-green-50 hover:bg-green-100 active:scale-95 border border-green-200 rounded-full transition-all"
+    //         >
+    //           <CheckCheck size={14} />
+    //           Approve
+    //         </button>
+    //       )}
+    //       {s.status == 'pending' && (
+    //         <button
+    //           onClick={() => {
+    //             setSkill(s);
+    //             setShowRejectModal(true);
+    //           }}
+    //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+    //         >
+    //           <ThumbsDownIcon size={14} />
+    //           Reject
+    //         </button>
+    //       )}
+    //     </div>
+    //   ),
+    // },
+  ];
 
   useEffect(() => {
     const getStats = async () => {
@@ -878,7 +900,7 @@ const skillColumns: ColumnType<SkillType>[] = [
 
   const resetFilter = () => {
     setFilter({ status: 'approved' });
-    setSortBy('Newest')
+    setSortBy('Newest');
   };
   return (
     <div className="min-h-screen w-full bg-gray-100">
@@ -923,7 +945,7 @@ const skillColumns: ColumnType<SkillType>[] = [
             sortOption={sortOption}
             setSortBy={setSortBy}
             onResetfilter={resetFilter}
-            item='Skills'
+            item="Skills"
           />
           <Pagination
             onPageChange={setPage}

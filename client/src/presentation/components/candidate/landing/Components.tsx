@@ -2,7 +2,6 @@ import type { LucideIcon } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 
-
 const mono = { fontFamily: "'JetBrains Mono', monospace" };
 const display = { fontFamily: "'Fraunces', serif" };
 const body = { fontFamily: "'Inter', sans-serif" };
@@ -52,7 +51,8 @@ export function FeatureCard({ icon: Icon, title, desc }: FeatureCardProps) {
         className="w-10 h-10 rounded-full flex items-center justify-center mb-5"
         style={{
           backgroundColor: hover ? '#62309f' : '#F0EDE0',
-          transition: 'background-color 300ms ease', color:hover?'white':'#62309f'
+          transition: 'background-color 300ms ease',
+          color: hover ? 'white' : '#62309f',
         }}
       >
         <Icon
@@ -178,38 +178,51 @@ export function TrackStep({ index, label, sub, tone }: TrackStepProps) {
   );
 }
 
-type WhyCardProps={
-     index:number, title:string, desc:string
-}
-export function WhyCard({ index, title, desc }:WhyCardProps) {
+type WhyCardProps = {
+  index: number;
+  title: string;
+  desc: string;
+};
+export function WhyCard({ index, title, desc }: WhyCardProps) {
   const [hover, setHover] = useState(false);
   return (
     <div
       className="cursor-default"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{ transform: hover ? "translateY(-4px)" : "translateY(0px)", transition: "transform 250ms ease" }}
+      style={{
+        transform: hover ? 'translateY(-4px)' : 'translateY(0px)',
+        transition: 'transform 250ms ease',
+      }}
     >
-      <span style={{ ...mono, fontSize: 11, color: "#D2992B" }}>
-        {String(index).padStart(2, "0")}
+      <span style={{ ...mono, fontSize: 11, color: '#D2992B' }}>
+        {String(index).padStart(2, '0')}
       </span>
       <h3
         className="mt-2 mb-2 text-lg"
-        style={{ ...display, fontWeight: 600, color: hover ? "#2F6F63" : "#12302B", transition: "color 250ms ease" }}
+        style={{
+          ...display,
+          fontWeight: 600,
+          color: hover ? '#2F6F63' : '#12302B',
+          transition: 'color 250ms ease',
+        }}
       >
         {title}
       </h3>
-      <p className="text-sm" style={{ color: "rgba(18,48,43,0.65)" }}>
+      <p className="text-sm" style={{ color: 'rgba(18,48,43,0.65)' }}>
         {desc}
       </p>
     </div>
   );
 }
 
-
- 
-export 
-function CtaPanel({ prompt, children }:{prompt:string,children:ReactNode}) {
+export function CtaPanel({
+  prompt,
+  children,
+}: {
+  prompt: string;
+  children: ReactNode;
+}) {
   const [hover, setHover] = useState(false);
   return (
     <div
@@ -217,13 +230,13 @@ function CtaPanel({ prompt, children }:{prompt:string,children:ReactNode}) {
       onMouseLeave={() => setHover(false)}
       className="p-8 rounded-sm border cursor-default"
       style={{
-        borderColor: hover ? "rgba(247,244,236,0.4)" : "rgba(247,244,236,0.15)",
-        backgroundColor: hover ? "rgba(247,244,236,0.05)" : "transparent",
-        transform: hover ? "translateY(-3px)" : "translateY(0px)",
-        transition: "all 250ms ease",
+        borderColor: hover ? 'rgba(247,244,236,0.4)' : 'rgba(247,244,236,0.15)',
+        backgroundColor: hover ? 'rgba(247,244,236,0.05)' : 'transparent',
+        transform: hover ? 'translateY(-3px)' : 'translateY(0px)',
+        transition: 'all 250ms ease',
       }}
     >
-      <p className="mb-5 text-sm" style={{ color: "rgba(247,244,236,0.75)" }}>
+      <p className="mb-5 text-sm" style={{ color: 'rgba(247,244,236,0.75)' }}>
         {prompt}
       </p>
       {children}
@@ -231,11 +244,12 @@ function CtaPanel({ prompt, children }:{prompt:string,children:ReactNode}) {
   );
 }
 
-type TrustBadgeProps={
-  icon: LucideIcon, label:string
-}
+type TrustBadgeProps = {
+  icon: LucideIcon;
+  label: string;
+};
 
-export function TrustBadge({ icon: Icon, label }:TrustBadgeProps) {
+export function TrustBadge({ icon: Icon, label }: TrustBadgeProps) {
   const [hover, setHover] = useState(false);
   return (
     <div
@@ -243,11 +257,11 @@ export function TrustBadge({ icon: Icon, label }:TrustBadgeProps) {
       onMouseLeave={() => setHover(false)}
       className="flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm cursor-default"
       style={{
-        borderColor: hover ? "#303F9F" : "#E3DDCE",
-        color: "#12302B",
-        backgroundColor: hover ? "#F0EDE0" : "#FFFFFF",
-        transform: hover ? "translateY(-2px)" : "translateY(0px)",
-        transition: "all 220ms ease",
+        borderColor: hover ? '#303F9F' : '#E3DDCE',
+        color: '#12302B',
+        backgroundColor: hover ? '#F0EDE0' : '#FFFFFF',
+        transform: hover ? 'translateY(-2px)' : 'translateY(0px)',
+        transition: 'all 220ms ease',
       }}
     >
       <Icon size={15} color="#2F6F63" />
@@ -256,8 +270,7 @@ export function TrustBadge({ icon: Icon, label }:TrustBadgeProps) {
   );
 }
 
-
-export function FooterLink({ children }:{children:ReactNode}) {
+export function FooterLink({ children }: { children: ReactNode }) {
   const [hover, setHover] = useState(false);
   return (
     <li
@@ -265,9 +278,9 @@ export function FooterLink({ children }:{children:ReactNode}) {
       onMouseLeave={() => setHover(false)}
       className="cursor-pointer"
       style={{
-        color: hover ? "#D2992B" : "rgba(247,244,236,0.7)",
-        transform: hover ? "translateX(3px)" : "translateX(0px)",
-        transition: "all 200ms ease",
+        color: hover ? '#D2992B' : 'rgba(247,244,236,0.7)',
+        transform: hover ? 'translateX(3px)' : 'translateX(0px)',
+        transition: 'all 200ms ease',
       }}
     >
       {children}

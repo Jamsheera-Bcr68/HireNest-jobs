@@ -10,7 +10,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 type ExperienceModalProps = {
   open: boolean;
   onClose: () => void;
-  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType|null>>
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>;
   user?: UserProfileType;
 
   selectedExp: ExperienceType | null;

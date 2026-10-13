@@ -1,4 +1,4 @@
-import { useState, type ReactNode, useEffect } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { ApplicationDetailsDto } from '../../../../types/dtos/application.dto';
 import { formatSalary } from '../../../../utils/salary-format';
 import { Card, SectionTitle } from '../ReusableComponents';
@@ -7,15 +7,10 @@ import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { updateUser } from '../../../../redux/slices/auth.slice';
 import { useToast } from '../../../../shared/toast/use-toast';
 import { useSelector } from 'react-redux';
-import {
-  CheckCircle2,
-  FileText,
-  CalendarDays,
-  DollarSign,
-  Eye,
-} from 'lucide-react';
+import { FileText, CalendarDays, DollarSign, Eye } from 'lucide-react';
 import { applicationService } from '../../../../services/api-services/application.service';
 import type { StateType } from '../../../../constants/types/user';
+import { env } from '../../../../config/env';
 
 function InfoRow({
   icon,
@@ -38,23 +33,7 @@ function InfoRow({
     </div>
   );
 }
-function TimelineDot({ status }: { status: string }) {
-  if (status === 'done')
-    return (
-      <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0">
-        <CheckCircle2 size={12} className="text-white" />
-      </div>
-    );
-  if (status === 'active')
-    return (
-      <div className="w-5 h-5 rounded-full bg-blue-500 border-2 border-blue-200 flex items-center justify-center flex-shrink-0">
-        <div className="w-2 h-2 rounded-full bg-white" />
-      </div>
-    );
-  return (
-    <div className="w-5 h-5 rounded-full bg-gray-100 border-2 border-gray-200 flex-shrink-0" />
-  );
-}
+
 type Props = {
   application: ApplicationDetailsDto | null;
   updateApplication: (application: ApplicationDetailsDto) => void;
@@ -213,7 +192,7 @@ function LeftContainer({ application, updateApplication }: Props) {
                 <button
                   onClick={() =>
                     window.open(
-                      `${import.meta.env.VITE_BACKEND_URL}${application.resume.url}`,
+                      `${env.backendUrl}${application.resume.url}`,
                       '_blank'
                     )
                   }

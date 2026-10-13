@@ -1,25 +1,23 @@
 import {
   Briefcase,
-  Compass,
   Github,
   Globe,
   IndianRupee,
   Linkedin,
   MapPin,
   MessageCircle,
-  Target,
   Twitter,
   Youtube,
   type LucideIcon,
 } from 'lucide-react';
 import { useTheme } from '../../../../contexts/ThemeContext';
 import type { CompanyProfileType } from '../../../../types/dtos/profile-types/user.types';
-import { Culture, Hero, QuickFacts, VisionAndMission } from './Components';
+import { Hero, QuickFacts, VisionAndMission } from './Components';
 import type { JobCardDto } from '../../../../types/dtos/job.dto';
 import { formatSalary } from '../../../../utils/salary-format';
 import { useNavigate } from 'react-router-dom';
-import { object } from 'zod';
-import { useCallback, useState } from 'react';
+
+import { useState } from 'react';
 import type { ISocialLinks } from '../../../../types/profile.types';
 
 export function Main({
@@ -245,8 +243,6 @@ export function Main({
               : 'No Social media links added'}
           </div>
         </section>
-
-       
       </div>
     </div>
   );

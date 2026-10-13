@@ -1,4 +1,4 @@
-import Header from '../../../components/common/home/Header'
+import Header from '../../../components/common/home/Header';
 import HeroSection from '../../../components/user/employer/home/HeroSection';
 import ServicesSection from '../../../components/user/employer/home/Service';
 //import TestimonialsSection from './Testimonial';
@@ -9,7 +9,7 @@ function EmployerHome() {
   return (
     <div className=" ">
       <Header />
-      <HeroSection heroImage={'/emp_landing.jpg'} />
+      <HeroSection />
       <ServicesSection />
       {/* <Steps />
       <TestimonialsSection/> */}

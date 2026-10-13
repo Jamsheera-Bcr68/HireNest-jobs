@@ -9,8 +9,6 @@ import { useDispatch } from 'react-redux';
 import { updateUser } from '../../../../redux/slices/auth.slice';
 import type { JobDetailsDto } from '../../../../types/dtos/job.dto';
 
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
-
 function JobData({ job }: { job: JobDetailsDto | null }) {
   const dispatch = useDispatch();
   const { showToast } = useToast();

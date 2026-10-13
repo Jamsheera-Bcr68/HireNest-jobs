@@ -20,7 +20,9 @@ export function MobileEntityList<T extends { id: string | number }>({
   columns: ColumnConfig<T>[];
   entities: T[];
 }) {
-  const [expandedIds, setExpandedIds] = useState<Set<string | number>>(new Set());
+  const [expandedIds, setExpandedIds] = useState<Set<string | number>>(
+    new Set()
+  );
 
   const toggle = (id: string | number) => {
     setExpandedIds((prev) => {
@@ -67,7 +69,9 @@ export function MobileEntityList<T extends { id: string | number }>({
                 {statusCol && renderCol(statusCol, entity)}
                 <div
                   className={`p-1.5 rounded-full transition-colors ${
-                    isExpanded ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-400'
+                    isExpanded
+                      ? 'bg-indigo-100 text-indigo-600'
+                      : 'bg-slate-100 text-slate-400'
                   }`}
                 >
                   <ChevronDown
@@ -81,7 +85,9 @@ export function MobileEntityList<T extends { id: string | number }>({
             {/* Expanded details */}
             <div
               className={`grid transition-all duration-200 ease-in-out ${
-                isExpanded ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                isExpanded
+                  ? 'grid-rows-[1fr] opacity-100'
+                  : 'grid-rows-[0fr] opacity-0'
               }`}
             >
               <div className="overflow-hidden">

@@ -13,7 +13,6 @@ type InterviewDetailsModalProps = {
   handleConirmClick: (id: string) => void;
 };
 
-const baseUrl = import.meta.env.VITE_BACKEND_URL;
 export default function InterviewDetailsModal({
   isOpen,
   onClose,
@@ -84,8 +83,11 @@ export default function InterviewDetailsModal({
         </div>
         {activeTab == 'details' && <InterviewDetails interview={interview} />}
         {activeTab == 'feedback' && (
-
-          <Feedback result={interview.result} feedback={interview.feedback} score={interview.score}/>
+          <Feedback
+            result={interview.result}
+            feedback={interview.feedback}
+            score={interview.score}
+          />
         )}
 
         {/* Footer */}

@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import ConversationItem from './ConversationItem';
 import type { ChatroomType } from '../../../../types/chat.types';
-import { fi } from 'zod/locales';
+
 type Props = {
   selectedId: string | null;
   filteredConversations: ChatroomType[];
@@ -16,10 +15,9 @@ function ConversationList({
   handlesearch,
   search,
 }: Props) {
-   console.log('from conversation list',filteredConversations)
-    
+  console.log('from conversation list', filteredConversations);
+
   return (
-   
     <div
       className={`${selectedId ? 'hidden md:flex' : 'flex'} md:flex flex-col w-full md:w-[380px] border-r border-slate-200 h-full min-h-0 shrink-0 overflow-y-auto`}
     >
@@ -50,7 +48,7 @@ function ConversationList({
           />
         </div>
       </div>
-      {filteredConversations.length? (
+      {filteredConversations.length ? (
         <div className="flex-1 overflow-y-auto">
           {filteredConversations.map((c) => (
             <ConversationItem
@@ -61,7 +59,9 @@ function ConversationList({
             />
           ))}
         </div>
-      ): <div className="p-4 text-slate-500">No conversations found</div>}
+      ) : (
+        <div className="p-4 text-slate-500">No conversations found</div>
+      )}
     </div>
   );
 }

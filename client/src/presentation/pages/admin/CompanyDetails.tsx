@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import LogoAndName from '../../components/admin/companyDetails/LogoAndName';
 import type { CompanyProfileType } from '../../../types/dtos/profile-types/user.types';
-import { Document, RegistrationDetails } from '../../components/admin/companyDetails/RegistrationDetails';
+import { Document } from '../../components/admin/companyDetails/RegistrationDetails';
 import AboutAndDocuments from '../../components/admin/companyDetails/AboutAndDocuments';
 import ContactDetails from '../../components/admin/companyDetails/ContactDetails';
 import { adminService } from '../../../services/api-services/adminService';
@@ -27,37 +27,31 @@ export default function CompanyDetails() {
 
   console.log('company id is', companyId);
   return (
-  <div className="min-h-screen bg-slate-100 p-4 md:p-8">
-    <div className="mx-auto max-w-7xl space-y-6">
+    <div className="min-h-screen bg-slate-100 p-4 md:p-8">
+      <div className="mx-auto max-w-7xl space-y-6">
+        {/* Header */}
+        <LogoAndName onUpdate={setCompany} company={company} />
 
-      {/* Header */}
-      <LogoAndName onUpdate={setCompany} company={company} />
+        {/* Main Content */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* LEFT SECTION */}
+          <div className="lg:col-span-2">
+            <AboutAndDocuments company={company} />
+          </div>
 
-      {/* Main Content */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {/* RIGHT SECTION */}
+          <div className="space-y-6">
+            <ContactDetails company={company} />
+            <SocialLinks socialLinks={company?.socialMediaLinks} />
 
-        {/* LEFT SECTION */}
-        <div className="lg:col-span-2">
-          <AboutAndDocuments company={company} />
-          
-        </div>
-
-        {/* RIGHT SECTION */}
-        <div className="space-y-6">
-          <ContactDetails company={company} />
-          <SocialLinks socialLinks={company?.socialMediaLinks}/>
-
-          {company?.isVerified && <Activity />}
+            {company?.isVerified && <Activity />}
             {/* {company?.reapplyDetails.length&& <RegistrationDetails company={company} />} */}
-            <Document document={company?.document??null} />
+            <Document document={company?.document ?? null} />
+          </div>
         </div>
-       
+
+        {/* FULL WIDTH REGISTRATION DETAILS */}
       </div>
-
-      {/* FULL WIDTH REGISTRATION DETAILS */}
-    
-
     </div>
-  </div>
-);
+  );
 }

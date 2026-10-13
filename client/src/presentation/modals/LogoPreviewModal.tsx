@@ -11,9 +11,7 @@ type ImgViewModalProps = {
   open: boolean;
   onClose: () => void;
   profileImage: string | undefined;
-  onUpdate: React.Dispatch<
-    React.SetStateAction<CompanyProfileType | null>
-  >;
+  onUpdate: React.Dispatch<React.SetStateAction<CompanyProfileType | null>>;
 };
 
 export default function LogoImgViewModal({

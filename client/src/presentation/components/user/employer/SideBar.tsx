@@ -1,5 +1,10 @@
-import { useState ,useEffect} from 'react';
-import { Briefcase, LayoutDashboard, LayoutDashboardIcon, MessageSquare, MessageSquareDashed, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import {
+  Briefcase,
+  LayoutDashboardIcon,
+  MessageSquare,
+  User,
+} from 'lucide-react';
 import {
   Home,
   PlusIcon,
@@ -7,7 +12,7 @@ import {
   BriefcaseBusiness,
   ChevronLeftIcon,
   LightbulbIcon,
-  CalendarDays
+  CalendarDays,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 const navItems = [
@@ -19,7 +24,6 @@ const navItems = [
   'Profile',
   'Skill Requests',
   'Messages',
-
 ];
 const navRoutes: Record<string, string> = {
   Dashboard: '/company/dashboard',
@@ -32,12 +36,12 @@ const navRoutes: Record<string, string> = {
   Messages: '/company/messages',
 };
 const navIcons = [
-  <LayoutDashboardIcon/>,
+  <LayoutDashboardIcon />,
   <PlusIcon />,
 
-  <CalendarDays/>,
-<Briefcase/>,
-  <User/>,
+  <CalendarDays />,
+  <Briefcase />,
+  <User />,
   <LightbulbIcon />,
 
   <MessageSquare />,
@@ -51,14 +55,14 @@ type SidebarProps = {
   nav: string;
 };
 export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
-  console.log('nav from side bar',nav);
-  
+  console.log('nav from side bar', nav);
+
   const [activeNav, setActiveNav] = useState(nav);
   const navigate = useNavigate();
 
   useEffect(() => {
-  setActiveNav(nav);
-}, [nav])
+    setActiveNav(nav);
+  }, [nav]);
   return (
     <aside
       style={{ fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}

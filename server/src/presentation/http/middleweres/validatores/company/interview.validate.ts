@@ -7,7 +7,7 @@ export const interviewValidator = (
   next: NextFunction
 ) => {
   try {
- interviewFormSchema.safeParse(req.body);
+    interviewFormSchema.safeParse(req.body);
     next();
   } catch (error: any) {
     next(error);

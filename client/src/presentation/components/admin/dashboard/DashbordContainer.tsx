@@ -18,11 +18,11 @@ import CategorywisePosts from './CategorywisePosts';
 import type { IndustryType } from '../../../../types/dtos/profile-types/industry.type';
 import type { UserRole } from '../../../../constants/types/user';
 
-import PendingCompany from './PendingCompany';
-import ReportedJobs from './ReportedJobs';
+// import PendingCompany from './PendingCompany';
+// import ReportedJobs from './ReportedJobs';
 import type { JobType } from '../../../../types/dtos/job.dto';
 import ActionPending from './ActionPending';
-import { adminService } from '../../../../services/api-services/adminService';
+// import { adminService } from '../../../../services/api-services/adminService';
 
 type StatusCardType = {
   icon: LucideIcon;
@@ -251,7 +251,7 @@ export default function AdminDashbordContainer() {
 
   const hasCompanyData = comp_job_chartData.length > 0;
   const hasIndustryData = industyJobs.length > 0;
-  const hasBothData = hasCompanyData && hasIndustryData;
+  // const hasBothData = hasCompanyData && hasIndustryData;
   const hasNeitherData = !hasCompanyData && !hasIndustryData;
   return (
     <div>

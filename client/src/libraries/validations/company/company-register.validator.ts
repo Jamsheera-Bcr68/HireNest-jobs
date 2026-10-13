@@ -37,7 +37,7 @@ const selectVal = <T extends readonly [string, ...string[]]>(
     })
   );
 
-  const websiteValOpt = (field: string, min: number, max: number) =>
+const websiteValOpt = (field: string, min: number, max: number) =>
   z.preprocess(
     (val) => (val === '' ? undefined : val),
     z
@@ -49,10 +49,10 @@ const selectVal = <T extends readonly [string, ...string[]]>(
       .optional()
   );
 export const companyRegisterSchema = z.object({
-companyName: stringValMand('Company Name', 3, 40).regex(
-  /^[A-Za-z0-9\s.&'-]+$/,
-  'Company Name contains invalid characters'
-),
+  companyName: stringValMand('Company Name', 3, 40).regex(
+    /^[A-Za-z0-9\s.&'-]+$/,
+    'Company Name contains invalid characters'
+  ),
   tagLine: stringValOpt('Tagline', 3, 50).nullable().optional(),
   website: websiteValOpt('Website', 6, 50),
   industry: selectVal('Industry', Industry_Type),
@@ -71,7 +71,7 @@ companyName: stringValMand('Company Name', 3, 40).regex(
   documents: z.object({
     type: selectVal('Verification document ', Document_Types),
     file: z.string().nullable().optional(),
-    name:z.string().nullable().optional()
+    name: z.string().nullable().optional(),
   }),
 
   startedIn: z.string().min(1, 'Please Select Started Year'),

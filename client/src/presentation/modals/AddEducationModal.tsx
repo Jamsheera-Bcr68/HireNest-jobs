@@ -13,9 +13,7 @@ import type { UserProfileType } from '../../types/dtos/profile-types/user.types'
 interface AddEducationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUserUpdate:  React.Dispatch<
-      React.SetStateAction<UserProfileType | null>
-    >
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>;
   editEdu: EducationType | null;
 }
 

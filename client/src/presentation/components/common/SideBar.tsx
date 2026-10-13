@@ -1,7 +1,6 @@
 import { SideBox } from './ReusableComponents';
 
 const SideBar = () => {
- 
   return (
     <div className="sidebar w-1/6 pt-4  h-screen mt-0 ">
       <SideBox text="DashBoard" isActive={false} />

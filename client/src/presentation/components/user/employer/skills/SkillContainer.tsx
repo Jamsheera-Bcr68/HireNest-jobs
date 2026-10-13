@@ -12,9 +12,8 @@ import { useSelector } from 'react-redux';
 import { Eye, Trash, SquarePenIcon, Info } from 'lucide-react';
 
 const tabs = [
-
   { label: 'Approved', value: 'approved' },
-    { label: 'All', value: '' },
+  { label: 'All', value: '' },
   { label: 'Rejected', value: 'rejected' },
   { label: 'Removed', value: 'removed' },
   { label: 'Pending', value: 'pending' },
@@ -67,171 +66,179 @@ function SkillsContainer() {
   const [error, setError] = useState<string>('');
   const [skill, setSkill] = useState<SkillType | null>(null);
 
-const skillColumns: ColumnType<SkillType>[] = [
-  {
-    key: 'skillName',
-    label: 'Skill',
-    mobile: 'primary',
-    width: '22%',
-    render: (s: SkillType) => (
-      <div
-        className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block max-w-[180px] truncate whitespace-nowrap overflow-hidden"
-        title={s.skillName}
-      >
-        {s.skillName}
-      </div>
-    ),
-    mobileRender: (s: SkillType) => (
-      <div className="min-w-0 w-full">
-        <p className="font-semibold text-slate-800 truncate">{s.skillName}</p>
-      </div>
-    ),
-  },
-  {
-    key: 'createdAt',
-    label: 'Requested On',
-    width: '15%',
-    render: (s: SkillType) => (
-      <span className="text-slate-700 whitespace-nowrap">
-        {new Date(s.createdAt).toLocaleDateString()}
-      </span>
-    ),
-  },
-  {
-    key: 'reviewedAt',
-    label: 'Reviewed On',
-    width: '15%',
-    render: (s: SkillType) => (
-      <span className="text-slate-700 whitespace-nowrap">
-        {s.reviewedAt ? new Date(s.reviewedAt).toLocaleDateString() : 'Pending'}
-      </span>
-    ),
-  },
-  {
-    key: 'status',
-    label: 'Status',
-    mobile: 'status',
-    width: '12%',
-    render: (s: SkillType) => (
-      <span
-        className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${statusStyles[s.status!]}`}
-      >
-        {s.status}
-      </span>
-    ),
-  },
-  {
-    key: 'reason',
-    label: 'Reason',
-    width: '6%',
-    render: (s: SkillType) => {
-      const reason =
-        s.status === 'removed'
-          ? s.reasonForRemove
-          : s.status === 'rejected'
-            ? s.reasonForReject
-            : null;
-
-      if (!reason) return <span className="text-slate-300">—</span>;
-
-      return (
-        <div className="group relative inline-flex items-center justify-center">
-          <Info size={16} className="text-slate-400 cursor-pointer hover:text-slate-600" />
-          <div className="invisible group-hover:visible absolute z-10 left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 rounded-lg bg-slate-800 text-white text-xs px-3 py-2 shadow-lg">
-            {reason}
-          </div>
+  const skillColumns: ColumnType<SkillType>[] = [
+    {
+      key: 'skillName',
+      label: 'Skill',
+      mobile: 'primary',
+      width: '22%',
+      render: (s: SkillType) => (
+        <div
+          className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block max-w-[180px] truncate whitespace-nowrap overflow-hidden"
+          title={s.skillName}
+        >
+          {s.skillName}
         </div>
-      );
+      ),
+      mobileRender: (s: SkillType) => (
+        <div className="min-w-0 w-full">
+          <p className="font-semibold text-slate-800 truncate">{s.skillName}</p>
+        </div>
+      ),
     },
-  },
-  {
-    key: 'actions',
-    label: 'Actions',
-    mobile: 'actions',
-    width: '14%',
-    render: (s: SkillType) => (
-      <div className="flex items-center justify-center gap-3 w-full whitespace-nowrap">
-        <button
-          onClick={() => {
-            setSkill(s);
-            setShowViewModal(true);
-          }}
-          className="text-indigo-600 hover:text-indigo-800"
-          title="View"
+    {
+      key: 'createdAt',
+      label: 'Requested On',
+      width: '15%',
+      render: (s: SkillType) => (
+        <span className="text-slate-700 whitespace-nowrap">
+          {new Date(s.createdAt).toLocaleDateString()}
+        </span>
+      ),
+    },
+    {
+      key: 'reviewedAt',
+      label: 'Reviewed On',
+      width: '15%',
+      render: (s: SkillType) => (
+        <span className="text-slate-700 whitespace-nowrap">
+          {s.reviewedAt
+            ? new Date(s.reviewedAt).toLocaleDateString()
+            : 'Pending'}
+        </span>
+      ),
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      mobile: 'status',
+      width: '12%',
+      render: (s: SkillType) => (
+        <span
+          className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${statusStyles[s.status!]}`}
         >
-          <Eye size={18} />
-        </button>
+          {s.status}
+        </span>
+      ),
+    },
+    {
+      key: 'reason',
+      label: 'Reason',
+      width: '6%',
+      render: (s: SkillType) => {
+        const reason =
+          s.status === 'removed'
+            ? s.reasonForRemove
+            : s.status === 'rejected'
+              ? s.reasonForReject
+              : null;
 
-        {s.status === 'pending' && (
+        if (!reason) return <span className="text-slate-300">—</span>;
+
+        return (
+          <div className="group relative inline-flex items-center justify-center">
+            <Info
+              size={16}
+              className="text-slate-400 cursor-pointer hover:text-slate-600"
+            />
+            <div className="invisible group-hover:visible absolute z-10 left-1/2 -translate-x-1/2 bottom-full mb-2 w-56 rounded-lg bg-slate-800 text-white text-xs px-3 py-2 shadow-lg">
+              {reason}
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      key: 'actions',
+      label: 'Actions',
+      mobile: 'actions',
+      width: '14%',
+      render: (s: SkillType) => (
+        <div className="flex items-center justify-center gap-3 w-full whitespace-nowrap">
           <button
             onClick={() => {
               setSkill(s);
-              setSkillName(s.skillName);
-              setShowEditModal(true);
+              setShowViewModal(true);
             }}
-            title="Edit"
+            className="text-indigo-600 hover:text-indigo-800"
+            title="View"
           >
-            <SquarePenIcon size={16} className="text-amber-500" />
+            <Eye size={18} />
           </button>
-        )}
 
-        {s.status === 'pending' && (
-          <button
-            onClick={() => {
-              setSkill(s);
-              setShowDeleteModal(true);
-            }}
-            title="Withdraw Request"
-          >
-            <Trash size={16} className="text-red-600" />
-          </button>
-        )}
-      </div>
-    ),
-    mobileRender: (s: SkillType) => (
-      <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
-        <button
-          onClick={() => {
-            setSkill(s);
-            setShowViewModal(true);
-          }}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+          {s.status === 'pending' && (
+            <button
+              onClick={() => {
+                setSkill(s);
+                setSkillName(s.skillName);
+                setShowEditModal(true);
+              }}
+              title="Edit"
+            >
+              <SquarePenIcon size={16} className="text-amber-500" />
+            </button>
+          )}
+
+          {s.status === 'pending' && (
+            <button
+              onClick={() => {
+                setSkill(s);
+                setShowDeleteModal(true);
+              }}
+              title="Withdraw Request"
+            >
+              <Trash size={16} className="text-red-600" />
+            </button>
+          )}
+        </div>
+      ),
+      mobileRender: (s: SkillType) => (
+        <div
+          className="flex items-center flex-wrap gap-2"
+          onClick={(e) => e.stopPropagation()}
         >
-          <Eye size={14} />
-          View
-        </button>
-
-        {s.status === 'pending' && (
           <button
             onClick={() => {
               setSkill(s);
-              setSkillName(s.skillName);
-              setShowEditModal(true);
+              setShowViewModal(true);
             }}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
           >
-            <SquarePenIcon size={14} />
-            Edit
+            <Eye size={14} />
+            View
           </button>
-        )}
 
-        {s.status === 'pending' && (
-          <button
-            onClick={() => {
-              setSkill(s);
-              setShowDeleteModal(true);
-            }}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
-          >
-            <Trash size={14} />
-            Withdraw
-          </button>
-        )}
-      </div>
-    ),
-  },
-];
-// total width: 22+15+15+12+6+14 = 84%
+          {s.status === 'pending' && (
+            <button
+              onClick={() => {
+                setSkill(s);
+                setSkillName(s.skillName);
+                setShowEditModal(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
+            >
+              <SquarePenIcon size={14} />
+              Edit
+            </button>
+          )}
+
+          {s.status === 'pending' && (
+            <button
+              onClick={() => {
+                setSkill(s);
+                setShowDeleteModal(true);
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+            >
+              <Trash size={14} />
+              Withdraw
+            </button>
+          )}
+        </div>
+      ),
+    },
+  ];
+  // total width: 22+15+15+12+6+14 = 84%
 
   // const skillColumns = [
   //   {
@@ -334,168 +341,168 @@ const skillColumns: ColumnType<SkillType>[] = [
   //   },
   // ];
 
-// const skillColumns: ColumnType<SkillType>[] = [
-//   {
-//     key: 'skillName',
-//     label: 'Skill',
-//     mobile: 'primary',
-//     width: '16%',
-//     render: (s: SkillType) => (
-//       <div
-//         className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block max-w-[160px] truncate whitespace-nowrap overflow-hidden"
-//         title={s.skillName}
-//       >
-//         {s.skillName}
-//       </div>
-//     ),
-//     mobileRender: (s: SkillType) => (
-//       <div className="min-w-0 w-full">
-//         <p className="font-semibold text-slate-800 truncate">{s.skillName}</p>
-//       </div>
-//     ),
-//   },
-//   {
-//     key: 'createdAt',
-//     label: 'Requested On',
-//     width: '13%',
-//     render: (s: SkillType) => (
-//       <span className="text-slate-700 whitespace-nowrap">
-//         {new Date(s.createdAt).toLocaleDateString()}
-//       </span>
-//     ),
-//   },
-//   {
-//     key: 'reviewedAt',
-//     label: 'Reviewed On',
-//     width: '13%',
-//     render: (s: SkillType) => (
-//       <span className="text-slate-700 whitespace-nowrap">
-//         {s.reviewedAt ? new Date(s.reviewedAt).toLocaleDateString() : 'Pending'}
-//       </span>
-//     ),
-//   },
-//   {
-//     key: 'status',
-//     label: 'Status',
-//     mobile: 'status',
-//     width: '10%',
-//     render: (s: SkillType) => (
-//       <span
-//         className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${statusStyles[s.status!]}`}
-//       >
-//         {s.status}
-//       </span>
-//     ),
-//   },
-//   {
-//     key: 'reason',
-//     label: 'Reason',
-//     width: '30%',
-//     render: (s: SkillType) => {
-//       const reason =
-//         s.status === 'removed'
-//           ? s.reasonForRemove
-//           : s.status === 'rejected'
-//             ? s.reasonForReject
-//             : null;
+  // const skillColumns: ColumnType<SkillType>[] = [
+  //   {
+  //     key: 'skillName',
+  //     label: 'Skill',
+  //     mobile: 'primary',
+  //     width: '16%',
+  //     render: (s: SkillType) => (
+  //       <div
+  //         className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm inline-block max-w-[160px] truncate whitespace-nowrap overflow-hidden"
+  //         title={s.skillName}
+  //       >
+  //         {s.skillName}
+  //       </div>
+  //     ),
+  //     mobileRender: (s: SkillType) => (
+  //       <div className="min-w-0 w-full">
+  //         <p className="font-semibold text-slate-800 truncate">{s.skillName}</p>
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     key: 'createdAt',
+  //     label: 'Requested On',
+  //     width: '13%',
+  //     render: (s: SkillType) => (
+  //       <span className="text-slate-700 whitespace-nowrap">
+  //         {new Date(s.createdAt).toLocaleDateString()}
+  //       </span>
+  //     ),
+  //   },
+  //   {
+  //     key: 'reviewedAt',
+  //     label: 'Reviewed On',
+  //     width: '13%',
+  //     render: (s: SkillType) => (
+  //       <span className="text-slate-700 whitespace-nowrap">
+  //         {s.reviewedAt ? new Date(s.reviewedAt).toLocaleDateString() : 'Pending'}
+  //       </span>
+  //     ),
+  //   },
+  //   {
+  //     key: 'status',
+  //     label: 'Status',
+  //     mobile: 'status',
+  //     width: '10%',
+  //     render: (s: SkillType) => (
+  //       <span
+  //         className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${statusStyles[s.status!]}`}
+  //       >
+  //         {s.status}
+  //       </span>
+  //     ),
+  //   },
+  //   {
+  //     key: 'reason',
+  //     label: 'Reason',
+  //     width: '30%',
+  //     render: (s: SkillType) => {
+  //       const reason =
+  //         s.status === 'removed'
+  //           ? s.reasonForRemove
+  //           : s.status === 'rejected'
+  //             ? s.reasonForReject
+  //             : null;
 
-//       return reason ? (
-//         <span className="text-sm text-slate-600 line-clamp-2 break-words" title={reason}>
-//           {reason}
-//         </span>
-//       ) : (
-//         <span className="text-sm text-slate-300">—</span>
-//       );
-//     },
-//   },
-//   {
-//     key: 'actions',
-//     label: 'Actions',
-//     mobile: 'actions',
-//     width: '12%',
-//     render: (s: SkillType) => (
-//       <div className="flex items-center justify-center gap-3 w-full whitespace-nowrap">
-//         <button
-//           onClick={() => {
-//             setSkill(s);
-//             setShowViewModal(true);
-//           }}
-//           className="text-indigo-600 hover:text-indigo-800"
-//           title="View"
-//         >
-//           <Eye size={18} />
-//         </button>
+  //       return reason ? (
+  //         <span className="text-sm text-slate-600 line-clamp-2 break-words" title={reason}>
+  //           {reason}
+  //         </span>
+  //       ) : (
+  //         <span className="text-sm text-slate-300">—</span>
+  //       );
+  //     },
+  //   },
+  //   {
+  //     key: 'actions',
+  //     label: 'Actions',
+  //     mobile: 'actions',
+  //     width: '12%',
+  //     render: (s: SkillType) => (
+  //       <div className="flex items-center justify-center gap-3 w-full whitespace-nowrap">
+  //         <button
+  //           onClick={() => {
+  //             setSkill(s);
+  //             setShowViewModal(true);
+  //           }}
+  //           className="text-indigo-600 hover:text-indigo-800"
+  //           title="View"
+  //         >
+  //           <Eye size={18} />
+  //         </button>
 
-//         {s.status === 'pending' && (
-//           <button
-//             onClick={() => {
-//               setSkill(s);
-//               setSkillName(s.skillName);
-//               setShowEditModal(true);
-//             }}
-//             title="Edit"
-//           >
-//             <SquarePenIcon size={16} className="text-amber-500" />
-//           </button>
-//         )}
+  //         {s.status === 'pending' && (
+  //           <button
+  //             onClick={() => {
+  //               setSkill(s);
+  //               setSkillName(s.skillName);
+  //               setShowEditModal(true);
+  //             }}
+  //             title="Edit"
+  //           >
+  //             <SquarePenIcon size={16} className="text-amber-500" />
+  //           </button>
+  //         )}
 
-//         {s.status === 'pending' && (
-//           <button
-//             onClick={() => {
-//               setSkill(s);
-//               setShowDeleteModal(true);
-//             }}
-//             title="Withdraw Request"
-//           >
-//             <Trash size={16} className="text-red-600" />
-//           </button>
-//         )}
-//       </div>
-//     ),
-//     mobileRender: (s: SkillType) => (
-//       <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
-//         <button
-//           onClick={() => {
-//             setSkill(s);
-//             setShowViewModal(true);
-//           }}
-//           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
-//         >
-//           <Eye size={14} />
-//           View
-//         </button>
+  //         {s.status === 'pending' && (
+  //           <button
+  //             onClick={() => {
+  //               setSkill(s);
+  //               setShowDeleteModal(true);
+  //             }}
+  //             title="Withdraw Request"
+  //           >
+  //             <Trash size={16} className="text-red-600" />
+  //           </button>
+  //         )}
+  //       </div>
+  //     ),
+  //     mobileRender: (s: SkillType) => (
+  //       <div className="flex items-center flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
+  //         <button
+  //           onClick={() => {
+  //             setSkill(s);
+  //             setShowViewModal(true);
+  //           }}
+  //           className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 active:scale-95 border border-indigo-200 rounded-full transition-all"
+  //         >
+  //           <Eye size={14} />
+  //           View
+  //         </button>
 
-//         {s.status === 'pending' && (
-//           <button
-//             onClick={() => {
-//               setSkill(s);
-//               setSkillName(s.skillName);
-//               setShowEditModal(true);
-//             }}
-//             className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
-//           >
-//             <SquarePenIcon size={14} />
-//             Edit
-//           </button>
-//         )}
+  //         {s.status === 'pending' && (
+  //           <button
+  //             onClick={() => {
+  //               setSkill(s);
+  //               setSkillName(s.skillName);
+  //               setShowEditModal(true);
+  //             }}
+  //             className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 active:scale-95 border border-amber-200 rounded-full transition-all"
+  //           >
+  //             <SquarePenIcon size={14} />
+  //             Edit
+  //           </button>
+  //         )}
 
-//         {s.status === 'pending' && (
-//           <button
-//             onClick={() => {
-//               setSkill(s);
-//               setShowDeleteModal(true);
-//             }}
-//             className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
-//           >
-//             <Trash size={14} />
-//             Withdraw
-//           </button>
-//         )}
-//       </div>
-//     ),
-//   },
-// ];
-// total width: 16+13+13+10+30+12 = 94%
+  //         {s.status === 'pending' && (
+  //           <button
+  //             onClick={() => {
+  //               setSkill(s);
+  //               setShowDeleteModal(true);
+  //             }}
+  //             className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 active:scale-95 border border-red-200 rounded-full transition-all"
+  //           >
+  //             <Trash size={14} />
+  //             Withdraw
+  //           </button>
+  //         )}
+  //       </div>
+  //     ),
+  //   },
+  // ];
+  // total width: 16+13+13+10+30+12 = 94%
   useEffect(() => {
     const getStats = async () => {
       try {
@@ -696,20 +703,19 @@ const skillColumns: ColumnType<SkillType>[] = [
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           {' '}
           <ReusableTable
-          filter={filter}
+            filter={filter}
             columns={skillColumns as ColumnType<SkillType>[]}
             tabs={tabs}
             updateFilter={handleFilterChange}
             entities={skills}
             filterOptions={[]}
-            item='Skills'
-            onResetfilter={()=>{
-              setFilter({status:'approved'})
+            item="Skills"
+            onResetfilter={() => {
+              setFilter({ status: 'approved' });
             }}
             totalDocs={totalDocs}
             sortOption={sortOption}
             setSortBy={setSortBy}
-            
           />
           <Pagination
             onPageChange={setPage}

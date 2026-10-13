@@ -14,76 +14,76 @@ export default function DeleteConfirmationModal({
   onDelete,
   item,
 }: ModalProps) {
-  const {t}=useTheme()
+  const { t } = useTheme();
   return (
-  <Dialog.Root
-    open={isOpen}
-    onOpenChange={(open) => {
-      if (open) {
-        onClose();
-      }
-    }}
-  >
-    <Dialog.Portal>
-      <Dialog.Overlay className={`fixed inset-0 ${t.overlay} opacity-40`} />
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (open) {
+          onClose();
+        }
+      }}
+    >
+      <Dialog.Portal>
+        <Dialog.Overlay className={`fixed inset-0 ${t.overlay} opacity-40`} />
 
-      <Dialog.Content
-        className={`
+        <Dialog.Content
+          className={`
           fixed left-1/2 top-1/2 w-full max-w-md
           -translate-x-1/2 -translate-y-1/2
           rounded-xl ${t.surface} ${t.cardBorder} border p-6 shadow-lg
           focus:outline-none
         `}
-      >
-        {/* Title */}
-        <Dialog.Title
-          className={`text-xl font-semibold ${t.dangerText} text-center`}
         >
-          Delete Confirmation
-        </Dialog.Title>
+          {/* Title */}
+          <Dialog.Title
+            className={`text-xl font-semibold ${t.dangerText} text-center`}
+          >
+            Delete Confirmation
+          </Dialog.Title>
 
-        {/* Message */}
-        <div className="mt-4 text-center">
-          <p className={`${t.inputText} text-sm`}>
-            Are you sure you want to delete this {item}?
-          </p>
+          {/* Message */}
+          <div className="mt-4 text-center">
+            <p className={`${t.inputText} text-sm`}>
+              Are you sure you want to delete this {item}?
+            </p>
 
-          <p className={`${t.subheading} text-sm mt-1`}>
-            This action cannot be undone.
-          </p>
-        </div>
+            <p className={`${t.subheading} text-sm mt-1`}>
+              This action cannot be undone.
+            </p>
+          </div>
 
-        {/* Actions */}
-        <div className="mt-6 flex justify-end gap-3">
-          <Dialog.Close asChild>
-            <button
-              onClick={onClose}
-              className={`
+          {/* Actions */}
+          <div className="mt-6 flex justify-end gap-3">
+            <Dialog.Close asChild>
+              <button
+                onClick={onClose}
+                className={`
                 rounded-lg px-4 py-2 text-sm
                 ${t.subheading} ${t.dropdownHover}
                 transition
               `}
-            >
-              Cancel
-            </button>
-          </Dialog.Close>
+              >
+                Cancel
+              </button>
+            </Dialog.Close>
 
-          <button
-            onClick={onDelete}
-            className={`
+            <button
+              onClick={onDelete}
+              className={`
               rounded-lg px-4 py-2 text-sm
               bg-red-600 text-white
               hover:bg-red-700
               transition
             `}
-          >
-            Delete
-          </button>
-        </div>
-      </Dialog.Content>
-    </Dialog.Portal>
-  </Dialog.Root>
-);
+            >
+              Delete
+            </button>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
   // return (
   //   <Dialog.Root
   //     open={isOpen}

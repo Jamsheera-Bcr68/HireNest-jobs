@@ -6,10 +6,10 @@ export const Industry_Type = [
   'Retail And E-commerce',
   'Education',
   'Media And Communication',
-  'Water & Environmental Services','Travel & Tourism',
+  'Water & Environmental Services',
+  'Travel & Tourism',
   'Logistics',
   'Other',
-
 ] as const;
 
 export const Company_Size = [
@@ -50,8 +50,8 @@ export const industryIcons: Record<IndustryType, string> = {
   'Retail And E-commerce': '🛒',
   Education: '📚',
   'Media And Communication': '📡',
-  'Water & Environmental Services':'💧',
-  'Travel & Tourism':'✈️',
+  'Water & Environmental Services': '💧',
+  'Travel & Tourism': '✈️',
   Logistics: '🚚',
   Other: '📁',
 };

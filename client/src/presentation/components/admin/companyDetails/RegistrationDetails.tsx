@@ -5,7 +5,6 @@ import {
   FileCheck,
   FileText,
   Inbox,
-  XCircle,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -126,120 +125,123 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 
 function ApplicationHistory({
   history,
-  reason,
 }: {
   history: ApplyType[];
   reason: string;
 }) {
   const [showHistory, setShowHistory] = useState<boolean>(false);
   return (
-  <div className="border-t border-slate-100 pt-4">
-    {/* Header */}
-    <div className="flex items-center justify-between">
-      <h3 className="text-sm font-medium text-slate-700">
-        View Registration History
-      </h3>
+    <div className="border-t border-slate-100 pt-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-medium text-slate-700">
+          View Registration History
+        </h3>
 
-      <button
-        type="button"
-        onClick={() => setShowHistory((prev) => !prev)}
-        aria-expanded={showHistory}
-        aria-label={
-          showHistory
-            ? "Hide registration history"
-            : "Show registration history"
-        }
-        className="flex h-8 w-8 items-center justify-center rounded-full
+        <button
+          type="button"
+          onClick={() => setShowHistory((prev) => !prev)}
+          aria-expanded={showHistory}
+          aria-label={
+            showHistory
+              ? 'Hide registration history'
+              : 'Show registration history'
+          }
+          className="flex h-8 w-8 items-center justify-center rounded-full
                    text-slate-500 transition-all duration-200
                    hover:bg-slate-100 hover:text-slate-700
                    focus:outline-none focus:ring-2 focus:ring-fuchsia-200"
+        >
+          <span
+            className={`transition-transform duration-300 ease-out ${
+              showHistory ? 'rotate-0' : 'rotate-0'
+            }`}
+          >
+            {showHistory ? (
+              <ChevronUp size={16} className="h-4 w-4" />
+            ) : (
+              <ChevronDown size={16} className="h-4 w-4" />
+            )}
+          </span>
+        </button>
+      </div>
+
+      {/* Smooth content */}
+      <div
+        className={`grid transition-all duration-300 ease-in-out ${
+          showHistory
+            ? 'mt-3 grid-rows-[1fr] opacity-100'
+            : 'grid-rows-[0fr] opacity-0'
+        }`}
       >
-        <span
-          className={`transition-transform duration-300 ease-out ${
-            showHistory ? "rotate-0" : "rotate-0"
-          }`}
-        >
-          {showHistory ? (
-            <ChevronUp size={16} className="h-4 w-4" />
-          ) : (
-            <ChevronDown size={16} className="h-4 w-4" />
-          )}
-        </span>
-      </button>
-    </div>
+        <div className="overflow-hidden">
+          <div
+            className={`space-y-3 transition-transform duration-300 ease-out ${
+              showHistory ? 'translate-y-0' : '-translate-y-2'
+            }`}
+          >
+            {history.map((entry, idx) => (
+              <div
+                key={idx}
+                className="rounded-lg border border-rose-100 bg-rose-50/50 px-4 py-3"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <span className="text-xs font-medium text-slate-500">
+                      Reason
+                    </span>
 
-    {/* Smooth content */}
-    <div
-      className={`grid transition-all duration-300 ease-in-out ${
-        showHistory
-          ? "mt-3 grid-rows-[1fr] opacity-100"
-          : "grid-rows-[0fr] opacity-0"
-      }`}
-    >
-      <div className="overflow-hidden">
-        <div
-          className={`space-y-3 transition-transform duration-300 ease-out ${
-            showHistory ? "translate-y-0" : "-translate-y-2"
-          }`}
-        >
-          {history.map((entry, idx) => (
-            <div
-              key={idx}
-              className="rounded-lg border border-rose-100 bg-rose-50/50 px-4 py-3"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <span className="text-xs font-medium text-slate-500">
-                    Reason
+                    <p className="mt-0.5 text-sm text-slate-700">
+                      {entry.rejectedReason ?? ''}
+                    </p>
+                  </div>
+
+                  <span
+                    className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${
+                      entry.status === 'pending'
+                        ? 'bg-amber-100 text-amber-600'
+                        : entry.status === 'approved'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-red-100 text-red-700'
+                    }`}
+                  >
+                    {entry.status}
                   </span>
-
-                  <p className="mt-0.5 text-sm text-slate-700">
-                    {entry.rejectedReason ?? ""}
-                  </p>
                 </div>
 
-                <span
-                  className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${
-                    entry.status === "pending"
-                      ? "bg-amber-100 text-amber-600"
-                      :entry.status==='approved'?"bg-green-100 text-green-700": "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {entry.status}
-                </span>
-              </div>
+                <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
+                  <Calendar className="h-3.5 w-3.5 text-slate-400" />
 
-              <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
-                <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                  <span>
+                    Submitted :
+                    {new Date(entry.submittedAt).toLocaleDateString('en-IN', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </span>
+                </div>
+                <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
+                  <Calendar className="h-3.5 w-3.5 text-slate-400" />
 
-                <span>
-                  Submitted{" "}: 
-                  {new Date(entry.submittedAt).toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </span>
+                  <span>
+                    Reviewed :
+                    {entry.reviewedAt
+                      ? new Date(entry.reviewedAt).toLocaleDateString('en-IN', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        })
+                      : 'Pending'}
+                  </span>
+                </div>
               </div>
-              <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
-                <Calendar className="h-3.5 w-3.5 text-slate-400" />
-
-                <span>
-                  Reviewed{" "}:
-                  {entry.reviewedAt?new Date(entry.reviewedAt).toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric",
-                  }):'Pending'}
-                </span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
   // return (
   //   <div className="border-t border-slate-100 pt-4">
   //     <div className='flex jstify-between'><h3 className="mb-3 text-sm font-medium text-slate-700">
@@ -288,7 +290,6 @@ interface DocumentProps {
 }
 
 export function Document({ document }: DocumentProps) {
-  const baseUrl = import.meta.env.VITE_BACKEND_URL;
   return (
     <SectionCard className="" title="Registration Document">
       {document ? (

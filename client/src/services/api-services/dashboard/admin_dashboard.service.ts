@@ -31,9 +31,7 @@ export const adminDashboardService = {
   },
 
   async getApplivcationData() {
-    const res = await axiosInstance.get(
-      API_ENDPOINTS.ADMIN_DASHBOARD.APP_DATA
-    );
+    const res = await axiosInstance.get(API_ENDPOINTS.ADMIN_DASHBOARD.APP_DATA);
     return res.data;
   },
 

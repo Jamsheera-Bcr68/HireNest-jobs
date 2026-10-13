@@ -94,7 +94,6 @@ export function CameraOffTile({
         ) : (
           <MicOff className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/60" />
         )}{' '}
-      
       </div>
     </div>
   );

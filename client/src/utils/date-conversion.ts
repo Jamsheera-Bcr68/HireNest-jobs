@@ -50,7 +50,7 @@ export function convertDateStringToInputDate(dateStr: string): string {
   return `${year}-${months[monthName]}-${day.padStart(2, '0')}`;
 }
 
-export const formatCurrentDate = (date:Date): string => {
+export const formatCurrentDate = (date: Date): string => {
   const today = new Date(date);
   const formatted = today.toLocaleDateString('en-Us', {
     weekday: 'long',

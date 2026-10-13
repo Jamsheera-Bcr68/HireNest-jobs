@@ -9,13 +9,13 @@ const ForgotPasswordForm = ({ role }: ILoginFormProps) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-fuchsia-50 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-         <AuthForms title='Forgot Password' error={error} />
-      
+        <AuthForms title="Forgot Password" error={error} />
+
         <p className="text-sm text-gray-600 text-center mb-6">
           Enter your email address and we’ll send you a link to reset your
           password.
         </p>
-       
+
         <form className="space-y-4" onSubmit={submitHandle}>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">

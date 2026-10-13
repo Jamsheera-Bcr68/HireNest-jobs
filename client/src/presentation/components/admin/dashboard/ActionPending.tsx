@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { type DashboardCompany, type PendingJobs } from './DashbordContainer';
 
+//const bseUrl = import.meta.env.VITE_BACKEND_URL;
+
 function initials(name: string) {
   return name
     .split(' ')

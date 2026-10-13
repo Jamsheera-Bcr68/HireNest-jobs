@@ -11,7 +11,7 @@ import type { SortOption } from '../../components/admin/Candidates/ReusableTable
 import { type FilterOption } from './candidate/profile/useApplication';
 
 export type InterviewFilter = {
-  status?: InterviewStatusType;
+  status?: InterviewStatusType | 'isRescheduleRequested';
   search?: string;
   mode?: InterviewMode;
   sortby?: string;
@@ -137,8 +137,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
           result.data,
           ids.applicationId
         );
-        console.log('after scheduling interivew',data);
-        
+        console.log('after scheduling interivew', data);
 
         showToast({ msg: data.message, type: 'success' });
         return data.data;
@@ -232,11 +231,10 @@ export const useInterviews = (setPage?: (page: number) => void) => {
       });
     }
   };
-  const onResetFilter=()=>{
-    console.log('from reset filter')
-    setFilter({status:'scheduled'})
-    
-  }
+  const onResetFilter = () => {
+    console.log('from reset filter');
+    setFilter({ status: 'scheduled' });
+  };
 
   const getInterviewDetails = async (id: string) => {
     try {
@@ -259,18 +257,16 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     } catch (error) {}
   };
 
-  const fetchMeeting =useCallback( async (meetId: string) => {
+  const fetchMeeting = useCallback(async (meetId: string) => {
     try {
       const data = await interviewService.getMeetInfo(meetId);
       console.log('data,', data);
       return data.meeting;
-    } catch(err) {
+    } catch (err) {
       console.log(err);
-      
     } finally {
     }
-  },[]
-)
+  }, []);
   return {
     updateFormdata,
     formData,
@@ -286,6 +282,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     getInterviewDetails,
     statusFilter,
     resultFilter,
-    fetchMeeting,onResetFilter
+    fetchMeeting,
+    onResetFilter,
   };
 };

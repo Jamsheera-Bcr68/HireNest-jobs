@@ -143,10 +143,10 @@ export function UserDistributionChart({ userData }: UserDataProps) {
                 border: '1px solid #e2e8f0',
                 fontSize: 13,
               }}
-              formatter={(value, name, item) => [
-                `${value}%`,
-                item.payload.label,
-              ]}
+              formatter={(value, name, item) => {
+                console.log(name);
+                return [`${value}%`, item.payload.label];
+              }}
             />
           </PieChart>
         </ResponsiveContainer>
@@ -176,16 +176,26 @@ type AppChartProps = {
   appData: AppData[];
 };
 
-
-
-
-const COLORS = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#6250d6', '#e34948'];
+const COLORS = [
+  '#2a78d6',
+  '#eb6834',
+  '#1baf7a',
+  '#eda100',
+  '#e87ba4',
+  '#008300',
+  '#6250d6',
+  '#e34948',
+];
 
 export function ApplicationByIndustry({ appData }: AppChartProps) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg">
-      <h3 className="font-display text-lg text-slate-900">Applications by Industry</h3>
-      <p className="text-sm text-slate-400 mb-4">Sent by candidates, all-time</p>
+      <h3 className="font-display text-lg text-slate-900">
+        Applications by Industry
+      </h3>
+      <p className="text-sm text-slate-400 mb-4">
+        Sent by candidates, all-time
+      </p>
 
       <div className="flex items-center gap-4 h-56">
         {/* Chart side */}
@@ -292,7 +302,6 @@ export function ApplicationByIndustry({ appData }: AppChartProps) {
 //   );
 // }
 
-
 // const INTERVIEW_STATUS = [
 //   { name: 'Scheduled', value: 184, color: '#6366f1' },
 //   { name: 'Completed', value: 342, color: '#22c55e' },
@@ -300,9 +309,9 @@ export function ApplicationByIndustry({ appData }: AppChartProps) {
 //   { name: 'No-show', value: 41, color: '#f59e0b' },
 //   { name: 'Awaiting feedback', value: 76, color: '#94a3b8' },
 // ];
-type InterviewProps={
-  interviewData:InterviewData[]
-}
+type InterviewProps = {
+  interviewData: InterviewData[];
+};
 export function InterviewStatusChart({ interviewData }: InterviewProps) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-6 duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg">
@@ -316,7 +325,11 @@ export function InterviewStatusChart({ interviewData }: InterviewProps) {
             margin={{ left: -20, right: 10, top: 10, bottom: 5 }}
             barCategoryGap={20}
           >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eef0f4" />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              vertical={false}
+              stroke="#eef0f4"
+            />
             <XAxis
               dataKey="label"
               tickLine={false}
@@ -335,7 +348,7 @@ export function InterviewStatusChart({ interviewData }: InterviewProps) {
                 border: '1px solid #e2e8f0',
                 fontSize: 13,
               }}
-              formatter={(value: number) => value?.toLocaleString() + '%'}
+              formatter={(value) => `${Number(value ?? 0).toLocaleString()}%`}
             />
             <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={30}>
               {interviewData.map((entry, i) => (
@@ -348,7 +361,10 @@ export function InterviewStatusChart({ interviewData }: InterviewProps) {
 
       <ul className="space-y-1.5 mt-1">
         {interviewData.map((s) => (
-          <li key={s.label} className="flex items-center justify-between text-xs">
+          <li
+            key={s.label}
+            className="flex items-center justify-between text-xs"
+          >
             <span className="flex items-center gap-2 text-slate-500">
               <span
                 className="h-2 w-2 rounded-full"

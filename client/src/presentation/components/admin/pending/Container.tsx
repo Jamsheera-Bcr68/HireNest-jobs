@@ -2,7 +2,7 @@ import SummaryCards from './SummaryCards';
 import HeroSection from '../HeroSection';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ActivityModal } from './ActivityModal';
+// import { ActivityModal } from './ActivityModal';
 import {
   type LucideIcon,
   Building2,
@@ -10,7 +10,6 @@ import {
   ClipboardList,
   Eye,
   Flag,
-  MoreHorizontal,
 } from 'lucide-react';
 import { adminService } from '../../../../services/api-services/adminService';
 import ReusableTable, { type ColumnType } from '../Candidates/ReusableTable';
@@ -30,7 +29,7 @@ const tabs = [
 ];
 export type Filter = {
   status?: 'jobs' | 'companies' | '';
-  search?:string
+  search?: string;
 };
 
 export interface PendingActivityDto {
@@ -46,13 +45,11 @@ export interface PendingActivityDto {
 }
 
 export default function PendingActivitiesContainer() {
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [filter, setFilter] = useState<Filter>({});
   const [activities, setActivities] = useState<PendingActivityDto[]>([]);
   const [statusCards, setStatusCards] = useState<CardType[]>([]);
-  const [selected, setSelected] = useState<PendingActivityDto | null>(null);
-  const [activityModal, setActivityModalOpen] = useState<boolean>(false);
-  
+
   const navigate = useNavigate();
 
   const [totalDocs, setTotalDocs] = useState<number>(0);
@@ -111,7 +108,7 @@ export default function PendingActivitiesContainer() {
         adminService.getPendingData(),
         adminService.getAllPendings(filter),
       ]);
-      
+
       console.log('activities', activityData);
       const total: CardType = {
         label: 'Total Pendings',
@@ -331,165 +328,175 @@ export default function PendingActivitiesContainer() {
   //           hover:text-slate-600
   //         "
   //         >
-           
+
   //         </button>
   //       </div>
   //     ),
   //   },
   // ];
 
-const pendingActivityColumns = [
-  {
-    key: 'type',
-    label: 'Type',
-    mobile: 'status', // 👈 renders on the right, next to the chevron, on mobile
-    headerClassName: 'w-[16%]',
-    cellClassName: 'align-middle',
-    render: (row: PendingActivityDto) => {
-      const isReport = row.type === 'Reported Job';
-      return (
-        <div className="flex items-center gap-3">
-          {isReport ? (
-            <Flag className="h-5 w-5 shrink-0 text-red-500" />
-          ) : (
-            <Building2 className="h-5 w-5 shrink-0 text-blue-500" />
-          )}
-          <span className="text-sm text-slate-600">{row.type}</span>
+  const pendingActivityColumns = [
+    {
+      key: 'type',
+      label: 'Type',
+      mobile: 'status', // 👈 renders on the right, next to the chevron, on mobile
+      headerClassName: 'w-[16%]',
+      cellClassName: 'align-middle',
+      render: (row: PendingActivityDto) => {
+        const isReport = row.type === 'Reported Job';
+        return (
+          <div className="flex items-center gap-3">
+            {isReport ? (
+              <Flag className="h-5 w-5 shrink-0 text-red-500" />
+            ) : (
+              <Building2 className="h-5 w-5 shrink-0 text-blue-500" />
+            )}
+            <span className="text-sm text-slate-600">{row.type}</span>
+          </div>
+        );
+      },
+      // Mobile — compact pill version so it fits comfortably next to the chevron
+      mobileRender: (row: PendingActivityDto) => {
+        const isReport = row.type === 'Reported Job';
+        return (
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${
+              isReport ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600'
+            }`}
+          >
+            {isReport ? (
+              <Flag className="h-3 w-3" />
+            ) : (
+              <Building2 className="h-3 w-3" />
+            )}
+            {row.type}
+          </span>
+        );
+      },
+    },
+    {
+      key: 'title',
+      label: 'Activity',
+      mobile: 'primary', // 👈 role/title + company on the left
+      headerClassName: 'w-[17%]',
+      cellClassName: 'align-middle',
+      render: (row: PendingActivityDto) => (
+        <div className="min-w-0">
+          <p className="font-semibold text-slate-900 truncate">{row.title}</p>
+          <p className="mt-0.5 text-xs text-slate-500 truncate">
+            {row.subTitle}
+          </p>
         </div>
-      );
+      ),
     },
-    // Mobile — compact pill version so it fits comfortably next to the chevron
-    mobileRender: (row: PendingActivityDto) => {
-      const isReport = row.type === 'Reported Job';
-      return (
-        <span
-          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${
-            isReport ? 'bg-red-50 text-red-600' : 'bg-blue-50 text-blue-600'
-          }`}
-        >
-          {isReport ? <Flag className="h-3 w-3" /> : <Building2 className="h-3 w-3" />}
-          {row.type}
+    {
+      key: 'details',
+      label: 'Details',
+      headerClassName: 'w-[21%]',
+      cellClassName: 'align-middle',
+      render: (row: PendingActivityDto) => (
+        <span className="break-words text-sm text-slate-800">
+          {row.details}
         </span>
-      );
+      ),
     },
-  },
-  {
-    key: 'title',
-    label: 'Activity',
-    mobile: 'primary', // 👈 role/title + company on the left
-    headerClassName: 'w-[17%]',
-    cellClassName: 'align-middle',
-    render: (row: PendingActivityDto) => (
-      <div className="min-w-0">
-        <p className="font-semibold text-slate-900 truncate">{row.title}</p>
-        <p className="mt-0.5 text-xs text-slate-500 truncate">{row.subTitle}</p>
-      </div>
-    ),
-  },
-  {
-    key: 'details',
-    label: 'Details',
-    headerClassName: 'w-[21%]',
-    cellClassName: 'align-middle',
-    render: (row: PendingActivityDto) => (
-      <span className="break-words text-sm text-slate-800">{row.details}</span>
-    ),
-  },
-  {
-    key: 'submitted',
-    label: 'Submitted',
-    icon: <CalendarDays size={13} />,
-    headerClassName: 'w-[14%]',
-    cellClassName: 'align-middle',
-    render: (row: PendingActivityDto) => (
-      <div>
-        <p className="text-sm text-slate-800">
-          {new Date(row.submitted).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-          })}
-        </p>
-        <p className="mt-0.5 text-xs text-slate-700">{row.tag}</p>
-      </div>
-    ),
-  },
-  {
-    key: 'status',
-    label: 'Status',
-    // no `mobile` tag now — shown as a detail row when expanded
-    headerClassName: 'w-[13%]',
-    cellClassName: 'align-middle',
-    render: (row: PendingActivityDto) => {
-      const statusConfig: Record<string, { label: string; className: string }> = {
-        pending: {
-          label: 'Pending',
-          className: `${row.status == 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`,
-        },
-        reported: {
-          label: 'Reported',
-          className: `${row.status == 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`,
-        },
-      };
-
-      const config = statusConfig[row.status.toLowerCase()] ?? {
-        label: row.status,
-        className: 'bg-slate-100 text-slate-600',
-      };
-
-      return (
-        <span
-          className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap ${config.className}`}
-        >
-          {config.label}
-        </span>
-      );
+    {
+      key: 'submitted',
+      label: 'Submitted',
+      icon: <CalendarDays size={13} />,
+      headerClassName: 'w-[14%]',
+      cellClassName: 'align-middle',
+      render: (row: PendingActivityDto) => (
+        <div>
+          <p className="text-sm text-slate-800">
+            {new Date(row.submitted).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
+          </p>
+          <p className="mt-0.5 text-xs text-slate-700">{row.tag}</p>
+        </div>
+      ),
     },
-  },
-  {
-    key: 'actions',
-    label: 'Actions',
-    mobile: 'actions',
-    headerClassName: 'w-[15%]',
-    cellClassName: 'align-middle',
-    // Desktop — unchanged
-    render: (row: PendingActivityDto) => (
-      <div className="flex items-center gap-3">
-        <button
-          type="button"
-          onClick={() => onviewClick(row)}
-          className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
+    {
+      key: 'status',
+      label: 'Status',
+      // no `mobile` tag now — shown as a detail row when expanded
+      headerClassName: 'w-[13%]',
+      cellClassName: 'align-middle',
+      render: (row: PendingActivityDto) => {
+        const statusConfig: Record<
+          string,
+          { label: string; className: string }
+        > = {
+          pending: {
+            label: 'Pending',
+            className: `${row.status == 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`,
+          },
+          reported: {
+            label: 'Reported',
+            className: `${row.status == 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`,
+          },
+        };
+
+        const config = statusConfig[row.status.toLowerCase()] ?? {
+          label: row.status,
+          className: 'bg-slate-100 text-slate-600',
+        };
+
+        return (
+          <span
+            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap ${config.className}`}
+          >
+            {config.label}
+          </span>
+        );
+      },
+    },
+    {
+      key: 'actions',
+      label: 'Actions',
+      mobile: 'actions',
+      headerClassName: 'w-[15%]',
+      cellClassName: 'align-middle',
+      // Desktop — unchanged
+      render: (row: PendingActivityDto) => (
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => onviewClick(row)}
+            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
+          >
+            <Eye className="h-4 w-4" />
+            View
+          </button>
+        </div>
+      ),
+      // Mobile — labeled pills, same visual language as your other tables
+      mobileRender: (row: PendingActivityDto) => (
+        <div
+          className="flex items-center flex-wrap gap-2"
+          onClick={(e) => e.stopPropagation()}
         >
-          <Eye className="h-4 w-4" />
-          View
-        </button>
-       
-      </div>
-    ),
-    // Mobile — labeled pills, same visual language as your other tables
-    mobileRender: (row: PendingActivityDto) => (
-      <div
-        className="flex items-center flex-wrap gap-2"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          type="button"
-          onClick={() => onviewClick(row)}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs  font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 rounded-full transition-all"
-        >
-          <Eye size={14} />
-          View
-        </button>
-     
-      </div>
-    ),
-  },
-];
+          <button
+            type="button"
+            onClick={() => onviewClick(row)}
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs  font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 rounded-full transition-all"
+          >
+            <Eye size={14} />
+            View
+          </button>
+        </div>
+      ),
+    },
+  ];
 
   const onviewClick = (act: PendingActivityDto) => {
     if (act.type === 'Company Registration')
       navigate(`/admin/companies/${act.id}`);
-    else if (act.type === 'Reported Job') navigate(`/admin/jobs/${act.id}`,{state:{tab:'reports'}});
+    else if (act.type === 'Reported Job')
+      navigate(`/admin/jobs/${act.id}`, { state: { tab: 'reports' } });
     return;
     // console.log('from onveiwclick');
     // setSelected(act);
@@ -528,14 +535,14 @@ const pendingActivityColumns = [
           sort={sort}
           onSort={setSort}
         /> */}
-        <ActivityModal
+        {/* <ActivityModal
           open={activityModal}
           onClose={() => {
             setSelected(null);
             setActivityModalOpen(false);
           }}
           activity={selected}
-        />
+        /> */}
       </div>
 
       {/* <div className="mt-6">

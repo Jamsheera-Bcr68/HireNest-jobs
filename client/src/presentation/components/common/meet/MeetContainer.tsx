@@ -4,7 +4,7 @@ import type { UserRole } from '../../../../constants/types/user';
 import { useInterviews } from '../../../hooks/user/useInterview';
 import { socket } from '../../../../services/socket';
 import { useVideoCall } from '../../../hooks/useVideoCall';
-import { Circle, Mic, MicOff, X } from 'lucide-react';
+import { Circle, Mic, MicOff } from 'lucide-react';
 import ControllBar from './ControllBar';
 import EndConfirmForm from './EndConfirmForm';
 import { CameraOffTile } from './EndConfirmForm';
@@ -217,16 +217,15 @@ function MeetContainer({ meetId, role }: Props) {
     navigate(`/${role}/interviews`);
   };
 
-
   const handleDuplicateSession = useCallback(() => {
     alert('This meeting was opened in another tab.');
   }, []);
 
   useEffect(() => {
     const si = setInterval(() => setElapsed((s) => s + 1), 1000);
-    return ()=>{
-      clearInterval(si)
-    }
+    return () => {
+      clearInterval(si);
+    };
   }, []);
 
   useEffect(() => {
@@ -520,7 +519,7 @@ function MeetContainer({ meetId, role }: Props) {
         {!camOn && (
           <CameraOffTile
             micOn={micOn}
-            name={currentUserName??''}
+            name={currentUserName ?? ''}
             className="w-full h-full flex items-center bg-gray-700 justify-center"
           />
           // <div className="w-full h-full flex items-center justify-center">

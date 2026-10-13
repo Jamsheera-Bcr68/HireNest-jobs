@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 type ModalProps = {
   open: boolean;
   onClose: () => void;
-  title:string
+  title: string;
 };
-function SuccessModal({ open, onClose ,title}: ModalProps) {
+function SuccessModal({ open, onClose, title }: ModalProps) {
   const navigate = useNavigate();
   return (
     <div>
