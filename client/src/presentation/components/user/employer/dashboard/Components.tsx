@@ -130,7 +130,7 @@ type ApplicationRowProps = {
 };
 
 export function ApplicationRow({ app }: ApplicationRowProps) {
-  const initials = app.name.charAt(0).toUpperCase();
+  const initials = app.name?.charAt(0).toUpperCase();
   return (
     <div className="flex items-center gap-3.5 py-3">
       <div className="h-10 w-10 shrink-0 rounded-full bg-emerald-50 flex items-center justify-center text-xs font-semibold text-emerald-700">
