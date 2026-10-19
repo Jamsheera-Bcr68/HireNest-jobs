@@ -10,14 +10,16 @@ import path from 'path';
 import '../infrastructure/services/cron.service';
 
 const app = express();
-//middleweres
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: [
-      env.FRONTEND_URL ?? 'http://localhost:5173',
+      (env.FRONTEND_URL ?? env.NODE_ENV === 'development')
+        ? 'http://localhost:5173'
+        : 'https://hire-nest-jobs.vercel.app/',
       'http://localhost:8080',
     ],
     credentials: true,
@@ -31,8 +33,6 @@ app.use(
 connectDB();
 
 app.get('/', (req, res) => {
-  // console.log('env', env);
-
   res.send('I am from your new project');
 });
 

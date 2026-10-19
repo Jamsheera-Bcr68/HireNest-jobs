@@ -7,6 +7,7 @@ import { passwordResetToken } from '../../../infrastructure/services/reset-token
 import { IEmailService } from '../../interfaces/services/email.service';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { IAdminRepository } from '../../../domain/repository-interfaces/admin.reporitory.interface';
+import { env } from '../../../infrastructure/config/env';
 
 export class ForgotPassWordUsecase implements IForgotPasswordUsecase {
   private _userRepository: IUserRepository;
@@ -54,7 +55,7 @@ export class ForgotPassWordUsecase implements IForgotPasswordUsecase {
       );
     }
 
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}?role=${role}`;
+    const resetLink = `${env.FRONTEND_URL }/reset-password/${resetToken}?role=${role}`;
     await this._emailService.sendResetPasswordLink(email, resetLink);
   }
 }
