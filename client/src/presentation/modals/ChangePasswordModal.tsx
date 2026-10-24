@@ -10,8 +10,15 @@ export default function ChangePasswordModal({
   open: boolean;
   onClose: () => void;
 }) {
-  const { handleChange, formData, show, error, setShow, handleSubmit } =
-    useChangePassword(onClose);
+  const {
+    handleChange,
+    formData,
+    show,
+    error,
+    setShow,
+    handleSubmit,
+    loading,
+  } = useChangePassword(onClose);
 
   return (
     <Dialog.Root
@@ -114,10 +121,15 @@ export default function ChangePasswordModal({
             </Dialog.Close>
 
             <button
+              disabled={loading}
               onClick={handleSubmit}
-              className="rounded-lg bg-fuchsia-800 hover:bg-fuchsia-600 px-4 py-2 text-sm text-white"
+              className={`rounded-lg px-4 py-2 text-sm text-white transition duration-200 ${
+                loading
+                  ? 'bg-fuchsia-400 cursor-not-allowed'
+                  : 'bg-fuchsia-800 hover:bg-fuchsia-600'
+              }`}
             >
-              Save
+              {loading ? 'Saving...' : 'Save'}
             </button>
           </div>
         </Dialog.Content>

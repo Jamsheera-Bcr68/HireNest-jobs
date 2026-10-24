@@ -730,14 +730,43 @@ export class JobRepository
     return data;
   }
 
-  async savedJobCount(jobs: string[], filter: Partial<Job>): Promise<number> {
-    const jobIds = jobs.map((id) => new Types.ObjectId(id));
-    const savedJobs = await this._model.find({
-      _id: { $in: jobIds },
-      lastDate: { $gte: new Date() },
-    });
-    return savedJobs.length;
+  async savedJobCount(
+  jobIds: string[],
+  filter?: Partial<Job>,
+  search?: { job: string; location: string }
+): Promise<number> {
+  if (jobIds.length === 0) return 0;
+
+  const mappedJobIds = jobIds.map(
+    (id) => new Types.ObjectId(id)
+  );
+
+  const query: Record<string, unknown> = {
+    _id: { $in: mappedJobIds },
+    lastDate: { $gte: new Date() },
+  };
+
+  if (filter?.title) {
+    query.title = filter.title;
   }
+
+  if (filter?.companyId) {
+    query.companyId = filter.companyId;
+  }
+
+  if (filter?.jobType) {
+    query.jobType = filter.jobType;
+  }
+
+  if (search?.job?.trim()) {
+    query.title = {
+      $regex: search.job.trim(),
+      $options: 'i',
+    };
+  }
+
+  return this._model.countDocuments(query);
+}
 
   async closingcount(filter: {
     companyId: string;

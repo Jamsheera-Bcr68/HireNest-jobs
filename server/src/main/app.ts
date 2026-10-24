@@ -17,8 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: [
-      env.FRONTEND_URL ?? 'http://localhost:5173',
+      env.FRONTEND_URL ?? 'https://hire-nest-jobs.vercel.app',
       'http://localhost:8080',
+      'http://localhost:5173',
     ],
     credentials: true,
   })

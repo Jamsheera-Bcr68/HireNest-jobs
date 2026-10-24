@@ -14,6 +14,13 @@ import { ReportedJobFilter } from '../../applications/types/pending.type';
 import { MappedAggregatedReportedJob } from '../../infrastructure/repositories/job.repository';
 export interface IJobRepository extends IBaseRepository<Job> {
   count(data: Partial<Job>, filter?: string): Promise<number>;
+savedJobCount(
+  jobIds: string[],
+  filter?: Partial<Job>,
+  search?: { job: string; location: string }
+): Promise<number>;
+
+
   industryBasedJobs(): Promise<JobCountByIndustryDto[]>;
 
   getJobs(

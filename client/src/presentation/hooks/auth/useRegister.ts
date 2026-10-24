@@ -31,6 +31,7 @@ export const useRegister = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [succesMsg, setMsg] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -58,12 +59,13 @@ export const useRegister = () => {
     setErrors({});
 
     try {
+      setLoading(true);
       const data = await authService.registerUser(formData);
 
       setMsg(data.message);
 
       sessionStorage.setItem('otp_email', formData.email);
-
+      setLoading(false);
       sessionStorage.setItem('otp_expiredAt', data.otp_expiry);
       showToast({ msg: data.message, type: 'success' });
       navigate('/otp');
@@ -72,6 +74,7 @@ export const useRegister = () => {
         msg: error.response?.data.message || error.message,
         type: 'error',
       });
+      setLoading(false);
       return;
     }
   };
@@ -83,5 +86,6 @@ export const useRegister = () => {
     submitHandle,
     showPassword,
     setShowPassword,
+    loading,
   };
 };

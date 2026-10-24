@@ -4,6 +4,7 @@ import { useProfileEdit } from '../hooks/user/candidate/profile/useProfileEdit';
 import { useToast } from '../../shared/toast/use-toast';
 import { Github, Twitter, Globe, Youtube } from 'lucide-react';
 import { type UserProfileType } from '../../types/dtos/profile-types/user.types';
+import type React from 'react';
 
 export default function ProfileEditModal({
   open,
@@ -14,7 +15,7 @@ export default function ProfileEditModal({
   open: boolean;
   onClose: () => void;
   user: UserProfileType | undefined;
-  onUserUpdate: (updatedUser: UserProfileType) => void;
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>;
 }) {
   const { showToast } = useToast();
   const { formData, handleChange, handleSubmit, error } = useProfileEdit(
@@ -308,7 +309,7 @@ export default function ProfileEditModal({
 
                 <button
                   type="submit"
-                  className=" w-1/4 ml-10 mr-3 rounded-md border bg-fuchsia-800 text-white py-2 hover:bg-green-400"
+                  className=" w-1/4 ml-10 mr-3 rounded-md border bg-fuchsia-800 text-white py-2 hover:bg-fuchsia-600"
                 >
                   Save
                 </button>

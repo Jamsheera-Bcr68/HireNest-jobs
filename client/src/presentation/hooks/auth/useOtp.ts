@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../../libraries/axios';
+
 import { type typeOfToast } from '../../../types/toast.types';
 import { authService } from '../../../services/api-services/authServices';
 
@@ -8,6 +8,8 @@ export function useOtp(showToast: (toast: typeOfToast) => void) {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(''));
   const otprefs = useRef<(HTMLInputElement | null)[]>([]);
   const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [resending, setResending] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -70,6 +72,7 @@ export function useOtp(showToast: (toast: typeOfToast) => void) {
       console.log('curesor is now in ', index + 1, 'tthe positoin ');
     }
   }
+
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>): void {
     console.log('from handle key doun');
 
@@ -85,14 +88,14 @@ export function useOtp(showToast: (toast: typeOfToast) => void) {
       }
     }
   }
+
   async function handleResend(): Promise<void> {
-    console.log('from resend otp');
     setOtp(['', '', '', '', '', '']);
     const email = sessionStorage.getItem('otp_email');
     console.log('email', email);
 
     try {
-      //const response = await axios.post('/auth/resend-otp', { email: email });
+      setResending(true);
       const data = await authService.resentOtp(email!);
       setError('');
       sessionStorage.setItem('otp_expiredAt', data.otp_expiry);
@@ -103,15 +106,17 @@ export function useOtp(showToast: (toast: typeOfToast) => void) {
       const expiredAt = new Date(data.otp_expiry).getTime();
       setTimer(expiredAt);
       setError('');
+      setResending(false);
     } catch (err: any) {
       console.log(err);
-
+      setResending(false);
       showToast({
         msg: err.response?.data.message || err.message,
         type: 'error',
       });
     }
   }
+
   async function submitOtp(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const finalOtp = otp.join('');
@@ -132,11 +137,14 @@ export function useOtp(showToast: (toast: typeOfToast) => void) {
       return null;
     }
     try {
-      let response = await axios.post('/auth/otp', { otp: finalOtp, email });
-      console.log('response from the server', response);
-      showToast({ msg: response.data.message, type: 'success' });
+      setLoading(true);
+      let data = await authService.handleSubmitOtp(finalOtp, email);
+
+      showToast({ msg: data.message, type: 'success' });
+      setLoading(false);
       navigate('/login');
     } catch (error: any) {
+      setLoading(false);
       console.log(error);
       setError(error.response.data.message);
       showToast({ msg: error.response.data.message, type: 'error' });
@@ -156,6 +164,8 @@ export function useOtp(showToast: (toast: typeOfToast) => void) {
     handleKeyDown,
     handleResend,
     timeLeft,
+    loading,
     formatTime,
+    resending
   };
 }

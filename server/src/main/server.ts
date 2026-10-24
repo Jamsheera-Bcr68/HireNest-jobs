@@ -15,7 +15,9 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
  cors: {
     origin: [
-      env.FRONTEND_URL??'http://localhost:5173',
+      (env.FRONTEND_URL ?? env.NODE_ENV === 'development')
+        ? 'http://localhost:5173'
+        : 'https://hire-nest-jobs.vercel.app',
       'http://localhost:8080',
     ],
     credentials: true,

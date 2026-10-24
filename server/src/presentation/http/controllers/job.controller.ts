@@ -102,7 +102,7 @@ export class JobController {
       Number(page),
       search as { job: string; location: string },
       sortBy?.toString().toLowerCase()
-    );
+    )
     const { jobs, totalDocs } = jobRes;
     return res.status(statusCodes.OK).json({
       success: true,

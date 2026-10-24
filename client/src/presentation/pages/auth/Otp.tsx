@@ -14,6 +14,8 @@ const Otp: React.FC = () => {
     handleResend,
     timeLeft,
     formatTime,
+    loading,
+    resending,
   } = useOtp(showToast);
 
   const isExpired = false;
@@ -82,21 +84,27 @@ const Otp: React.FC = () => {
 
         {/* Verify Button */}
         <button
+          disabled={loading || timeLeft === 0}
           type="submit"
-          className={`w-full mt-6 py-2 rounded-lg text-white  ${timeLeft !== 0 ? 'bg-fuchsia-800  hover:bg-fuchsia-600 transition' : 'bg-gray-300 cursor-not-allowed text-gray-500'}`}
+          className={`w-full mt-6 py-2 rounded-lg text-white transition ${
+            loading || timeLeft === 0
+              ? 'bg-gray-300 cursor-not-allowed text-gray-500'
+              : 'bg-fuchsia-800 hover:bg-fuchsia-600'
+          }`}
         >
-          Verify OTP
+          {loading ? 'Verifying...' : 'Verify OTP'}
         </button>
 
         {/* Resend */}
         <p className="text-center text-sm text-gray-500 mt-4">
           Didn’t receive the code?{' '}
-          <span
+          <button
+            disabled={resending}
             onClick={handleResend}
-            className="text-fuchsia-800 cursor-pointer hover:underline"
+            className={`font-bold ml-3 ${resending ? 'text-gray-600 cursonr-not-allowed' : 'text-fuchsia-800  cursor-pointer '} hover:underline`}
           >
-            Resend
-          </span>
+            {resending ? 'Resending' : 'Resend'}
+          </button>
         </p>
       </form>
       {/* </form> */}

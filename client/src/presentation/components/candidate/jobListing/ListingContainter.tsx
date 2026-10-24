@@ -363,6 +363,7 @@ function JobListingContainer({ mode }: Props) {
         <div className="mb-5">
           <JobResultsHeader
             count={jobs.length}
+            mode={mode}
             sort={sortBy}
             setSort={setSortBy}
             sortOptions={SORT_OPTIONS}

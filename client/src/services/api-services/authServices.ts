@@ -3,6 +3,7 @@ import { type RegisterFormType } from '../../libraries/validations/auth/register
 import { AUTH_ENDPOINTS } from '../../constants/api-end-points/auth';
 import type { UserRole } from '../../constants/types/user';
 import { type ResetPasswordFormType } from '../../libraries/validations/auth/reset-password.validation';
+import { API_ENDPOINTS } from '../../constants/api-end-points/general';
 
 export const authService = {
   async registerUser(formData: RegisterFormType) {
@@ -64,6 +65,13 @@ export const authService = {
     return resposnse.data;
   },
 
+  async handleChangePassword(formData: ResetPasswordFormType) {
+    const response = await axiosInstance.post(
+      API_ENDPOINTS.CHANGE_PASSWORD,
+      formData
+    );
+    return response.data;
+  },
   async logout() {
     const res = await axiosInstance.post(
       AUTH_ENDPOINTS.LOGOUT,

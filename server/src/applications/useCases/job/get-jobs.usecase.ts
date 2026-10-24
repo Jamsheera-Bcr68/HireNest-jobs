@@ -41,15 +41,26 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
     search?: { job: string; location: string },
     sortBy?: string
   ): Promise<JobListDto> {
-    //  console.log('filter from usecase', filter);
     await this._jobRepository.handleExpiredJobs();
     let query: JobFilter = {};
     const hasSearch =
       Boolean(search?.job?.trim()) || Boolean(search?.location?.trim());
-    const hasFilter = Object.keys(filter ?? {}).length > 0;
+    const hasFilter = Object.entries(filter ?? {}).some(([key, value]) => {
+      if (key === 'status' && value === StatusEnum.ACTIVE) {
+        return false;
+      }
 
+      return value !== undefined && value !== null && value !== '';
+    });
     const isInitialCandidateListing =
       role === UserRole.CANDIDATE && !hasSearch && !hasFilter;
+    console.log(
+      'from all jobs usecase',
+      isInitialCandidateListing,
+      hasFilter,
+      hasSearch
+    );
+    console.log('filter', filter);
 
     if (isInitialCandidateListing) {
       console.log('candidate initial listing');
@@ -70,6 +81,8 @@ export class GetAllJobssUseCase implements IGetAllJobsUseCase {
           query.title = [...new Set(normalised)];
         }
       }
+      console.log('candidate querey', query);
+
       query.status = StatusEnum.ACTIVE;
     } else {
       console.log('candidates not  initial listing,filter', filter);

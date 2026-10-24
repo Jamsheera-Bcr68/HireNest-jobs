@@ -5,6 +5,7 @@ dotenv.config();
 
 export const env = {
   PORT: Number(process.env.PORT),
+  NODE_ENV:process.env.NODE_ENV,
   MONGO_URL: String(process.env.MONGO_URI),
   FRONTEND_URL: process.env.FRONTEND_URL,
   AWS_REGION: process.env.AWS_REGION,

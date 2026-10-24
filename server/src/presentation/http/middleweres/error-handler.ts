@@ -34,8 +34,16 @@ export const errorHandler: ErrorRequestHandler = (
       });
       return;
     }
+  } else if (error instanceof Error) {
+   
+    
+    const statusCode = 500;
+    const message =error.message?? generalMessages.errors.INTERNAL_SERVER_ERROR;
+    res.status(statusCode).json({ success: false, message });
+  } else {
+    const statusCode = 500;
+   
+    const message = generalMessages.errors.INTERNAL_SERVER_ERROR;
+    res.status(statusCode).json({ success: false, message });
   }
-  const statusCode = 500;
-  const message = generalMessages.errors.INTERNAL_SERVER_ERROR;
-  res.status(statusCode).json({ success: false, message });
 };

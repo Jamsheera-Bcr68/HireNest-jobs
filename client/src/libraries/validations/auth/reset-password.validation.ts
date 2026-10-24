@@ -7,7 +7,9 @@ export const resetPasswordSchema = z
       .trim()
       .min(1, 'Password cannot be empty')
       .min(6, 'Password should be atleast 6  charectors')
-      .max(10, 'Password should atmost 10 charectores'),
+      .max(10, 'Password should atmost 10 charectores')
+      .regex(/[A-Z]/, 'Password should contain at least one uppercase letter')
+      .regex(/[a-z]/, 'Password should contain at least one lowercase '),
     confirm_password: z.string().min(1, 'Password cannot be empty'),
   })
   .refine((data) => data.password === data.confirm_password, {
