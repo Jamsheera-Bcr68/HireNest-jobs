@@ -5,7 +5,7 @@ import { companyApprovalEmailTemplate } from '../../shared/company-approval-emai
 
 export class EmailService implements IEmailService {
   private transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+   host: 'smtp.ethereal.email',
     port: Number(process.env.EMAIL_PORT),
     secure: false,
     auth: {
