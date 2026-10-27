@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useJobs } from '../../../hooks/user/employer/useJobs';
 import { X, PlusIcon } from 'lucide-react';
 import { useToast } from '../../../../shared/toast/use-toast';
@@ -22,7 +22,7 @@ const CreateJobPost = () => {
   // const [skill, setSkill] = useState<string>('');
   //const [filteredSkills, setFilteredSkills] = useState<SkillType[]>([]);
   const [skills, setSkills] = useState<SkillType[]>([]);
-  const [filter] = useState<SkillFilter>({ status: 'approved' });
+  const [filter, setFilter] = useState<SkillFilter>({ status: 'approved' });
   const [res, setRes] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -51,21 +51,53 @@ const CreateJobPost = () => {
     //setFilteredSkills([]);
   };
 
-  const handlSkillInput = useCallback(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearch(e.target.value);
-      if (search.trim().length) {
-        filter.search = search;
-      } else {
-        return;
-      }
-      const data = await skillService.getSkills({ ...filter });
-      console.log('data after getting skills', data);
+ const handlSkillInput = (
+  e: React.ChangeEvent<HTMLInputElement>
+) => {
+  const value = e.target.value;
 
-      setSkills(data.data.skills);
-    },
-    [filter, search]
-  );
+  setSearch(value);
+  setFilter((prev) => ({
+    ...prev,
+    search: value,
+  }));
+}
+
+
+useEffect(() => {
+  const query = search.trim();
+
+  if (!query) {
+    setSkills([]);
+    return;
+  }
+
+  let cancelled = false;
+
+  const fetchSkills = async () => {
+    try {
+      const data = await skillService.getSkills({
+        ...filter,
+        search: query,
+      });
+
+      if (!cancelled) {
+        setSkills(data.data.skills);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        console.error('Failed to fetch skills:', error);
+        setSkills([]);
+      }
+    }
+  };
+
+  fetchSkills();
+
+  return () => {
+    cancelled = true;
+  };
+}, [search, filter]);
 
   // useEffect(() => {
   //   async function fetchskill() {
@@ -162,6 +194,12 @@ const CreateJobPost = () => {
   const handleAddSkill = () => {
     if (!search.trim()) {
       showToast({ msg: 'Nothing to add', type: 'error' });
+      setAddSkill(false);
+      setSearch('');
+      return;
+    }
+    if(search.length<3){
+      showToast({ msg: 'Skills should be at least 3 letters', type: 'error' });
       setAddSkill(false);
       setSearch('');
       return;
@@ -337,6 +375,7 @@ const CreateJobPost = () => {
               )}
             </div>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium mb-1">State</label>
@@ -365,6 +404,7 @@ const CreateJobPost = () => {
             </div>
           </div>
           {/* Salary */}
+
           <div>
             <label className="block text-sm font-medium mb-1">
               Salary Range
@@ -398,6 +438,7 @@ const CreateJobPost = () => {
               </div>
             </div>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium mb-1">
@@ -429,6 +470,7 @@ const CreateJobPost = () => {
               )}
             </div>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="relative">
               <label className="block text-sm font-medium mb-1">
@@ -496,7 +538,7 @@ const CreateJobPost = () => {
                 </div>
               )}
               {skills.length > 0 && addSkill && !error?.skills && (
-                <div className="absolute bg-white shadow-md w-1/4 border rounded-md z-10">
+                <div className="absolute bg-white shadow-md w-1/2 border rounded-md z-10">
                   {skills.map((skill: SkillType) => (
                     <div
                       key={skill?.id}

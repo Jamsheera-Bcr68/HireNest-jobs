@@ -60,19 +60,6 @@ function LeftContainer({ application, updateApplication }: Props) {
         })
       );
 
-      // const updatedTimeline = [
-      //   ...application.timeline.filter(
-      //     (t) => t.stage.toLowerCase() !== 'withdrawn'
-      //   ),
-      // ];
-      // console.log('data',data);
-
-      // const withdrawnStage = {
-      //   stage: 'Withdrawn',
-      //   date: new Date().toDateString(),
-      //   status: 'active',
-      // };
-      // updatedTimeline.splice(1, 0, withdrawnStage);
       updateApplication({
         ...application,
         status: 'withdrawn',
@@ -175,33 +162,31 @@ function LeftContainer({ application, updateApplication }: Props) {
             Resume
           </p>
           <div className="flex flex-col gap-2.5">
-            {[application.resume].map((doc) => (
-              <div
-                key={doc.id}
-                className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100"
-              >
+            {application.resume ? (
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
                 <div className="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
                   <FileText size={15} className="text-red-400" />
                 </div>
+
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-800 truncate">
-                    {doc.name}
+                    {application.resume.name}
                   </p>
                   <p className="text-xs text-gray-400">PDF</p>
                 </div>
+
                 <button
-                  onClick={() =>
-                    window.open(
-                      `${env.backendUrl}${application.resume.url}`,
-                      '_blank'
-                    )
-                  }
+                  onClick={() => window.open(application.resume.url, '_blank')}
                   className="flex items-center gap-1.5 text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
                 >
                   <Eye size={11} /> View
                 </button>
               </div>
-            ))}
+            ) : (
+              <p className="text-sm text-gray-500 italic p-3 bg-gray-50 rounded-xl border border-gray-100">
+                Resume is not available.
+              </p>
+            )}
           </div>
         </div>
       </Card>
@@ -213,13 +198,6 @@ function LeftContainer({ application, updateApplication }: Props) {
             <span className="px-4 py-2 text-sm font-medium text-red-500 bg-gray-100 rounded-lg">
               Application Withdrawn
             </span>
-
-            {/* <button
-        onClick={() => handleReapply(application.jobId)}
-        className="py-2 px-4 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700"
-      >
-        Apply Again
-      </button> */}
           </div>
         ) : (
           <button

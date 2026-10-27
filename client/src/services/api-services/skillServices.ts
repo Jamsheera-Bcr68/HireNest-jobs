@@ -24,7 +24,7 @@ export const skillService = {
     page: number = 1,
     sortBy: string = 'newest'
   ) {
-    //console.log(' requested skill filter,sortby', filter);
+    console.log(' requested skill filter,sortby', filter);
     sortBy = sortBy.trim();
 
     const res = await axiosInstance.get(API_ENDPOINTS.REQUESTED_SKILLS, {

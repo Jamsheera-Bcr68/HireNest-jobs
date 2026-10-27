@@ -196,6 +196,9 @@ export default function InterviewDetailsModal({
         type: 'success',
       });
       onUpdate({ ...values });
+      console.log('update values',values);
+      
+      onUpdate({ status: 'completed',result:values.result })
       setFeedbackModal(false);
     } catch (error: any) {
       showToast({
@@ -209,7 +212,7 @@ export default function InterviewDetailsModal({
     if (!interview) return;
     setFeedbackModal(true);
 
-    onUpdate({ status: 'completed' });
+   // onUpdate({ status: 'completed' });
   };
 
   if (!interview) return null;
@@ -288,21 +291,25 @@ export default function InterviewDetailsModal({
                 </div>
 
                 {/* Right side (badge) */}
-                <span
-                  className={`text-xs text-white rounded-full px-3 py-1 ${
-                    interview.status == 'cancelled'
-                      ? 'bg-red-500'
-                      : interview.result === 'passed'
-                        ? 'bg-green-500'
-                        : interview.result === 'failed'
-                          ? 'bg-red-500'
-                          : 'bg-yellow-500'
-                  }`}
-                >
-                  {interview.status == 'cancelled'
-                    ? 'cancelled'
-                    : (interview.result ?? 'pending')}
-                </span>
+                {interview.result && (
+                  <span
+                    className={`text-xs text-white rounded-full px-3 py-1 ${
+                      interview.status == 'cancelled'
+                        ? 'bg-red-500'
+                        : interview.result === 'passed'
+                          ? 'bg-green-500'
+                          : interview.result === 'failed'
+                            ? 'bg-red-500'
+                            : 'bg-yellow-500'
+                    }`}
+                  >
+                    {interview.status == 'cancelled'
+                      ? 'cancelled'
+                      : interview.result
+                        ? interview.result
+                        : ''}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -481,21 +488,52 @@ export default function InterviewDetailsModal({
                         href="#"
                         className="text-xs text-fuchsia-500 hover:underline pl-0.5"
                       >
-                        {interview.mode === 'online' &&
-                          interview.meetLink &&
-                          interview.status == 'scheduled' && (
-                            <div>
-                              <span className=" rounded py-1 px-2 border border-fuchsia-700 hover:bg-fuchsia-50">
-                                <a
-                                  href={`/meeting/${interview.meetLink}`}
-                                  target="_blank"
-                                  className="text-xs text-fuchsia-800 mt-4 "
-                                >
-                                  Join meeting
-                                </a>
-                              </span>
-                            </div>
-                          )}
+                        {interview.mode === 'online' && interview.meetLink && (
+  (() => {
+    const interviewDateTime = new Date(
+      `${interview.date}T${interview.time}`
+    );
+
+    const isPastInterview = interviewDateTime <= new Date();
+
+    const isDisabled =
+      interview.status !== 'scheduled' || isPastInterview;
+
+    return (
+      <div className="flex flex-col items-start gap-1">
+        <button
+          type="button"
+          disabled={isDisabled}
+          onClick={() => {
+            window.open(
+              `/meeting/${interview.meetLink}`,
+              '_blank'
+            );
+          }}
+          className={`rounded py-1 px-2 border text-xs ${
+            isDisabled
+              ? 'border-gray-300 text-gray-400 cursor-not-allowed'
+              : 'border-fuchsia-700 text-fuchsia-800 hover:bg-fuchsia-50'
+          }`}
+        >
+          Join meeting
+        </button>
+
+        {isPastInterview && (
+          <span className="text-xs text-red-500">
+            You cannot join a past interview.
+          </span>
+        )}
+
+        {!isPastInterview && interview.status !== 'scheduled' && (
+          <span className="text-xs text-gray-500">
+            This interview is not available to join.
+          </span>
+        )}
+      </div>
+    );
+  })()
+)}
                         {interview.mode === 'offline' && interview.location && (
                           <a
                             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(interview.location)}`}
@@ -649,7 +687,7 @@ export default function InterviewDetailsModal({
 
           {/* ── Footer ── */}
           <div className="px-6 py-4 flex items-center justify-between">
-            {interview.status !== 'cancelled' && (
+            {!['cancelled','completed'].includes(interview.status)&& (
               <>
                 {' '}
                 <button
