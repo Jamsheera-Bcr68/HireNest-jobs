@@ -35,7 +35,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
   const [addRes, setAddRes] = useState(false);
   const [skill, setSkill] = useState<string>('');
   const [filteredSkills, setFilteredSkills] = useState<SkillType[] | []>([]);
-  const [allSkills, setAllSkills] = useState<SkillType[] | []>([]);
+  const [allSkills] = useState<SkillType[] | []>([]);
   const [res, setRes] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
 
@@ -152,23 +152,23 @@ useEffect(() => {
 }
 
 
-  const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError((prev) => ({ ...prev, skills: '' }));
-    const value = e.currentTarget.value;
-    setSkill(value);
+  // const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setError((prev) => ({ ...prev, skills: '' }));
+  //   const value = e.currentTarget.value;
+  //   setSkill(value);
 
-    if (!value.trim()) {
-      setFilteredSkills([]);
-      return;
-    }
+  //   if (!value.trim()) {
+  //     setFilteredSkills([]);
+  //     return;
+  //   }
 
-    const filtered = allSkills.filter((skill: SkillType) =>
-      skill.skillName.toLowerCase().includes(value.toLowerCase())
-    );
-    console.log('fil', filtered);
+  //   const filtered = allSkills.filter((skill: SkillType) =>
+  //     skill.skillName.toLowerCase().includes(value.toLowerCase())
+  //   );
+  //   console.log('fil', filtered);
 
-    setFilteredSkills(filtered);
-  };
+  //   setFilteredSkills(filtered);
+  // };
 
   const removeSkill = (id: string | undefined) => {
     if (!id) return;

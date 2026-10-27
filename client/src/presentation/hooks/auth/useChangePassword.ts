@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { changePasswordSchema } from '../../../libraries/validations/auth/change-password.validator';
-import axiosInstance from '../../../libraries/axios';
+
 import { useToast } from '../../../shared/toast/use-toast';
 import { authService } from '../../../services/api-services/authServices';
 

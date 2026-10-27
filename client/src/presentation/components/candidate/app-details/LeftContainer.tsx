@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { FileText, CalendarDays, DollarSign, Eye } from 'lucide-react';
 import { applicationService } from '../../../../services/api-services/application.service';
 import type { StateType } from '../../../../constants/types/user';
-import { env } from '../../../../config/env';
+
 
 function InfoRow({
   icon,

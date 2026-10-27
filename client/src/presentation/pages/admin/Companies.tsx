@@ -6,7 +6,7 @@ import { type CompanyProfileType } from '../../../types/dtos/profile-types/user.
 import Table from '../../components/admin/companyDetails/Table';
 import Pagination from '../../components/common/Pagination';
 import { adminService } from '../../../services/api-services/adminService';
-import { Action } from '@radix-ui/react-toast';
+
 
 export type StatusCardType = {
   label: string;

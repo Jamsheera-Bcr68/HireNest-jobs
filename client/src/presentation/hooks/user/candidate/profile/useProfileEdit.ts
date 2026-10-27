@@ -5,7 +5,7 @@ import type { typeOfToast } from '../../../../../types/toast.types';
 import type { ISocialLinks } from '../../../../../types/profile.types';
 import { type UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import { profileService } from '../../../../../services/api-services/candidateService';
-import { SocialLinks } from '../../../../pages/admin/SocialContacts';
+
 
 type FormData = {
   name?: string;

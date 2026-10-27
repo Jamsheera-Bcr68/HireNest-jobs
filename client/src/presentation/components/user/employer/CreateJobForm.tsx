@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { useJobs } from '../../../hooks/user/employer/useJobs';
 import { X, PlusIcon } from 'lucide-react';
 import { useToast } from '../../../../shared/toast/use-toast';
