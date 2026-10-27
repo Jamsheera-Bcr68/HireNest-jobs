@@ -20,6 +20,7 @@ export const useLogin = (role: UserRole) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState<Errors>({});
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const handleGoogleSignIn = useGoogleLogin({
@@ -80,7 +81,7 @@ export const useLogin = (role: UserRole) => {
     }
     setErrors({});
     //  console.log('frontend validation success');
-
+    setLoading(true);
     try {
       const data = await authService.googleSingnupSubmit(formData, role);
 
@@ -97,13 +98,13 @@ export const useLogin = (role: UserRole) => {
         localStorage.setItem('user', admin);
         dispatch(loginSuccess({ user: admin, accessToken: accessToken }));
       }
-
+      setLoading(false);
       const redirectPath =
         role === 'admin' ? '/admin' : (location.state?.from ?? '/');
       navigate(redirectPath, { replace: true });
     } catch (err: any) {
       setFormData({ email: '', password: '' });
-
+      setLoading(false);
       return;
     }
   };
@@ -122,5 +123,6 @@ export const useLogin = (role: UserRole) => {
     handleForgotPassword,
     showPassword,
     setShowPassword,
+    loading,
   };
 };

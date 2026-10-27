@@ -82,6 +82,10 @@ export class UpdateSkillUsecase implements IUpdateEntityUseCase<
       );
     }
     const updateData = { skillName: skill } as Partial<Skill>;
+    if (role === UserRole.ADMIN && skillExist.status === 'pending') {
+      updateData.reviewedAt = new Date();
+      updateData.status=SkillStatus.APPROVED
+    }
     if (skillExist.status === SkillStatus.PENDING && role == UserRole.ADMIN) {
       updateData.status = SkillStatus.APPROVED;
     }

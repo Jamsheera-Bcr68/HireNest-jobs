@@ -1,4 +1,5 @@
 export const API_ENDPOINTS = {
+  CHANGE_PASSWORD:'/auth/changePassword',
   JOBS: '/jobs',
   JOB_DETAILS: (id: string) => `/jobs/${id}`,
   ALL_SKILLS: '/skills',

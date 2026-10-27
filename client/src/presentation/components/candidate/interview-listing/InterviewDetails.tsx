@@ -66,25 +66,34 @@ function InterviewDetails({ interview }: Props) {
 
         {/* Online */}
         {interview.mode === 'online' && (
-          <>
-            {interview.meetLink ? (
-              <button className="p-1.5 border border-fuchsia-700 text-sm rounded-xl hover:bg-fuchsia-50">
-                {' '}
-                <a
-                  href={`/meeting/${interview.meetLink}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xm text-fuchsia-600  text-center break-all"
-                >
-                  Join Meeting
-                </a>
-              </button>
-            ) : (
-              <p className="text-sm text-amber-600">
-                Meeting link not added yet
-              </p>
-            )}
-          </>
+         <>
+  {interview.status === 'completed' ? (
+    <p className="text-sm text-green-600">
+      Interview Completed
+    </p>
+  ) : interview.status === 'not-show' ? (
+    <p className="text-sm text-amber-600">
+      You Missed the interviews
+    </p>
+  ) : interview.status === 'cancelled' ? (
+    <p className="text-sm text-red-600">
+      Interview Cancelled
+    </p>
+  ) : interview.meetLink ? (
+    <a
+      href={`/meeting/${interview.meetLink}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-block p-1.5 border border-fuchsia-700 text-sm rounded-xl text-fuchsia-600 hover:bg-fuchsia-50 text-center"
+    >
+      Join Meeting
+    </a>
+  ) : (
+    <p className="text-sm text-amber-600">
+      Meeting link not added yet
+    </p>
+  )}
+</>
         )}
 
         {/* Offline */}
@@ -109,7 +118,7 @@ function InterviewDetails({ interview }: Props) {
       )}
 
       {/* Reschedule */}
-      {interview.isRescheduleRequested && (
+      {interview.isRescheduleRequested &&interview.status!=='cancelled'&& (
         <div className="text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
           Reschedule request has been sent.
         </div>

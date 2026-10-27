@@ -48,22 +48,7 @@ export default function EditJobModal({
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto px-8 py-6">{children}</div>
 
-        {/* Footer */}
-        {/* <div className="flex justify-end gap-3 px-8 py-4 border-t border-gray-100 bg-gray-50 flex-shrink-0">
-          <button
-            onClick={onClose}
-            className="px-5 py-2 text-sm font-medium rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-100 transition"
-          >
-            Cancel
-          </button>
-          <button type="submit"
-            onClick={onSubmit}
-            disabled={loading}
-            className="px-6 py-2 text-sm font-medium rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition disabled:opacity-50"
-          >
-            {loading ? "Saving..." : "Save Changes"}
-          </button>
-        </div> */}
+        
       </div>
     </div>
   );

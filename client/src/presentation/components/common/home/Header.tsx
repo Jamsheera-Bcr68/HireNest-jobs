@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { type RootState } from '../../../../redux/store';
 import { setChatrooms } from '../../../../redux/slices/chatroom.slice';
 import { setNotifications } from '../../../../redux/slices/notification.slice';
+import { useLocation } from 'react-router-dom';
 
 import { cx } from '../../candidate/jobListing/ListingContainter';
 
@@ -40,7 +41,9 @@ const Header = () => {
     };
     loadNotifications();
   }, []);
+const location=useLocation()
 
+const isDashboard=location.pathname==='/company/dashboard'||location.pathname==='/candidate/dashboard'
   useEffect(() => {
     const getChatrooms = async () => {
       const data = await chatService.getConversations();
@@ -154,7 +157,7 @@ const Header = () => {
             </div>
           )}
 
-          {showDashboardButton && (
+          {showDashboardButton &&!isDashboard&& (
             <button
               onClick={() => {
                 const url =

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { changePasswordSchema } from '../../../libraries/validations/auth/change-password.validator';
 import axiosInstance from '../../../libraries/axios';
 import { useToast } from '../../../shared/toast/use-toast';
+import { authService } from '../../../services/api-services/authServices';
 
 type FormDataType = {
   current_password: string;
@@ -16,6 +17,7 @@ type Errors = {
 };
 export const useChangePassword = (onClose: () => void) => {
   const { showToast } = useToast();
+  const [loading, setLoading] = useState<boolean>(false);
   const [show, setShow] = useState(false);
   const [error, setErrors] = useState<Errors>({
     password: '',
@@ -44,16 +46,15 @@ export const useChangePassword = (onClose: () => void) => {
       setErrors({ confirm_password: '', current_password: '', password: '' });
 
       try {
-        const response = await axiosInstance.post(
-          '/auth/changePassword',
-          formData
-        );
-        console.log('response', response);
+        setLoading(true);
+        const data = await authService.handleChangePassword(formData);
+
+        setLoading(false);
         onClose();
-        showToast({ msg: response.data.message, type: 'success' });
+        showToast({ msg: data.message, type: 'success' });
       } catch (error: any) {
         console.log(error);
-
+        setLoading(false);
         showToast({
           msg: error?.response?.data?.message || error.message,
           type: 'error',
@@ -76,7 +77,7 @@ export const useChangePassword = (onClose: () => void) => {
     handleChange,
     show,
     setShow,
-    handleSubmit,
+    handleSubmit,loading,
     error,
   };
 };

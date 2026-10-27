@@ -347,13 +347,16 @@ function CandidateDashboardContainer() {
           profileData={profileData}
         />
       </div>
-      <RecomentedJobs
-        isLoading={isLoading}
-        jobs={jobs}
-        handleApplyClick={handleApplyClick}
-        saveJobHandle={saveJobHandle}
-        unSaveJobHandle={unSaveJobHandle}
-      />
+      <div>
+        <RecomentedJobs
+          isLoading={isLoading}
+          jobs={jobs}
+          handleApplyClick={handleApplyClick}
+          saveJobHandle={saveJobHandle}
+          unSaveJobHandle={unSaveJobHandle}
+        />
+      </div>
+
       <SelectResumeModal
         resumes={resumes}
         isOpen={showResumeModal}

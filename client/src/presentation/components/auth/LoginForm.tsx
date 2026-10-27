@@ -3,6 +3,7 @@ import type { ILoginFormProps } from '../../../constants/interfaces/auth';
 
 import { Eye, EyeClosedIcon } from 'lucide-react';
 import AuthForms from './AuthForms';
+import { useState } from 'react';
 
 const LoginForm = ({ role }: ILoginFormProps) => {
   const {
@@ -14,6 +15,7 @@ const LoginForm = ({ role }: ILoginFormProps) => {
     handleGoogleSignIn,
     showPassword,
     setShowPassword,
+    loading,
   } = useLogin(role);
 
   return (
@@ -74,9 +76,16 @@ const LoginForm = ({ role }: ILoginFormProps) => {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-fuchsia-800 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-fuchsia-700 transition duration-200 shadow-md hover:shadow-lg"
+          disabled={loading}
+          className={`w-full text-white py-2.5 rounded-lg text-sm font-semibold
+    transition duration-200 shadow-md
+    ${
+      loading
+        ? 'bg-fuchsia-500 cursor-not-allowed opacity-80'
+        : 'bg-fuchsia-800 hover:bg-fuchsia-700 hover:shadow-lg'
+    }`}
         >
-          Login
+          {loading ? 'Logging in...' : 'Login'}
         </button>
       </div>
       <div className="w-full ">

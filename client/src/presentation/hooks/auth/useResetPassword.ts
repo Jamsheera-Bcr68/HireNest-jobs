@@ -27,6 +27,7 @@ export const useResetPassword = () => {
   });
   const [error, setError] = useState<Errors>({});
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.currentTarget;
@@ -65,13 +66,15 @@ export const useResetPassword = () => {
       }
       formData.resetToken = resetToken;
       formData.email = email;
-
+      setLoading(true);
       const data = await authService.resetPassword(formData);
 
       showToast({ msg: data.message, type: 'success' });
       setError({});
+      setLoading(false);
       navigate('/login');
     } catch (error: any) {
+      setLoading(false);
       let msg = error?.response?.data.message || error.message;
       setError({ server: msg });
 
@@ -85,6 +88,6 @@ export const useResetPassword = () => {
     submitHandle,
     showPassword,
     setShowPassword,
-    role,
+    role,loading
   };
 };

@@ -5,7 +5,8 @@ import AuthForms from './AuthForms';
 
 const ForgotPasswordForm = ({ role }: ILoginFormProps) => {
   const navigate = useNavigate();
-  const { email, handleChange, submitHandle, error } = useForgotPassword(role);
+  const { email, handleChange, submitHandle, error, loading } =
+    useForgotPassword(role);
   return (
     <div className="min-h-screen flex items-center justify-center bg-fuchsia-50 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
@@ -32,11 +33,15 @@ const ForgotPasswordForm = ({ role }: ILoginFormProps) => {
           </div>
 
           <button
+            disabled={loading}
             type="submit"
-            className="w-full bg-fuchsia-800 text-white py-2 rounded-lg
-                     hover:bg-fuchsia-700 transition duration-200"
+            className={`w-full text-white py-2 rounded-lg transition duration-200 ${
+              loading
+                ? 'bg-fuchsia-400 cursor-not-allowed'
+                : 'bg-fuchsia-800 hover:bg-fuchsia-700'
+            }`}
           >
-            Send Reset Link
+            {loading ? 'Sending Reset Link' : 'Send Reset Link'}
           </button>
         </form>
 

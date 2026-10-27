@@ -26,6 +26,8 @@ export class AddExperienceUseCase implements IAddExperienceUseCase {
     payLoad: ExperienceDto
   ): Promise<Experience> {
     const user = await this._userRepository.findById(userId);
+    console.log('from add experince');
+    
     console.log('after adding experience',user);
     
     if (!user || user.role !== role || !user.id)

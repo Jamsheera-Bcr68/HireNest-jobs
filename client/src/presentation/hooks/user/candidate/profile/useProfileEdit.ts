@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { profileDataSchema } from '../../../../../libraries/validations/auth/candidate/profile.validation';
 
 import type { typeOfToast } from '../../../../../types/toast.types';
 import type { ISocialLinks } from '../../../../../types/profile.types';
 import { type UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import { profileService } from '../../../../../services/api-services/candidateService';
+import { SocialLinks } from '../../../../pages/admin/SocialContacts';
 
 type FormData = {
   name?: string;
@@ -19,7 +20,7 @@ export const useProfileEdit = (
   showToast: (toast: typeOfToast) => void,
   onClose: () => void,
   user: UserProfileType | undefined,
-  onUserUpdate: (updatedUser: UserProfileType) => void
+  onUserUpdate: React.Dispatch<React.SetStateAction<UserProfileType | null>>
 ) => {
   const [formData, setFormData] = useState<FormData>({});
   const [error, setError] = useState<FormData>({});
@@ -61,6 +62,7 @@ export const useProfileEdit = (
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('form data ', formData);
@@ -103,7 +105,19 @@ export const useProfileEdit = (
 
       const updated: UserProfileType = data.user;
       showToast({ msg: data.message, type: 'success' });
-      onUserUpdate(updated);
+      onUserUpdate((prev) => {
+        if (!prev) return prev;
+
+        return {
+          ...prev,
+          name: updated.name,
+          title: updated.title,
+          address: updated.address,
+
+          SocialLinks: updated.socialLinks,
+        };
+      });
+
       onClose();
       setFormData({});
     } catch (error: any) {

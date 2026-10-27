@@ -214,17 +214,7 @@ function AppStatusChart({ appData, isLoading, recentApps }: Props) {
         )}
       </div>
 
-      <div
-        className="rise bg-white rounded-2xl p-5 sm:p-6 ring-1 ring-slate-900/[0.05] lg:hidden"
-        style={{ animationDelay: '200ms' }}
-      >
-        <SectionHeader
-          title="Recent Notifications"
-          actionLabel="View all"
-          onClick={onViewAllClick}
-        />
-        {/* <NotificationList notifications={notifications} isLoading={isLoading} /> */}
-      </div>
+     
     </div>
   );
 }

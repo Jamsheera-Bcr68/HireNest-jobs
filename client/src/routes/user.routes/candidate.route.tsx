@@ -7,7 +7,7 @@ import ApplicationDetailsPage from '../../presentation/pages/user/candidate/Appl
 import InterviewsPage from '../../presentation/pages/user/candidate/InterviewsPage';
 import { ChatPage } from '../../presentation/pages/user/Chatpage';
 import { CANDIDATE_ROUTES } from '../routes';
-// import Chat from '../../presentation/pages/user/Chat';
+import CandidateProfileDemo from '../../presentation/components/candidate/Profile';
 import CandidateDashboardPage from '../../presentation/pages/user/candidate/CandidateDashboardPage';
 
 import MeetPage from '../../presentation/pages/user/MeetPage';
@@ -17,7 +17,8 @@ export const CandidateRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<CandidateLayout />}>
-        <Route path={CANDIDATE_ROUTES.PROFILE} element={<CandidateProfile />} />
+        <Route path={CANDIDATE_ROUTES.PROFILE} element={<CandidateProfileDemo />} />
+        {/* <Route path={CANDIDATE_ROUTES.PROFILE} element={<CandidateProfile />} /> */}
         <Route
           path={CANDIDATE_ROUTES.DASHBOARD}
           element={<CandidateDashboardPage />}

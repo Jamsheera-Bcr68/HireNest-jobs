@@ -2,7 +2,7 @@ import SummaryCards from './SummaryCards';
 import HeroSection from '../HeroSection';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { ActivityModal } from './ActivityModal';
+import Pagination from '../../common/Pagination';
 import {
   type LucideIcon,
   Building2,
@@ -49,10 +49,12 @@ export default function PendingActivitiesContainer() {
   const [filter, setFilter] = useState<Filter>({});
   const [activities, setActivities] = useState<PendingActivityDto[]>([]);
   const [statusCards, setStatusCards] = useState<CardType[]>([]);
+  const [limit] = useState<number>(10);
 
   const navigate = useNavigate();
 
   const [totalDocs, setTotalDocs] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   //   const [search, setSearch] = useState("");
   //   const [severity, setSeverity] = useState("all");
   //   const [sort, setSort] = useState("newest");
@@ -119,6 +121,7 @@ export default function PendingActivitiesContainer() {
         tint: 'bg-indigo-50 text-indigo-600',
         desc: 'Across all categories',
       };
+
       const companies: CardType = {
         label: 'Company Registrations',
         value: statusData.statusData.companies,
@@ -126,6 +129,7 @@ export default function PendingActivitiesContainer() {
         tint: 'bg-blue-50 text-blue-600',
         desc: 'Awaiting approval',
       };
+
       const jobs: CardType = {
         label: 'Reported Jobs',
         value: statusData.statusData.jobs,
@@ -133,6 +137,7 @@ export default function PendingActivitiesContainer() {
         tint: 'bg-red-50 text-red-600',
         desc: 'Awaiting moderation',
       };
+
       setStatusCards([total, companies, jobs]);
       const pendings: PendingActivityDto[] = activityData.pendings;
       setTotalDocs(activityData.totalDocs);
@@ -504,30 +509,41 @@ export default function PendingActivitiesContainer() {
   };
   return (
     <>
-      <div className="mt-6">
-        <HeroSection
-          title="Pending Activities"
-          tagline="Review and take action on activities that require your attention."
-        />
-        <SummaryCards loading={loading} counts={statusCards} />
-      </div>
+      <div>
+        <div className="min-h-screen w-full bg-gray-100">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <HeroSection
+              title="Pending Activities"
+              tagline="Review and take action on activities that require your attention."
+            />
+            <SummaryCards loading={loading} counts={statusCards} />
 
-      <div className="mt-8 space-y-4">
-        <ReusableTable
-          tabs={tabs}
-          item="Pending Activities"
-          updateFilter={updateFilter}
-          entities={activities}
-          columns={pendingActivityColumns as ColumnType<PendingActivityDto>[]}
-          filterOptions={[]}
-          filter={filter}
-          totalDocs={totalDocs}
-          //  sortOption?: SortOption;
-          //  setSortBy?: (option: string) => void;
-          onResetfilter={onResetfilter}
-          // counts={counts}
-        />
-        {/* <PendingFilters
+            <div className="bg-white rounded-2xl mt-8 border border-slate-200 shadow-sm overflow-hidden">
+              <ReusableTable
+                tabs={tabs}
+                item="Pending Activities"
+                updateFilter={updateFilter}
+                entities={activities}
+                columns={
+                  pendingActivityColumns as ColumnType<PendingActivityDto>[]
+                }
+                filterOptions={[]}
+                filter={filter}
+                totalDocs={totalDocs}
+                //  sortOption?: SortOption;
+                //  setSortBy?: (option: string) => void;
+                onResetfilter={onResetfilter}
+                // counts={counts}
+              />
+              <Pagination
+                onPageChange={setPage}
+                currentPage={page}
+                totalPages={Math.ceil(totalDocs / limit)}
+                count={activities.length}
+                item="Pending Items"
+                totalItem={totalDocs}
+              />
+              {/* <PendingFilters
           search={search}
           onSearch={setSearch}
           severity={severity}
@@ -535,7 +551,7 @@ export default function PendingActivitiesContainer() {
           sort={sort}
           onSort={setSort}
         /> */}
-        {/* <ActivityModal
+              {/* <ActivityModal
           open={activityModal}
           onClose={() => {
             setSelected(null);
@@ -543,6 +559,9 @@ export default function PendingActivitiesContainer() {
           }}
           activity={selected}
         /> */}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* <div className="mt-6">

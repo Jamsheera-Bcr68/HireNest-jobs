@@ -10,6 +10,7 @@ export const useForgotPassword = (role: UserRole) => {
   const { showToast } = useToast();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log('from handle change from password forgot page');
@@ -31,16 +32,18 @@ export const useForgotPassword = (role: UserRole) => {
     setError('');
     localStorage.setItem('reset_email', email);
     try {
+      setLoading(true);
       const data = await authService.formgotPasword(email, role);
-
+      setLoading(false);
       showToast({ msg: data.message, type: 'success' });
     } catch (error: any) {
       setError(error.response?.data.message || error.message);
+      setLoading(false);
       showToast({
         msg: error.response?.data?.message || error.message,
         type: 'error',
       });
     }
   };
-  return { handleChange, email, submitHandle, error };
+  return { handleChange, email, submitHandle, error,loading };
 };

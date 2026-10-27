@@ -50,9 +50,9 @@ function NavPart({
 
   const handleShareClick = async () => {
     try {
-      const link = await navigator.clipboard.writeText(window.location.href);
+      const link = `${window.location.origin}/jobs/${job.id}`;
       console.log('link', link);
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(link);
       showToast({
         msg: 'Link Copied',
         type: 'success',

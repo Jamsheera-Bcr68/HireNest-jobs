@@ -12,33 +12,15 @@ function RegisterForm() {
     submitHandle,
     showPassword,
     setShowPassword,
+    loading,
   } = useRegister();
 
   return (
     <form onSubmit={submitHandle}>
       <AuthForms title="Create Account" error={errors.server} />
-      {/* <div className="text-center mb-5"> */}
-      {/* <div className="flex items-center justify-center gap-3 mb-2"> */}
-      {/* HireNest Logo */}
-      {/* <div className="w-10 h-10  rounded-full text-indigo-600 flex items-center justify-center shadow-sm"> */}
-      {/* <img  className="w-10 h-10 rounded-full bg-indigo-600 flex items-center border-indigo-600 justify-center shadow-sm" src="6.jpg" alt="" /> */}
-      {/* <span className=" font-bold text-lg">HN</span> */}
-      {/* </div> */}
-
-      {/* <h1 className="text-3xl font-bold text-gray-900">Create Account</h1> */}
-      {/* </div> */}
-
-      {/* {errors.server && (
-          <p className="text-red-500 text-sm mt-1">{errors.server}</p>
-        )} */}
-
-      {/* {succesMsg && (
-          <p className="text-green-500 text-sm mt-1">{succesMsg}</p>
-        )} */}
-      {/* </div> */}
 
       <div className="space-y-4">
-        <button
+        {/* <button
           type="button"
           className="w-full bg-white border border-gray-300 text-gray-700 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition duration-200 flex items-center justify-center gap-3 shadow-sm hover:shadow"
         >
@@ -48,7 +30,7 @@ function RegisterForm() {
             className="w-5 h-5"
           />
           <span>Sign up with Google</span>
-        </button>
+        </button> */}
 
         {/* Email */}
         <input
@@ -118,9 +100,16 @@ function RegisterForm() {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-fuchsia-800 text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-fuchsia-600 transition duration-200 shadow-md hover:shadow-lg"
+          disabled={loading}
+           className={`w-full text-white py-2.5 rounded-lg text-sm font-semibold
+    transition duration-200 shadow-md
+    ${
+      loading
+        ? 'bg-fuchsia-500 cursor-not-allowed opacity-80'
+        : 'bg-fuchsia-800 hover:bg-fuchsia-700 hover:shadow-lg'
+    }`}
         >
-          Sign Up
+         {loading?'Signing Up': 'Sign Up'}
         </button>
       </div>
 

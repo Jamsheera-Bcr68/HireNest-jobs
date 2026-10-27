@@ -7,7 +7,7 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 import { Avatar } from '../../common/Avatar';
 type Props = {
   candidate: UserProfileType;
-  updateCandidate: (candidate: UserProfileType) => void;
+  updateCandidate: React.Dispatch<React.SetStateAction<UserProfileType | null>>;
 };
 function ImageAndName({ candidate, updateCandidate }: Props) {
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
@@ -22,8 +22,11 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
     // console.log('from handle suspend,suspend id', id);
     try {
       const data = await adminService.updateCandidate(id, { isBlocked: true });
-      const updated = data.candidate;
-      updateCandidate(updated);
+      
+      updateCandidate((prev) => {
+        if (!prev) return prev;
+        return { ...prev, isBlocked: true, status: 'suspended' };
+      });
       setId('');
       showToast({ msg: data.message, type: 'success' });
       setRejectModalOpen(false);
@@ -40,8 +43,11 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
     // console.log('from handle activate, id', id);
     try {
       const data = await adminService.updateCandidate(id, { isBlocked: false });
-      const updated = data.candidate;
-      updateCandidate(updated);
+      
+     updateCandidate((prev) => {
+        if (!prev) return prev;
+        return { ...prev, isBlocked: false, status: 'active' };
+      });
       setId('');
       showToast({ msg: data.message, type: 'success' });
       setApproveModalOpen(false);
@@ -103,13 +109,13 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
               }}
               className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600"
             >
-              Reject
+              Block
             </button>
           )}
         </div>
 
         <ConfirmationModal
-          action="Suspend"
+          action="Block"
           type="delete"
           onClose={() => setRejectModalOpen(false)}
           isOpen={rejectModalOpen}

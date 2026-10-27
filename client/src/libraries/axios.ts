@@ -11,9 +11,7 @@ import { env } from '../config/env';
 const axiosInstance = axios.create({
   baseURL: env.backendUrl,
   withCredentials: true,
-  // headers: {
-  //   'Content-Type': ' application/json',
-  // },
+ 
 });
 const refreshAxios = axios.create({
   baseURL: env.backendUrl,

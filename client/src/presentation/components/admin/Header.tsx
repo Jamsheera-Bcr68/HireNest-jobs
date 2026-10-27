@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NotificationModal from '../common/Notifications';
 import { useNotifications } from '../../hooks/notifications';
 import { logout } from '../../../redux/slices/auth.slice';
-
+import { useLocation } from 'react-router-dom';
 import { authService } from '../../../services/api-services/authServices';
 import { useEffect, useState } from 'react';
 import { setNotifications } from '../../../redux/slices/notification.slice';
@@ -38,7 +38,7 @@ function Header({
     //   console.log('form logout function');
     try {
       const data = await authService.logout();
-    
+
       showToast({ msg: data.message, type: 'success' });
 
       dispatch(logout());
@@ -52,6 +52,8 @@ function Header({
     }
   };
 
+  const location = useLocation();
+  const isDashboard = location.pathname === '/admin';
   useEffect(() => {
     if (notificationOpen) {
       setNots(notifications.filter((n) => n.isRead === false));
@@ -145,15 +147,17 @@ function Header({
             Logout
           </button>
         </div>
-        <button
-          onClick={() => {
-            setTitle('Dashbord');
-            navigate('/admin');
-          }}
-          className="text-gray-700 bg-blue-50 hover:bg-blue-100 rounded-xl hover:text-blue-600 px-4 py-2 text-sm font-medium transition-colors"
-        >
-          Go To Dashboard
-        </button>
+        {!isDashboard && (
+          <button
+            onClick={() => {
+              setTitle('Dashbord');
+              navigate('/admin');
+            }}
+            className="text-gray-700 bg-blue-50 hover:bg-blue-100 rounded-xl hover:text-blue-600 px-4 py-2 text-sm font-medium transition-colors"
+          >
+            Go To Dashboard
+          </button>
+        )}
         <div onClick={handleNotificationClick} className="relative">
           <button className="w-9 h-9 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
             🔔
@@ -165,9 +169,7 @@ function Header({
             </span>
           )}
         </div>
-        <div className="w-9 h-9 bg-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-          SA
-        </div>
+        
       </div>
       {notificationOpen && (
         <NotificationModal

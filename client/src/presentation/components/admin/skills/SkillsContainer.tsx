@@ -182,7 +182,7 @@ function SkillsContainer() {
   const { showToast } = useToast();
   const [stats, setStats] = useState<StatusCardType[]>([]);
   const [skills, setSkills] = useState<SkillType[]>([]);
-  const [filter, setFilter] = useState<SkillFilterType>({});
+  const [filter, setFilter] = useState<SkillFilterType>({status:'approved'});
   const [limit] = useState(10);
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<string>('newest');

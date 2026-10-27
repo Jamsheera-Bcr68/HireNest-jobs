@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import JobCard from '../Cards';
 import { JobCardSkeleton } from './Common';
 import { Sparkles } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../redux/store';
 1;
 
 type Props = {
@@ -18,10 +20,12 @@ function RecomentedJobs({
   unSaveJobHandle,
   isLoading,
 }: Props) {
+  const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   if (isLoading) {
     return <JobCardSkeleton count={3} />;
   }
+
   return (
     <div>
       <div className="bg-white rounded-2xl p-4 sm:p-5 mt-10 ring-1 ring-slate-900/5">
@@ -52,6 +56,32 @@ function RecomentedJobs({
                 />
               ))}
             </div>
+          ) : (user.skillCount && jobs.length == 0) ||
+            (user.title && jobs.length == 0) ? (
+            <>
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-fuchsia-200 bg-fuchsia-50/50 px-6 py-12 text-center">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-fuchsia-100">
+                  <Sparkles className="h-7 w-7 text-fuchsia-600" />
+                </div>
+
+                <h3 className="text-lg font-semibold text-gray-900">
+                  You're all caught up!
+                </h3>
+
+                <p className="mt-2 max-w-md text-sm text-gray-500">
+                  You've already applied to all the jobs recommended for your
+                  profile. Explore other opportunities to find your next career
+                  move.
+                </p>
+
+                <button
+                  onClick={() => navigate('/jobs')}
+                  className="mt-5 rounded-lg bg-fuchsia-800 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-fuchsia-600"
+                >
+                  Explore More Jobs
+                </button>
+              </div>
+            </>
           ) : (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-fuchsia-200 bg-fuchsia-50/50 px-6 py-12 text-center">
               <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-fuchsia-100">

@@ -62,7 +62,7 @@ function RescheduleModal({
       return;
     }
     setError(null);
-    onConfirm({ scheduledAt: { time, date } });
+    onConfirm({ scheduledAt: { time, date },isRescheduleRequested:false });
     handleClose();
   };
 

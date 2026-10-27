@@ -32,6 +32,7 @@ export class GoogleLoginController {
       httpOnly: true,
       sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000,
+      path: '/auth/refresh-token',
     });
     return res.status(statusCodes.OK).json({
       success: true,

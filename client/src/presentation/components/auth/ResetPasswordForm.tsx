@@ -13,6 +13,7 @@ const ResetPasswordForm = () => {
     setShowPassword,
     showPassword,
     role,
+    loading,
   } = useResetPassword();
   const navigate = useNavigate();
   return (
@@ -96,10 +97,14 @@ const ResetPasswordForm = () => {
 
           <button
             type="submit"
-            className="w-full bg-fuchsia-800 text-white py-2 rounded-lg
-                     hover:bg-fuchsia-600 transition duration-200"
+            disabled={loading}
+            className={`w-full text-white py-2 rounded-lg transition duration-200 ${
+              loading
+                ? 'bg-fuchsia-400 cursor-not-allowed'
+                : 'bg-fuchsia-800 hover:bg-fuchsia-600'
+            }`}
           >
-            Reset
+            {loading ? 'Resetting...' : 'Reset'}
           </button>
         </form>
         <div className="text-center mt-6">

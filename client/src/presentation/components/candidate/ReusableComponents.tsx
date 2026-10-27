@@ -195,7 +195,10 @@ export const Filters = <T extends BaseFilter>({
       </select>
       {hasFilters && (
         <button
-          onClick={onResetFilter}
+          onClick={()=>{
+            onResetFilter()
+            setSearch('')
+          }}
           className="text-sm px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-100"
         >
           Reset

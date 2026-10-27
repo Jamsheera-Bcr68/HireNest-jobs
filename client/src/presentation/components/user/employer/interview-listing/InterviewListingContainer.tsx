@@ -34,11 +34,12 @@ import InterviewDetailsModal from './InterviewViewModal';
 import { to12Hour } from '../../../../../utils/date-conversion';
 
 const tabs: TabType[] = [
-  { label: 'Scheduled', value: 'scheduled' },
+  
   { label: 'All', value: '' },
+  { label: 'Scheduled', value: 'scheduled' },
   { label: 'Completed', value: 'completed' },
   { label: 'Cancelled', value: 'cancelled' },
-  { label: 'Not Show', value: 'not_show' },
+  { label: 'Not Show', value: 'not-show' },
   { label: 'Reschedule Requested', value: 'isRescheduleRequested' },
 ];
 
@@ -71,7 +72,7 @@ function InterviewListingContainer() {
     sortFilter,
     upsateStatus,
     getInterviewDetails,
-    onResetFilter,
+   setFilter
   } = useInterviews(setPage);
 
   useEffect(() => {
@@ -137,172 +138,9 @@ function InterviewListingContainer() {
     getInterviews();
   }, [filter, page, limit, sortby]);
 
-  // const interviewColumns = [
-  //   {
-  //     key: 'jobTitle',
-  //     label: 'Job Role',
-  //     render: (i: InterviewDto) => (
-  //       <div className="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 text-sm inline-block whitespace-nowrap max-w-[180px] overflow-hidden text-ellipsis">
-  //         <span title={i.jobTitle}>{i.jobTitle}</span>
-  //       </div>
-  //     ),
-  //   },
-
-  //   {
-  //     key: 'candidateName',
-  //     label: 'Candidate',
-  //     render: (i: InterviewDto) => (
-  //       <span className="text-slate-700 whitespace-nowrap">{i.name}</span>
-  //     ),
-  //   },
-
-  //   {
-  //     key: 'mode',
-  //     label: 'Mode',
-  //     render: (i: InterviewDto) => (
-  //       <span className="text-slate-700 capitalize whitespace-nowrap">
-  //         {i.mode}
-  //       </span>
-  //     ),
-  //   },
-  //   {
-  //     key: 'createdAt',
-  //     label: 'Scheduled',
-  //     render: (i: InterviewDto) => (
-  //       <span className="text-slate-700 capitalize whitespace-nowrap">
-  //         {i.createdAt}
-  //       </span>
-  //     ),
-  //   },
-
-  //   // {
-  //   //   key: 'scheduledAt',
-  //   //   label: 'Date',
-  //   //   render: (i: InterviewDto) => (
-  //   //     <span className="text-slate-700 whitespace-nowrap">
-  //   //       {i.scheduledAt.date}
-  //   //     </span>
-  //   //   ),
-  //   // },
-
-  //   {
-  //     key: 'time',
-  //     label: 'Time',
-  //     render: (i: InterviewDto) => (
-  //       <span className="text-slate-700 whitespace-nowrap">
-  //         {to12Hour(i.scheduledAt.time)}
-  //       </span>
-  //     ),
-  //   },
-
-  //   {
-  //     key: 'status',
-  //     label: 'Status',
-  //     render: (i: InterviewDto) => (
-  //       <span
-  //         className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${interviewStatusStyles[i.status]}`}
-  //       >
-  //         {i.status}
-  //       </span>
-  //     ),
-  //   },
-
-  //   {
-  //     key: 'result',
-  //     label: 'Result',
-  //     render: (i: InterviewDto) => {
-  //       let classes =
-  //         'text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap';
-
-  //       if (i.status === 'cancelled') {
-  //         classes += ' bg-gray-100 text-gray-400';
-  //       } else if (i.result === 'passed') {
-  //         classes += ' bg-green-50 text-green-600';
-  //       } else if (i.result === 'failed') {
-  //         classes += ' bg-red-50 text-red-600';
-  //       } else {
-  //         classes += ' bg-amber-50 text-amber-600';
-  //       }
-
-  //       return (
-  //         <span className={classes}>
-  //           {i.status === 'cancelled' ? '------' : (i.result ?? 'pending')}
-  //         </span>
-  //       );
-  //     },
-  //   },
-
-  //   {
-  //     key: 'actions',
-  //     label: 'Actions',
-  //     render: (i: InterviewDto) => (
-  //       <div className="flex items-center gap-2 whitespace-nowrap">
-  //         {/* View */}
-  //         <button
-  //           onClick={() => handleView(i.id)}
-  //           className="text-indigo-600 hover:text-indigo-800"
-  //           title="View"
-  //         >
-  //           <Eye size={18} />
-  //         </button>
-
-  //         {/* Reschedule */}
-  //         {i.status === 'scheduled' && (
-  //           <button
-  //             onClick={() => {
-  //               setSelected(i);
-  //               setRescheduleModal(true);
-  //             }}
-  //             className="text-yellow-600 hover:text-yellow-800"
-  //             title="Reschedule"
-  //           >
-  //             <Calendar size={18} />
-  //           </button>
-  //         )}
-
-  //         {/* Mark Completed */}
-  //         {i.status === 'scheduled' && (
-  //           <button
-  //             onClick={() => {
-  //               setSelected(i);
-  //               setResultModal(true);
-  //             }}
-  //             className="text-green-600 hover:text-green-800"
-  //             title="Mark Completed"
-  //           >
-  //             <CheckCircle size={18} />
-  //           </button>
-  //         )}
-
-  //         {/* Cancel */}
-  //         {i.status === 'scheduled' && (
-  //           <button
-  //             onClick={() => {
-  //               setSelectedId(i.id);
-  //               setCancelModal(true);
-  //             }}
-  //             className="text-red-600 hover:text-red-800"
-  //             title="Cancel"
-  //           >
-  //             <XCircle size={18} />
-  //           </button>
-  //         )}
-  //         {i.status === 'completed' && !i.result && (
-  //           <button
-  //             onClick={() => {
-  //               setSelectedId(i.id);
-  //               setResultModal(true);
-  //             }}
-  //             className="text-green-600 hover:text-green-800"
-  //             title="Update Result"
-  //           >
-  //             <PlusCircle size={18} />
-  //           </button>
-  //         )}
-  //       </div>
-  //     ),
-  //   },
-  // ];
+  const onResetFilter=()=>{
+    setFilter({})
+  }
 
   const interviewColumns: ColumnType<InterviewDto>[] = [
     {
@@ -381,7 +219,7 @@ function InterviewListingContainer() {
         <span
           className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${interviewStatusStyles[i.status]}`}
         >
-          {i.status}
+          {i.status=='not-show'?'Missed':i.status}
         </span>
       ),
     },
@@ -425,7 +263,7 @@ function InterviewListingContainer() {
             <Eye size={18} />
           </button>
 
-          {i.status === 'scheduled' && (
+          {i.status === 'scheduled'||i.status=='not-show' && (
             <button
               onClick={() => {
                 setSelected(i);
@@ -491,7 +329,7 @@ function InterviewListingContainer() {
             View
           </button>
 
-          {i.status === 'scheduled' && (
+          {i.status === 'scheduled'||i.status=='not-show' && (
             <button
               onClick={() => {
                 setSelected(i);

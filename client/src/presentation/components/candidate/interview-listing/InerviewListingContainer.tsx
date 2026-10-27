@@ -35,13 +35,16 @@ function InerviewListingContainer() {
   const {
     filter,
     statusFilter,
-    onResetFilter,
+   setFilter,
     updateFilter,
     sortFilter,
     resultFilter,
   } = useInterviews();
   const { showToast } = useToast();
 
+  const onResetFilter=()=>{
+    setFilter({})
+  }
   useEffect(() => {
     async function getStatusData() {
       try {
@@ -82,7 +85,7 @@ function InerviewListingContainer() {
           page,
           limit
         );
-        console.log('interviws', data.interviews);
+        console.log('interviws from canddate listing', data.interviews);
 
         setInterviews(data.interviews);
         setTotalDocs(data.totalDocs);
@@ -146,6 +149,7 @@ function InerviewListingContainer() {
     if (!interviewDetails) return;
     const updated = { ...interviewDetails, isRescheduleRequested: true };
     setInterviewDetils(updated);
+    setInterviews(interviews.map(int=>int.id===updated.id?{...int,isRescheduleRequested:true}:int))
     showToast({ msg: data.message, type: 'success' });
     setReschedule(false);
   };
@@ -171,7 +175,7 @@ function InerviewListingContainer() {
           interviews={interviews ?? []}
         />
         <Pagination
-          item="Applications"
+          item="Interviews"
           currentPage={page}
           totalItem={totalDocs}
           onPageChange={setPage}
