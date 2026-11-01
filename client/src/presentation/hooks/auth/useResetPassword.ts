@@ -88,6 +88,7 @@ export const useResetPassword = () => {
     submitHandle,
     showPassword,
     setShowPassword,
-    role,loading
+    role,
+    loading,
   };
 };

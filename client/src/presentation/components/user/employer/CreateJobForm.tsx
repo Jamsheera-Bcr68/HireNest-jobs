@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useJobs } from '../../../hooks/user/employer/useJobs';
 import { X, PlusIcon } from 'lucide-react';
 import { useToast } from '../../../../shared/toast/use-toast';
@@ -51,53 +51,50 @@ const CreateJobPost = () => {
     //setFilteredSkills([]);
   };
 
- const handlSkillInput = (
-  e: React.ChangeEvent<HTMLInputElement>
-) => {
-  const value = e.target.value;
+  const handlSkillInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
 
-  setSearch(value);
-  setFilter((prev) => ({
-    ...prev,
-    search: value,
-  }));
-}
+    setSearch(value);
+    setFilter((prev) => ({
+      ...prev,
+      search: value,
+    }));
+  };
 
+  useEffect(() => {
+    const query = search.trim();
 
-useEffect(() => {
-  const query = search.trim();
-
-  if (!query) {
-    setSkills([]);
-    return;
-  }
-
-  let cancelled = false;
-
-  const fetchSkills = async () => {
-    try {
-      const data = await skillService.getSkills({
-        ...filter,
-        search: query,
-      });
-
-      if (!cancelled) {
-        setSkills(data.data.skills);
-      }
-    } catch (error) {
-      if (!cancelled) {
-        console.error('Failed to fetch skills:', error);
-        setSkills([]);
-      }
+    if (!query) {
+      setSkills([]);
+      return;
     }
-  };
 
-  fetchSkills();
+    let cancelled = false;
 
-  return () => {
-    cancelled = true;
-  };
-}, [search, filter]);
+    const fetchSkills = async () => {
+      try {
+        const data = await skillService.getSkills({
+          ...filter,
+          search: query,
+        });
+
+        if (!cancelled) {
+          setSkills(data.data.skills);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.error('Failed to fetch skills:', error);
+          setSkills([]);
+        }
+      }
+    };
+
+    fetchSkills();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [search, filter]);
 
   // useEffect(() => {
   //   async function fetchskill() {
@@ -198,7 +195,7 @@ useEffect(() => {
       setSearch('');
       return;
     }
-    if(search.length<3){
+    if (search.length < 3) {
       showToast({ msg: 'Skills should be at least 3 letters', type: 'error' });
       setAddSkill(false);
       setSearch('');

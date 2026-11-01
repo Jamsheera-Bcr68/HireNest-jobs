@@ -22,7 +22,7 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
     // console.log('from handle suspend,suspend id', id);
     try {
       const data = await adminService.updateCandidate(id, { isBlocked: true });
-      
+
       updateCandidate((prev) => {
         if (!prev) return prev;
         return { ...prev, isBlocked: true, status: 'suspended' };
@@ -43,8 +43,8 @@ function ImageAndName({ candidate, updateCandidate }: Props) {
     // console.log('from handle activate, id', id);
     try {
       const data = await adminService.updateCandidate(id, { isBlocked: false });
-      
-     updateCandidate((prev) => {
+
+      updateCandidate((prev) => {
         if (!prev) return prev;
         return { ...prev, isBlocked: false, status: 'active' };
       });

@@ -96,12 +96,14 @@ export function CandidateInterviewList({
                     <span
                       className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                         interview.status === 'not-show'
-                          ? 'bg-yellow-100 text-yellow-700':interview.status=='scheduled'?'bg-green-100 text-green-700'
-                          : interview.isConfirmed
+                          ? 'bg-yellow-100 text-yellow-700'
+                          : interview.status == 'scheduled'
                             ? 'bg-green-100 text-green-700'
-                            : interview.status === 'completed'
-                              ? 'bg-gray-200 text-gray-700'
-                              : 'bg-yellow-100 text-yellow-700'
+                            : interview.isConfirmed
+                              ? 'bg-green-100 text-green-700'
+                              : interview.status === 'completed'
+                                ? 'bg-gray-200 text-gray-700'
+                                : 'bg-yellow-100 text-yellow-700'
                       }`}
                     >
                       {statusConfig[interview.status]}

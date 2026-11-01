@@ -65,7 +65,8 @@ export class GetSavedJobUseCase implements IGetSavedJobsUseCase {
         skills: skillArray.map((skill) => skill!.skillName),
       };
     });
-    const count = await this._jobRepository.savedJobCount(user.savedJobs??[],
+    const count = await this._jobRepository.savedJobCount(
+      user.savedJobs ?? [],
       filter.datas ? filter.datas : {}
     );
     const fileUrlResolver = this._fileUrlResolverService.createResolver();

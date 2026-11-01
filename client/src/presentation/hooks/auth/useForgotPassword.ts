@@ -45,5 +45,5 @@ export const useForgotPassword = (role: UserRole) => {
       });
     }
   };
-  return { handleChange, email, submitHandle, error,loading };
+  return { handleChange, email, submitHandle, error, loading };
 };

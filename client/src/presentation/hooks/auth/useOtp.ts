@@ -166,6 +166,6 @@ export function useOtp(showToast: (toast: typeOfToast) => void) {
     timeLeft,
     loading,
     formatTime,
-    resending
+    resending,
   };
 }

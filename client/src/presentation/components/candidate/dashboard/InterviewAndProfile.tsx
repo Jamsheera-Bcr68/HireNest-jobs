@@ -154,7 +154,10 @@ function InterviewAndProfile({
               Complete your profile
             </button>
           ) : (
-            <button onClick={()=>navigate('/candidate/profile')} className="mt-4 w-full text-xs font-semibold bg-slate-900 text-white py-2.5 rounded-full hover:bg-slate-800 transition-colors">
+            <button
+              onClick={() => navigate('/candidate/profile')}
+              className="mt-4 w-full text-xs font-semibold bg-slate-900 text-white py-2.5 rounded-full hover:bg-slate-800 transition-colors"
+            >
               Go to Profile
             </button>
           ))}

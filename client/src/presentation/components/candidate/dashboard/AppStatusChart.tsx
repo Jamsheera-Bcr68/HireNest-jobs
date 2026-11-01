@@ -213,8 +213,6 @@ function AppStatusChart({ appData, isLoading, recentApps }: Props) {
           </div>
         )}
       </div>
-
-     
     </div>
   );
 }

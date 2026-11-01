@@ -21,7 +21,7 @@ const Otp: React.FC = () => {
   const isExpired = false;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen bg-[url('/signupBg.jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center p-4">
       {/* <form  onSubmit={submitOtp}> */}
       <form
         onSubmit={submitOtp}

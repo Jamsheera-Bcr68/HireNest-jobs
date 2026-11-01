@@ -15,7 +15,7 @@ export function MissionVision({
   company: CompanyProfileType | null;
   onUpdate: (company: CompanyProfileType) => void;
 }) {
-    const { showToast } = useToast();
+  const { showToast } = useToast();
   if (!company) return null;
 
   const [mission, setMission] = useState<string>(company.mission || '');

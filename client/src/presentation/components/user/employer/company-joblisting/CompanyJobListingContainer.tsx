@@ -550,8 +550,8 @@ function CompanyJobListingContainer() {
 
     // convert search string → search object
     if (typeof search === 'string') {
-      console.log('type of search is strng',search);
-      
+      console.log('type of search is strng', search);
+
       updatedFilter.search = {
         job: search,
         location: '',
@@ -563,9 +563,8 @@ function CompanyJobListingContainer() {
 
     setFilter((prev) => ({
       ...prev,
-     
+
       ...normalizedFilter,
-       
     }));
   };
 

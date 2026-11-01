@@ -7,6 +7,17 @@ import {
   TrustBadge,
   FooterLink,
 } from './Components';
+import {
+  Search,
+  UserCircle2,
+  Building2,
+  ClipboardList,
+  CalendarClock,
+  ShieldCheck,
+} from 'lucide-react';
+import type { UserProfileType } from '../../../../types/dtos/user.types';
+import type { UserRole } from '../../../../constants/types/user';
+
 import { Eyebrow, Button } from './Components';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { useToast } from '../../../../shared/toast/use-toast';
@@ -18,40 +29,31 @@ export function Hirenest() {
   return (
     <section
       id="what"
-      className="border-y"
-      style={{ borderColor: '#E3DDCE', backgroundColor: '#FFFFFF' }}
+      className="scroll-mt-24 border-y border-[#E3DDCE] bg-white"
     >
-      <div className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
-        {/* <HoverBox className="h-64 order-2 md:order-1">
-          <div className="flex flex-col items-center gap-2">
-  <div className="w-24 h-24 rounded-full overflow-hidden">
-    <img
-      src="/hero1.jpg"
-      alt="Candidate"
-      className="w-full h-full object-contain"
-    />
-  </div>
-</div>
-        </HoverBox> */}
-        <HoverBox className="h-64 order-2 md:order-1 border-0 overflow-hidden">
+      <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 sm:px-6 md:grid-cols-2 md:gap-12 md:py-20 lg:px-8">
+        {/* Image: below the text on mobile, left on desktop */}
+        <HoverBox className="order-2 aspect-[4/3] w-full overflow-hidden border-0 md:order-1 md:aspect-auto md:h-72 lg:h-80">
           <img
             src="/hero1.jpg"
-            alt="Candidate"
-            className="w-full h-full object-contain"
+            alt="A candidate using HireNest to search for jobs"
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-contain"
           />
         </HoverBox>
-        <div className="order-1 md:order-2">
+
+        <div className="order-1 text-center md:order-2 md:text-left">
           <Eyebrow>What Is HireNest?</Eyebrow>
+
           <h2
-            className="text-3xl mb-4"
-            style={{ ...display, fontWeight: 600, color: '#12302B' }}
+            className="mb-3 text-2xl text-[#12302B] sm:text-3xl md:mb-4 md:text-4xl"
+            style={{ ...display, fontWeight: 600 }}
           >
             One Platform. Two Journeys.
           </h2>
-          <p
-            className="text-base leading-relaxed"
-            style={{ color: 'rgba(18,48,43,0.7)' }}
-          >
+
+          <p className="text-base leading-relaxed text-[#12302B]/70 md:text-lg">
             HireNest is a modern hiring platform built to simplify the job
             search and recruitment process. Candidates can build a profile,
             discover relevant opportunities, and manage applications — while
@@ -63,16 +65,7 @@ export function Hirenest() {
     </section>
   );
 }
-import {
-  Search,
-  UserCircle2,
-  Building2,
-  ClipboardList,
-  CalendarClock,
-  ShieldCheck,
-} from 'lucide-react';
-import type { UserProfileType } from '../../../../types/dtos/user.types';
-import type { UserRole } from '../../../../constants/types/user';
+
 const features = [
   {
     icon: Search,
@@ -105,22 +98,29 @@ const features = [
     desc: 'Role-based access with secure login for candidates, employers, and admins.',
   },
 ];
+
 export function Features() {
   return (
-    <section id="features" className="max-w-6xl mx-auto px-6 py-20">
-      <div className="max-w-xl mb-12">
+    <section
+      id="features"
+      className="mx-auto max-w-6xl scroll-mt-24 px-4 py-12 sm:px-6 md:py-20 lg:px-8"
+    >
+      <div className="mb-8 max-w-xl md:mb-12">
         <Eyebrow>Services</Eyebrow>
+
         <h2
-          className="text-3xl mb-3"
-          style={{ ...display, fontWeight: 600, color: '#12302B' }}
+          className="mb-3 text-2xl text-[#12302B] sm:text-3xl md:text-4xl"
+          style={{ ...display, fontWeight: 600 }}
         >
           Everything You Need to Hire or Get Hired
         </h2>
-        <p style={{ color: 'rgba(18,48,43,0.65)' }}>
+
+        <p className="text-base text-[#12302B]/65 md:text-lg">
           A complete toolkit for both sides of the hiring process.
         </p>
       </div>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
         {features.map((f) => (
           <FeatureCard key={f.title} {...f} />
         ))}
@@ -137,70 +137,78 @@ const candidatePoints = [
   "Track every application's status",
   'Get scheduled for interviews directly on the platform',
 ];
-export function ForCandidates({
-  user,
-  role,
-}: {
-  user: UserProfileType;
-  role: UserRole;
-}) {
+
+type Props = {
+  user?: UserProfileType | null;
+  role?: UserRole;
+};
+export function ForCandidates({ user, role }: Props) {
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const onClick = () => {
-    console.log('user', user);
 
-    if (!user) {
+  const handleClick = () => {
+    if (!user || !role) {
       showToast({ msg: 'Please login', type: 'error' });
       return;
     }
     navigate(`/${role}/profile`);
   };
+
   return (
     <section
       id="candidates"
-      className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center"
+      className="mx-auto grid max-w-6xl scroll-mt-24 items-center gap-8 px-4 py-12 sm:px-6 md:grid-cols-2 md:gap-12 md:py-20 lg:px-8"
     >
       <div>
         <Eyebrow>For Candidates</Eyebrow>
+
         <h2
-          className="text-3xl mb-3"
-          style={{ ...display, fontWeight: 600, color: '#12302B' }}
+          className="mb-3 text-2xl text-[#12302B] sm:text-3xl md:text-4xl"
+          style={{ ...display, fontWeight: 600 }}
         >
           Built for Job Seekers
         </h2>
-        <p className="mb-6" style={{ color: 'rgba(18,48,43,0.65)' }}>
+
+        <p className="mb-6 text-base text-[#12302B]/65 md:text-lg">
           HireNest makes it easy to go from searching to hired.
         </p>
+
         <ul className="space-y-3">
           {candidatePoints.map((p) => (
             <li
               key={p}
-              className="flex items-start gap-3 text-sm"
-              style={{ color: '#12302B' }}
+              className="flex items-start gap-3 text-sm text-[#12302B] sm:text-base"
             >
               <CheckCircle2
-                size={17}
+                size={18}
                 color="#2F6F63"
                 className="mt-0.5 shrink-0"
+                aria-hidden="true"
               />
-              {p}
+              <span>{p}</span>
             </li>
           ))}
         </ul>
-        <Button
-          bg="rgb(35, 118, 103)"
-          color="#F7F4EC"
-          className="mt-8 inline-flex items-center gap-2 px-5 py-3 rounded-sm text-sm font-medium"
-        >
-          Create Your Candidate Profile{' '}
-          <ArrowRight onClick={onClick} size={16} />
-        </Button>
+
+        <div onClick={handleClick}>
+          <Button
+            bg="rgb(35, 118, 103)"
+            color="#F7F4EC"
+            className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-sm px-5 py-3 text-sm font-medium sm:w-auto"
+          >
+            Create Your Candidate Profile
+            <ArrowRight size={16} aria-hidden="true" />
+          </Button>
+        </div>
       </div>
-      <HoverBox className="h-64 order-2 md:order-1 border-0 overflow-hidden">
+
+      <HoverBox className="aspect-[4/3] w-full overflow-hidden border-0 md:aspect-auto md:h-72 lg:h-80">
         <img
           src="/hero3.jpg"
-          alt="Profile"
-          className="w-full h-full object-contain"
+          alt="A candidate managing their HireNest profile"
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-contain"
         />
       </HoverBox>
     </section>
@@ -214,73 +222,72 @@ const employerPoints = [
   'Shortlist and schedule interviews',
   'Manage your entire hiring pipeline in one dashboard',
 ];
-export function ForEmployers({ user }: { user: UserProfileType }) {
+export function ForEmployers({ user }: Props) {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
-  const onClick = () => {
-    console.log('user', user);
-
+  const handleClick = () => {
     if (!user) {
       showToast({ msg: 'Please login', type: 'error' });
       return;
     }
-
-    navigate(`/company`);
+    navigate('/company');
   };
 
   return (
-    <section id="employers" style={{ backgroundColor: '#12302B' }}>
-      <div className="max-w-5xl mx-auto px-5 py-16 grid md:grid-cols-2 gap-12 items-center">
-        {/* <HoverBox dark className="h-72 order-2 md:order-1">
-            <div className="flex flex-col items-center gap-3">
-              <Users2 size={34} color="#D2992B" strokeWidth={1.4} />
-              <span style={{ ...mono, fontSize: 11, color: "rgba(247,244,236,0.5)" }}>
-                post → review → shortlist → hire
-              </span>
-            </div>
-          </HoverBox> */}
-        <HoverBox className="h-64 order-2 md:order-1 border-0 overflow-hidden">
+    <section id="employers" className="scroll-mt-24 bg-[#12302B]">
+      <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 sm:px-6 md:grid-cols-2 md:gap-12 md:py-20 lg:px-8">
+        {/* Image: below the text on mobile, left on desktop */}
+        <HoverBox className="order-2 aspect-[4/3] w-full overflow-hidden border-0 md:order-1 md:aspect-auto md:h-72 lg:h-80">
           <img
             src="/hero2.jpg"
-            alt="Profile"
-            className=" h-full object-contain"
+            alt="An employer reviewing candidates on HireNest"
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-contain"
           />
         </HoverBox>
+
         <div className="order-1 md:order-2">
           <Eyebrow tone="gold">For Employers</Eyebrow>
+
           <h2
-            className="text-3xl mb-3"
-            style={{ ...display, fontWeight: 600, color: '#F7F4EC' }}
+            className="mb-3 text-2xl text-[#F7F4EC] sm:text-3xl md:text-4xl"
+            style={{ ...display, fontWeight: 600 }}
           >
             Built for Employers &amp; Companies
           </h2>
-          <p className="mb-6" style={{ color: 'rgba(247,244,236,0.7)' }}>
+
+          <p className="mb-6 text-base text-[#F7F4EC]/70 md:text-lg">
             Post, review, and hire — without the hiring chaos.
           </p>
+
           <ul className="space-y-3">
             {employerPoints.map((p) => (
               <li
                 key={p}
-                className="flex items-start gap-3 text-sm"
-                style={{ color: '#F7F4EC' }}
+                className="flex items-start gap-3 text-sm text-[#F7F4EC] sm:text-base"
               >
                 <CheckCircle2
-                  size={17}
+                  size={18}
                   color="#D2992B"
                   className="mt-0.5 shrink-0"
+                  aria-hidden="true"
                 />
-                {p}
+                <span>{p}</span>
               </li>
             ))}
           </ul>
-          <Button
-            bg="#D2992B"
-            color="#12302B"
-            className="mt-8 inline-flex items-center gap-2 px-5 py-3 rounded-sm text-sm font-medium"
-          >
-            Post a Job as an Employer <ArrowRight onClick={onClick} size={16} />
-          </Button>
+          <div onClick={handleClick}>
+            <Button
+              bg="#D2992B"
+              color="#12302B"
+              className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-sm px-5 py-3 text-sm font-medium sm:w-auto"
+            >
+              Post a Job as an Employer
+              <ArrowRight size={16} aria-hidden="true" />
+            </Button>
+          </div>
         </div>
       </div>
     </section>
@@ -381,20 +388,21 @@ const whyChoose = [
 export function Properties() {
   return (
     <section
-      className="border-y"
-      style={{ borderColor: '#E3DDCE', backgroundColor: '#FFFFFF' }}
+      id="why"
+      className="scroll-mt-24 border-y border-[#E3DDCE] bg-white"
     >
-      <div className="max-w-6xl mx-auto px-6 py-20">
-        <div className="max-w-xl mb-12">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 md:py-20 lg:px-8">
+        <div className="mb-8 max-w-xl md:mb-12">
           <Eyebrow>Why HireNest</Eyebrow>
           <h2
-            className="text-3xl"
-            style={{ ...display, fontWeight: 600, color: '#12302B' }}
+            className="text-2xl text-[#12302B] sm:text-3xl md:text-4xl"
+            style={{ ...display, fontWeight: 600 }}
           >
             Why Choose HireNest?
           </h2>
         </div>
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-10">
+
+        <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 md:gap-y-10 lg:grid-cols-3">
           {whyChoose.map((w, i) => (
             <WhyCard
               key={w.title}

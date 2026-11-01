@@ -35,16 +35,16 @@ function InerviewListingContainer() {
   const {
     filter,
     statusFilter,
-   setFilter,
+    setFilter,
     updateFilter,
     sortFilter,
     resultFilter,
   } = useInterviews();
   const { showToast } = useToast();
 
-  const onResetFilter=()=>{
-    setFilter({})
-  }
+  const onResetFilter = () => {
+    setFilter({});
+  };
   useEffect(() => {
     async function getStatusData() {
       try {
@@ -149,7 +149,11 @@ function InerviewListingContainer() {
     if (!interviewDetails) return;
     const updated = { ...interviewDetails, isRescheduleRequested: true };
     setInterviewDetils(updated);
-    setInterviews(interviews.map(int=>int.id===updated.id?{...int,isRescheduleRequested:true}:int))
+    setInterviews(
+      interviews.map((int) =>
+        int.id === updated.id ? { ...int, isRescheduleRequested: true } : int
+      )
+    );
     showToast({ msg: data.message, type: 'success' });
     setReschedule(false);
   };

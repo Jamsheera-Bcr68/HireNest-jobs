@@ -47,8 +47,6 @@ export default function EditJobModal({
         </div>
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto px-8 py-6">{children}</div>
-
-        
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { changePasswordSchema } from '../../../libraries/validations/auth/change-password.validator';
-import axiosInstance from '../../../libraries/axios';
+
 import { useToast } from '../../../shared/toast/use-toast';
 import { authService } from '../../../services/api-services/authServices';
 
@@ -77,7 +77,8 @@ export const useChangePassword = (onClose: () => void) => {
     handleChange,
     show,
     setShow,
-    handleSubmit,loading,
+    handleSubmit,
+    loading,
     error,
   };
 };

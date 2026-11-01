@@ -6,12 +6,9 @@ import { parseApiError } from '../utils/error-parsor';
 import { showGlobalToast } from '../utils/toast.service';
 import { env } from '../config/env';
 
-
-
 const axiosInstance = axios.create({
   baseURL: env.backendUrl,
   withCredentials: true,
- 
 });
 const refreshAxios = axios.create({
   baseURL: env.backendUrl,
@@ -33,7 +30,6 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 
 axiosInstance.interceptors.response.use(
   (response) => response,

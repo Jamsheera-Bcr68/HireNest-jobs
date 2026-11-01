@@ -35,7 +35,7 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
   const [addRes, setAddRes] = useState(false);
   const [skill, setSkill] = useState<string>('');
   const [filteredSkills, setFilteredSkills] = useState<SkillType[] | []>([]);
-  const [allSkills, setAllSkills] = useState<SkillType[] | []>([]);
+  const [allSkills] = useState<SkillType[] | []>([]);
   const [res, setRes] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
 
@@ -86,41 +86,40 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
     getJob();
   }, [jobId]);
 
-useEffect(() => {
-  const query = skill.trim();
+  useEffect(() => {
+    const query = skill.trim();
 
-  if (!query) {
-    setFilteredSkills([]);
-    return;
-  }
-
-  let cancelled = false;
-
-  const fetchSkills = async () => {
-    try {
-      const data = await skillService.getSkills({
-      status:'approved',
-        search: query,
-      });
-
-      if (!cancelled) {
-        setFilteredSkills(data.data.skills);
-      }
-    } catch (error) {
-      if (!cancelled) {
-        console.error('Failed to fetch skills:', error);
-        setFilteredSkills([]);
-      }
+    if (!query) {
+      setFilteredSkills([]);
+      return;
     }
-  };
 
-  fetchSkills();
+    let cancelled = false;
 
-  return () => {
-    cancelled = true;
-  };
-}
-,[skill])
+    const fetchSkills = async () => {
+      try {
+        const data = await skillService.getSkills({
+          status: 'approved',
+          search: query,
+        });
+
+        if (!cancelled) {
+          setFilteredSkills(data.data.skills);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.error('Failed to fetch skills:', error);
+          setFilteredSkills([]);
+        }
+      }
+    };
+
+    fetchSkills();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [skill]);
 
   // useEffect(() => {
   //   async function fetchskill() {
@@ -141,34 +140,29 @@ useEffect(() => {
   //   fetchskill();
   // }, []);
 
+  const handlSkillInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
 
- const handlSkillInput = (
-  e: React.ChangeEvent<HTMLInputElement>
-) => {
-  const value = e.target.value;
-
-  setSkill(value);
- 
-}
-
-
-  const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError((prev) => ({ ...prev, skills: '' }));
-    const value = e.currentTarget.value;
     setSkill(value);
-
-    if (!value.trim()) {
-      setFilteredSkills([]);
-      return;
-    }
-
-    const filtered = allSkills.filter((skill: SkillType) =>
-      skill.skillName.toLowerCase().includes(value.toLowerCase())
-    );
-    console.log('fil', filtered);
-
-    setFilteredSkills(filtered);
   };
+
+  // const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setError((prev) => ({ ...prev, skills: '' }));
+  //   const value = e.currentTarget.value;
+  //   setSkill(value);
+
+  //   if (!value.trim()) {
+  //     setFilteredSkills([]);
+  //     return;
+  //   }
+
+  //   const filtered = allSkills.filter((skill: SkillType) =>
+  //     skill.skillName.toLowerCase().includes(value.toLowerCase())
+  //   );
+  //   console.log('fil', filtered);
+
+  //   setFilteredSkills(filtered);
+  // };
 
   const removeSkill = (id: string | undefined) => {
     if (!id) return;
@@ -265,9 +259,9 @@ useEffect(() => {
         setOpen(false);
         return;
       }
-      if(skill.trim().length<3){
-        showToast({type:'error',msg:"Skill should be atleast 3 letters"})
-        return
+      if (skill.trim().length < 3) {
+        showToast({ type: 'error', msg: 'Skill should be atleast 3 letters' });
+        return;
       }
       const data = await skillService.addNewSkill(skill);
       console.log(data);

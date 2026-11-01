@@ -13,7 +13,7 @@ import {} from '../infrastructure/config/di';
 const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
- cors: {
+  cors: {
     origin: [
       (env.FRONTEND_URL ?? env.NODE_ENV === 'development')
         ? 'http://localhost:5173'

@@ -123,7 +123,6 @@ function InterviewsContatainer() {
     getInterviews();
   }, [filter, page, limit, sortby]);
 
- 
   const interviewColumns: ColumnType<InterviewDto>[] = [
     {
       key: 'jobTitle',

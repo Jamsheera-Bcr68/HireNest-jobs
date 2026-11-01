@@ -24,7 +24,7 @@ export default function PermissionModal({
       }}
     >
       <Dialog.Portal>
-        <Dialog.Overlay  className="fixed inset-0 z-[2000] bg-black/40" />
+        <Dialog.Overlay className="fixed inset-0 z-[2000] bg-black/40" />
 
         <Dialog.Content
           className=" z-[2001]

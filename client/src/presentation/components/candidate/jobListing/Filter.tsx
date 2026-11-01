@@ -361,13 +361,13 @@ export function JobResultsHeader({
   sort,
   setSort,
   sortOptions,
-  mode
+  mode,
 }: {
   count: number;
   sort: string;
   sortOptions: { label: string; value: string }[];
   setSort: (item: string) => void;
-  mode?:'saved'|'all'
+  mode?: 'saved' | 'all';
 }) {
   const { t } = useTheme();
   const [open, setOpen] = useState(false);
@@ -375,9 +375,11 @@ export function JobResultsHeader({
     <div className="flex items-center justify-between flex-wrap gap-3">
       <p className={cx('text-sm', t.resultsMuted)}>
         <span className={cx('font-semibold', t.resultsStrong)}>
-          {count.toLocaleString('en-IN')==='0'?'No ':count.toLocaleString('en-IN')}
+          {count.toLocaleString('en-IN') === '0'
+            ? 'No '
+            : count.toLocaleString('en-IN')}
         </span>{' '}
-        {mode=='saved'?'Saved Jobs ':'Jobs '}
+        {mode == 'saved' ? 'Saved Jobs ' : 'Jobs '}
       </p>
       <div className="relative">
         <button
