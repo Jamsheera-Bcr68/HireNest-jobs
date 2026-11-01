@@ -77,7 +77,8 @@ export const useChangePassword = (onClose: () => void) => {
     handleChange,
     show,
     setShow,
-    handleSubmit,loading,
+    handleSubmit,
+    loading,
     error,
   };
 };

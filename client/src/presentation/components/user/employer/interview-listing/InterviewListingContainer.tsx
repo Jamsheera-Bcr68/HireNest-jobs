@@ -34,7 +34,6 @@ import InterviewDetailsModal from './InterviewViewModal';
 import { to12Hour } from '../../../../../utils/date-conversion';
 
 const tabs: TabType[] = [
-  
   { label: 'All', value: '' },
   { label: 'Scheduled', value: 'scheduled' },
   { label: 'Completed', value: 'completed' },
@@ -72,7 +71,7 @@ function InterviewListingContainer() {
     sortFilter,
     upsateStatus,
     getInterviewDetails,
-   setFilter
+    setFilter,
   } = useInterviews(setPage);
 
   useEffect(() => {
@@ -138,9 +137,9 @@ function InterviewListingContainer() {
     getInterviews();
   }, [filter, page, limit, sortby]);
 
-  const onResetFilter=()=>{
-    setFilter({})
-  }
+  const onResetFilter = () => {
+    setFilter({});
+  };
 
   const interviewColumns: ColumnType<InterviewDto>[] = [
     {
@@ -219,7 +218,7 @@ function InterviewListingContainer() {
         <span
           className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${interviewStatusStyles[i.status]}`}
         >
-          {i.status=='not-show'?'Missed':i.status}
+          {i.status == 'not-show' ? 'Missed' : i.status}
         </span>
       ),
     },
@@ -263,18 +262,19 @@ function InterviewListingContainer() {
             <Eye size={18} />
           </button>
 
-          {i.status === 'scheduled'||i.status=='not-show' && (
-            <button
-              onClick={() => {
-                setSelected(i);
-                setRescheduleModal(true);
-              }}
-              className="text-yellow-600 hover:text-yellow-800"
-              title="Reschedule"
-            >
-              <Calendar size={18} />
-            </button>
-          )}
+          {i.status === 'scheduled' ||
+            (i.status == 'not-show' && (
+              <button
+                onClick={() => {
+                  setSelected(i);
+                  setRescheduleModal(true);
+                }}
+                className="text-yellow-600 hover:text-yellow-800"
+                title="Reschedule"
+              >
+                <Calendar size={18} />
+              </button>
+            ))}
 
           {i.status === 'scheduled' && (
             <button
@@ -329,18 +329,19 @@ function InterviewListingContainer() {
             View
           </button>
 
-          {i.status === 'scheduled'||i.status=='not-show' && (
-            <button
-              onClick={() => {
-                setSelected(i);
-                setRescheduleModal(true);
-              }}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-yellow-600 bg-yellow-50 hover:bg-yellow-100 active:scale-95 border border-yellow-200 rounded-full transition-all"
-            >
-              <Calendar size={14} />
-              Reschedule
-            </button>
-          )}
+          {i.status === 'scheduled' ||
+            (i.status == 'not-show' && (
+              <button
+                onClick={() => {
+                  setSelected(i);
+                  setRescheduleModal(true);
+                }}
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-yellow-600 bg-yellow-50 hover:bg-yellow-100 active:scale-95 border border-yellow-200 rounded-full transition-all"
+              >
+                <Calendar size={14} />
+                Reschedule
+              </button>
+            ))}
 
           {i.status === 'scheduled' && (
             <button

@@ -86,6 +86,7 @@ export class InterviewMapper {
       companyName: company.companyName,
       candidateImageUrl: candidate.imageUrl,
       cancelledBy: interview.cancelledBy,
+      score: interview.score,
     };
   }
 }

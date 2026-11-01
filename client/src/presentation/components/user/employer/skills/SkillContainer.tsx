@@ -50,7 +50,7 @@ function SkillsContainer() {
 
   const [stats, setStats] = useState<StatusCardType[]>([]);
   const [skills, setSkills] = useState<SkillType[]>([]);
-  const [filter, setFilter] = useState<SkillFilterType>({status:'approved'});
+  const [filter, setFilter] = useState<SkillFilterType>({ status: 'approved' });
   const [limit] = useState(10);
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<string>('newest');
@@ -238,7 +238,7 @@ function SkillsContainer() {
       ),
     },
   ];
-   useEffect(() => {
+  useEffect(() => {
     const getStats = async () => {
       try {
         const data = await skillService.getSkillStatus();
@@ -285,7 +285,7 @@ function SkillsContainer() {
           sortBy
         );
         const data = resData.data;
-       
+
         setSkills(data.skills);
         setTotalDocs(data.totalDocs);
       } catch (error: any) {
@@ -299,8 +299,8 @@ function SkillsContainer() {
   }, [filter, page, sortBy]);
 
   const handleFilterChange = (data: Partial<SkillFilterType>) => {
-   console.log('skill filter',data);
-   
+    console.log('skill filter', data);
+
     setFilter((prev) => ({ ...prev, ...data }));
     setPage(1);
   };

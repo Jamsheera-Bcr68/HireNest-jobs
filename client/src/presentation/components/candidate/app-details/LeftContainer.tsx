@@ -11,7 +11,6 @@ import { FileText, CalendarDays, DollarSign, Eye } from 'lucide-react';
 import { applicationService } from '../../../../services/api-services/application.service';
 import type { StateType } from '../../../../constants/types/user';
 
-
 function InfoRow({
   icon,
   label,

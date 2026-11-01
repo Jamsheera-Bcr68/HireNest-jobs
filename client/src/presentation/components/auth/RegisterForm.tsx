@@ -101,7 +101,7 @@ function RegisterForm() {
         <button
           type="submit"
           disabled={loading}
-           className={`w-full text-white py-2.5 rounded-lg text-sm font-semibold
+          className={`w-full text-white py-2.5 rounded-lg text-sm font-semibold
     transition duration-200 shadow-md
     ${
       loading
@@ -109,7 +109,7 @@ function RegisterForm() {
         : 'bg-fuchsia-800 hover:bg-fuchsia-700 hover:shadow-lg'
     }`}
         >
-         {loading?'Signing Up': 'Sign Up'}
+          {loading ? 'Signing Up' : 'Sign Up'}
         </button>
       </div>
 

@@ -22,9 +22,19 @@ import { Hirenest } from '../../components/candidate/landing/Sections';
 
 import { useNavigate } from 'react-router-dom';
 import type { RootState } from '../../../redux/store';
+import { BriefcaseBusiness, Building2, Info, Users } from 'lucide-react';
+
+export const NAV_LINKS = [
+  { href: '#what', label: 'About', icon: Info },
+  { href: '#features', label: 'Services', icon: BriefcaseBusiness },
+  { href: '#candidates', label: 'For Candidates', icon: Users },
+  { href: '#employers', label: 'For Employers', icon: Building2 },
+];
 
 const Landing = () => {
   const navigate = useNavigate();
+  const [active, setActive] = useState<string>('');
+
   const [filter, setFilter] = useState<JobFilterType>({
     search: {
       job: '',
@@ -72,65 +82,64 @@ const Landing = () => {
     );
   };
 
-  return (
-    <div className="relative">
-      {/* HERO BACKGROUND */}
+  // return (
+  //   <div className="relative">
+  //     {/* HERO BACKGROUND */}
+  //     <div className="absolute inset-x-0 top-0 h-[650px] md:h-[750px] lg:h-[800px] -z-10">
+  //       <div className="hero-glow absolute inset-0" />
+  //     </div>
 
-      {/* HERO BACKGROUND */}
-      <div className="absolute inset-x-0 top-0 h-[650px] md:h-[750px] lg:h-[800px] -z-10">
-        <div className="hero-glow absolute inset-0" />
-      </div>
+  //     <Header />
 
-      {/* HEADER */}
-      <Header />
-
-      {/* HERO */}
-      <HeroHome
-        filter={filter}
-        handleFilterChange={handleFilterChange}
-        jobCountOfToday={homeData?.currentDayPostCount || 0}
-      />
-
-      <Hirenest />
-      <Features />
-      <ForCandidates user={user} role={user?.role} />
-      <ForEmployers user={user} />
-      <Working />
-      <Properties />
-      <HighLights />
-      <BottomNav />
-      <Footer />
-    </div>
-  );
-
-  {
-    /* // return (
-  //   <>
-      
   //     <HeroHome
   //       filter={filter}
   //       handleFilterChange={handleFilterChange}
   //       jobCountOfToday={homeData?.currentDayPostCount || 0}
   //     />
-  //     {/* <div className="min-h-screen bg-gray-100">
-  //       <Status stats={homeData?.stats || []} />
-  //       <Industries updateFilter={handleFilterChange} stats={stats || []} />
-  //       <FeaturedJobs featuredJobs={homeData?.featuredJobs || []} />
-  //       <ForEmployers />
-  //       <Working />
-  //       <Footer />
-  //     </div> */
-  }
+
   //     <Hirenest />
   //     <Features />
   //     <ForCandidates user={user} role={user?.role} />
   //     <ForEmployers user={user} />
   //     <Working />
-  //     <Properties/>
-  //     <HighLights/>
-  //     <Footer/>
-
-  //   </>
+  //     <Properties />
+  //     <HighLights />
+  //     <BottomNav />
+  //     <Footer />
+  //   </div>
   // );
+  return (
+    <div className="relative isolate flex min-h-screen w-full flex-col overflow-x-clip pb-16 md:pb-0">
+      {/* HERO BACKGROUND */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10
+    bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(99,102,241,0.25),transparent_70%)]"
+      >
+        <div className="hero-glow absolute inset-0" />
+      </div>
+
+      <Header active={active} setActive={setActive} />
+
+      <main className="flex-1">
+        <HeroHome
+          filter={filter}
+          handleFilterChange={handleFilterChange}
+          jobCountOfToday={homeData?.currentDayPostCount || 0}
+        />
+
+        <Hirenest />
+        <Features />
+        <ForCandidates user={user} role={user?.role} />
+        <ForEmployers user={user} />
+        <Working />
+        <Properties />
+        <HighLights />
+      </main>
+
+      <Footer />
+      <BottomNav />
+    </div>
+  );
 };
 export default Landing;

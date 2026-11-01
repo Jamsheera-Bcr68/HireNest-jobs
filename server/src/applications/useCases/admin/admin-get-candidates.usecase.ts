@@ -33,8 +33,6 @@ export class AdminGetCandidateUseCase implements IAdminGetEntitiesUseCase<User> 
       search || '',
       education || ''
     );
-    
-    
 
     const fileResolver = this._fileUrlResolverService.createResolver();
 

@@ -14,7 +14,7 @@ export const jobService = {
   },
 
   async updatePost(jobData: JobFormType, id: string) {
-    console.log('from update job', jobData );
+    console.log('from update job', jobData);
 
     const res = await axiosInstance.put(
       COMPANY_API_ENDPOINTS.UPDATE_JOB(id),

@@ -257,7 +257,7 @@ function JobListingContainer({ mode }: Props) {
           ),
         })
       );
-      setTotalDocs((prev)=>prev-1)
+      setTotalDocs((prev) => prev - 1);
       showToast({
         msg: data.message,
         type: 'success',

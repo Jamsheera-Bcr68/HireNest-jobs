@@ -50,8 +50,10 @@ export class EditExperienceUseCase implements IEditExperienceUseCase {
         statusCodes.CONFLICT
       );
     const expExist = user.experience.find(
-      (exp) => exp.title == payLoad.title && exp.company == payLoad.company&& exp.id!==expId
-
+      (exp) =>
+        exp.title == payLoad.title &&
+        exp.company == payLoad.company &&
+        exp.id !== expId
     );
     if (expExist)
       throw new AppError(

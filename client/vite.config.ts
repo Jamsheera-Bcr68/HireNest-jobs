@@ -6,6 +6,5 @@ export default defineConfig({
   plugins: [react()],
   server: {
     allowedHosts: ['narrative-bottle-promised-harvest.trycloudflare.com'],
-   
   },
 });

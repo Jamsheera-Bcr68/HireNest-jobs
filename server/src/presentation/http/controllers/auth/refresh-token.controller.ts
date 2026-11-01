@@ -27,7 +27,7 @@ export class RefreshTokenController {
         );
       }
 
-      console.log("Refresh cookie received:", !!refreshToken);
+      console.log('Refresh cookie received:', !!refreshToken);
 
       //  verify token
       const payload = this._tokenService.verifyRefreshToken(refreshToken);
@@ -38,8 +38,8 @@ export class RefreshTokenController {
         payload.email,
         payload.role
       );
-      console.log('new token',newToken);
-      
+      console.log('new token', newToken);
+
       return res.status(statusCodes.OK).json({
         success: true,
         accessToken: newToken,
@@ -47,7 +47,7 @@ export class RefreshTokenController {
       });
     } catch (error) {
       console.log(error);
-      
+
       return next(error);
     }
   });

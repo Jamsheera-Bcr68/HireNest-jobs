@@ -176,7 +176,6 @@ function SearchBar({ handleFilterChange, filter }: Props) {
       {/* Active filter chips can go here */}
     </div>
   );
- 
 }
 
 export default SearchBar;

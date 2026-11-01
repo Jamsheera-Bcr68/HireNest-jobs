@@ -6,7 +6,6 @@ import type { ISocialLinks } from '../../../../../types/profile.types';
 import { type UserProfileType } from '../../../../../types/dtos/profile-types/user.types';
 import { profileService } from '../../../../../services/api-services/candidateService';
 
-
 type FormData = {
   name?: string;
   title?: string;

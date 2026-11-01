@@ -27,9 +27,9 @@ export class AddExperienceUseCase implements IAddExperienceUseCase {
   ): Promise<Experience> {
     const user = await this._userRepository.findById(userId);
     console.log('from add experince');
-    
-    console.log('after adding experience',user);
-    
+
+    console.log('after adding experience', user);
+
     if (!user || user.role !== role || !user.id)
       throw new AppError(userMessages.error.NOT_FOUND, statusCodes.NOTFOUND);
     const expExist = user.experience.find(

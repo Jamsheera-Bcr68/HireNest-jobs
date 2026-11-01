@@ -14,7 +14,7 @@ export function CultureSection({
   company: CompanyProfileType | null;
   onUpdate: (data: CompanyProfileType) => void;
 }) {
-    const { showToast } = useToast();
+  const { showToast } = useToast();
   if (!company) return null;
 
   const [isOpen, setOpen] = useState<boolean>(false);

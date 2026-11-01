@@ -232,7 +232,7 @@ export default function CompanyRegistration({ isReapply }: Props) {
   const handleCameraClick = () => {
     inputRef.current?.click();
   };
-  const baseUrl =env.backendUrl;
+  const baseUrl = env.backendUrl;
   useEffect(() => {
     if (formData.logoUrl.trim() && isReapply) {
       setPreview(baseUrl + formData.logoUrl);

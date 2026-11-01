@@ -7,7 +7,6 @@ import Table from '../../components/admin/companyDetails/Table';
 import Pagination from '../../components/common/Pagination';
 import { adminService } from '../../../services/api-services/adminService';
 
-
 export type StatusCardType = {
   label: string;
   count: string;
@@ -64,7 +63,7 @@ function Companies() {
   const [stats, setStatus] = useState<StatusCardType[]>([]);
 
   const onClearFilter = () => {
-    setFilter({status:'active'});
+    setFilter({ status: 'active' });
   };
 
   useEffect(() => {

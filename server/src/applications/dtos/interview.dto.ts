@@ -109,6 +109,7 @@ export type interviewDetailDto = {
   isRescheduleRequested: boolean;
   note?: string;
   cancelledBy: UserRole;
+  score?: number;
 };
 
 export type interviewCountFilterDto = {};

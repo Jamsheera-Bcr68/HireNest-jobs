@@ -13,7 +13,7 @@ import {} from '../infrastructure/config/di';
 const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
- cors: {
+  cors: {
     origin: [
       env.FRONTEND_URL ?? 'https://hire-nest-jobs.vercel.app',
       'http://localhost:8080',

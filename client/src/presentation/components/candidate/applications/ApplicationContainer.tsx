@@ -111,7 +111,6 @@ function ApplicationContainer() {
   };
   const onResetfilter = () => {
     setFilter({});
-    
   };
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
@@ -121,7 +120,7 @@ function ApplicationContainer() {
           tag="  Track and manage all your job applications"
         />
         <StatusCards stats={stats} />
-       
+
         <Filters
           filter={filter}
           filterOptions={[statusFilter, typeFilter]}

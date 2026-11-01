@@ -86,41 +86,40 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
     getJob();
   }, [jobId]);
 
-useEffect(() => {
-  const query = skill.trim();
+  useEffect(() => {
+    const query = skill.trim();
 
-  if (!query) {
-    setFilteredSkills([]);
-    return;
-  }
-
-  let cancelled = false;
-
-  const fetchSkills = async () => {
-    try {
-      const data = await skillService.getSkills({
-      status:'approved',
-        search: query,
-      });
-
-      if (!cancelled) {
-        setFilteredSkills(data.data.skills);
-      }
-    } catch (error) {
-      if (!cancelled) {
-        console.error('Failed to fetch skills:', error);
-        setFilteredSkills([]);
-      }
+    if (!query) {
+      setFilteredSkills([]);
+      return;
     }
-  };
 
-  fetchSkills();
+    let cancelled = false;
 
-  return () => {
-    cancelled = true;
-  };
-}
-,[skill])
+    const fetchSkills = async () => {
+      try {
+        const data = await skillService.getSkills({
+          status: 'approved',
+          search: query,
+        });
+
+        if (!cancelled) {
+          setFilteredSkills(data.data.skills);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          console.error('Failed to fetch skills:', error);
+          setFilteredSkills([]);
+        }
+      }
+    };
+
+    fetchSkills();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [skill]);
 
   // useEffect(() => {
   //   async function fetchskill() {
@@ -141,11 +140,8 @@ useEffect(() => {
   //   fetchskill();
   // }, []);
 
-
- const handlSkillInput = (
-  e: React.ChangeEvent<HTMLInputElement>
-) => {
-  const value = e.target.value;
+  const handlSkillInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
 
   setSkill(value);
  
@@ -265,9 +261,9 @@ useEffect(() => {
         setOpen(false);
         return;
       }
-      if(skill.trim().length<3){
-        showToast({type:'error',msg:"Skill should be atleast 3 letters"})
-        return
+      if (skill.trim().length < 3) {
+        showToast({ type: 'error', msg: 'Skill should be atleast 3 letters' });
+        return;
       }
       const data = await skillService.addNewSkill(skill);
       console.log(data);
@@ -695,4 +691,4 @@ useEffect(() => {
   );
 };
 
-export default JobForm;
+export default JobForm

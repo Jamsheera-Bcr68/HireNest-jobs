@@ -472,7 +472,6 @@ export class UserRepository
       .limit(Number(limit));
     const totalDocs = (await this._model.aggregate(pipeline)).length;
 
-
     return {
       entities: candidates.map((doc) => this.mapToCandidateList(doc)),
       totalDocs,
@@ -480,7 +479,6 @@ export class UserRepository
   }
 
   private mapToCandidateList(doc: any): User & { interviewCount: number } {
-
     return {
       id: doc._id.toString(),
       email: doc.email,
@@ -500,7 +498,6 @@ export class UserRepository
       name: doc.name ?? undefined,
       interviewCount: doc.intData?.length ?? 0,
       savedJobs: doc.savedJobs?.map((_id: Types.ObjectId) => _id.toString()),
-     
     };
   }
 

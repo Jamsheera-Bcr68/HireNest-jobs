@@ -27,12 +27,16 @@ function Pagination({
   return (
     <div>
       <div className={`text-sm flex mt-4 mr-4 justify-end ${t.resultsMuted}`}>
-        {count>0?  <span className="text-sm">
-          Showing <span className={`font-medium ${t.navActive}`}>{count}</span>{' '}
-          of <span className={`font-medium ${t.navActive}`}>{totalItem}</span>{' '}
-          {item}
-        </span>:<span>No {item}</span>}
-      
+        {count > 0 ? (
+          <span className="text-sm">
+            Showing{' '}
+            <span className={`font-medium ${t.navActive}`}>{count}</span> of{' '}
+            <span className={`font-medium ${t.navActive}`}>{totalItem}</span>{' '}
+            {item}
+          </span>
+        ) : (
+          <span>No {item}</span>
+        )}
       </div>
 
       {totalPages > 1 && (

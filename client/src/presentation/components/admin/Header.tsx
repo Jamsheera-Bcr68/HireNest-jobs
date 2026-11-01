@@ -169,7 +169,6 @@ function Header({
             </span>
           )}
         </div>
-        
       </div>
       {notificationOpen && (
         <NotificationModal

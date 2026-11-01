@@ -41,9 +41,11 @@ const Header = () => {
     };
     loadNotifications();
   }, []);
-const location=useLocation()
+  const location = useLocation();
 
-const isDashboard=location.pathname==='/company/dashboard'||location.pathname==='/candidate/dashboard'
+  const isDashboard =
+    location.pathname === '/company/dashboard' ||
+    location.pathname === '/candidate/dashboard';
   useEffect(() => {
     const getChatrooms = async () => {
       const data = await chatService.getConversations();
@@ -157,7 +159,7 @@ const isDashboard=location.pathname==='/company/dashboard'||location.pathname===
             </div>
           )}
 
-          {showDashboardButton &&!isDashboard&& (
+          {showDashboardButton && !isDashboard && (
             <button
               onClick={() => {
                 const url =
