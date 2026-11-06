@@ -3,8 +3,18 @@ import z from 'zod';
 export const interviewFormSchema = z
   .object({
     mode: z.enum(['online', 'offline']),
-
+    roundName: z.string().min(1, 'Round name is required'),
+    interviewerType: z
+      .enum(['ai_agent', 'human'])
+      .or(z.string().min(1, 'Please select the Interviewer')),
+    topics: z
+      .string()
+      .max(300, 'Topics cannot exceed 300 characters')
+      .optional()
+      .or(z.literal('')),
     date: z.string().min(1, 'Date is required'),
+
+   
 
     time: z.string().min(1, 'Time is required'),
 
@@ -24,6 +34,14 @@ export const interviewFormSchema = z
   })
 
   .superRefine((data, ctx) => {
+ if (data.interviewerType === 'ai_agent' && data.mode === 'offline') {
+      ctx.addIssue({
+        path: ['mode'],
+        code: z.ZodIssueCode.custom,
+        message: 'AI interviews cannot be conducted in-person',
+      });
+    }
+
     // If online interview AND link not added later → meeting link required
     if (data.mode === 'online' && !data.isAddlinkLater && !data.meetLink) {
       ctx.addIssue({

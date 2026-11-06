@@ -2,9 +2,11 @@ import mongoose from 'mongoose';
 import {
   InterviewMode,
   InterviewResult,
+  InterviewRound,
+  Interviewer,
 } from '../../../domain/enums/interview.enum';
 import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
-import { boolean } from 'zod';
+
 import { UserRole } from '../../../domain/enums/user.enums';
 
 export interface IInterviewDocument {
@@ -19,7 +21,9 @@ export interface IInterviewDocument {
   updatedAt: Date;
   status: InterviewStatusEnum;
   feedback?: string;
-
+  roundName: InterviewRound;
+  interviewerType: Interviewer;
+  topics: string[];
   notes?: string;
   duration: string;
   applicationId: mongoose.Types.ObjectId;
@@ -66,6 +70,17 @@ export const InterviewSchema = new mongoose.Schema<IInterviewDocument>(
     isRescheduleRequested: { type: Boolean, default: false },
     reasonForCancel: { type: String },
     reasonForRescheduleRequest: { type: String },
+    interviewerType: {
+      type: String,
+      enum: Object.values(Interviewer),
+      default: Interviewer.HUMAN,
+    },
+    roundName: {
+      type: String,
+      enum: Object.values(InterviewRound),
+      default: InterviewRound.SCREENING,
+    },
+    topics: { type: [String],default:[] },
   },
   { timestamps: true }
 );

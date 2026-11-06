@@ -87,6 +87,9 @@ export class InterviewMapper {
       candidateImageUrl: candidate.imageUrl,
       cancelledBy: interview.cancelledBy,
       score: interview.score,
+      topics:interview.topics??[],
+      interviewerType:interview.interviewerType,
+      roundName:interview.roundName,
     };
   }
 }

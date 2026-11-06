@@ -1,4 +1,9 @@
-import { InterviewMode, InterviewResult } from '../enums/interview.enum';
+import {
+  Interviewer,
+  InterviewMode,
+  InterviewResult,
+  InterviewRound,
+} from '../enums/interview.enum';
 import { InterviewStatusEnum } from '../enums/status.enum';
 import { UserRole } from '../enums/user.enums';
 
@@ -26,4 +31,7 @@ export interface Interview {
   score?: number;
   reasonForRescheduleRequest: string;
   cancelledBy: UserRole;
+  roundName: InterviewRound;
+  interviewerType: Interviewer;
+  topics?: string[];
 }

@@ -8,7 +8,7 @@ import { IUserRepository } from '../../../domain/repository-interfaces/user-repo
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { interviewDto } from '../../dtos/interview.dto';
+import { interviewDetailDto, interviewDto } from '../../dtos/interview.dto';
 import { IUpdateEntityUseCase } from '../../interfaces/usecases/update-entity.usecase.interface';
 import { InterviewMapper } from '../../mappers/interview.mapper';
 import { interviewInputDto } from '../../dtos/interview.dto';
@@ -18,10 +18,11 @@ import { NotificationType } from '../../../domain/enums/notification-enums';
 import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
 import { getIO } from '../../../infrastructure/socket';
 import { IFileResolverService } from '../../services/file-url-resolver.service';
+import { InterviewStatusEnum } from '../../../domain/enums/status.enum';
 
 export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
   interviewInputDto,
-  interviewDto
+  interviewDetailDto
 > {
   constructor(
     private _interviewRepository: IInterviewRepository,
@@ -37,7 +38,7 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
     role: UserRole,
     userId: string,
     data: Partial<interviewInputDto>
-  ): Promise<interviewDto> {
+  ): Promise<interviewDetailDto> {
     if (role !== UserRole.COMPANY) {
       throw new AppError(
         authMessages.error.UNAUTHORIZED,
@@ -58,13 +59,43 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
         generalMessages.errors.NOT_FOUND('Company'),
         statusCodes.NOTFOUND
       );
-    const { date, time, ...rest } = data;
+      
+      if (interview.companyId !== company.id) {
+  throw new AppError(
+    authMessages.error.UNAUTHORIZED,
+    statusCodes.UNAUTHERIZED
+  );
+}
+    const { date, time, topics, ...rest } = data;
 
     const scheduledAt = new Date(`${date}T${time}`);
+    const updatedTopics = topics ? topics?.split(',') : [];
 
+const isScheduleChanged =
+  scheduledAt.getTime() !== new Date(interview.scheduledAt).getTime();
+
+
+    let requested = interview.isRescheduleRequested;
+    let reason = interview.reasonForRescheduleRequest;
+    if (
+     requested &&
+      isScheduleChanged
+    ) {
+      requested = false;
+      reason = '';
+    }
+    if (
+      interview.status === InterviewStatusEnum.NO_SHOW &&
+      scheduledAt > new Date()
+    ) {
+      rest.status = InterviewStatusEnum.SCHEDULED;
+    }
     const updated = await this._interviewRepository.update(id, {
       ...rest,
+      topics: updatedTopics,
       scheduledAt,
+      isRescheduleRequested: requested,
+      reasonForRescheduleRequest: reason,
     });
 
     if (!updated)
@@ -100,7 +131,7 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
       await this._notificationService.create(notificationData);
 
     getIO().to(notificationData.userId).emit('notification', newNotification);
-    const updatedInterview = InterviewMapper.entityToInterviewDto(
+    const updatedInterview = InterviewMapper.toInterviewDetailDto(
       updated,
       job,
       candidate,
@@ -111,7 +142,8 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
     return {
       ...updatedInterview,
       candidateImageUrl: await fileUrlResolver(
-        updatedInterview.candidateImageUrl
+        updatedInterview.candidateImageUrl,
+        
       ),
       companyLogo: await fileUrlResolver(updatedInterview.companyLogo),
     };

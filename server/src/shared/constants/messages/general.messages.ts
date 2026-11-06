@@ -25,7 +25,7 @@ export const generalMessages = {
   errors: {
     UNABLE_TO_DELETE_FILE: 'Unable to delete the file',
     NOT_FOUND: (entity: string) => `${entity} not found`,
-
+INTERVIEW_ALREADY_SCHEDULED:(type:string,roundName:string)=>`${type} ${roundName} Already conducted for this Applicant`,
     INTERNAL_SERVER_ERROR: 'Something went wrong, please try again later',
     INVALID_RESUME_FILE_TYPE: 'Only docx and pdf formats are allowed',
     INVALID_IMAGES_FILE_TYPE: 'Only png and jpeg formats are allowed',

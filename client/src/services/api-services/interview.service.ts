@@ -10,7 +10,7 @@ import type {
 
 export const interviewService = {
   async scheduleInterview(data: interviewFormType, applicationId: string) {
-    //console.log('data from service', data, applicationId);
+    console.log('data from service scheduke interview', data, applicationId);
 
     const res = await axiosInstance.post(API_ENDPOINTS.INTERVIEWS, {
       ...data,

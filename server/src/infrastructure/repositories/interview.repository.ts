@@ -8,11 +8,11 @@ import {
   interviewModel,
 } from '../database/models/interview.model';
 import mongoose, { PipelineStage } from 'mongoose';
-import { duration } from 'zod/v4/classic/iso.cjs';
+
 import { InterviewFilterDto } from '../../applications/dtos/interview.dto';
 import { InterviewStatusEnum } from '../../domain/enums/status.enum';
 import { InterviewResult } from '../../domain/enums/interview.enum';
-import { partial } from 'zod/v4/core/util.cjs';
+
 
 export class InterviewRepository
   extends GenericRepository<Interview, IInterviewDocument>
@@ -47,6 +47,9 @@ export class InterviewRepository
       reasonForRescheduleRequest: doc.reasonForRescheduleRequest,
       cancelledBy: doc.cancelledBy,
       score: doc.score,
+      interviewerType: doc.interviewerType,
+      roundName: doc.roundName,
+      topics: doc.topics,
     };
   }
 
@@ -75,13 +78,21 @@ export class InterviewRepository
     if (entity.duration) data.duration = entity.duration;
     if (entity.isAddlinkLater) data.isAddlinkLater = entity.isAddlinkLater;
     if (entity.isConfirmed) data.isConfirmed = entity.isConfirmed;
+    if (entity.isRescheduleRequested===false)
+      data.isRescheduleRequested = entity.isRescheduleRequested;
     if (entity.isRescheduleRequested)
       data.isRescheduleRequested = entity.isRescheduleRequested;
     if (entity.reasonForCancel) data.reasonForCancel = entity.reasonForCancel;
     if (entity.reasonForRescheduleRequest)
       data.reasonForRescheduleRequest = entity.reasonForRescheduleRequest;
+    if (!entity.reasonForRescheduleRequest)
+      data.reasonForRescheduleRequest = entity.reasonForRescheduleRequest;
     if (entity.cancelledBy) data.cancelledBy = entity.cancelledBy;
     if (entity.score) data.score = entity.score;
+    if (entity.roundName) data.roundName = entity.roundName;
+    if (entity.interviewerType) data.interviewerType = entity.interviewerType;
+    if (entity.topics) data.topics = entity.topics;
+
     return data;
   }
 

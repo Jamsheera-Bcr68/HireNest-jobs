@@ -1,6 +1,8 @@
 import {
+  Interviewer,
   InterviewMode,
   InterviewResult,
+  InterviewRound,
 } from '../../domain/enums/interview.enum';
 import { InterviewStatusEnum } from '../../domain/enums/status.enum';
 import { UserRole } from '../../domain/enums/user.enums';
@@ -16,6 +18,9 @@ export type interviewInputDto = {
   duration: string;
   isAddlinkLater: boolean;
   status?: InterviewStatusEnum;
+   roundName: InterviewRound;
+  interviewerType: Interviewer;
+  topics?: string;
 };
 
 export type AggregatedInterviewDto = {
@@ -56,6 +61,7 @@ export type interviewDto = {
   status: InterviewStatusEnum;
   createdAt: string;
   isConfirmed: boolean;
+  
 };
 
 export type InterviewStatsCardType = {
@@ -110,6 +116,9 @@ export type interviewDetailDto = {
   note?: string;
   cancelledBy: UserRole;
   score?: number;
+  topics:string[],
+  interviewerType:Interviewer
+  roundName:InterviewRound
 };
 
 export type interviewCountFilterDto = {};

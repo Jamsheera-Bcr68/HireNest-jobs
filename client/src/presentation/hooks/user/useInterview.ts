@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react';
 import type {
+  InterviewerType,
   InterviewMode,
   InterviewStatusType,
+  RoundType,
 } from '../../../types/dtos/interview.dto';
 import { interviewSchema } from '../../../libraries/validations/company/interview.form.validation';
 import { useToast } from '../../../shared/toast/use-toast';
@@ -43,6 +45,10 @@ type FormType = {
   location: string;
   feedback?: string;
   result?: InterviewResult;
+
+  roundName: RoundType | string;
+  interviewerType: InterviewerType | string;
+  topics: string;
 };
 
 export const initialData: FormType = {
@@ -54,6 +60,10 @@ export const initialData: FormType = {
   notes: '',
   duration: '',
   location: '',
+
+  roundName: '',
+  interviewerType: '',
+  topics: '',
 };
 
 type ErrorType = {
@@ -67,6 +77,9 @@ type ErrorType = {
   location: string;
   feedback?: string;
   result?: string;
+  roundName?: string;
+  topics?: string;
+  interviewerType?: string;
 };
 
 export const useInterviews = (setPage?: (page: number) => void) => {
@@ -74,6 +87,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
   const [formData, setFormData] = useState<FormType>(initialData);
   const [error, setError] = useState<ErrorType | null>(null);
   const [filter, setFilter] = useState<InterviewFilter>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const updateFormdata = (data: Partial<FormType>) => {
     console.log('data', data);
@@ -121,12 +135,16 @@ export const useInterviews = (setPage?: (page: number) => void) => {
         meetLink: formatted.meetLink?._errors[0] ?? '',
         location: formatted.location?._errors[0] ?? '',
         notes: formatted.notes?._errors[0] ?? '',
+        roundName: formatted.roundName?._errors[0] ?? '',
+        topics: formatted.topics?._errors[0] ?? '',
+        interviewerType: formatted.interviewerType?._errors[0] ?? '',
       });
 
       return;
     }
 
     try {
+      setLoading(true);
       if (mode === 'add') {
         if (!ids.applicationId) {
           showToast({ msg: 'Application id is not found', type: 'error' });
@@ -137,7 +155,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
           result.data,
           ids.applicationId
         );
-        console.log('after scheduling interivew', data);
+        setLoading(false);
 
         showToast({ msg: data.message, type: 'success' });
         return data.data;
@@ -153,13 +171,14 @@ export const useInterviews = (setPage?: (page: number) => void) => {
           result.data,
           ids.interviewId
         );
-
+        setLoading(false);
         showToast({ msg: data.message, type: 'success' });
         console.log(data.interview);
 
         return data.interview;
       }
     } catch (error: any) {
+      setLoading(false);
       showToast({
         msg: error.response?.data?.message || error.message,
         type: 'error',
@@ -194,6 +213,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
       { label: 'Upcoming', value: 'upcoming' },
     ],
   };
+
   const filterOptions = [modeFilter, resultsFilter];
 
   const updateFilter = (data: Partial<InterviewFilter>) => {
@@ -231,6 +251,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
       });
     }
   };
+
   const onResetFilter = () => {
     console.log('from reset filter');
     setFilter({ status: 'scheduled' });
@@ -284,6 +305,6 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     resultFilter,
     fetchMeeting,
     onResetFilter,
-    setFilter,
+    setFilter,loading,setLoading
   };
 };

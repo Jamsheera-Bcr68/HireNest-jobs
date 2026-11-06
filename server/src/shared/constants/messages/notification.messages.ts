@@ -6,13 +6,13 @@ import {
 } from '../../../domain/enums/status.enum';
 
 export const notificationMessages = {
-  [NotificationType.INTERVIEW_SCHEDULED]: (data: {
+  [NotificationType.INTERVIEW_SCHEDULED]: (data: {round:string;
     companyName: string;
     jobTitle: string;
     interviewDate: string;
     interviewTime: string;
   }) =>
-    `Your interview for ${data.jobTitle} at ${data.companyName} is scheduled on ${data.interviewDate} at ${data.interviewTime}.`,
+    `Your ${data.round} round interview for ${data.jobTitle} at ${data.companyName} is scheduled on ${data.interviewDate} at ${data.interviewTime}.`,
 
   [NotificationType.INTERVIEW_RESCHEDULED]: (data: {
     companyName: string;

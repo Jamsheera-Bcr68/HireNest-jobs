@@ -22,6 +22,7 @@ import { ChatroomInputDto } from '../../dtos/chatroom.dto';
 import { Chatroom } from '../../../domain/entities/chatroom.entity';
 import { IEmailService } from '../../interfaces/services/email.service';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
+import { Interviewer } from '../../../domain/enums/interview.enum';
 
 export interface IScheduleInterviewUsecase {
   execute(
@@ -53,6 +54,25 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
         statusCodes.NOTFOUND
       );
 
+    const interview = await this._interviewRepository.findOne({
+      applicationId: application.id,
+    });
+
+    //if same round for this candidate is already completed
+    if (
+      interview &&
+      interview.interviewerType == data.interviewerType &&
+      interview.roundName === data.roundName
+    ) {
+      throw new AppError(
+        generalMessages.errors.INTERVIEW_ALREADY_SCHEDULED(
+          data.interviewerType === Interviewer.AI_AGENT ? 'AI ' : 'Human',
+          data.roundName
+        ),
+        statusCodes.CONFLICT
+      );
+    }
+
     const {
       date,
       mode,
@@ -62,8 +82,11 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
       meetLink,
       duration,
       isAddlinkLater,
+      interviewerType,
+      topics,
+      roundName,
     } = data;
-
+    const updatedTopics = topics ? topics.split(',') : [];
     const scheduledAt = new Date(`${date}T${time}`);
     const doc = {
       mode,
@@ -72,6 +95,9 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
       duration,
       isAddlinkLater,
       notes,
+      topics: updatedTopics,
+      interviewerType,
+      roundName,
       scheduledAt,
       jobId: application.jobId,
       candidateId: application.candidateId,
@@ -114,6 +140,7 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
       userId: newInterview.candidateId,
       type: NotificationType.INTERVIEW_SCHEDULED,
       message: notificationMessages[NotificationType.INTERVIEW_SCHEDULED]({
+        round: data.roundName,
         companyName: company.companyName,
 
         jobTitle: job.title,
@@ -127,8 +154,8 @@ export class ScheduleInterviewUsecase implements IScheduleInterviewUsecase {
 
     // console.log('notification data',notificationData);
     let chatroom = await this._chatroomRepository.findOne({
-      jobId: newInterview.jobId,
-      candidateId: newInterview.candidateId,
+      jobId: application.jobId,
+      candidateId: application.candidateId,
     });
 
     if (!chatroom) {

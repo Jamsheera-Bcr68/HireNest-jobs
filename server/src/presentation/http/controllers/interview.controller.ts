@@ -19,6 +19,7 @@ import {
   InterviewListDto,
   interviewDetailDto,
   interviewDto,
+  interviewInputDto,
 } from '../../../applications/dtos/interview.dto';
 import {
   InterviewMode,
@@ -54,8 +55,8 @@ export class InterviewController {
     >,
     private _getInterviewDetailsUsecase: IGetEntityDetailsUsecase<interviewDetailDto>,
     private _updateInterviewUsecase: IUpdateEntityUseCase<
-      Interview,
-      interviewDto
+      interviewInputDto,
+      interviewDetailDto
     >,
     private _updateInterviewResultUsecase: IUpdateEntityUseCase<
       Interview,
@@ -69,7 +70,7 @@ export class InterviewController {
   ) {}
 
   scheduleInterview = asyncHandler(async (req: Request, res: Response) => {
-    // console.log('from interview controller', req.body);
+    console.log('from interview controller', req.body);
 
     const user = req.user;
     if (!user)

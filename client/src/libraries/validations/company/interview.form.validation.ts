@@ -3,7 +3,15 @@ import { z } from 'zod';
 export const interviewSchema = z
   .object({
     mode: z.enum(['online', 'offline']),
-
+    roundName: z.string().min(1, 'Round name is required'),
+    interviewerType: z
+      .enum(['ai_agent', 'human'])
+      .or(z.string().min(1, 'Please select the Interviewer')),
+    topics: z
+      .string()
+      .max(300, 'Topics cannot exceed 300 characters')
+      .optional()
+      .or(z.literal('')),
     date: z.string().min(1, 'Date is required'),
 
     time: z.string().min(1, 'Time is required'),
@@ -29,6 +37,14 @@ export const interviewSchema = z
         path: ['meetLink'],
         code: z.ZodIssueCode.custom,
         message: 'Meeting link is required',
+      });
+    }
+
+    if (data.interviewerType === 'ai_agent' && data.mode === 'offline') {
+      ctx.addIssue({
+        path: ['mode'],
+        code: z.ZodIssueCode.custom,
+        message: 'AI interviews cannot be conducted in-person',
       });
     }
 

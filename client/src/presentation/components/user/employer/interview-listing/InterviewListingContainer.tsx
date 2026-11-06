@@ -433,19 +433,35 @@ function InterviewListingContainer() {
     }
   };
 
+  // const updateInterveiw = (data: Partial<interviewDetailDto>) => {
+  //   setInterview((prev) => {
+  //     if (!prev) return prev;
+  //     return {
+  //       ...prev,
+  //       ...data,
+  //     };
+  //   });
+  //   if (interview)
+  //     setInterviews(
+  //       interviews.map((i) => (i.id !== interview.id ? i : { ...i, ...data,} ))
+  //     );
+  // };
+  
+
+ 
   const updateInterveiw = (data: Partial<interviewDetailDto>) => {
-    setInterview((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        ...data,
-      };
-    });
-    if (interview)
-      setInterviews(
-        interviews.map((i) => (i.id !== interview.id ? i : { ...i, ...data }))
-      );
-  };
+  setInterview((prev) =>
+    prev ? { ...prev, ...data } : prev
+  );
+
+  setInterviews((prev) =>
+    prev.map((item) =>
+      item.id === interview?.id
+        ? { ...item, ...data }
+        : item
+    )
+  );
+};
 
   const handleAddResult = async (values: {
     result: InterviewResult;
@@ -523,15 +539,16 @@ function InterviewListingContainer() {
           onConfirm={handleStatusChange}
         />
 
-        <InterviewDetailsModal
+        {viewModal&&<InterviewDetailsModal
           onUpdate={updateInterveiw}
           interview={interview}
           isOpen={viewModal}
           onClose={() => {
-            setSelectedId(null);
+            console.log('from onclose');
             setViewModal(false);
+            setSelectedId(null);
           }}
-        />
+        />}
         <RescheduleModal
           isOpen={rescheduleModal}
           onClose={() => {

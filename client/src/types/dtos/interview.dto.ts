@@ -6,6 +6,15 @@ export type InterviewMode = 'online' | 'offline';
 
 export const Durations = [30, 45, 60, 90, 120] as const;
 
+export type RoundType =
+  | 'screening'
+  | 'technical'
+  | 'hr_behavioral'
+  | 'managerial'
+  | 'assignment';
+
+export type InterviewerType = 'human' | 'ai_agent';
+
 export type InterviewStatusType =
   | 'cancelled'
   | 'completed'
@@ -52,6 +61,9 @@ export type interviewDetailDto = {
   score?: number;
   result?: InterviewResult;
   cancelledBy: UserRole;
+  roundName:RoundType
+  topics:string[]
+  interviewerType:InterviewerType
 };
 
 export type interviewFeedbackDto = {
