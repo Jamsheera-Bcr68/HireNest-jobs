@@ -6,6 +6,7 @@ import { AdminMapper } from '../../../../applications/mappers/admin.mapper';
 import { AdminloginInput } from '../../../../applications/dtos/admin.dto';
 import { UserRole } from '../../../../domain/enums/user.enums';
 import { asyncHandler } from '../../middleweres/async-handler';
+import { env } from '../../../../infrastructure/config/env';
 
 export class AdminAuthController {
   private _loginUsecase: IAdminLoginUsecase;
@@ -23,7 +24,7 @@ export class AdminAuthController {
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite:env.NODE_ENV === 'development' ? 'lax' : 'none',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/auth/refresh-token',

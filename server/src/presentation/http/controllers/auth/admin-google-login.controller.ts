@@ -4,6 +4,7 @@ import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { IAdminGoogleAuthUsecase } from '../../../../applications/interfaces/auth/admin-google-auth.usecase';
 import { AdminMapper } from '../../../../applications/mappers/admin.mapper';
 import { asyncHandler } from '../../middleweres/async-handler';
+import { env } from 'process';
 
 export class AdminGoogleAuthController {
   private _adminGoogleAuthUsecase: IAdminGoogleAuthUsecase;
@@ -22,7 +23,7 @@ export class AdminGoogleAuthController {
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite:  env.NODE_ENV === 'development' ? 'lax' : 'none',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/auth/refresh-token',

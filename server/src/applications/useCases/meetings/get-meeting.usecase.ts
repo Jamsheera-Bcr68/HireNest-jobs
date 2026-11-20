@@ -77,6 +77,8 @@ export class GetInterviewByMeetingIdUsecase implements IGetEntityDetailsUsecase<
       companyId: interview.companyId,
       candidateId: interview.candidateId,
       jobId: interview.jobId,
+      roundName: interview.roundName,
+      totalQuestions:Number(interview.duration)/5
     };
   }
 }

@@ -8,12 +8,13 @@ import { Circle, Mic, MicOff } from 'lucide-react';
 import ControllBar from './ControllBar';
 import EndConfirmForm from './EndConfirmForm';
 import { CameraOffTile } from './EndConfirmForm';
+import type { RoundType } from '../../../../types/dtos/interview.dto';
 
 type Props = {
   meetId?: string;
   role: UserRole;
 };
-type Meeting = {
+export type Meeting = {
   candidateId: string;
   candidateName: string;
   companyId: string;
@@ -23,6 +24,8 @@ type Meeting = {
   meetingId: string;
   roleTitle: string;
   scheduledAt: string;
+  roundName: RoundType;
+  totalQuestions: number;
 };
 function MeetContainer({ meetId, role }: Props) {
   console.log('meet id,role', meetId, role);
@@ -229,8 +232,6 @@ function MeetContainer({ meetId, role }: Props) {
   }, []);
 
   useEffect(() => {
-    console.log('from useeffect');
-
     if (!meetId) return;
     let cancelled = false;
     const init = async () => {
@@ -245,11 +246,8 @@ function MeetContainer({ meetId, role }: Props) {
         try {
           videoStream = (await getVideoStream()) ?? null;
           setCamon(true);
-
-          console.log('Camera permission granted');
         } catch (err) {
           setCamon(false);
-          console.log('Camera permission granted');
         }
 
         try {
@@ -278,6 +276,7 @@ function MeetContainer({ meetId, role }: Props) {
         localStreamRef.current = localStream;
         const videoTrack = localStream.getVideoTracks()[0];
         const audioTrack = localStream.getAudioTracks()[0];
+        
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = localStream;
         }

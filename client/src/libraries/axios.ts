@@ -79,6 +79,8 @@ axiosInstance.interceptors.response.use(
 
         return axiosInstance(originalRequest);
       } catch (err) {
+        console.log('error');
+        
         await refreshAxios.post('/auth/logout', {});
         store.dispatch(logout());
 

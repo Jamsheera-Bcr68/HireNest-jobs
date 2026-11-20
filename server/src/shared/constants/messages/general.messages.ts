@@ -21,17 +21,20 @@ export const generalMessages = {
     COMPANY_REAPPLICATION_SUBMITTED:
       'Company Reapplication Submitted Successfully',
     DASHBOARD_STATUS_DATA_FETCHED: 'Dashboard statuscard data fetched',
+    ANSWER_SUBMITTED: 'Answer submitted successfully',
   },
   errors: {
     UNABLE_TO_DELETE_FILE: 'Unable to delete the file',
     NOT_FOUND: (entity: string) => `${entity} not found`,
-INTERVIEW_ALREADY_SCHEDULED:(type:string,roundName:string)=>`${type} ${roundName} Already conducted for this Applicant`,
+    INTERVIEW_ALREADY_SCHEDULED: (type: string, roundName: string) =>
+      `${type} ${roundName} Already conducted for this Applicant`,
     INTERNAL_SERVER_ERROR: 'Something went wrong, please try again later',
     INVALID_RESUME_FILE_TYPE: 'Only docx and pdf formats are allowed',
     INVALID_IMAGES_FILE_TYPE: 'Only png and jpeg formats are allowed',
     RESUME_NOTFOUND: 'Resume not found',
     URL_NOTFOUND: 'Resume url not found',
     ID_NOT_FOUND: (item: string) => `${item} id not found`,
+    INTERVIEW_ALREADY_COMPLETED: `This interview is already Completed`,
     INTERVIEW_NOT_SCHEDULED: 'This interview is not scheduled ',
     ALREADY_REQUESTED_RESCHEDULE: 'Allready Requested for Reschedule',
     ALREADY_CONFIRMED: 'This interview is already confirmed',
@@ -41,5 +44,9 @@ INTERVIEW_ALREADY_SCHEDULED:(type:string,roundName:string)=>`${type} ${roundName
     FORBIDDEN: `You are not authorized to access this resource.`,
     SIZE_LIMIT_EXEED: (size: number) =>
       `File is too large. Maximum allowed size is ${size} MB.`,
+    AUDIO_NOT_FOUND: 'Audio file is required',
+    CONFIGURATION_ISSUE: (feature: string) => `${feature} is not configured`,
+    AI_RESPONSE_NOT_FOUND: 'AI response not found',
+    NOT_ACTIVE_QUESTION: 'No active question found for this session',
   },
 };

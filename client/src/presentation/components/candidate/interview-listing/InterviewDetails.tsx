@@ -254,7 +254,7 @@ export function InterviewDetails({ interview }: Props) {
                   </p>
                 </div>
 
-                <a
+                {/* <a
                   href={
                     interview.meetLink.startsWith('http')
                       ? interview.meetLink
@@ -269,7 +269,30 @@ export function InterviewDetails({ interview }: Props) {
                     size={14}
                     className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                   />
-                </a>
+                </a> */}
+
+                {(() => {
+                const isAi =
+                  interview?.interviewerType?.toLowerCase().trim() === 'ai_agent';
+                const targetUrl = isAi
+                  ? `/ai-interview/${interview.meetLink}`
+                  : `/meeting/${interview.meetLink}`;
+
+                return (
+                  <a
+                    href={targetUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 hover:from-fuchsia-500 hover:via-purple-500 hover:to-indigo-500 shadow-md shadow-fuchsia-500/25 active:scale-95 transition-all text-center flex-shrink-0 touch-manipulation"
+                  >
+                    <span>Join Meeting</span>
+                    <ArrowUpRight
+                      size={14}
+                      className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
+                  </a>
+                );
+              })()}
               </div>
             ) : (
               <p className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/40 p-2.5 rounded-xl border border-amber-200 dark:border-amber-900/60 font-medium">

@@ -6,9 +6,8 @@ import type {
   RoundType,
 } from '../../../../../types/dtos/interview.dto';
 import { useLockBodyScroll } from '../../../../hooks/useBodyLock';
-import {  LinkIcon, MapPinIcon, VideoIcon } from 'lucide-react';
+import { LinkIcon, MapPinIcon, VideoIcon } from 'lucide-react';
 import { useInterviews } from '../../../../hooks/user/useInterview';
-
 
 import InterviewFeedbackModal from './UpdateModal';
 import { useToast } from '../../../../../shared/toast/use-toast';
@@ -112,7 +111,6 @@ const XIcon = () => (
   </svg>
 );
 
-
 export default function InterviewDetailsModal({
   isOpen,
   onClose,
@@ -142,8 +140,14 @@ export default function InterviewDetailsModal({
     onClose();
   };
   useLockBodyScroll(isOpen);
-  const { formData, updateFormdata, submitInterviewForm, initialData, error,generateMeetLink } =
-    useInterviews();
+  const {
+    formData,
+    updateFormdata,
+    submitInterviewForm,
+    initialData,
+    error,
+    generateMeetLink,
+  } = useInterviews();
 
   const handleUpdate = async () => {
     if (!interview || !isOpen) return;
@@ -156,9 +160,8 @@ export default function InterviewDetailsModal({
 
     if (!updated) return;
     updateFormdata(initialData);
-    onUpdate({...updated})
-    setIsEditing(false)
-   
+    onUpdate({ ...updated });
+    setIsEditing(false);
   };
 
   useEffect(() => {
@@ -177,11 +180,10 @@ export default function InterviewDetailsModal({
       interviewerType: interview.interviewerType,
     });
   }, [interview, isOpen]);
- 
 
-  const handleAddLink =async () => {
+  const handleAddLink = async () => {
     setIsEditing(true);
-    await generateMeetLink()
+    await generateMeetLink();
   };
 
   const handleReschedule = () => {
@@ -692,6 +694,7 @@ export default function InterviewDetailsModal({
                   {interview.mode === 'online' && interview.meetLink && (
                     <button
                       type="button"
+                      disabled={interview.interviewerType === 'ai_agent'}
                       onClick={() =>
                         window.open(
                           interview.meetLink?.startsWith('http')
@@ -700,7 +703,11 @@ export default function InterviewDetailsModal({
                           '_blank'
                         )
                       }
-                      className="group relative inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 hover:from-fuchsia-500 hover:via-purple-500 hover:to-indigo-500 shadow-md shadow-purple-500/25 hover:shadow-lg hover:shadow-purple-500/40 active:scale-95 transition-all duration-200 mt-1 cursor-pointer overflow-hidden border border-white/20"
+                      className={`group relative inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white transition-all duration-200 mt-1 border border-white/20 ${
+                        interview.interviewerType === 'ai_agent'
+                          ? 'cursor-not-allowed bg-gray-400 shadow-none'
+                          : 'cursor-pointer bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 hover:from-fuchsia-500 hover:via-purple-500 hover:to-indigo-500 shadow-md shadow-purple-500/25 hover:shadow-lg hover:shadow-purple-500/40 active:scale-95'
+                      }`}
                     >
                       {/* Live pulsing indicator */}
                       <span className="relative flex h-2 w-4">

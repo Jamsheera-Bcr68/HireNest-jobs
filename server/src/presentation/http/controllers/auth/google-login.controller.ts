@@ -4,6 +4,7 @@ import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { authMessages } from '../../../../shared/constants/messages/auth.mesages';
 import { UserMapper } from '../../../../applications/mappers/user.mapper';
 import { asyncHandler } from '../../middleweres/async-handler';
+import { env } from 'process';
 
 export class GoogleLoginController {
   private _googleLoginUsecase: IGoogleLoginUsecase;
@@ -30,7 +31,7 @@ export class GoogleLoginController {
     res.cookie('refreshToken', refreshToken, {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      sameSite: 'none',
+      sameSite:  env.NODE_ENV === 'development' ? 'lax' : 'none',
       maxAge: 24 * 60 * 60 * 1000,
       path: '/auth/refresh-token',
     });

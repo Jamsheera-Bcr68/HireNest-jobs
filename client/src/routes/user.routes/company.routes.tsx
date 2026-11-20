@@ -5,7 +5,6 @@ import CompanyRegistration from '../../presentation/pages/user/company/CompanyRe
 import { EmployerLayout } from '../../presentation/Layoutes/EmployerLayout';
 import { JobCreate } from '../../presentation/pages/user/employer/JobCreate';
 
-import MeetPage from '../../presentation/pages/user/MeetPage';
 import CompanyJobListing from '../../presentation/pages/user/company/CompanyJobListing';
 import JobDetails from '../../presentation/pages/user/company/JobDetails';
 import SkillPage from '../../presentation/pages/user/company/Skills';
@@ -44,7 +43,6 @@ export const CompanyRoutes = () => {
         <Route path={COMPANY_ROUTES.INTERVIEWS} element={<InterviewsPage />} />
         <Route path={COMPANY_ROUTES.PROFILE} element={<CompanyProfile />} />
         <Route path={COMPANY_ROUTES.MESSAGES} element={<ChatPage />} />
-        <Route path={COMPANY_ROUTES.MEET} element={<MeetPage />} />
       </Route>
     </Routes>
   );

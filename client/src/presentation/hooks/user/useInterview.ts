@@ -11,6 +11,8 @@ import { interviewService } from '../../../services/api-services/interview.servi
 import { type InterviewResult } from '../../../types/dtos/interview.dto';
 import type { SortOption } from '../../components/admin/Candidates/ReusableTable';
 import { type FilterOption } from './candidate/profile/useApplication';
+import type { Meeting } from '../../components/common/meet/MeetContainer';
+import type { AiInterview } from '../../../types/ai-interview.types';
 
 export type InterviewFilter = {
   status?: InterviewStatusType | 'isRescheduleRequested';
@@ -93,6 +95,7 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     console.log('data', data);
     setFormData((prev) => ({ ...prev, ...data }));
   };
+
   const statusFilter: FilterOption<InterviewFilter> = {
     key: 'status',
     label: 'Status',
@@ -288,6 +291,16 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     } finally {
     }
   }, []);
+
+  const startAiInterview = useCallback(async (meetId: string) => {
+    console.log('from use interviewas');
+    
+    const responseData = await interviewService.startAiInterview(meetId);
+    let data: { meeting: Meeting; aiInterview: AiInterview } = responseData.data;
+    
+    return data;
+  }, []);
+
   return {
     updateFormdata,
     formData,
@@ -305,6 +318,9 @@ export const useInterviews = (setPage?: (page: number) => void) => {
     resultFilter,
     fetchMeeting,
     onResetFilter,
-    setFilter,loading,setLoading
+    setFilter,
+    loading,
+    setLoading,
+    startAiInterview,
   };
 };

@@ -22,6 +22,8 @@ import JobListing from '../presentation/pages/user/JobListing';
 import Home from '../presentation/pages/user/Home';
 import type { RootState } from '../redux/store';
 import JobDetailsPage from '../presentation/pages/user/candidate/JobDetailsPage';
+import AIInterveiwPage from '../presentation/pages/user/candidate/AIInterveiwPage';
+import { AiInterviewRoom } from '../presentation/components/candidate/ai-intervew/InterviewContainerDemo';
 
 export const AppRoutes = () => {
   const { user } = useSelector((state: RootState) => state?.auth);
@@ -84,6 +86,8 @@ export const AppRoutes = () => {
         <Route path="/admin/*" element={<AdminRoutes />} />
       </Route>
       <Route path="/meeting/:meetId" element={<MeetPage />} />
+      <Route path="/ai-interview/:meetId" element={<AIInterveiwPage />} />
+      <Route path="/ai-interview" element={<AiInterviewRoom />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

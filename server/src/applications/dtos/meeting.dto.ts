@@ -1,3 +1,5 @@
+import { InterviewRound } from '../../domain/enums/interview.enum';
+
 export interface MeetingDto {
   meetingId: string;
   roleTitle: string;
@@ -8,4 +10,6 @@ export interface MeetingDto {
   companyId: string;
   candidateId: string;
   jobId: string;
+  roundName: InterviewRound;
+  totalQuestions?: number;
 }

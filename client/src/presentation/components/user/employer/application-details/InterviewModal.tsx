@@ -592,18 +592,7 @@ export default function InterviewModal({
                     />
                     <button
                       type="button"
-                      onClick={() => {
-                        if (formData.interviewerType === 'ai_agent') {
-                          // Generate an internal AI room link
-                          const aiRoomId = `ai_room_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-                          updateFormdata({
-                            meetLink: `${window.location.origin}/interview/room/${aiRoomId}`,
-                          });
-                        } else {
-                          // Existing Google Meet or custom generation logic
-                          generateMeetLink();
-                        }
-                      }}
+                      onClick={async () => await generateMeetLink()}
                       className={`w-full sm:w-auto px-4 py-2.5 text-xs font-semibold rounded-lg ${t.secondaryButton} hover:${t.secondaryButtonHover} transition-colors whitespace-nowrap touch-manipulation`}
                     >
                       Generate

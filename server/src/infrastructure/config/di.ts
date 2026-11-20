@@ -118,6 +118,10 @@ import { UpdateMissedInterviews } from '../../applications/useCases/interviews/m
 import { GetPendingStatusUsecase } from '../../applications/useCases/admin/pendings/get-pending-status.usecase';
 import { DashboardPendingsUsecase } from '../../applications/useCases/admin/dashoard/dashboard-pendings.usecase';
 import { GetPendingUsecase } from '../../applications/useCases/admin/pendings/get-pendings.usecase'; //==Controllers
+import { StartAiInterviewUsecase } from '../../applications/useCases/ai-interview/start-ai-interview.usecase';
+import { UpdateAIsessionUsecase } from '../../applications/useCases/ai-sessions/update-aisession.usecase';
+import { SubmitAnswerUsecase } from '../../applications/useCases/ai-sessions/submit-answer.usecase';
+
 //==Controllers
 //==Controllers
 //==Controllers
@@ -149,6 +153,7 @@ import { CandidateDashboardController } from '../../presentation/http/controller
 import { CompanyDashboardController } from '../../presentation/http/controllers/company-dashboard.controller';
 import { CompanyDashboardInterviewDataUsecase } from '../../applications/useCases/company/dashboard/get-interview-data.usecase';
 import { ActivityController } from '../../presentation/http/controllers/admin/activity.controller';
+import { AIISessionController } from '../../presentation/http/controllers/ai-interview.controller';
 //==repsitories
 //==repsitories
 //==repsitories
@@ -168,6 +173,7 @@ import { InterviewRepository } from '../repositories/interview.repository';
 import { NotificationRepository } from '../repositories/notification.repository';
 import { ChatroomRepository } from '../repositories/chatroom.repository';
 import { MessageRepository } from '../repositories/message.repository';
+import { AISessionRepository } from '../repositories/ai-session.repository';
 //services
 
 import { OtpGenerator } from '../services/otp-generator.service';
@@ -184,6 +190,8 @@ import { PresenceService } from '../services/presence.service';
 import { CompanyService } from '../../applications/services/company.service';
 import { CryptoService } from '../services/crypto.service';
 import { FileUrlResolverService } from '../../applications/services/file-url-resolver.service';
+import { GeminiAIInterviewService } from '../../applications/services/gemini-interview.service';
+import { GroqAIInterviewService } from '../../applications/services/groq-interview.service';
 
 //repositories
 const userRepository = new UserRepository();
@@ -200,6 +208,7 @@ const interviewRepository = new InterviewRepository();
 const notificationRepository = new NotificationRepository();
 const chatromRepository = new ChatroomRepository();
 const messageRepository = new MessageRepository();
+const aiSessionRepository = new AISessionRepository();
 
 const emailService = new EmailService();
 const verifyOtpService = new VerifyOtpService(otpRepository, userRepository);
@@ -213,6 +222,8 @@ const fileUrlResolverService = new FileUrlResolverService(s3FileStorageService);
 export const presenceService = new PresenceService();
 export const companyService = new CompanyService(companyRepository);
 export const cryptoService = new CryptoService();
+const geminiInterviewService = new GeminiAIInterviewService();
+const groqInterviewService=new GroqAIInterviewService()
 
 const registerUseCase = new RegisterUseCase(userRepository);
 const sendOtpService = new SendOtpService(
@@ -747,6 +758,28 @@ const dashboardPendingsUsecase = new DashboardPendingsUsecase(
   fileUrlResolverService
 );
 
+const aiInterviewUsecase = new StartAiInterviewUsecase(
+  interviewRepository,
+  companyRepository,
+  userRepository,
+  jobRepository,
+  aiSessionRepository,
+  skillRepository
+);
+
+const updateAisessionUsecase = new UpdateAIsessionUsecase(
+  aiSessionRepository,
+  userRepository,
+  companyRepository
+);
+
+const submitAnswerUsecase = new SubmitAnswerUsecase(
+  userRepository,
+  aiSessionRepository,
+  groqInterviewService,
+  jobRepository,
+  interviewRepository
+);
 //controller
 //controller
 //controller
@@ -919,4 +952,10 @@ export const companyDashboardController = new CompanyDashboardController(
 export const activityController = new ActivityController(
   getPendingStatusUsecase,
   getPendingsUsecase
+);
+
+export const aiSessionController = new AIISessionController(
+  aiInterviewUsecase,
+  updateAisessionUsecase,
+  submitAnswerUsecase
 );

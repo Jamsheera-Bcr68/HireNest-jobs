@@ -1,6 +1,7 @@
 import { API_ENDPOINTS } from '../../constants/api-end-points/general';
 import axiosInstance from '../../libraries/axios';
 import type { interviewFormType } from '../../libraries/validations/company/interview.form.validation';
+import type { AiInterview } from '../../types/ai-interview.types';
 import type { InterviewFilter } from '../../presentation/hooks/user/useInterview';
 import { type interviewFeedbackDto } from '../../types/dtos/interview.dto';
 import type {
@@ -108,6 +109,37 @@ export const interviewService = {
     const response = await axiosInstance.get(
       API_ENDPOINTS.GET_MEET_INFO(meetId)
     );
+    return response.data;
+  },
+
+  async startAiInterview(meetId: string) {
+    console.log('from start interview');
+    
+    const response = await axiosInstance.post(API_ENDPOINTS.AI_MEETING(meetId));
+    console.log('ai meeting response', response.data);
+
+    return response.data;
+  },
+
+  async updateAiSession(sessionId: string, data: Partial<AiInterview>) {
+    console.log('update aisession', data);
+
+    const response = await axiosInstance.patch(
+      API_ENDPOINTS.AI_SESSION(sessionId),
+      data
+    );
+    return response.data;
+  },
+
+  async submitAiAnswer(sessionId: string, formData: FormData) {
+    console.log('from data',formData);
+    
+    const response = await axiosInstance.post(
+      API_ENDPOINTS.SUBMIT_AI_ANSWER(sessionId),
+      formData
+    );
+    console.log(response.data);
+
     return response.data;
   },
 };

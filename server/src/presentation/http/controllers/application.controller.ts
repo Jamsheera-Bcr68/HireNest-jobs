@@ -21,6 +21,7 @@ import { IGetEntityDetailsUsecase } from '../../../applications/interfaces/useca
 import { IUpdateEntityStatusUseCase } from '../../../applications/interfaces/usecases/update-entity-status.usecase.interface';
 import { ApplicationMapper } from '../../../applications/mappers/application.mapper';
 import { IGetApplicationStatusUsecase } from '../../../applications/useCases/applications/get-applications-status.usecase';
+import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 
 export class ApplicationController {
   constructor(
@@ -40,7 +41,7 @@ export class ApplicationController {
   applyJob = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
     if (!user || !user.userId) {
-      throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);
+      throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.UNAUTHERIZED);
     }
     const { jobId } = req.params;
     const { resumeId } = req.body;

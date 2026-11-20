@@ -22,6 +22,32 @@ const documentFilter = (req: any, file: any, cb: any) => {
     );
   }
 };
+
+const audioFilter = (req: any, file: any, cb: any) => {
+  const allowedTypes = [
+    'audio/webm',
+    'audio/webm;codecs=opus',
+  ];
+
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(
+      new AppError(
+        'Invalid audio file type',
+        statusCodes.BADREQUEST
+      ),
+      false
+    );
+  }
+};
+
+export const audioUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 20 * 1024 * 1024 },
+  fileFilter: audioFilter,
+});
+
 export const fileUpload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: fileSize * 1020 * 1024 },

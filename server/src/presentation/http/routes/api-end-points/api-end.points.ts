@@ -12,6 +12,10 @@ export const API_END_POINTS = {
   INTERVIEWS: '/',
   UPDATE_STATUS: '/:interviewId/status',
   INTERVIEW: '/:interviewId',
+  AI_MEETING: '/:meetId',
+  AI_SESSION: '/:sessionId',
+  SUBMIT_AI_ANSWER:'/:sessionId/answer',
+
   CONFIRM_INTERVIEW: '/:interviewId/confirm',
   INTERVIEW_RESULT: '/:interviewId/result',
   INTERVIEWS_STATUS: '/interviews-status',

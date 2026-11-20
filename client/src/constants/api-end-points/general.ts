@@ -65,4 +65,8 @@ export const API_ENDPOINTS = {
     RECENT_ACTIVITIES: '/company/dashboard/recent_activities',
     PENDING_ACTION: '/company/dashboard/pending-actions',
   },
+  AI_MEETING: (meetId: string) => `/ai-interviews/${meetId}`,
+  AI_SESSION: (sessionId: string) => `/ai-interviews/${sessionId}
+`,
+  SUBMIT_AI_ANSWER: (sessionId: string) => `/ai-interviews/${sessionId}/answer`,
 };

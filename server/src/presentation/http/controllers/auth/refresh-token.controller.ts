@@ -14,7 +14,7 @@ export class RefreshTokenController {
   }
 
   handle = asyncHandler((req: Request, res: Response, next: NextFunction) => {
-    //  console.log('refresh-token endpoint hit');
+    console.log('refresh-token endpoint hit');
     try {
       const refreshToken = req.cookies.refreshToken;
       console.log('refreshtoken from refresh controller', refreshToken);

@@ -10,6 +10,7 @@ import interviewRoutes from './interview.routes';
 import notificationRoutes from './notification.routes';
 import chatroomRoutes from './chat.routes';
 import messageRouter from './message.routes';
+import aiInterviewRouter from './ai-interview.routes'
 
 const router = Router();
 
@@ -24,5 +25,6 @@ router.use('/interviews', interviewRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/chatrooms', chatroomRoutes);
 router.use('/messages', messageRouter);
+router.use('/ai-interviews', aiInterviewRouter);
 
 export default router;

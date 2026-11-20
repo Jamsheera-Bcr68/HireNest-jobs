@@ -6,6 +6,7 @@ export const CANDIDATE_ROUTES = {
   APPLICATIONS: '/applications',
   MESSAGES: '/messages',
   MEET: '/meetings/:meetId',
+  AI_INTERVIEW: '/ai-interview/:meetId',
   APPLICATION_DETAILS: '/applications/:id',
 } as const;
 

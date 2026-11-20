@@ -7,9 +7,9 @@ export const env = {
   PORT: Number(process.env.PORT),
   NODE_ENV: process.env.NODE_ENV,
   MONGO_URL: String(process.env.MONGO_URI),
-
+  GEMINI_API_KEY: String(process.env.GEMINI_API_KEY),
   FRONTEND_URL: process.env.FRONTEND_URL,
- 
+  GROQ_API_KEY: String(process.env.GROQ_API_KEY),
   AWS_REGION: process.env.AWS_REGION,
   AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME,
   AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,

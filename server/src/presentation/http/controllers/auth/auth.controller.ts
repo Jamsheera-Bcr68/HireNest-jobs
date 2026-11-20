@@ -10,6 +10,7 @@ import { ILogoutUsecase } from '../../../../applications/interfaces/auth/logout.
 
 import { IloginInput } from '../../../../applications/dtos/login.dto';
 import { UserMapper } from '../../../../applications/mappers/user.mapper';
+import { env } from '../../../../infrastructure/config/env';
 
 export class AuthController {
   private _registerUseCase: IRegisterUseCase;
@@ -86,7 +87,7 @@ export class AuthController {
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: env.NODE_ENV === 'development' ? 'lax' : 'none',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/auth/refresh-token',

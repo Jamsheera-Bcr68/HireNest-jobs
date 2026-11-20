@@ -6,6 +6,7 @@ export enum InterviewMode {
 export enum InterviewResult {
   PASSED = 'passed',
   FAILED = 'failed',
+  PENDING = 'pending',
 }
 
 export enum InterviewRound {
@@ -19,4 +20,16 @@ export enum InterviewRound {
 export enum Interviewer {
   HUMAN = 'human',
   AI_AGENT = 'ai_agent',
+}
+
+export enum AISessionStatusEnum {
+  IN_PROGRESS = 'in-progress',
+  PENDING = 'pending',
+  COMPLETED = 'completed',
+}
+export enum AISessionStageEnum {
+  WELCOME = 'welcome',
+  INTRODUCTION = 'introduction',
+  QUESTIONS = 'questions',
+  COMPLETED = 'completed',
 }

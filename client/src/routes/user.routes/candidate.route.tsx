@@ -9,6 +9,7 @@ import { ChatPage } from '../../presentation/pages/user/Chatpage';
 import { CANDIDATE_ROUTES } from '../routes';
 // import CandidateProfileDemo from '../../presentation/components/candidate/Profile';
 import CandidateDashboardPage from '../../presentation/pages/user/candidate/CandidateDashboardPage';
+import AIInterveiwPage from '../../presentation/pages/user/candidate/AIInterveiwPage';
 
 import MeetPage from '../../presentation/pages/user/MeetPage';
 import ViewCompanyPage from '../../presentation/pages/user/candidate/ViewCompanyPage';
@@ -38,7 +39,11 @@ export const CandidateRoutes = () => {
           element={<ApplicationsPage />}
         />
         <Route path={CANDIDATE_ROUTES.MESSAGES} element={<ChatPage />} />
-        <Route path={CANDIDATE_ROUTES.MEET} element={<MeetPage />} />
+        {/* <Route path={CANDIDATE_ROUTES.MEET} element={<MeetPage />} /> */}
+        {/* <Route
+          path={CANDIDATE_ROUTES.AI_INTERVIEW}
+          element={<AIInterveiwPage />}
+        /> */}
       </Route>
       <Route path="/company/:companyId" element={<ViewCompanyPage />} />
     </Routes>

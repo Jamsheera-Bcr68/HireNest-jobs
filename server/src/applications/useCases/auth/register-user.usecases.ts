@@ -15,6 +15,7 @@ export class RegisterUseCase implements IRegisterUseCase {
   }
   async execute(request: IRegisterInput): Promise<IRegisterOutput> {
     const userExist = await this._userRepository.findByEmail(request.email);
+
     if (userExist && userExist.isVerified) {
       throw new AppError(authMessages.error.CONFLICT, statusCodes.CONFLICT);
     } else if (userExist) {
@@ -34,8 +35,6 @@ export class RegisterUseCase implements IRegisterUseCase {
     );
 
     const savedUser = await this._userRepository.createUser(user);
-
-    // console.log('pending user from registerusecase', user);
 
     return savedUser;
   }
