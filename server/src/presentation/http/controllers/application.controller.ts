@@ -6,7 +6,7 @@ import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { Application } from '../../../domain/entities/application.entity';
 import { applicationMessage } from '../../../shared/constants/messages/application.messages';
-import { IGetEntityStatusUseCase } from '../../../applications/interfaces/admin/get-admin-entity-status.usecase';
+
 import { IGetAllEntitiesUsecase } from '../../../applications/interfaces/usecases/get-all-entities.usecase.interface';
 import {
   ApplicationListDto,
@@ -41,7 +41,10 @@ export class ApplicationController {
   applyJob = asyncHandler(async (req: Request, res: Response) => {
     const user = req.user;
     if (!user || !user.userId) {
-      throw new AppError(authMessages.error.UNAUTHORIZED, statusCodes.UNAUTHERIZED);
+      throw new AppError(
+        authMessages.error.UNAUTHORIZED,
+        statusCodes.UNAUTHERIZED
+      );
     }
     const { jobId } = req.params;
     const { resumeId } = req.body;

@@ -1,5 +1,4 @@
 import { ICryptoService } from '../../interfaces/services/crypto.service';
-import { env } from '../../../infrastructure/config/env';
 
 export interface IGenerateMeetlinkUsecase {
   execute(userId: string): Promise<{ link: string }>;

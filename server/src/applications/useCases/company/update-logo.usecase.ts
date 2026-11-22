@@ -1,4 +1,3 @@
-import { Company } from '../../../domain/entities/company.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { UploadFileDto } from '../../dtos/upload-file.dto';
@@ -6,7 +5,6 @@ import { IFileStorageService } from '../../interfaces/services/file-storage.serv
 import { AppError } from '../../../domain/errors/app-error';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { log } from 'util';
 
 export interface IChangeLogogUseCase {
   execute(

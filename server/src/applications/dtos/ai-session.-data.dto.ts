@@ -2,6 +2,7 @@ import {
   AISessionStageEnum,
   InterviewResult,
   InterviewRound,
+  ViolationEnum,
 } from '../../domain/enums/interview.enum';
 import { MeetingDto } from './meeting.dto';
 
@@ -13,6 +14,7 @@ export interface AIMeetingDto {
     status: string;
     stage: AISessionStageEnum;
     totalQuestions: number;
+    violationCount: number;
     currentQuestion: {
       questionId: string | null;
       question: string;
@@ -80,4 +82,17 @@ export interface FinalEvaluationOutputDto {
   result: InterviewResult;
   score: number;
   feedback: string;
+}
+
+export type ProctorEvent = {
+  type: ViolationEnum;
+  at: number;
+  questionId?: string;
+  durationMs: number;
+};
+export interface ReportInterviewViolationIntputDto {
+  sessionId: string;
+  candidateId: string;
+
+  payload: ProctorEvent;
 }

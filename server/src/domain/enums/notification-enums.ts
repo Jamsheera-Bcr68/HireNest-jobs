@@ -1,5 +1,3 @@
-import { InterviewStatusEnum } from './status.enum';
-
 export enum NotificationType {
   INTERVIEW_SCHEDULED = 'Interview Scheduled',
   INTERVIEW_CONFIRMED = 'Interview Confirmed',

@@ -5,12 +5,9 @@ import { ICompanyRepository } from '../../../../domain/repository-interfaces/com
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 
-import {
-  CompanyApplicationChartData,
-  CompanyDashboardAppData,
-} from '../../../types/company-dashboard.types';
+import { CompanyDashboardAppData } from '../../../types/company-dashboard.types';
 import { monthNames } from '../../../types/admin-dashboard.types';
-import { getDateAndTime, getTime } from '../../../../shared/utils';
+import { getTime } from '../../../../shared/utils';
 import { IFileResolverService } from '../../../services/file-url-resolver.service';
 
 export interface ICompanyDashboardAppDataUsecase {

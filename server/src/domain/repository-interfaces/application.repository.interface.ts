@@ -1,11 +1,8 @@
 import { IBaseRepository } from './base-repository.interface';
-import { IApplicationDocument } from '../../infrastructure/database/models/application.model';
+
 import { AggregatedApplication } from '../../applications/dtos/application.dto';
 import { Application } from '../entities/application.entity';
-import {
-  ApplicationFilterDto,
-  ApplicationListDto,
-} from '../../applications/dtos/application.dto';
+import { ApplicationFilterDto } from '../../applications/dtos/application.dto';
 import { IndustryType } from '../types/company-profile.types';
 import { ApplicationStatusEnum } from '../enums/status.enum';
 export interface IApplicationRepository extends IBaseRepository<Application> {

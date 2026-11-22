@@ -1,6 +1,6 @@
 import { IGetEntityDetailsUsecase } from '../../interfaces/usecases/get-entity-details.usecase.inerface';
 import { MeetingDto } from '../../dtos/meeting.dto';
-import { IInterviewDocument } from '../../../infrastructure/database/models/interview.model';
+
 import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
@@ -78,7 +78,7 @@ export class GetInterviewByMeetingIdUsecase implements IGetEntityDetailsUsecase<
       candidateId: interview.candidateId,
       jobId: interview.jobId,
       roundName: interview.roundName,
-      totalQuestions:Number(interview.duration)/5
+      totalQuestions: Number(interview.duration) / 5,
     };
   }
 }

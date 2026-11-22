@@ -1,6 +1,5 @@
-import { ParsedTypes } from 'zod/v4/core/util.cjs';
 import { INotificationRepository } from '../../../domain/repository-interfaces/notification.repository.interface';
-import { NotificationFilterType } from '../../types/notification.type';
+
 import { UserRole } from '../../../domain/enums/user.enums';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { AppError } from '../../../domain/errors/app-error';

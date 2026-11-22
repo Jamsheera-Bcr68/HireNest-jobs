@@ -276,7 +276,7 @@ function MeetContainer({ meetId, role }: Props) {
         localStreamRef.current = localStream;
         const videoTrack = localStream.getVideoTracks()[0];
         const audioTrack = localStream.getAudioTracks()[0];
-        
+
         if (localVideoRef.current) {
           localVideoRef.current.srcObject = localStream;
         }

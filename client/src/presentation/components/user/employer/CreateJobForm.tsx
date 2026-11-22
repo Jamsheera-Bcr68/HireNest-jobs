@@ -28,10 +28,6 @@ const CreateJobPost = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState<string>('');
 
-  const ErrorText = ({ error }: { error: string }) => {
-    return <p className="text-sm text-red-600"> * {error}</p>;
-  };
-
   const selectSkill = (skill: SkillType) => {
     const skill_exist = formData.skills.find((s) => s.id == skill.id);
     if (skill_exist) {
@@ -252,6 +248,10 @@ const CreateJobPost = () => {
         type: 'error',
       });
     }
+  };
+
+  const ErrorText = ({ error }: { error: string }) => {
+    return <p className="text-sm text-red-600"> * {error}</p>;
   };
 
   return (

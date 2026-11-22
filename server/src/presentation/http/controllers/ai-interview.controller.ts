@@ -1,7 +1,8 @@
-import { AIMeetingDto } from '../../../applications/dtos/ai-session.-data.dto';
-import { IGetEntityDetailsUsecase } from '../../../applications/interfaces/usecases/get-entity-details.usecase.inerface';
+import { ProctorEvent } from '../../../applications/dtos/ai-session.-data.dto';
+
 import { IUpdateEntityUseCase } from '../../../applications/interfaces/usecases/update-entity.usecase.interface';
 import { IStartAiInterviewUsecase } from '../../../applications/useCases/ai-interview/start-ai-interview.usecase';
+import { IReportInteriewVioaltionUsecase } from '../../../applications/useCases/ai-sessions/report-violation.usecase';
 import { ISubmitAnswerUsecase } from '../../../applications/useCases/ai-sessions/submit-answer.usecase';
 import { AiSession } from '../../../domain/entities/ai-session.entity';
 import { AppError } from '../../../domain/errors/app-error';
@@ -14,7 +15,8 @@ export class AIISessionController {
   constructor(
     private _startAiInterviewUsecase: IStartAiInterviewUsecase,
     private _updateAisessionUsecase: IUpdateEntityUseCase<AiSession, void>,
-    private _submitAiAnswerUseCase: ISubmitAnswerUsecase
+    private _submitAiAnswerUseCase: ISubmitAnswerUsecase,
+    private _reportInterviewViolationUsecase: IReportInteriewVioaltionUsecase
   ) {}
   startAiInterview = asyncHandler(async (req: Request, res: Response) => {
     const { meetId } = req.params;
@@ -67,7 +69,7 @@ export class AIISessionController {
     const data = req.body;
     console.log('update ai session daa', data);
 
-     await this._updateAisessionUsecase.execute(
+    await this._updateAisessionUsecase.execute(
       sessionId,
 
       user.role,
@@ -82,7 +84,6 @@ export class AIISessionController {
   });
 
   submitAnswer = asyncHandler(async (req: Request, res: Response) => {
-    console.log('from submit ai interview answer');
     const { sessionId } = req.params;
     const user = req.user;
     console.log(sessionId);
@@ -102,7 +103,6 @@ export class AIISessionController {
     const audioFile = req.file;
 
     const data: { questionId: string; stage: string } = req.body;
-    console.log('data from submit answer', audioFile, data);
 
     if (!audioFile) {
       throw new AppError(
@@ -125,12 +125,49 @@ export class AIISessionController {
       },
     });
 
-    console.log('result from controller', result);
-
     res.status(statusCodes.OK).json({
       success: true,
       message: generalMessages.success.ANSWER_SUBMITTED,
       data: result,
+    });
+  });
+
+  reportViolation = asyncHandler(async (req: Request, res: Response) => {
+    console.log('from report ai interview answer');
+    const { sessionId } = req.params;
+    const user = req.user;
+
+    console.log(sessionId);
+    if (!user || !user.userId) {
+      throw new AppError(
+        authMessages.error.UNAUTHORIZED,
+        statusCodes.UNAUTHERIZED
+      );
+    }
+
+    if (!sessionId) {
+      throw new AppError(
+        generalMessages.errors.ID_NOT_FOUND('Meet id'),
+        statusCodes.BADREQUEST
+      );
+    }
+
+    const payload: ProctorEvent = req.body;
+    console.log('data from violation', payload);
+
+    const candidateId = user.userId;
+
+    const result = await this._reportInterviewViolationUsecase.execute({
+      sessionId,
+      candidateId,
+      payload,
+    });
+
+    console.log('result from controller', result);
+
+    res.status(statusCodes.OK).json({
+      success: true,
+      message: generalMessages.success.VIOLATION_REPORTED,
     });
   });
 }

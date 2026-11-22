@@ -26,7 +26,7 @@ export class ReportJobUseCase implements IReportJobUseCase {
         statusCodes.CONFLICT
       );
     }
-    const updated = await this.jobRepository.update(id, {
+    await this.jobRepository.update(id, {
       ...job,
       isReported: true,
       reportDetails: [...job.reportDetails, { ...data, reportedBy: userId }],

@@ -4,7 +4,7 @@ import {
   AIAnswerInputDto,
   AIAnswerEvaluationDto,
 } from '../dtos/ai-session.-data.dto';
-import { IAIInterviewService } from '../interfaces/services/ai.service.interface';
+
 import { GoogleGenAI } from '@google/genai';
 import { getAiInterviewQuestionsPrompt } from '../utils/ai-promt';
 
@@ -25,8 +25,6 @@ export class GeminiAIInterviewService {
     input: AIAnswerInputDto
   ): Promise<AIAnswerEvaluationDto | null> {
     const prompt = getAiInterviewQuestionsPrompt(input);
-
-    console.log('from ai service class');
 
     const candidateAnswer =
       'Hi good evening my name is Jamsheera, I am a software developer currently focusing on MERN stack. I am from Malappuram, Kerala.';

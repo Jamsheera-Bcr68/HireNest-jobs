@@ -1,4 +1,3 @@
-import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { IEducationRepository } from '../../../domain/repository-interfaces/education-repository.interface';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';

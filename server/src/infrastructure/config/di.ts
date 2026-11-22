@@ -121,6 +121,7 @@ import { GetPendingUsecase } from '../../applications/useCases/admin/pendings/ge
 import { StartAiInterviewUsecase } from '../../applications/useCases/ai-interview/start-ai-interview.usecase';
 import { UpdateAIsessionUsecase } from '../../applications/useCases/ai-sessions/update-aisession.usecase';
 import { SubmitAnswerUsecase } from '../../applications/useCases/ai-sessions/submit-answer.usecase';
+import { ReportInterviewViloationUsecase } from '../../applications/useCases/ai-sessions/report-violation.usecase';
 
 //==Controllers
 //==Controllers
@@ -215,15 +216,15 @@ const verifyOtpService = new VerifyOtpService(otpRepository, userRepository);
 export const tokenService = new TokenService();
 const googleAuthService = new GoogleAuthService();
 const imageStorageService = new ImageStorageService();
-const fileStorageServices = new FileStorageService();
+
 const s3FileStorageService = new S3FileStorageService();
 const notificatinService = new NotificationService(notificationRepository);
 const fileUrlResolverService = new FileUrlResolverService(s3FileStorageService);
 export const presenceService = new PresenceService();
 export const companyService = new CompanyService(companyRepository);
 export const cryptoService = new CryptoService();
-const geminiInterviewService = new GeminiAIInterviewService();
-const groqInterviewService=new GroqAIInterviewService()
+
+const groqInterviewService = new GroqAIInterviewService();
 
 const registerUseCase = new RegisterUseCase(userRepository);
 const sendOtpService = new SendOtpService(
@@ -310,7 +311,7 @@ const addEducationUseCase = new AddEducationUseCase(
   educationRepository,
   userRepository
 );
-const getAllEducationUseCase = new GetAllEducationUseCase(educationRepository);
+
 const editEducationUseCase = new EditEducationUseCase(
   educationRepository,
   userRepository
@@ -780,6 +781,12 @@ const submitAnswerUsecase = new SubmitAnswerUsecase(
   jobRepository,
   interviewRepository
 );
+const reportInterviewViolationUsecase = new ReportInterviewViloationUsecase(
+  userRepository,
+  aiSessionRepository,
+  jobRepository,
+  interviewRepository
+);
 //controller
 //controller
 //controller
@@ -957,5 +964,6 @@ export const activityController = new ActivityController(
 export const aiSessionController = new AIISessionController(
   aiInterviewUsecase,
   updateAisessionUsecase,
-  submitAnswerUsecase
+  submitAnswerUsecase,
+  reportInterviewViolationUsecase
 );

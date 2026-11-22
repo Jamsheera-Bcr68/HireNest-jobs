@@ -1,4 +1,3 @@
-import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
@@ -12,7 +11,7 @@ import { Company } from '../../../domain/entities/company.entity';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 import { IFileStorageService } from '../../interfaces/services/file-storage.service';
-import { file } from 'zod';
+
 import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export class GetUserUseCase implements IGetUserUseCase {

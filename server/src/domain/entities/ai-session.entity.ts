@@ -1,7 +1,4 @@
-import {
-  AISessionStageEnum,
-  AISessionStatusEnum,
-} from '../enums/interview.enum';
+import { AISessionStatusEnum, ViolationEnum } from '../enums/interview.enum';
 
 export interface AiSession {
   id: string;
@@ -12,6 +9,7 @@ export interface AiSession {
   currentQuestionIndex: number;
   startedAt: Date;
   completedAt: Date | null;
+  violations: Violation[];
   introduction: {
     question: string;
 
@@ -20,7 +18,6 @@ export interface AiSession {
     score: number;
     status: AISessionStatusEnum;
   };
-  
 
   finalEvaluation: Date | null;
   topics: string[];
@@ -36,4 +33,12 @@ export interface AiSession {
     score: number | null;
     status: string;
   }[];
+}
+
+export interface Violation {
+  type: ViolationEnum;
+  at: Date;
+  durationMs: number;
+  questionId?: string;
+  stage: 'questions' | 'introduction';
 }

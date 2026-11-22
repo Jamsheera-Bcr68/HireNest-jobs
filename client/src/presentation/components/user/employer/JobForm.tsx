@@ -143,10 +143,8 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
   const handlSkillInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-  setSkill(value);
- 
-}
-
+    setSkill(value);
+  };
 
   // const handleSkillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setError((prev) => ({ ...prev, skills: '' }));
@@ -691,4 +689,4 @@ const JobForm = ({ jobId, mode, onClose, onUpdate }: Props) => {
   );
 };
 
-export default JobForm
+export default JobForm;

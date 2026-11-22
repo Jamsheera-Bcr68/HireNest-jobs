@@ -19,6 +19,7 @@ export type AiInterview = {
   status: InterviewStatus;
   stage: InterviewStage;
   totalQuestions: number;
+  violationCount: number;
 };
 
 export type Question = {
@@ -36,8 +37,6 @@ export type InterviewStage =
   | 'completed'
   | 'questions';
 
-
-  
 export type InterviewStatus =
   | 'pending'
   | 'in-progress'

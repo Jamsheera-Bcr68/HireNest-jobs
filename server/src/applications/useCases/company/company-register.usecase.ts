@@ -1,5 +1,5 @@
 import { Company } from '../../../domain/entities/company.entity';
-import { User } from '../../../domain/entities/user.entity';
+
 import { NotificationType } from '../../../domain/enums/notification-enums';
 import {
   RegisterStatusEnum,
@@ -13,14 +13,14 @@ import { IUserRepository } from '../../../domain/repository-interfaces/user-repo
 import { IApplyDetails } from '../../../domain/types/company-profile.types';
 import { CompanyRequestType } from '../../../domain/values/profile-types';
 import { getIO } from '../../../infrastructure/socket';
-import { authMessages } from '../../../shared/constants/messages/auth.mesages';
+
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { companyDto } from '../../dtos/company.dto';
 import { NotificationInputDto } from '../../dtos/notification.dto';
 import { ICompanyRegisterUseCase } from '../../interfaces/company/company-register.usecase';
-import { IFileStorageService } from '../../interfaces/services/file-storage.service';
+
 import { IFileResolverService } from '../../services/file-url-resolver.service';
 import { INotificationService } from '../../services/notification.service';
 

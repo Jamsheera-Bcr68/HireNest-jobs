@@ -4,7 +4,6 @@ import { GenericRepository } from './generic.repository';
 
 import { skillModel, ISkillDocument } from '../database/models/skill.model';
 
-import { SkillStatus } from '../../domain/enums/skill.enum';
 import mongoose, { Types } from 'mongoose';
 
 export class SkillRepository

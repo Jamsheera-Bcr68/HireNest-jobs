@@ -7,16 +7,25 @@ import {
   Minimize2,
   PhoneOff,
   RotateCcw,
+  ScreenShareOff,
+  Share,
+  ShieldAlert,
   Sparkles,
   Square,
   Video,
   VideoOff,
   Volume2,
 } from 'lucide-react';
-import {  Rounds ,type AiInterview,type Question} from '../../../../types/ai-interview.types';
+import { useDraggable } from '../../../hooks/draggable.hook';
+import {
+  Rounds,
+  type AiInterview,
+  type Question,
+} from '../../../../types/ai-interview.types';
 import type { Meeting } from '../../common/meet/MeetContainer';
 
 import type React from 'react';
+import { useRef } from 'react';
 
 const formatTime = (s: number) => {
   const m = Math.floor(s / 60)
@@ -53,6 +62,7 @@ type MeetHeaderProps = {
   isFullscreen: boolean;
   setIsFullscreen: React.Dispatch<React.SetStateAction<boolean>>;
   currentQuestionNumber: number;
+  violationCount: number;
 };
 
 export const MeetHeader = ({
@@ -61,6 +71,7 @@ export const MeetHeader = ({
   isFullscreen,
   setIsFullscreen,
   currentQuestionNumber,
+  violationCount,
 }: MeetHeaderProps) => {
   return (
     <header className="h-16 px-4 sm:px-8 border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md flex items-center justify-between z-20">
@@ -89,7 +100,19 @@ export const MeetHeader = ({
           {/* <span className="text-slate-500">/</span> */}
           {/* <span>{meeting.totalQuestions} Questions</span> */}
         </div>
-
+        <div
+          className={`flex items-center gap-1.5 px-2 sm:px-3 py-1 rounded-full border text-[11px] font-medium ${
+            violationCount > 0
+              ? 'bg-red-500/10 border-red-500/40 text-red-300'
+              : 'bg-amber-500/10 border-amber-500/30 text-amber-300'
+          }`}
+        >
+          <ShieldAlert size={13} />
+          <span className="hidden sm:inline">Proctored</span>
+          {violationCount > 0 && (
+            <span className="font-mono font-bold">{violationCount}</span>
+          )}
+        </div>
         <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/60 text-xs font-mono font-medium text-slate-200">
           <Clock size={13} className="text-fuchsia-400" />
           <span>{formatTime(elaped)}</span>
@@ -109,14 +132,14 @@ export const MeetHeader = ({
 
 type AIStageProps = {
   isAiSpeaking: boolean;
-  setAiSpeaking: React.Dispatch<React.SetStateAction<boolean>>;
+
   videoRef: React.RefObject<HTMLVideoElement | null>;
   isCamOn: boolean;
   name: string;
   isMicOn: boolean;
   interview: AiInterview | null;
-  message: string;
-
+  text: string;
+  isSharing: boolean;
   handleNotReadyClick: () => void;
   handleReadyClick: () => Promise<void>;
   handleStartAnswer: () => void;
@@ -125,16 +148,17 @@ type AIStageProps = {
   stopRecording: () => void;
   question: Question | null;
   thankNote: string;
+  handleRepeatQuestion: () => void;
 };
 export const AIStage = ({
   isAiSpeaking,
-  setAiSpeaking,
+
   isCamOn,
   isMicOn,
   videoRef,
   name,
   interview,
-  message,
+  text,
   thankNote,
   handleNotReadyClick,
   handleReadyClick,
@@ -143,13 +167,19 @@ export const AIStage = ({
   recorderUrl,
   stopRecording,
   question,
+  handleRepeatQuestion,
 }: AIStageProps) => {
- 
+  const mainRef = useRef<HTMLElement>(null);
+  const { elRef, pos, onPointerDown, onPointerMove, onPointerUp } =
+    useDraggable(mainRef);
 
   if (!interview) return null;
 
   return (
-    <main className="flex-1 relative flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden">
+    <main
+      ref={mainRef}
+      className="flex-1 relative flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden"
+    >
       {/* Ambient Glows */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-fuchsia-600/15 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-600/15 rounded-full blur-[80px] pointer-events-none" />
@@ -228,7 +258,7 @@ export const AIStage = ({
               <button
                 type="button"
                 className="text-[11px] text-slate-400 hover:text-white flex items-center gap-1 transition"
-                onClick={() => setAiSpeaking(!isAiSpeaking)}
+                onClick={handleRepeatQuestion}
               >
                 <RotateCcw size={12} />
                 <span>Repeat</span>
@@ -237,7 +267,7 @@ export const AIStage = ({
           </div>
 
           <p className="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">
-            {interview.stage === 'welcome' && message}
+            {interview.stage === 'welcome' && text}
             {interview.stage === 'introduction' &&
               (interview.currentQuestion?.question ?? '')}
 
@@ -311,7 +341,21 @@ export const AIStage = ({
       </div>
 
       {/* ── 3. Candidate Webcam Picture-in-Picture (Draggable/Fixed Corner) ── */}
-      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 w-36 h-24 sm:w-56 sm:h-36 rounded-2xl overflow-hidden border-2 border-slate-700/80 bg-slate-900 shadow-2xl z-20 group">
+      <div
+        ref={elRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        style={
+          pos
+            ? { left: pos.x, top: pos.y, touchAction: 'none' }
+            : { touchAction: 'none' }
+        }
+        className={`absolute w-36 h-24 sm:w-56 sm:h-36 rounded-2xl overflow-hidden border-2 border-slate-700/80 bg-slate-900 shadow-2xl z-20 group cursor-grab active:cursor-grabbing select-none ${
+          pos ? '' : 'top-4 right-4 sm:top-auto sm:bottom-6 sm:right-6'
+        }`}
+      >
         {isCamOn ? (
           /* Webcam Preview Placeholder */
           <div className="w-full h-full relative bg-slate-800 flex items-center justify-center">
@@ -332,8 +376,6 @@ export const AIStage = ({
         ) : (
           /* Camera Off State */
           <div className="w-full h-full bg-slate-900 flex flex-col items-center justify-center text-slate-500 gap-1">
-            {/* <VideoOff size={20} />
-            <span className="text-[10px]">Camera Paused</span> */}
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900 text-slate-400 gap-1.5">
               <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-slate-300">
                 {name?.[0]?.toUpperCase() || 'U'}
@@ -362,6 +404,8 @@ type ControllbarProps = {
   isMicOn: boolean;
   toggleCam: () => void;
   toggleMic: () => void;
+  setIsSharing: React.Dispatch<React.SetStateAction<boolean>>;
+  isSharing: boolean;
 };
 
 export const Controllbar = ({
@@ -369,6 +413,7 @@ export const Controllbar = ({
   isMicOn,
   toggleMic,
   toggleCam,
+  isSharing,
 
   setShowEndModal,
 }: ControllbarProps) => {
@@ -408,6 +453,19 @@ export const Controllbar = ({
           title={isCamOn ? 'Turn Camera Off' : 'Turn Camera On'}
         >
           {isCamOn ? <Video size={20} /> : <VideoOff size={20} />}
+        </button>
+        {/* Screenshar toggle */}
+        <button
+          type="button"
+          onClick={toggleCam}
+          className={`p-3 sm:p-3.5 rounded-2xl border transition-all active:scale-95 ${
+            isCamOn
+              ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750'
+              : 'bg-rose-500/20 border-rose-500/50 text-rose-400'
+          }`}
+          title={isCamOn ? 'Turn Camera Off' : 'Turn Camera On'}
+        >
+          {isSharing ? <ScreenShareOff size={20} /> : <Share size={20} />}
         </button>
 
         {/* End Call Action */}

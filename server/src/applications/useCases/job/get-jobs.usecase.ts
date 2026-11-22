@@ -4,7 +4,7 @@ import { JobListDto, JobFilter } from '../../dtos/job.dto';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
 import { Skill } from '../../../domain/entities/skill.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
-import { User } from '../../../domain/entities/user.entity';
+
 import { AppError } from '../../../domain/errors/app-error';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';

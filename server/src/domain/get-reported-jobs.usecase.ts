@@ -4,8 +4,6 @@ import { IJobRepository } from './repository-interfaces/job-repository.interface
 import { AppError } from './errors/app-error';
 import { statusCodes } from '../shared/enums/statuscodes';
 import { generalMessages } from '../shared/constants/messages/general.messages';
-import { json } from 'zod';
-import { StatusEnum } from './enums/status.enum';
 
 export interface IGetReportedJobsUsecase {
   execute(role: UserRole): Promise<AdminDashboardReportedJob[]>;

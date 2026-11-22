@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 import { NotificationType } from '../../../domain/enums/notification-enums';
 export interface INotificationDocument {
   _id: mongoose.Types.ObjectId;

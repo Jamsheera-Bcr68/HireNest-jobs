@@ -1,4 +1,3 @@
-import { User } from '../../../domain/entities/user.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { IExperienseRepository } from '../../../domain/repository-interfaces/experience-repository.interface';

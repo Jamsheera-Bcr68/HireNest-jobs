@@ -2,15 +2,11 @@ import {
   CandidateStatus,
   UserFilter,
 } from '../../applications/dtos/candidate.dto';
-import { UserDistributionChartData } from '../../applications/types/admin-dashboard.types';
-import {
-  CandidateFilterType,
-  PaginatedCandidates,
-  PaginatedEntities,
-} from '../../applications/types/candidate.type';
+
+import { PaginatedEntities } from '../../applications/types/candidate.type';
 import { User } from '../entities/user.entity';
 import { UserRole } from '../enums/user.enums';
-import { IExperience, IResume } from '../values/profile-types';
+import { IResume } from '../values/profile-types';
 import { IBaseRepository } from './base-repository.interface';
 
 export interface IUserRepository extends IBaseRepository<User> {

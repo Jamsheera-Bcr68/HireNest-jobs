@@ -49,7 +49,7 @@ export class ConfirmInterviewUsecase implements IConfirmInterviewUsecase {
         statusCodes.BADREQUEST
       );
     }
-    const updated = await this._interviewRepository.save(interview.id, {
+    await this._interviewRepository.save(interview.id, {
       isConfirmed: true,
     });
     const job = await this._jobRepository.findById(interview.jobId);

@@ -33,3 +33,10 @@ export enum AISessionStageEnum {
   QUESTIONS = 'questions',
   COMPLETED = 'completed',
 }
+
+export enum ViolationEnum {
+  TAB_HIDDEN = 'tab_hidden',
+  WINDOW_HIDDEN = 'window_blur',
+  FULLSCREEN_EXIT = 'fullscreen_exit',
+  WINDOW_RESIZED = 'window_resized',
+}

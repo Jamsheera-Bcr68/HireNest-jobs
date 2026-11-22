@@ -61,9 +61,9 @@ export type interviewDetailDto = {
   score?: number;
   result?: InterviewResult;
   cancelledBy: UserRole;
-  roundName:RoundType
-  topics:string[]
-  interviewerType:InterviewerType
+  roundName: RoundType;
+  topics: string[];
+  interviewerType: InterviewerType;
 };
 
 export type interviewFeedbackDto = {

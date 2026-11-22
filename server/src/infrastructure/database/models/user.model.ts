@@ -4,7 +4,6 @@ import { UserRole } from '../../../domain/enums/user.enums';
 import {
   IAddress,
   ISocialMediaLinks,
-  IResume,
   CompanyRequestType,
 } from '../../../domain/values/profile-types';
 import { ISkillDocument } from './skill.model';

@@ -1,4 +1,3 @@
-import { Interview } from '../../../domain/entities/interview.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';

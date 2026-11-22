@@ -6,12 +6,15 @@ import { LoadingState } from './Components';
 import { MeetHeader } from './Components';
 import { AIStage, Controllbar } from './Components';
 import EndModal from './EndModal';
-
+import {
+  useProctoring,
+  type ProctorEvent,
+} from '../../../hooks/tab-switch.hook';
 import { useVideoCall } from '../../../hooks/useVideoCall';
 import { socket } from '../../../../services/socket';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../../redux/store';
-import { playAIvoice } from '../../../../utils/tts';
+import { speakText } from '../../../../utils/tts';
 import { getGreeting } from '../../../../utils/date-conversion';
 import { interviewService } from '../../../../services/api-services/interview.service';
 import { useToast } from '../../../../shared/toast/use-toast';
@@ -27,26 +30,22 @@ function Container() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isCamOn, setCamOn] = useState(false);
   const [isMicon, setMicon] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
   const [showEndModal, setShowEndModal] = useState(false);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
   const [question, setQuestion] = useState<Question | null>(null);
   const localAudioStreamRef = useRef<MediaStream | null>(null);
-  const [permissionError, setPermissionError] = useState<string | null>(null);
+
   const mediaRecordRef = useRef<MediaRecorder | null>(null);
   const audioChunkRef = useRef<Blob[]>([]);
   const [interview, setInterview] = useState<AiInterview | null>(null);
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
-  const [isStarted, setIsStarted] = useState(false);
-  const [wecomeMessage, setWelcomeMessage] = useState<string>('');
-  const hasStartedInterview = useRef(false);
+
   const [isRecording, setIsRecording] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
-  // const [localAudioStream, setLocalAudioStream] = useState<MediaStream | null>(
-  //   null
-  // );
+  const [text, setText] = useState<string>('');
+
   const audioContextRef = useRef<AudioContext | null>(null);
   const audioLevelIntervalRef = useRef<number | null>(null);
-  const [recordedAudio, setRecordedAudio] = useState<Blob | null>(null);
 
   const { showToast } = useToast();
 
@@ -56,6 +55,7 @@ function Container() {
   const { getVideoStream, getAudioStream } = useVideoCall();
 
   const { startAiInterview } = useInterviews();
+
   useEffect(() => {
     let cancelled = false;
     const init = async () => {
@@ -82,20 +82,11 @@ function Container() {
 
         setMeeting(meeting);
         setLoading(false);
-        const greeting = getGreeting();
-
-        const message = `${greeting} ${meeting.candidateName}!,Welcome
-         to your interview at ${meeting.candidateName} for the ${meeting.roleTitle} 
-         position.I'll be conducting your interview today. I'll ask you a series 
-         of questions  and evaluate your responses.Please answer each question clearly 
-         and honestly. If you don't understand a question, 
-         feel free to ask me to repeat it.Before we begin, are you ready 
-         for your interview?`;
-        setMessage(message);
       } catch (error) {
         console.log(error);
         setLoading(false);
       }
+
       try {
         videoStream = (await getVideoStream()) ?? null;
         setCamOn(true);
@@ -157,10 +148,7 @@ function Container() {
   }, [meetId]);
 
   const role = useSelector((state: RootState) => state.auth.user)?.role;
-  const participant =
-    role === 'company'
-      ? (meeting?.candidateName ?? 'Candidate')
-      : (meeting?.companyName ?? 'Company');
+
   const currentUserName =
     role == 'company' ? meeting?.companyName : meeting?.candidateName;
   const thankNote = `Thank you, ${currentUserName}! You’ve completed your 
@@ -169,11 +157,42 @@ ${meeting?.companyName ?? 'Our Company'}. Your responses have been
 recorded and will be reviewed shortly. We’ll get back to you with 
 the next steps. Best of luck!`;
 
-  // useEffect(() => {
-  //   if (loading) return;
-  //   const interval = setInterval(() => setElapsed((prev) => prev + 1), 1000);
-  //   return () => clearInterval(interval);
-  // }, [loading]);
+  useEffect(() => {
+    if (!interview || !meeting) return;
+
+    if (interview.stage === 'welcome') {
+      const greeting = getGreeting();
+      setText(
+        `${greeting} ${meeting.candidateName}!
+       Welcome to your interview at ${meeting.companyName}
+        for the ${meeting.roleTitle} position. I'll be conducting 
+        your interview today. I'll ask you a series of questions 
+        and evaluate your responses. Please answer each question clearly 
+        and honestly. If you don't understand a question, feel free to ask 
+        me to repeat it. Please note that this interview is proctored: switching tabs 
+        or leaving fullscreen will be recorded. Before we begin, are you ready for your interview?`
+      );
+    } else if (
+      interview.stage === 'introduction' ||
+      interview.stage === 'questions'
+    ) {
+      setText(interview.currentQuestion.question);
+    } else if (interview.stage === 'completed') {
+      setText(thankNote);
+    }
+  }, [interview, meeting]);
+  useEffect(() => {
+    if (!interview) return;
+    if (interview.stage === 'completed') return;
+
+    const id = setInterval(() => setElapsed((prev) => prev + 1), 1000);
+    return () => clearInterval(id);
+  }, [loading, interview]);
+  useEffect(() => {
+    if (!text) return;
+
+    speakText(text, setIsAiSpeaking);
+  }, [text]);
 
   useEffect(() => {
     if (loading || !meeting) return;
@@ -190,37 +209,29 @@ the next steps. Best of luck!`;
     }
   }, [loading, meeting, isCamOn]);
 
-  useEffect(() => {
-    if (
-      loading ||
-      !meeting ||
-      !localAudioStreamRef.current ||
-      hasStartedInterview.current
-    ) {
-      return;
+  const handleViolation = async (e: ProctorEvent) => {
+    if (!interview) return;
+    try {
+      await interviewService.reportViloations(interview.sessionId, {
+        ...e,
+        questionId: question?.id,
+      });
+      setInterview((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          violationCount: prev.violationCount + 1,
+        };
+      });
+    } catch (error) {
+      console.log(error);
     }
-    hasStartedInterview.current = true;
-    const candidateName = meeting.candidateName;
-    const companyName = meeting.companyName;
-    const role = meeting.roleTitle;
-    const greetingScript = `Hello ${candidateName}, welcome to your technical interview for the ${role} position at ${companyName}. I will ask you a series of questions today. Feel free to take a moment before answering. Are you ready?}`;
+  };
+  const interviewActive = interview
+    ? ['introduction', 'questions'].includes(interview.stage)
+    : false;
 
-    // Call our TTS helper
-    playAIvoice(
-      greetingScript,
-      () => {
-        // 1. Turn on the glowing AI animation & show "Speaking..."
-        setIsAiSpeaking(true);
-      },
-      () => {
-        // 2. Turn off AI speaking animation
-        setIsAiSpeaking(false);
-
-        // 3. This is where we turn on candidate speech-to-text!
-        // startListening();
-      }
-    );
-  }, [loading, meeting]);
+  useProctoring(interviewActive, handleViolation);
 
   if (loading) return <LoadingState />;
   if (!meeting) return;
@@ -283,7 +294,7 @@ the next steps. Best of luck!`;
   };
 
   const handleNotReadyClick = () => {
-    setMessage(
+    setText(
       'No problem! Take your time. Click I am Ready whenever you want to begin'
     );
   };
@@ -301,242 +312,7 @@ the next steps. Best of luck!`;
         return { ...prev, stage: 'introduction', status: 'in-progress' };
       });
     }
-
-    setMessage('');
   };
-
-  //   const startRecording = (stream: MediaStream) => {
-  //     try {
-  //       if (mediaRecordRef.current?.state === 'recording') {
-  //         return;
-  //       }
-
-  //       const audioTracks = stream.getAudioTracks();
-
-  //       if (!audioTracks.length) {
-  //         console.error('No microphone audio track available');
-  //         return;
-  //       }
-
-  //       const audioStream = new MediaStream(audioTracks);
-
-  //       const mimeType = ['audio/webm;codecs=opus', 'audio/webm'].find((type) =>
-  //         MediaRecorder.isTypeSupported(type)
-  //       );
-
-  //       const recorder = mimeType
-  //         ? new MediaRecorder(audioStream, { mimeType })
-  //         : new MediaRecorder(audioStream);
-
-  //       audioChunkRef.current = [];
-
-  //       recorder.ondataavailable = (event) => {
-  //         if (event.data.size > 0) {
-  //           audioChunkRef.current.push(event.data);
-  //           console.log('Audio chunk received:', event.data.size);
-  //         }
-  //       };
-
-  //       // recorder.onstop1 = async () => {
-  //       //   const audioBlob = new Blob(audioChunkRef.current, {
-  //       //     type: recorder.mimeType,
-  //       //   });
-  //       //   setRecordedAudio(audioBlob);
-  //       //   const arrayBuffer = await audioBlob.arrayBuffer();
-  //       //   const decodeContext = new AudioContext();
-
-  //       //   try {
-  //       //     const decodedAudio = await decodeContext.decodeAudioData(arrayBuffer);
-
-  //       //     const samples = decodedAudio.getChannelData(0);
-
-  //       //     let peak = 0;
-  //       //     let sumSquares = 0;
-
-  //       //     for (const sample of samples) {
-  //       //       peak = Math.max(peak, Math.abs(sample));
-  //       //       sumSquares += sample * sample;
-  //       //     }
-
-  //       //     console.log('Decoded audio:', {
-  //       //       duration: decodedAudio.duration,
-  //       //       peak,
-  //       //       rms: Math.sqrt(sumSquares / samples.length),
-  //       //     });
-  //       //   } catch (error) {
-  //       //     console.error('Decoding failed:', error);
-  //       //   } finally {
-  //       //     await decodeContext.close();
-  //       //   }
-
-  //       //   console.log('Recorded audio details:', {
-  //       //     size: audioBlob.size,
-  //       //     type: audioBlob.type,
-  //       //   });
-
-  //       //   const audioUrl = URL.createObjectURL(audioBlob);
-  //       //   setRecordedAudioUrl(audioUrl);
-  //       //   const audio = new Audio(audioUrl);
-
-  //       //   audio.onloadedmetadata = () => {
-  //       //     console.log('Audio duration:', audio.duration);
-  //       //   };
-
-  //       //   audio.onerror = () => {
-  //       //     console.error('Audio playback error:', audio.error);
-  //       //   };
-
-  //       //   // Stop microphone level monitoring
-  //       //   if (audioLevelIntervalRef.current !== null) {
-  //       //     clearInterval(audioLevelIntervalRef.current);
-  //       //     audioLevelIntervalRef.current = null;
-  //       //   }
-
-  //       //   // Close audio context
-  //       //   if (audioContextRef.current) {
-  //       //     await audioContextRef.current.close();
-  //       //     audioContextRef.current = null;
-  //       //   }
-
-  //       //   setIsRecording(false);
-  //       // };
-
-  //       recorder.onstop = async () => {
-  //   const blob = new Blob(audioChunkRef.current, { type: recorder.mimeType });
-  //   setRecordedAudio(blob);
-  //   setIsRecording(false);
-  //   cleanupAudioMonitor();
-  //   await submitAnswer(blob);
-  // };
-  //       recorder.onerror = (event) => {
-  //         console.error('MediaRecorder error:', event);
-  //         setIsRecording(false);
-  //       };
-
-  //       mediaRecordRef.current = recorder;
-
-  //       // Microphone audio level monitoring
-  //       const audioContext = new AudioContext();
-  //       audioContextRef.current = audioContext;
-
-  //       const source = audioContext.createMediaStreamSource(audioStream);
-  //       const analyser = audioContext.createAnalyser();
-
-  //       source.connect(analyser);
-
-  //       const dataArray = new Uint8Array(analyser.fftSize);
-
-  //       const checkAudioLevel = () => {
-  //         analyser.getByteTimeDomainData(dataArray);
-
-  //         const average =
-  //           dataArray.reduce((sum, value) => sum + Math.abs(value - 128), 0) /
-  //           dataArray.length;
-
-  //         console.log('Microphone audio level:', average);
-  //       };
-
-  //       audioLevelIntervalRef.current = window.setInterval(checkAudioLevel, 1000);
-
-  //       recorder.start(1000);
-
-  //       console.log('Recorder state:', recorder.state);
-
-  //       setIsRecording(true);
-  //     } catch (error) {
-  //       console.error('Error starting recording:', error);
-  //       setIsRecording(false);
-  //     }
-  //   };
-
-  //   const startRecording = (stream: MediaStream) => {
-  //     try {
-  //       if (mediaRecordRef.current?.state === 'recording') {
-  //         return;
-  //       }
-
-  //       const audioTracks = stream.getAudioTracks();
-
-  //       if (!audioTracks.length) {
-  //         console.error('No microphone audio track available');
-  //         return;
-  //       }
-
-  //       const audioStream = new MediaStream(audioTracks);
-
-  //       const mimeType = ['audio/webm;codecs=opus', 'audio/webm'].find((type) =>
-  //         MediaRecorder.isTypeSupported(type)
-  //       );
-
-  //       const recorder = mimeType
-  //         ? new MediaRecorder(audioStream, { mimeType })
-  //         : new MediaRecorder(audioStream);
-
-  //       audioChunkRef.current = [];
-
-  //       recorder.ondataavailable = (event) => {
-  //         if (event.data.size > 0) {
-  //           audioChunkRef.current.push(event.data);
-  //           console.log('Audio chunk received:', event.data.size, event.data);
-  //         }
-  //       };
-
-  //       recorder.onstop = async() => {
-  //         const audioBlob = new Blob(audioChunkRef.current, {
-  //           type: recorder.mimeType,
-  //         });
-
-  //         console.log('Recorded audio:', audioBlob);
-  //         console.log('Audio size:', audioBlob.size);
-
-  //         const audioUrl = URL.createObjectURL(audioBlob);
-  //         setRecordedAudioUrl(audioUrl);
-
-  // clearInterval(audioLevelInterval);
-  // await audioContext.close();
-
-  //         setIsRecording(false);
-  //       };
-
-  //       recorder.onerror = (event) => {
-  //         console.error('MediaRecorder error:', event);
-  //         setIsRecording(false);
-  //       };
-
-  //       mediaRecordRef.current = recorder;
-
-  //       /////
-
-  //       const audioContext = new AudioContext();
-  //       const source = audioContext.createMediaStreamSource(audioStream);
-  //       const analyser = audioContext.createAnalyser();
-
-  //       source.connect(analyser);
-
-  //       const dataArray = new Uint8Array(analyser.fftSize);
-
-  //       const checkAudioLevel = () => {
-  //         analyser.getByteTimeDomainData(dataArray);
-
-  //         const average =
-  //           dataArray.reduce((sum, value) => sum + Math.abs(value - 128), 0) /
-  //           dataArray.length;
-
-  //         console.log('Microphone audio level:', average);
-  //       };
-
-  //       const audioLevelInterval = window.setInterval(checkAudioLevel, 1000);
-  //       /////
-  //       recorder.start(1000);
-
-  //       console.log('Recorder state:', recorder.state);
-
-  //       setIsRecording(true);
-  //     } catch (error) {
-  //       console.error('Error starting recording:', error);
-  //       setIsRecording(false);
-  //     }
-  //   };
 
   const handleStartAnswer = () => {
     const localAudioStream = localAudioStreamRef.current;
@@ -596,39 +372,24 @@ the next steps. Best of luck!`;
         formData
       );
       const q: Question = data.data;
+      if (q.question) {
+        speakText(q.question, setIsAiSpeaking);
+      }
       setQuestion(q);
-      setInterview((prev) => (prev ? { ...prev, stage: q.completed?'completed':'questions' } : prev));
+      setInterview((prev) =>
+        prev
+          ? { ...prev, stage: q.completed ? 'completed' : 'questions' }
+          : prev
+      );
+
       showToast({ type: 'success', msg: data.message });
-      setRecordedAudio(null);
+
       setRecordedAudioUrl(null);
     } catch (error) {
       console.error('Error submitting answer:', error);
       showToast({ type: 'error', msg: 'Failed to submit your answer.' });
     }
   };
-
-  // const submitAnswer1 = async (blob: Blob) => {
-  //   if (!interview) return;
-
-  //   const ext = blob.type.includes('mp4') ? 'mp4' : 'webm';
-  //   const formData = new FormData();
-  //   formData.append('audio', blob, `answer.${ext}`);
-
-  //   try {
-  //     const data = await interviewService.submitAiAnswer(
-  //       interview.sessionId,
-  //       formData
-  //     );
-  //     setQuestion(data.data);
-  //     setInterview((prev) => (prev ? { ...prev, stage: 'questions' } : prev));
-  //     showToast({ type: 'success', msg: data.message });
-  //     setRecordedAudio(null);
-  //     setRecordedAudioUrl(null);
-  //   } catch (error) {
-  //     console.error('Error submitting answer:', error);
-  //     showToast({ type: 'error', msg: 'Failed to submit your answer.' });
-  //   }
-  // };
 
   const startRecording = (stream: MediaStream) => {
     try {
@@ -664,7 +425,6 @@ the next steps. Best of luck!`;
           type: recorder.mimeType,
         });
 
-        setRecordedAudio(blob);
         setIsRecording(false);
         cleanupAudioMonitor();
 
@@ -693,47 +453,9 @@ the next steps. Best of luck!`;
     }
   };
 
-  // const submitAnswer = async (blob:Blob) => {
-  //   console.log(recordedAudio, interview);
-
-  //   if (!recordedAudio || !interview) {
-  //     showToast({
-  //       type: 'error',
-  //       msg: 'Please record your answer first.',
-  //     });
-  //     return;
-  //   }
-  //   const formData = new FormData();
-  //   formData.append('audio', recordedAudio, 'answer.webm');
-
-  //   try {
-  //     const data = await interviewService.submitAiAnswer(
-  //       interview.sessionId,
-  //       formData
-  //     );
-  //     setQuestion(data.data);
-
-  //     showToast({
-  //       type: 'success',
-  //       msg: data.message,
-  //     });
-  //     setRecordedAudio(null);
-  //     setRecordedAudioUrl(null);
-  //   } catch (error) {
-  //     console.error('Error submitting answer:', error);
-  //   }
-  // };
-
-  // const stopRecording 1= async () => {
-  //   console.log('from stop recording');
-
-  //   const recorder = mediaRecordRef.current;
-
-  //   if (recorder && recorder.state === 'recording') {
-  //     recorder.stop();
-  //   }
-  //   await submitAnswer();
-  // };
+  const handleRepeatQuestion = () => {
+    speakText(text, setIsAiSpeaking);
+  };
 
   return (
     <div className="h-screen w-screen bg-slate-950 text-slate-100 flex flex-col justify-between overflow-hidden relative select-none">
@@ -743,13 +465,14 @@ the next steps. Best of luck!`;
         isFullscreen={isFullscreen}
         setIsFullscreen={setIsFullscreen}
         currentQuestionNumber={question ? question.number : 0}
+        violationCount={interview ? interview.violationCount : 0}
       />
       <AIStage
+        isSharing={isSharing}
         interview={interview}
-        message={message}
+        text={text}
         question={question}
         isAiSpeaking={isAiSpeaking}
-        setAiSpeaking={setIsAiSpeaking}
         isMicOn={isMicon}
         isCamOn={isCamOn}
         videoRef={localVideoRef}
@@ -761,8 +484,11 @@ the next steps. Best of luck!`;
         stopRecording={stopRecording}
         recorderUrl={recordedAudioUrl}
         thankNote={thankNote}
+        handleRepeatQuestion={handleRepeatQuestion}
       />
       <Controllbar
+        isSharing={isSharing}
+        setIsSharing={setIsSharing}
         isCamOn={isCamOn}
         isMicOn={isMicon}
         toggleCam={toggleCam}

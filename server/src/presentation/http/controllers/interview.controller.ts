@@ -18,7 +18,6 @@ import {
   InterviewFilterDto,
   InterviewListDto,
   interviewDetailDto,
-  interviewDto,
   interviewInputDto,
 } from '../../../applications/dtos/interview.dto';
 import {

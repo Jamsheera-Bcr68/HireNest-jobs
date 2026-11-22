@@ -1,8 +1,16 @@
 import mongoose, { Types, Schema, Model, model } from 'mongoose';
 import {
-  AISessionStageEnum,
+  ViolationEnum,
   AISessionStatusEnum,
 } from '../../../domain/enums/interview.enum';
+
+export interface IViolation {
+  type: ViolationEnum;
+  at: Date;
+  durationMs: number;
+  questionId?: Types.ObjectId;
+  stage: 'questions' | 'introduction';
+}
 
 export interface IAIsessionDocument {
   _id: mongoose.Types.ObjectId;
@@ -11,6 +19,7 @@ export interface IAIsessionDocument {
   jobId: mongoose.Types.ObjectId;
   status: AISessionStatusEnum;
   currentQuestionIndex: number;
+  violations: IViolation[];
   startedAt: Date;
   completedAt: Date;
   introduction: {
@@ -20,7 +29,7 @@ export interface IAIsessionDocument {
     score: number;
     status: AISessionStatusEnum;
   };
- 
+
   finalEvaluation: Date | null;
   topics: string[];
   duration: number;
@@ -37,6 +46,16 @@ export interface IAIsessionDocument {
   }[];
 }
 
+const violationSchema = new Schema<IViolation>(
+  {
+    type: { type: String, enum: Object.values(ViolationEnum), required: true },
+    at: { type: Date, required: true },
+    durationMs: { type: Number },
+    questionId: { type: mongoose.Types.ObjectId },
+  },
+  { _id: false } // no separate _id for each violation
+);
+
 const aiInterviewSessionSchema = new Schema<IAIsessionDocument>({
   interviewId: { type: Types.ObjectId },
   candidateId: { type: Types.ObjectId },
@@ -45,6 +64,7 @@ const aiInterviewSessionSchema = new Schema<IAIsessionDocument>({
   currentQuestionIndex: { type: Number },
   startedAt: { type: Date },
   completedAt: { type: Date },
+  violations: { type: [violationSchema], default: [] },
   introduction: {
     type: {
       question: String,
@@ -58,7 +78,7 @@ const aiInterviewSessionSchema = new Schema<IAIsessionDocument>({
   topics: { type: [String], default: [] },
   duration: { type: Number },
   totalQuestions: { type: Number },
- 
+
   questions: [
     {
       _id: { type: Types.ObjectId },
@@ -72,7 +92,6 @@ const aiInterviewSessionSchema = new Schema<IAIsessionDocument>({
     },
   ],
 });
-
 
 aiInterviewSessionSchema.index({ interviewId: 1 }, { unique: true });
 export const aiInterviewSessionModel: Model<IAIsessionDocument> =

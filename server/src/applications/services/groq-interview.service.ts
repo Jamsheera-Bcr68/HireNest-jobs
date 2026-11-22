@@ -8,7 +8,10 @@ import {
 } from '../dtos/ai-session.-data.dto';
 import { IAIInterviewService } from '../interfaces/services/ai.service.interface';
 import Groq, { toFile } from 'groq-sdk';
-import { getAiInterviewQuestionsPrompt, getFinalEvaluationPrompt } from '../utils/ai-promt';
+import {
+  getAiInterviewQuestionsPrompt,
+  getFinalEvaluationPrompt,
+} from '../utils/ai-promt';
 
 export class GroqAIInterviewService implements IAIInterviewService {
   private _ai: Groq;
@@ -89,7 +92,7 @@ export class GroqAIInterviewService implements IAIInterviewService {
 
   async getFinalEvaluation(
     data: FinalEvaluationInputDto
-  ): Promise<FinalEvaluationOutputDto|null> {
+  ): Promise<FinalEvaluationOutputDto | null> {
     const prompt = getFinalEvaluationPrompt(data);
     try {
       const response = await this._ai.chat.completions.create({

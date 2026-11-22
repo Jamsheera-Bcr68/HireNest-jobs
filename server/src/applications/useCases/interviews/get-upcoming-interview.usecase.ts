@@ -5,7 +5,7 @@ import { IInterviewRepository } from '../../../domain/repository-interfaces/inte
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { InterviewFilterDto } from '../../dtos/interview.dto';
-import { ICompanyService } from '../../interfaces/services/company.service';
+
 import { DashboardUpcomingInterview } from '../../types/candidate-dashboard.types';
 import { getDayAndDate, getTime } from '../../../shared/utils';
 

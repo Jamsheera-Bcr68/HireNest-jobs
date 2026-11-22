@@ -1,5 +1,5 @@
 import { Education } from '../../../domain/entities/education.entity';
-import { User } from '../../../domain/entities/user.entity';
+
 import {
   EducationLevel,
   EducationStatus,

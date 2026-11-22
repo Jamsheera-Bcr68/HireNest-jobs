@@ -1,7 +1,4 @@
-import {
-  ApplicationDetailsDto,
-  ApplicationTimelineItemDTO,
-} from '../dtos/application.dto';
+import { ApplicationTimelineItemDTO } from '../dtos/application.dto';
 import { Application } from '../../domain/entities/application.entity';
 
 export function buildApplicationTimeline(

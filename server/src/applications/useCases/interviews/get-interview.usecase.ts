@@ -1,5 +1,5 @@
 import { IGetEntityDetailsUsecase } from '../../interfaces/usecases/get-entity-details.usecase.inerface';
-import { ApplicationDetailsDto } from '../../dtos/application.dto';
+
 import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';

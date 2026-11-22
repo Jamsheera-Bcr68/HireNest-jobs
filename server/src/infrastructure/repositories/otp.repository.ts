@@ -1,7 +1,7 @@
 import { otpModel, IOtpDocument } from '../database/models/otp.model';
 import { IOtpRepository } from '../../domain/repository-interfaces/otp-repository.interface';
-import { Error, Model } from 'mongoose';
-//import { GenericRepository } from "../genericRepository";
+import { Model } from 'mongoose';
+
 import { AppError } from '../../domain/errors/app-error';
 import { statusCodes } from '../../shared/enums/statuscodes';
 import { userMessages } from '../../shared/constants/messages/user.messages';

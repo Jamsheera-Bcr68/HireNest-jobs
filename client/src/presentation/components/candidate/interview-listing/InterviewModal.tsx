@@ -24,11 +24,11 @@ export default function InterviewDetailsModal({
   useLockBodyScroll(isOpen);
   const [activeTab, setActiveTab] = useState('details');
 
-    useEffect(() => {
-  if (isOpen) {
-    setActiveTab('details');
-  }
-}, [isOpen]);
+  useEffect(() => {
+    if (isOpen) {
+      setActiveTab('details');
+    }
+  }, [isOpen]);
 
   if (!isOpen || !interview) return null;
   const tabs = [
@@ -38,8 +38,7 @@ export default function InterviewDetailsModal({
       ? [{ label: 'Feedback', value: 'feedback' }]
       : []),
   ];
-  const {mode,t}=useTheme()
-
+  const { mode, t } = useTheme();
 
   return (
     <div

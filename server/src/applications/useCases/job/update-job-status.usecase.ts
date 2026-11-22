@@ -4,7 +4,7 @@ import { AppError } from '../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
-import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
+
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { userMessages } from '../../../shared/constants/messages/user.messages';

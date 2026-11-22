@@ -294,10 +294,11 @@ export const useInterviews = (setPage?: (page: number) => void) => {
 
   const startAiInterview = useCallback(async (meetId: string) => {
     console.log('from use interviewas');
-    
+
     const responseData = await interviewService.startAiInterview(meetId);
-    let data: { meeting: Meeting; aiInterview: AiInterview } = responseData.data;
-    
+    let data: { meeting: Meeting; aiInterview: AiInterview } =
+      responseData.data;
+
     return data;
   }, []);
 

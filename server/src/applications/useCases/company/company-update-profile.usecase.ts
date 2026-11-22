@@ -3,7 +3,7 @@ import { AppError } from '../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { companyDto, CompanyUpdateDto } from '../../dtos/company.dto';
+import { CompanyUpdateDto } from '../../dtos/company.dto';
 import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface ICompanyUpdateProfileUseCase {

@@ -8,7 +8,7 @@ import { ICompanyRepository } from '../../../domain/repository-interfaces/compan
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { IAiSessionRepository } from '../../../domain/repository-interfaces/ai-session.repository.interface';
-import { Types } from 'mongoose';
+
 import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 import {
   AISessionStageEnum,
@@ -158,6 +158,7 @@ export class StartAiInterviewUsecase implements IStartAiInterviewUsecase {
       aiInterview: this.buildAiInterview(session),
     };
   }
+
   private buildAiInterview(session: AiSession) {
     const introDone = !!session.introduction?.answer;
 
@@ -210,6 +211,7 @@ export class StartAiInterviewUsecase implements IStartAiInterviewUsecase {
       stage,
       totalQuestions: session.totalQuestions,
       currentQuestion,
+      violationCount: session.violations.length,
     };
   }
 }

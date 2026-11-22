@@ -58,7 +58,7 @@ export class AdminRepository
   }
 
   async updatePassword(id: string, password: string): Promise<void> {
-    const admin = await this._model.findByIdAndUpdate(id, {
+    await this._model.findByIdAndUpdate(id, {
       $set: { password },
       $unset: {
         resetToken: '',

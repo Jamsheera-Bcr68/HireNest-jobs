@@ -13,33 +13,13 @@ import {
   FileText,
   ArrowUpRight,
 } from 'lucide-react';
-import { THEME_TOKENS } from '../../../../contexts/ThemeContext';
-
-interface InterviewDetailsProps {
-  interview: {
-    status: string;
-    isConfirmed?: boolean;
-    isRescheduleRequested?: boolean;
-    date: string;
-    time: string;
-    duration?: string | number;
-    mode: 'online' | 'offline';
-    meetLink?: string;
-    location?: string;
-    note?: string;
-    notes?: string;
-    roundName?: string;
-    topics?: string;
-  };
-  theme?: 'light' | 'dark';
-}
 
 type Props = {
   interview: interviewDetailDto;
 };
 export function InterviewDetails({ interview }: Props) {
   console.log('candidate interview', interview);
-  const { t, mode } = useTheme();
+  const { t } = useTheme();
 
   const ROUND_LABELS: Record<string, string> = {
     screening: 'Screening Round',
@@ -56,7 +36,7 @@ export function InterviewDetails({ interview }: Props) {
     return (
       ROUND_LABELS[interview.roundName.toLowerCase()] || interview.roundName
     );
-  }, [interview?.roundName]);
+  }, [interview.roundName]);
   // Parse topics string into array
 
   const noteText = interview.note;
@@ -272,27 +252,28 @@ export function InterviewDetails({ interview }: Props) {
                 </a> */}
 
                 {(() => {
-                const isAi =
-                  interview?.interviewerType?.toLowerCase().trim() === 'ai_agent';
-                const targetUrl = isAi
-                  ? `/ai-interview/${interview.meetLink}`
-                  : `/meeting/${interview.meetLink}`;
+                  const isAi =
+                    interview?.interviewerType?.toLowerCase().trim() ===
+                    'ai_agent';
+                  const targetUrl = isAi
+                    ? `/ai-interview/${interview.meetLink}`
+                    : `/meeting/${interview.meetLink}`;
 
-                return (
-                  <a
-                    href={targetUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 hover:from-fuchsia-500 hover:via-purple-500 hover:to-indigo-500 shadow-md shadow-fuchsia-500/25 active:scale-95 transition-all text-center flex-shrink-0 touch-manipulation"
-                  >
-                    <span>Join Meeting</span>
-                    <ArrowUpRight
-                      size={14}
-                      className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    />
-                  </a>
-                );
-              })()}
+                  return (
+                    <a
+                      href={targetUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 hover:from-fuchsia-500 hover:via-purple-500 hover:to-indigo-500 shadow-md shadow-fuchsia-500/25 active:scale-95 transition-all text-center flex-shrink-0 touch-manipulation"
+                    >
+                      <span>Join Meeting</span>
+                      <ArrowUpRight
+                        size={14}
+                        className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    </a>
+                  );
+                })()}
               </div>
             ) : (
               <p className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/40 p-2.5 rounded-xl border border-amber-200 dark:border-amber-900/60 font-medium">

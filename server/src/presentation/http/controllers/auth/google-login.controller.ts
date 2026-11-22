@@ -31,7 +31,7 @@ export class GoogleLoginController {
     res.cookie('refreshToken', refreshToken, {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      sameSite:  env.NODE_ENV === 'development' ? 'lax' : 'none',
+      sameSite: env.NODE_ENV === 'development' ? 'lax' : 'none',
       maxAge: 24 * 60 * 60 * 1000,
       path: '/auth/refresh-token',
     });

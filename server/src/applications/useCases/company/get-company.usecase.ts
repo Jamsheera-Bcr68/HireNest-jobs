@@ -1,4 +1,3 @@
-import { Company } from '../../../domain/entities/company.entity';
 import { ApplicationStatusEnum } from '../../../domain/enums/status.enum';
 import { AppError } from '../../../domain/errors/app-error';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';

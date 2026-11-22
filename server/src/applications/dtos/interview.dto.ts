@@ -18,7 +18,7 @@ export type interviewInputDto = {
   duration: string;
   isAddlinkLater: boolean;
   status?: InterviewStatusEnum;
-   roundName: InterviewRound;
+  roundName: InterviewRound;
   interviewerType: Interviewer;
   topics?: string;
 };
@@ -61,7 +61,6 @@ export type interviewDto = {
   status: InterviewStatusEnum;
   createdAt: string;
   isConfirmed: boolean;
-  
 };
 
 export type InterviewStatsCardType = {
@@ -116,9 +115,9 @@ export type interviewDetailDto = {
   note?: string;
   cancelledBy: UserRole;
   score?: number;
-  topics:string[],
-  interviewerType:Interviewer
-  roundName:InterviewRound
+  topics: string[];
+  interviewerType: Interviewer;
+  roundName: InterviewRound;
 };
 
 export type interviewCountFilterDto = {};

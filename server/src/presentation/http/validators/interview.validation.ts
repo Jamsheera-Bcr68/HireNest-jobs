@@ -14,8 +14,6 @@ export const interviewFormSchema = z
       .or(z.literal('')),
     date: z.string().min(1, 'Date is required'),
 
-   
-
     time: z.string().min(1, 'Time is required'),
 
     duration: z.string().min(1, 'Duration is required'),
@@ -34,7 +32,7 @@ export const interviewFormSchema = z
   })
 
   .superRefine((data, ctx) => {
- if (data.interviewerType === 'ai_agent' && data.mode === 'offline') {
+    if (data.interviewerType === 'ai_agent' && data.mode === 'offline') {
       ctx.addIssue({
         path: ['mode'],
         code: z.ZodIssueCode.custom,

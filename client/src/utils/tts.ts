@@ -1,42 +1,49 @@
-export const playAIvoice = (
+export const speakText = (
   text: string,
-  onStart: () => void,
-  onEnd: () => void
+  onSpeakingchange?: (speaking: boolean) => void
 ) => {
-  if (!('speechSynthesis' in window)) {
-    console.error('Text-to-speech not supported in this browser.');
-    onEnd();
-    return;
+  console.log('from speach text', text, onSpeakingchange);
+
+  if (!text.trim() || typeof window === 'undefined') return;
+  const synth = window.speechSynthesis;
+  synth.cancel();
+
+  const uttarance = new SpeechSynthesisUtterance(text.trim());
+
+  const voices = synth.getVoices();
+  const selectedVoice =
+    voices.find((v) => v.lang === 'en-US') ||
+    voices.find((v) => v.lang.startsWith('en'));
+
+  if (selectedVoice) {
+    uttarance.voice = selectedVoice;
   }
+  uttarance.lang = selectedVoice?.lang || 'en-US';
 
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.95;
-  utterance.pitch = 1;
-  const voices = window.speechSynthesis.getVoices();
-  const englishVoice = voices.find(
-    (v) =>
-      v.lang.includes('en') &&
-      (v.name.includes('Google') || v.name.includes('Natural'))
-  );
-  if (englishVoice) {
-    utterance.voice = englishVoice;
+  uttarance.rate = 0.9;
+  uttarance.pitch = 1;
+  uttarance.volume = 1;
+
+  uttarance.onstart = () => {
+    console.log('✅ Browser started speaking');
+    onSpeakingchange?.(true);
+  };
+
+  uttarance.onend = () => {
+    console.log('✅ Browser ended speaking');
+    onSpeakingchange?.(false);
+  };
+
+  uttarance.onerror = (err) => {
+    console.error('❌ Speech error:', err);
+    onSpeakingchange?.(false);
+  };
+
+  synth.speak(uttarance);
+};
+
+export const stopSpeaking = () => {
+  if (typeof window !== 'undefined') {
+    window.speechSynthesis.cancel();
   }
-
-  // Event triggered when audio actually begins
-  utterance.onstart = () => {
-    onStart();
-  };
-
-  // Event triggered the exact millisecond the AI finishes speaking
-  utterance.onend = () => {
-    onEnd();
-  };
-
-  utterance.onerror = (event) => {
-    console.error('Speech synthesis error:', event);
-    onEnd();
-  };
-
-  window.speechSynthesis.speak(utterance);
 };

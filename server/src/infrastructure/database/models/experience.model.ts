@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, Types, Document } from 'mongoose';
+import { Schema, model, Types, Document } from 'mongoose';
 import { WorkMode } from '../../../domain/enums/work-mode.enum';
 
 export interface IExperienceDocument extends Document {

@@ -37,7 +37,7 @@ export class WebRTCServices implements IWebRTCServices {
   ): Promise<MediaStream> {
     return navigator.mediaDevices.getUserMedia(constraints);
   }
-  
+
   getPeerConnection(): RTCPeerConnection {
     return new RTCPeerConnection({
       iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],

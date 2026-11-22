@@ -11,7 +11,6 @@ import { type ApplicationStatusType } from '../../../../../types/dtos/applicatio
 import AddReasonModal from '../../../admin/jobs/AddReasonModal';
 import InterviewModal from './InterviewModal';
 
-
 function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
   const { showToast } = useToast();
   const { id } = useParams();
@@ -21,7 +20,7 @@ function AppDetailsContainer({ role }: { role: 'admin' | 'company' }) {
     null
   );
   const [showRejectReason, setShowRejectReason] = useState<boolean>(false);
- 
+
   const [showInterview, setShowInterview] = useState<boolean>(false);
   const [chatroomId, setChatroomId] = useState<string | null>(null);
 

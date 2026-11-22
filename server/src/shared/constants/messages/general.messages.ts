@@ -22,6 +22,7 @@ export const generalMessages = {
       'Company Reapplication Submitted Successfully',
     DASHBOARD_STATUS_DATA_FETCHED: 'Dashboard statuscard data fetched',
     ANSWER_SUBMITTED: 'Answer submitted successfully',
+    VIOLATION_REPORTED: 'Violation reported successfully',
   },
   errors: {
     UNABLE_TO_DELETE_FILE: 'Unable to delete the file',

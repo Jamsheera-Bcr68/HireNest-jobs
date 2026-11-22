@@ -2,7 +2,7 @@ import { AppError } from '../../../domain/errors/app-error';
 import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
 import { jobMessages } from '../../../shared/constants/messages/job.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { JobDetailsDto, JobDto, JobUpdateDto } from '../../dtos/job.dto';
+import { JobDto, JobUpdateDto } from '../../dtos/job.dto';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
@@ -53,9 +53,9 @@ export class UpdateJobUseCase implements IUpdateJobUseCase {
         statusCodes.NOTFOUND
       );
 
-    const skillIds = new Set(job.skills.map(String));
+    // const skillIds = new Set(job.skills.map(String));
 
-    const skillnames = skills.filter((skill) => skillIds.has(String(skill.id)));
+    // const skillnames = skills.filter((skill) => skillIds.has(String(skill.id)));
 
     if (!updated)
       throw new AppError(jobMessages.error.JOB_NOT_FOUND, statusCodes.NOTFOUND);

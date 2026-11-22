@@ -1,4 +1,4 @@
-import { RegisterStatusEnum, StatusEnum } from '../enums/status.enum';
+import { RegisterStatusEnum } from '../enums/status.enum';
 
 export const Industry_Type = [
   'Information Technology',

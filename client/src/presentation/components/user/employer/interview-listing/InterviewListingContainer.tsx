@@ -446,22 +446,16 @@ function InterviewListingContainer() {
   //       interviews.map((i) => (i.id !== interview.id ? i : { ...i, ...data,} ))
   //     );
   // };
-  
 
- 
   const updateInterveiw = (data: Partial<interviewDetailDto>) => {
-  setInterview((prev) =>
-    prev ? { ...prev, ...data } : prev
-  );
+    setInterview((prev) => (prev ? { ...prev, ...data } : prev));
 
-  setInterviews((prev) =>
-    prev.map((item) =>
-      item.id === interview?.id
-        ? { ...item, ...data }
-        : item
-    )
-  );
-};
+    setInterviews((prev) =>
+      prev.map((item) =>
+        item.id === interview?.id ? { ...item, ...data } : item
+      )
+    );
+  };
 
   const handleAddResult = async (values: {
     result: InterviewResult;
@@ -539,16 +533,18 @@ function InterviewListingContainer() {
           onConfirm={handleStatusChange}
         />
 
-        {viewModal&&<InterviewDetailsModal
-          onUpdate={updateInterveiw}
-          interview={interview}
-          isOpen={viewModal}
-          onClose={() => {
-            console.log('from onclose');
-            setViewModal(false);
-            setSelectedId(null);
-          }}
-        />}
+        {viewModal && (
+          <InterviewDetailsModal
+            onUpdate={updateInterveiw}
+            interview={interview}
+            isOpen={viewModal}
+            onClose={() => {
+              console.log('from onclose');
+              setViewModal(false);
+              setSelectedId(null);
+            }}
+          />
+        )}
         <RescheduleModal
           isOpen={rescheduleModal}
           onClose={() => {

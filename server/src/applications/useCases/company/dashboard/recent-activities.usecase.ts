@@ -1,4 +1,3 @@
-import { cp } from 'fs';
 import { UserRole } from '../../../../domain/enums/user.enums';
 import { AppError } from '../../../../domain/errors/app-error';
 import { IApplicationRepository } from '../../../../domain/repository-interfaces/application.repository.interface';
@@ -9,8 +8,8 @@ import { generalMessages } from '../../../../shared/constants/messages/general.m
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { IDashboardDataListUsecase } from '../../../interfaces/dashboard/dashboard-data-list.usecase.interface';
 import { RecentActivityDto } from '../../../types/company-dashboard.types';
-import { JOB_SORT, JobSortType } from '../../../types/sort.types';
-import { IChatroomRepository } from '../../../../domain/repository-interfaces/chatroom.repository.interface';
+import { JOB_SORT } from '../../../types/sort.types';
+
 import { formatDate } from '../../../../shared/utils';
 
 const messages = {

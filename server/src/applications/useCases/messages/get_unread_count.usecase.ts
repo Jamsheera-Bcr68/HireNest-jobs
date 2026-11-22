@@ -1,6 +1,6 @@
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
-import { IChatroomRepository } from '../../../domain/repository-interfaces/chatroom.repository.interface';
+
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
 import { IMessageRepository } from '../../../domain/repository-interfaces/message.repository.interface';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';

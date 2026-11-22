@@ -6,7 +6,7 @@ import { ICompanyRepository } from '../../../../domain/repository-interfaces/com
 import { IJobRepository } from '../../../../domain/repository-interfaces/job-repository.interface';
 import { generalMessages } from '../../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../../shared/enums/statuscodes';
-import { IDashboardDataListUsecase } from '../../../interfaces/dashboard/dashboard-data-list.usecase.interface';
+
 import { DashboardJobData } from '../../../types/company-dashboard.types';
 
 export interface ICompanyDashboardJobDataUsecase {

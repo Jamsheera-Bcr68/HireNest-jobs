@@ -20,8 +20,14 @@ router.patch(
 );
 router.post(
   API_END_POINTS.SUBMIT_AI_ANSWER,
-  authValidator(tokenService),audioUpload.single('audio'),
+  authValidator(tokenService),
+  audioUpload.single('audio'),
   aiSessionController.submitAnswer
+);
+router.patch(
+  API_END_POINTS.REPORT_VIOLATION,
+  authValidator(tokenService),
+  aiSessionController.reportViolation
 );
 
 export default router;

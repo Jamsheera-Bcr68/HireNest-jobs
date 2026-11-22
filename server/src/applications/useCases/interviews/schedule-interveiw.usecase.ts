@@ -1,10 +1,9 @@
-import { Notification } from '../../../domain/entities/notification.entity';
 import { AppError } from '../../../domain/errors/app-error';
 import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
 import { IInterviewRepository } from '../../../domain/repository-interfaces/interview.repository.interface';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { interviewInputDto, interviewDto } from '../../dtos/interview.dto';
+import { interviewInputDto } from '../../dtos/interview.dto';
 import { Interview } from '../../../domain/entities/interview.entity';
 import {
   ApplicationStatusEnum,
@@ -19,7 +18,7 @@ import { NotificationInputDto } from '../../dtos/notification.dto';
 import { getIO } from '../../../infrastructure/socket';
 import { IChatroomRepository } from '../../../domain/repository-interfaces/chatroom.repository.interface';
 import { ChatroomInputDto } from '../../dtos/chatroom.dto';
-import { Chatroom } from '../../../domain/entities/chatroom.entity';
+
 import { IEmailService } from '../../interfaces/services/email.service';
 import { IUserRepository } from '../../../domain/repository-interfaces/user-repository.interface';
 import { Interviewer } from '../../../domain/enums/interview.enum';

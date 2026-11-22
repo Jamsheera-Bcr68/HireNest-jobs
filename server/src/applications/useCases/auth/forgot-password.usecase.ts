@@ -55,7 +55,7 @@ export class ForgotPassWordUsecase implements IForgotPasswordUsecase {
       );
     }
 
-    const resetLink = `${env.FRONTEND_URL }/reset-password/${resetToken}?role=${role}`;
+    const resetLink = `${env.FRONTEND_URL}/reset-password/${resetToken}?role=${role}`;
     await this._emailService.sendResetPasswordLink(email, resetLink);
   }
 }

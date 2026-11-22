@@ -69,4 +69,6 @@ export const API_ENDPOINTS = {
   AI_SESSION: (sessionId: string) => `/ai-interviews/${sessionId}
 `,
   SUBMIT_AI_ANSWER: (sessionId: string) => `/ai-interviews/${sessionId}/answer`,
+  INTERVIEW_VIOLATION: (sessionId: string) =>
+    `/ai-interviews/${sessionId}/violations`,
 };

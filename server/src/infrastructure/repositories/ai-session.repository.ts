@@ -32,7 +32,10 @@ export class AISessionRepository
       currentQuestionIndex: doc.currentQuestionIndex,
       startedAt: doc.startedAt,
       completedAt: doc.completedAt,
-
+      violations: doc.violations.map((v) => ({
+        ...v,
+        questionId: v.questionId?.toString(),
+      })),
       finalEvaluation: doc.finalEvaluation,
       topics: doc.topics,
       duration: doc.duration,
@@ -61,7 +64,7 @@ export class AISessionRepository
     if (entity.interviewId)
       data.interviewId = new mongoose.Types.ObjectId(entity.interviewId);
     if (entity.status) data.status = entity.status;
-    if (entity.currentQuestionIndex)
+    if (entity.currentQuestionIndex !== undefined)
       data.currentQuestionIndex = entity.currentQuestionIndex;
     if (entity.startedAt) data.startedAt = entity.startedAt;
     if (entity.completedAt) data.completedAt = entity.completedAt;
@@ -70,7 +73,18 @@ export class AISessionRepository
     if (entity.duration) data.duration = entity.duration;
     if (entity.totalQuestions) data.totalQuestions = entity.totalQuestions;
     if (entity.introduction) data.introduction = entity.introduction;
-
+    // if (entity.violations)data.violations=
+    //   data.violations?.map((v) => ({
+    //     ...v,
+    //     questionId: v.questionId ? new Types.ObjectId(v.questionId) : undefined,
+    //   }))
+    if (entity.violations)
+      data.violations = entity.violations.map((v) => ({
+        ...v,
+        questionId: v.questionId
+          ? new mongoose.Types.ObjectId(v.questionId)
+          : undefined,
+      }));
     if (entity.questions)
       data.questions = entity.questions.map((q) => ({
         _id: q.id

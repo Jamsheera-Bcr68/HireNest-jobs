@@ -10,7 +10,7 @@ import interviewRoutes from './interview.routes';
 import notificationRoutes from './notification.routes';
 import chatroomRoutes from './chat.routes';
 import messageRouter from './message.routes';
-import aiInterviewRouter from './ai-interview.routes'
+import aiInterviewRouter from './ai-interview.routes';
 
 const router = Router();
 

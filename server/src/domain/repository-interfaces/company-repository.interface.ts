@@ -1,14 +1,11 @@
 import { IBaseRepository } from './base-repository.interface';
 import { Company } from '../entities/company.entity';
 import {
-  companyDto,
   CompanyFilterDto,
   CompanyStatus,
-  PendingCompany,
 } from '../../applications/dtos/company.dto';
 import { chartDataDto } from '../types/chart.data.type';
-import { User } from '../entities/user.entity';
-import { CompanyListDTO } from '../../applications/dtos/company.dto';
+
 import { type PaginatedCompanies } from '../../applications/dtos/company.dto';
 import { StatusEnum } from '../enums/status.enum';
 

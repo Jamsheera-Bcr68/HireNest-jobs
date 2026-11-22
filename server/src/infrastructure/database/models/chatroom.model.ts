@@ -1,5 +1,4 @@
-import mongoose, { Model, model } from 'mongoose';
-import { string } from 'zod';
+import mongoose, { model } from 'mongoose';
 
 export interface IChatroomDocument {
   _id: mongoose.Types.ObjectId;

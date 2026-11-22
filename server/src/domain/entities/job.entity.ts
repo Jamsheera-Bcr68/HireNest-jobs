@@ -1,9 +1,6 @@
-import { UserSkillDto } from '../../applications/dtos/skill.dto';
-import { EducationType } from '../../presentation/http/validators/education-form.validator';
 import { StatusEnum } from '../enums/status.enum';
 import { WorkMode } from '../enums/work-mode.enum';
 import { JobType, ExperienceType } from '../types/job.types';
-import { Skill } from './skill.entity';
 
 export interface Job {
   id: string;

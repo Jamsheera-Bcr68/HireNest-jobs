@@ -13,7 +13,7 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { UserSkillDto } from '../../dtos/skill.dto';
 import { INotificationService } from '../../services/notification.service';
 import { NotificationType } from '../../../domain/enums/notification-enums';
-import { Notification } from '../../../domain/entities/notification.entity';
+
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { notificationMessages } from '../../../shared/constants/messages/notification.messages';
 import { getIO } from '../../../infrastructure/socket';

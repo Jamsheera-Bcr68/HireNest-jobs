@@ -24,21 +24,12 @@ const documentFilter = (req: any, file: any, cb: any) => {
 };
 
 const audioFilter = (req: any, file: any, cb: any) => {
-  const allowedTypes = [
-    'audio/webm',
-    'audio/webm;codecs=opus',
-  ];
+  const allowedTypes = ['audio/webm', 'audio/webm;codecs=opus'];
 
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(
-      new AppError(
-        'Invalid audio file type',
-        statusCodes.BADREQUEST
-      ),
-      false
-    );
+    cb(new AppError('Invalid audio file type', statusCodes.BADREQUEST), false);
   }
 };
 

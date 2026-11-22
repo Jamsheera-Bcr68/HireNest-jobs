@@ -7,7 +7,7 @@ import { generalMessages } from '../../../../shared/constants/messages/general.m
 import { statusCodes } from '../../../../shared/enums/statuscodes';
 import { getDateAndTime, getTime } from '../../../../shared/utils';
 import { IDashboardDataListUsecase } from '../../../interfaces/dashboard/dashboard-data-list.usecase.interface';
-import { IFileStorageService } from '../../../interfaces/services/file-storage.service';
+
 import { IFileResolverService } from '../../../services/file-url-resolver.service';
 import { DashboardInterview } from '../../../types/company-dashboard.types';
 

@@ -1,10 +1,5 @@
 import { UserRole } from '../enums/user.enums';
-import {
-  IAddress,
-  IExperience,
-  IResume,
-  ISocialMediaLinks,
-} from '../values/profile-types';
+import { IAddress, IResume, ISocialMediaLinks } from '../values/profile-types';
 import { UserSkillDto } from '../../applications/dtos/skill.dto';
 
 import { Experience } from './experience.entity';

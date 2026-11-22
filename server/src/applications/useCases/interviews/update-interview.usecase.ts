@@ -1,4 +1,3 @@
-import { Interview } from '../../../domain/entities/interview.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
@@ -8,7 +7,7 @@ import { IUserRepository } from '../../../domain/repository-interfaces/user-repo
 import { authMessages } from '../../../shared/constants/messages/auth.mesages';
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
-import { interviewDetailDto, interviewDto } from '../../dtos/interview.dto';
+import { interviewDetailDto } from '../../dtos/interview.dto';
 import { IUpdateEntityUseCase } from '../../interfaces/usecases/update-entity.usecase.interface';
 import { InterviewMapper } from '../../mappers/interview.mapper';
 import { interviewInputDto } from '../../dtos/interview.dto';
@@ -59,28 +58,24 @@ export class UpdateInterviewUsecase implements IUpdateEntityUseCase<
         generalMessages.errors.NOT_FOUND('Company'),
         statusCodes.NOTFOUND
       );
-      
-      if (interview.companyId !== company.id) {
-  throw new AppError(
-    authMessages.error.UNAUTHORIZED,
-    statusCodes.UNAUTHERIZED
-  );
-}
+
+    if (interview.companyId !== company.id) {
+      throw new AppError(
+        authMessages.error.UNAUTHORIZED,
+        statusCodes.UNAUTHERIZED
+      );
+    }
     const { date, time, topics, ...rest } = data;
 
     const scheduledAt = new Date(`${date}T${time}`);
     const updatedTopics = topics ? topics?.split(',') : [];
 
-const isScheduleChanged =
-  scheduledAt.getTime() !== new Date(interview.scheduledAt).getTime();
-
+    const isScheduleChanged =
+      scheduledAt.getTime() !== new Date(interview.scheduledAt).getTime();
 
     let requested = interview.isRescheduleRequested;
     let reason = interview.reasonForRescheduleRequest;
-    if (
-     requested &&
-      isScheduleChanged
-    ) {
+    if (requested && isScheduleChanged) {
       requested = false;
       reason = '';
     }
@@ -142,8 +137,7 @@ const isScheduleChanged =
     return {
       ...updatedInterview,
       candidateImageUrl: await fileUrlResolver(
-        updatedInterview.candidateImageUrl,
-        
+        updatedInterview.candidateImageUrl
       ),
       companyLogo: await fileUrlResolver(updatedInterview.companyLogo),
     };

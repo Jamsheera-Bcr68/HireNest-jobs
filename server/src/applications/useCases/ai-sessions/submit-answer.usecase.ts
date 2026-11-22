@@ -16,7 +16,6 @@ import { INTERVIEW_INSTRUCTIONS } from '../../../shared/constants/messages/ai-in
 import { generalMessages } from '../../../shared/constants/messages/general.messages';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import {
-  FinalEvaluationInputDto,
   FinalEvaluationOutputDto,
   SubmitAiAnswerDto,
   SubmitAnswerOuputDto,
@@ -49,7 +48,7 @@ export class SubmitAnswerUsecase implements ISubmitAnswerUsecase {
     private _interviewRepository: IInterviewRepository
   ) {}
   async execute(data: SubmitAiAnswerDto): Promise<SubmitAnswerOuputDto> {
-    const { sessionId, candidateId, answer, questionId = null, stage } = data;
+    const { sessionId, candidateId, answer, questionId = null } = data;
 
     const candidate = await this._userRepository.findById(candidateId);
     if (!candidate) {

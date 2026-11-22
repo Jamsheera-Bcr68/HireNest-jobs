@@ -1,8 +1,12 @@
-import { InterviewRound } from '../../domain/enums/interview.enum';
 import { INTERVIEW_INSTRUCTIONS } from '../../shared/constants/messages/ai-interview-instructions';
-import { AIAnswerInputDto, FinalEvaluationInputDto } from '../dtos/ai-session.-data.dto';
+import {
+  AIAnswerInputDto,
+  FinalEvaluationInputDto,
+} from '../dtos/ai-session.-data.dto';
 
-export const getAiInterviewQuestionsPrompt = (data: AIAnswerInputDto): string => {
+export const getAiInterviewQuestionsPrompt = (
+  data: AIAnswerInputDto
+): string => {
   const turnRule = data.isLastQuestion
     ? `This is the FINAL question of the interview. Evaluate the answer and write closing feedback. Do NOT generate a next question. Leave nextQuestion and topic empty.`
     : `After evaluating the answer, generate the next question. Pick a topic from the list that has not been covered yet, and do not repeat any previous question.`;
@@ -27,10 +31,8 @@ export const getAiInterviewQuestionsPrompt = (data: AIAnswerInputDto): string =>
   return prompt;
 };
 
-
 export const getFinalEvaluationPrompt = (
   input: FinalEvaluationInputDto
-  
 ): string => {
   return `
 You are an experienced technical interviewer responsible for evaluating a candidate's overall interview performance.

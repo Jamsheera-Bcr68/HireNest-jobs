@@ -258,7 +258,7 @@ export class ApplicationRepository
   }
 
   async count(filter: ApplicationFilterDto): Promise<number> {
-    const { candidateId, companyId, jobId, startDate, endDate } = filter;
+    const { candidateId, companyId, jobId } = filter;
     // console.log('filter', filter);
 
     const q: AppQuery = {};

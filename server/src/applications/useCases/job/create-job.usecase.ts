@@ -7,7 +7,7 @@ import { IJobRepository } from '../../../domain/repository-interfaces/job-reposi
 import { Job } from '../../../domain/entities/job.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { ICompanyRepository } from '../../../domain/repository-interfaces/company-repository.interface';
-import { UserMapper } from '../../mappers/user.mapper';
+
 import { ISkillRepository } from '../../../domain/repository-interfaces/skill-repository.interface';
 export interface ICrateJobUseCase {
   execute(payload: JobDto, userId: string, role: UserRole): Promise<Job>;
@@ -32,10 +32,7 @@ export class CrateJobUseCase implements ICrateJobUseCase {
         statusCodes.NOTFOUND
       );
     const { skills } = payload;
-    const postCount = await this._skillRepository.updatePostUsedCount(
-      skills,
-      'add'
-    );
+    await this._skillRepository.updatePostUsedCount(skills, 'add');
     const newJob = await this._jobRepository.create({
       ...payload,
       companyId: company.id,

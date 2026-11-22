@@ -8,6 +8,7 @@ import type {
   InterviewDto,
   InterviewStatusType,
 } from '../../types/dtos/interview.dto';
+import type { ProctorEvent } from '../../presentation/hooks/tab-switch.hook';
 
 export const interviewService = {
   async scheduleInterview(data: interviewFormType, applicationId: string) {
@@ -114,7 +115,7 @@ export const interviewService = {
 
   async startAiInterview(meetId: string) {
     console.log('from start interview');
-    
+
     const response = await axiosInstance.post(API_ENDPOINTS.AI_MEETING(meetId));
     console.log('ai meeting response', response.data);
 
@@ -132,8 +133,8 @@ export const interviewService = {
   },
 
   async submitAiAnswer(sessionId: string, formData: FormData) {
-    console.log('from data',formData);
-    
+    console.log('from data', formData);
+
     const response = await axiosInstance.post(
       API_ENDPOINTS.SUBMIT_AI_ANSWER(sessionId),
       formData
@@ -141,5 +142,14 @@ export const interviewService = {
     console.log(response.data);
 
     return response.data;
+  },
+
+  async reportViloations(sessionId: string, data: Partial<ProctorEvent>) {
+    console.log('vialtion data', sessionId, data);
+    const res = await axiosInstance.patch(
+      API_ENDPOINTS.INTERVIEW_VIOLATION(sessionId),
+      data
+    );
+    console.log('vialtion response', res);
   },
 };

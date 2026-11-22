@@ -10,13 +10,12 @@ import {
   RotateCcw,
   Clock,
   ShieldAlert,
-  Loader2,
   Maximize2,
   Minimize2,
 } from 'lucide-react';
 
 export const AiInterviewRoom: React.FC = () => {
-console.log('this is from ai interview room');
+  console.log('this is from ai interview room');
 
   // ── States & Toggles ──
   const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +39,7 @@ console.log('this is from ai interview room');
   // ── Dummy Live Speech Subtitles ──
   const liveTranscript = {
     speaker: 'AI Agent',
-    text: "Can you explain the differences between useMemo and useCallback, and in what real-world scenario overusing them could actually degrade performance?",
+    text: 'Can you explain the differences between useMemo and useCallback, and in what real-world scenario overusing them could actually degrade performance?',
   };
 
   // Simulate loading state on mount
@@ -52,7 +51,10 @@ console.log('this is from ai interview room');
   // Timer increment
   useEffect(() => {
     if (isLoading) return;
-    const interval = setInterval(() => setElapsedTime((prev) => prev + 1), 1000);
+    const interval = setInterval(
+      () => setElapsedTime((prev) => prev + 1),
+      1000
+    );
     return () => clearInterval(interval);
   }, [isLoading]);
 
@@ -69,11 +71,17 @@ console.log('this is from ai interview room');
       <div className="h-screen w-screen bg-slate-950 flex flex-col items-center justify-center text-white px-4">
         <div className="relative flex items-center justify-center mb-6">
           <div className="w-16 h-16 rounded-full border-4 border-fuchsia-600/20 border-t-fuchsia-500 animate-spin" />
-          <Sparkles size={24} className="absolute text-fuchsia-400 animate-pulse" />
+          <Sparkles
+            size={24}
+            className="absolute text-fuchsia-400 animate-pulse"
+          />
         </div>
-        <h2 className="text-lg font-bold text-slate-100">Preparing AI Interview Session...</h2>
+        <h2 className="text-lg font-bold text-slate-100">
+          Preparing AI Interview Session...
+        </h2>
         <p className="text-xs text-slate-400 mt-1.5 text-center max-w-sm">
-          Calibrating neural audio models, checking microphone latency, and loading role-specific topics.
+          Calibrating neural audio models, checking microphone latency, and
+          loading role-specific topics.
         </p>
       </div>
     );
@@ -81,7 +89,6 @@ console.log('this is from ai interview room');
 
   return (
     <div className="h-screen w-screen bg-slate-950 text-slate-100 flex flex-col justify-between overflow-hidden relative select-none">
-      
       {/* ── 1. Top Bar: Header & Session Meta ── */}
       <header className="h-16 px-4 sm:px-8 border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md flex items-center justify-between z-20">
         <div className="flex items-center gap-3 min-w-0">
@@ -125,14 +132,12 @@ console.log('this is from ai interview room');
 
       {/* ── 2. Main Stage (AI Avatar & Visualizer) ── */}
       <main className="flex-1 relative flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden">
-        
         {/* Ambient Glows */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 sm:w-96 h-80 sm:h-96 bg-fuchsia-600/15 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-600/15 rounded-full blur-[80px] pointer-events-none" />
 
         {/* Central Voice Avatar Orb */}
         <div className="relative flex flex-col items-center justify-center z-10">
-          
           {/* Animated Pulsing Rings (Active when AI speaks) */}
           <div className="relative flex items-center justify-center">
             {isAiSpeaking && (
@@ -177,7 +182,11 @@ console.log('this is from ai interview room');
                 isAiSpeaking ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'
               }`}
             />
-            <span>{isAiSpeaking ? 'AI Interviewer Speaking...' : 'AI Listening to your answer...'}</span>
+            <span>
+              {isAiSpeaking
+                ? 'AI Interviewer Speaking...'
+                : 'AI Listening to your answer...'}
+            </span>
           </div>
         </div>
 
@@ -236,7 +245,6 @@ console.log('this is from ai interview room');
 
       {/* ── 4. Control Bar Footer ── */}
       <footer className="h-20 px-4 sm:px-8 border-t border-slate-800/80 bg-slate-900/60 backdrop-blur-md flex items-center justify-between z-20">
-        
         {/* Device Indicators (Left) */}
         <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400">
           <div className="w-2 h-2 rounded-full bg-emerald-400" />
@@ -245,7 +253,6 @@ console.log('this is from ai interview room');
 
         {/* Main Center Action Buttons */}
         <div className="flex items-center gap-3 sm:gap-4 mx-auto sm:mx-0">
-          
           {/* Mic Toggle */}
           <button
             type="button"
@@ -301,13 +308,18 @@ console.log('this is from ai interview room');
                 <ShieldAlert size={22} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-white">End Interview Session?</h3>
-                <p className="text-xs text-slate-400">Are you sure you want to finish?</p>
+                <h3 className="text-sm font-bold text-white">
+                  End Interview Session?
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Are you sure you want to finish?
+                </p>
               </div>
             </div>
 
             <p className="text-xs text-slate-300 leading-relaxed">
-              Your audio transcript up to this point will be submitted to the AI evaluation committee for automated grading.
+              Your audio transcript up to this point will be submitted to the AI
+              evaluation committee for automated grading.
             </p>
 
             <div className="flex items-center justify-end gap-2.5 pt-2">

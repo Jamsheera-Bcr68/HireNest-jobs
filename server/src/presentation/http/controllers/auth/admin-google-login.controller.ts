@@ -23,7 +23,7 @@ export class AdminGoogleAuthController {
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      sameSite:  env.NODE_ENV === 'development' ? 'lax' : 'none',
+      sameSite: env.NODE_ENV === 'development' ? 'lax' : 'none',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000,
       path: '/auth/refresh-token',

@@ -59,7 +59,7 @@ export class UpdateInterviewStatusUsecase implements IUpdateEntityStatusUseCase<
       data.reasonForCancel = reason;
       data.cancelledBy = role;
     }
-    const updated = await this._interviewRepository.update(id, data);
+    await this._interviewRepository.update(id, data);
 
     const job = await this._jobRepository.findById(interview.jobId);
     if (!job)

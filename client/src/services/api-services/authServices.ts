@@ -38,7 +38,7 @@ export const authService = {
   },
 
   async googleSignIn(token: string, role: UserRole) {
-    let api =
+    const api =
       role === 'admin'
         ? AUTH_ENDPOINTS.ADMIN_GOOGLE_AUTH
         : AUTH_ENDPOINTS.USER_GOOGLE_AUTH;

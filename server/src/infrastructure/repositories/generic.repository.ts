@@ -1,4 +1,4 @@
-import mongoose, { Model, Types, UpdateQuery } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 import { IBaseRepository } from '../../domain/repository-interfaces/base-repository.interface';
 
 export abstract class GenericRepository<

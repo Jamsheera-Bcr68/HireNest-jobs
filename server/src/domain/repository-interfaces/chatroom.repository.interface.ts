@@ -1,8 +1,6 @@
 import {
   ChatroomFilterDto,
-  ChatroomInputDto,
   AggregatedChatroomDto,
-  ChatroomDocType,
 } from '../../applications/dtos/chatroom.dto';
 import { Chatroom } from '../entities/chatroom.entity';
 import { UserRole } from '../enums/user.enums';

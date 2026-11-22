@@ -4,9 +4,7 @@ import { AppError } from '../../../domain/errors/app-error';
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { userMessages } from '../../../shared/constants/messages/user.messages';
 import { CompanyMapper } from '../../mappers/company.mapper';
-import { IJobRepository } from '../../../domain/repository-interfaces/job-repository.interface';
-import { IApplicationRepository } from '../../../domain/repository-interfaces/application.repository.interface';
-import { ApplicationStatusEnum } from '../../../domain/enums/status.enum';
+
 import { IFileStorageService } from '../../interfaces/services/file-storage.service';
 
 export interface IGetCompanyDataUseCase {

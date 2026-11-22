@@ -13,7 +13,6 @@ import { InterviewFilterDto } from '../../applications/dtos/interview.dto';
 import { InterviewStatusEnum } from '../../domain/enums/status.enum';
 import { InterviewResult } from '../../domain/enums/interview.enum';
 
-
 export class InterviewRepository
   extends GenericRepository<Interview, IInterviewDocument>
   implements IInterviewRepository
@@ -78,7 +77,7 @@ export class InterviewRepository
     if (entity.duration) data.duration = entity.duration;
     if (entity.isAddlinkLater) data.isAddlinkLater = entity.isAddlinkLater;
     if (entity.isConfirmed) data.isConfirmed = entity.isConfirmed;
-    if (entity.isRescheduleRequested===false)
+    if (entity.isRescheduleRequested === false)
       data.isRescheduleRequested = entity.isRescheduleRequested;
     if (entity.isRescheduleRequested)
       data.isRescheduleRequested = entity.isRescheduleRequested;

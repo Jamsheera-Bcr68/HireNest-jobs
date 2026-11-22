@@ -1,7 +1,6 @@
 import mongoose, { model, Model, Types } from 'mongoose';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { SkillStatus } from '../../../domain/enums/skill.enum';
-import { number } from 'zod';
 
 export interface ISkillDocument extends Document {
   _id: Types.ObjectId;

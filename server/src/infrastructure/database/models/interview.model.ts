@@ -80,7 +80,7 @@ export const InterviewSchema = new mongoose.Schema<IInterviewDocument>(
       enum: Object.values(InterviewRound),
       default: InterviewRound.SCREENING,
     },
-    topics: { type: [String],default:[] },
+    topics: { type: [String], default: [] },
   },
   { timestamps: true }
 );
