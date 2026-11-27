@@ -29,9 +29,9 @@ export class S3FileStorageService implements IFileStorageService {
     fileExtension: string = '.jpg'
   ): Promise<string> {
     console.log('from s3 stroage folder name is ', folder);
-if(!fileExtension.includes('.')){
-  fileExtension=`.${fileExtension}`
-}
+    if (!fileExtension.includes('.')) {
+      fileExtension = `.${fileExtension}`;
+    }
     const fileName = `${randomUUID()}${fileExtension}`;
     const key = `${folder}/${fileName}`;
     const command = new PutObjectCommand({

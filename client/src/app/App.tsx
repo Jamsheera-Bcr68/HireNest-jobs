@@ -8,6 +8,7 @@ import { addNotification } from '../redux/slices/notification.slice.ts';
 import { useSelector, useDispatch } from 'react-redux';
 import { handleRefreshTokenApi } from '../libraries/axios.ts';
 import { addChatroom, addMessage } from '../redux/slices/chatroom.slice.ts';
+import type { MessageType } from '../types/message.types.ts';
 
 function App() {
   const { chatrooms, activeChatroomId } = useSelector(
@@ -24,6 +25,7 @@ function App() {
     socket.on('connect', () => {
       console.log('front end connected', socket.id);
     });
+
     socket.on('connect_error', async (err) => {
       console.log('connect errror');
       console.log(err);
@@ -64,18 +66,18 @@ function App() {
         updatedChatroom
       );
 
-      const message = data.msg;
+      const message: MessageType = data.msg;
+
       if (updatedChatroom.id === activeChatroomId) {
         console.log(
           `the chatroom is active now,active chatId is`,
           activeChatroomId
         );
 
-        // updatedChatroom={...updatedChatroom,isRead:true}
         dispatch(addMessage(message));
         socket.emit('mark_as_read', { chatroomId: activeChatroomId });
-      }
-      dispatch(addChatroom(updatedChatroom));
+        dispatch(addChatroom({ ...updatedChatroom, unreadCount: 0 }));
+      } else dispatch(addChatroom(updatedChatroom));
     });
 
     return () => {

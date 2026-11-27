@@ -81,3 +81,18 @@ export const getGreeting = (): string => {
   else if (hour < 17) return 'Good afternoon';
   else return 'Good evening';
 };
+
+// like // 05:19 pm
+export const getFormattedTime = (date: string) => {
+  const currentDate = new Date(date);
+
+  const time = currentDate
+    .toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    })
+    .toLowerCase();
+
+  return time;
+};

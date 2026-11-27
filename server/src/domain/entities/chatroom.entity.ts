@@ -3,8 +3,8 @@ export interface Chatroom {
   companyId: string;
   candidateId: string;
   jobId: string;
-  lastMessage?: string;
-  lastMessagedAt?: Date;
+  lastMessageId?: string;
+
   createdAt: Date;
   updatedAt: Date;
 }

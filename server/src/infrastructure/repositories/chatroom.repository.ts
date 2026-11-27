@@ -6,6 +6,7 @@ import { Types } from 'mongoose';
 import {
   AggregatedChatroomDto,
   ChatroomFilterDto,
+  LastMessage,
 } from '../../applications/dtos/chatroom.dto';
 import {} from '../../applications/dtos/chatroom.dto';
 import { PipelineStage } from 'mongoose';
@@ -15,6 +16,7 @@ import {
 } from '../database/models/chatroom.model';
 import mongoose from 'mongoose';
 import { UserRole } from '../../domain/enums/user.enums';
+import { attachSchema } from 'zod/v4/core/util.cjs';
 
 export class ChatroomRepository
   extends GenericRepository<Chatroom, IChatroomDocument>
@@ -29,8 +31,8 @@ export class ChatroomRepository
       companyId: doc.companyId.toString(),
       candidateId: doc.candidateId.toString(),
       jobId: doc.jobId.toString(),
-      lastMessage: doc.lastMessage,
-      lastMessagedAt: doc.lastMessagedAt,
+      lastMessageId: doc.lastMessageId?.toString(),
+
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     } as Chatroom;
@@ -40,8 +42,6 @@ export class ChatroomRepository
     filter: ChatroomFilterDto,
     role: UserRole.CANDIDATE | UserRole.COMPANY
   ): Promise<AggregatedChatroomDto[]> {
-    // console.log('from repo chat', filter, role);
-
     const { companyId, candidateId } = filter;
     let partcipantId: string;
     const matchStage: PipelineStage.Match['$match'] = {};
@@ -109,6 +109,24 @@ export class ChatroomRepository
         },
         {
           $lookup: {
+            from: 'messages',
+            localField: 'lastMessageId',
+            foreignField: '_id',
+            as: 'lastMessage',
+          },
+        },
+        {
+          $unwind: { path: '$lastMessage', preserveNullAndEmptyArrays: true },
+        },
+        {
+          $addFields: {
+            lastMessagedAt: {
+              $ifNull: ['$lastMessage.createdAt', '$updatedAt'],
+            },
+          },
+        },
+        {
+          $lookup: {
             from: config.from,
             localField: config.localField,
             foreignField: '_id',
@@ -129,7 +147,8 @@ export class ChatroomRepository
         { $project: projectStage },
         { $sort: { lastMessagedAt: -1 } },
       ]);
-    // console.log('from repo,aggregatedChatroom', aggregatedChatrooms);
+
+    console.log('aggregated', aggregatedChatrooms);
 
     return aggregatedChatrooms.map((doc) => this.mapToChatroomList(doc));
   }
@@ -144,8 +163,9 @@ export class ChatroomRepository
     if (entity.candidateId)
       data.candidateId = new mongoose.Types.ObjectId(entity.candidateId);
     if (entity.jobId) data.jobId = new mongoose.Types.ObjectId(entity.jobId);
-    if (entity.lastMessage) data.lastMessage = entity.lastMessage;
-    if (entity.lastMessagedAt) data.lastMessagedAt = entity.lastMessagedAt;
+    if (entity.lastMessageId)
+      data.lastMessageId = new mongoose.Types.ObjectId(entity.lastMessageId);
+
     if (entity.createdAt) data.createdAt = entity.createdAt;
 
     return data;
@@ -165,9 +185,16 @@ export class ChatroomRepository
   }
 
   private mapToChatroomList(doc: AggregatedChatroomDto): AggregatedChatroomDto {
-    return {
+    const lastMessage: LastMessage = {
+      text: doc.lastMessage?.text ?? '',
+      attachments: (doc.lastMessage?.attachments ?? []).map((at) => ({
+        type: at.type,
+        mimeType: at.mimeType,
+      })),
+    };
+    const data = {
       id: doc.id,
-      lastMessage: doc.lastMessage,
+      lastMessage: lastMessage,
       lastMessagedAt: doc.lastMessagedAt,
       imageUrl: doc.imageUrl,
       jobTitle: doc.jobTitle,
@@ -176,6 +203,9 @@ export class ChatroomRepository
       unreadCount: doc.unreadCount,
       participantId: doc.participantId,
     };
+    console.log('data from map to chatroom list', data);
+
+    return data;
   }
 
   async getChatroom(
@@ -241,6 +271,24 @@ export class ChatroomRepository
         },
         {
           $lookup: {
+            from: 'messages',
+            localField: 'lastMessageId',
+            foreignField: '_id',
+            as: 'lastMessage',
+          },
+        },
+        {
+          $unwind: { path: '$lastMessage', preserveNullAndEmptyArrays: true },
+        },
+        {
+          $addFields: {
+            lastMessagedAt: {
+              $ifNull: ['$lastMessage.createdAt', '$updatedAt'],
+            },
+          },
+        },
+        {
+          $lookup: {
             from: config.from,
             localField: config.localField,
             foreignField: '_id',
@@ -263,6 +311,7 @@ export class ChatroomRepository
       ]);
     return this.mapToChatroomList(aggregatedChatroom[0]);
   }
+
   async getChatroomsByParticipants(
     companyId?: string,
     candidateId?: string

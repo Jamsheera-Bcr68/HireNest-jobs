@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { setActiveChatroomId } from '../../../../redux/slices/chatroom.slice';
 
 export function ChatHeader({ conversation }: { conversation: ChatroomType }) {
-
   const dispatch = useDispatch();
 
   return (

@@ -6,8 +6,8 @@ export interface IChatroomDocument {
   companyId: mongoose.Types.ObjectId;
   candidateId: mongoose.Types.ObjectId;
   jobId: mongoose.Types.ObjectId;
-  lastMessage?: string;
-  lastMessagedAt?: Date;
+  lastMessageId?: mongoose.Types.ObjectId;
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,8 +17,7 @@ const chatroomSchema = new mongoose.Schema<IChatroomDocument>(
     companyId: { type: mongoose.Types.ObjectId, ref: 'Company' },
     candidateId: { type: mongoose.Types.ObjectId, ref: 'User' },
     jobId: { type: mongoose.Types.ObjectId, ref: 'Job' },
-    lastMessage: { type: String },
-    lastMessagedAt: { type: Date },
+    lastMessageId: { type: mongoose.Types.ObjectId },
   },
   {
     timestamps: true,

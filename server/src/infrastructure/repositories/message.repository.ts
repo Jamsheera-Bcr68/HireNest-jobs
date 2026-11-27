@@ -50,9 +50,11 @@ export class MessageRepository
   }
 
   async findByChatroomId(chatroomId: string): Promise<Message[]> {
-    const messages = await this._model.find({
-      chatroomId: new mongoose.Types.ObjectId(chatroomId),
-    }).lean()
+    const messages = await this._model
+      .find({
+        chatroomId: new mongoose.Types.ObjectId(chatroomId),
+      })
+      .lean();
 
     return messages.map((msg) => this.mapToEntity(msg));
   }

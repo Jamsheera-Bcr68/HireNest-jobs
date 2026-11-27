@@ -104,23 +104,19 @@ export class SendMessageUsecase implements ISendMessageUsecase {
 
     const msg = await this._messageRepository.create(messageData);
     await this._chatroomRepository.update(chatroomId, {
-      lastMessage: textMessage,
-      lastMessagedAt: new Date(),
+      lastMessageId: msg.id,
     });
     const fileResolver = this._fileResolverService.createResolver();
 
     msg.attachments = await Promise.all(
       msg.attachments.map(async (at) => {
-           return  {
+        return {
           key: (await fileResolver(at.key)) ?? at.key,
           name: at.name,
           mimeType: at.mimeType,
           size: at.size,
           kind: at.kind,
         };
-      
-
-    
       })
     );
     const updatedChatroom: AggregatedChatroomDto =
@@ -143,7 +139,7 @@ export class SendMessageUsecase implements ISendMessageUsecase {
     getIO()
       .to(msg.recieverId)
       .emit('message', {
-        msg,
+        msg: MessageMapper.toMessageDto(msg, msg.recieverId),
         updatedChatroom: {
           ...updatedChatroom,
 

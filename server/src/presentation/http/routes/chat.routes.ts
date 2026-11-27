@@ -19,8 +19,9 @@ router.get(
 );
 router.post(
   API_END_POINTS.CHATROOM_MESSAGES,
-  
-  authValidator(tokenService),chatAttachmentUpload.array('attachments',5),
+
+  authValidator(tokenService),
+  chatAttachmentUpload.array('attachments', 5),
   chatroomController.sendMessage
 );
 

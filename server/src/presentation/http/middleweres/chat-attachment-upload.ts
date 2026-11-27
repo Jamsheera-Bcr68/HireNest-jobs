@@ -11,11 +11,7 @@ const allowedTypes = [
   'video/webm',
 ];
 
-const fileFilter: multer.Options['fileFilter'] = (
-  req,
-  file,
-  cb
-) => {
+const fileFilter: multer.Options['fileFilter'] = (req, file, cb) => {
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {

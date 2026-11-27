@@ -10,8 +10,7 @@ import { authService } from '../../../services/api-services/authServices';
 
 export const useHeader = () => {
   const { showToast } = useToast();
-  const { user, accessToken } = useSelector((state: RootState) => state.auth);
- 
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();

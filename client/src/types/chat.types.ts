@@ -1,5 +1,13 @@
 import type { UserRole } from '../constants/types/user';
 
+type LastMessage = {
+  text?: string;
+  attachments?: {
+    type: 'image' | 'video' | 'audio' | 'file';
+    mimeType: string;
+  }[];
+  senderId?: string;
+};
 export type ChatroomType = {
   id: string;
   participantName: string;
@@ -8,13 +16,12 @@ export type ChatroomType = {
   unreadCount: number;
   imageUrl?: string;
   isOnline: boolean;
-  lastMessage?: string;
+  lastMessage?: LastMessage;
   lastMessagedAt?: string;
   time?: string;
 };
 
 export type Attachment = {
- 
   name: string;
   mimeType: string;
   size: number;
@@ -22,6 +29,6 @@ export type Attachment = {
 };
 
 export type ChatType = {
-  text: string
-  attachments: File|null
+  text: string;
+  attachments: File | null;
 };

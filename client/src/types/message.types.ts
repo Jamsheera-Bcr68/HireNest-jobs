@@ -10,7 +10,6 @@ export type MessageType = {
 };
 
 export type Attachment = {
-
   key: string;
   name: string;
   mimeType: string;

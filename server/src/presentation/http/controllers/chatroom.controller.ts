@@ -28,6 +28,7 @@ export class ChatroomController {
       user.userId,
       user.role
     );
+    console.log('chatrooms ', chatrooms);
 
     return res.status(statusCodes.OK).json({
       success: true,
@@ -45,7 +46,7 @@ export class ChatroomController {
       );
 
     const { chatroomId } = req.params;
-   
+
     if (!chatroomId)
       if (!user)
         throw new AppError(
@@ -84,15 +85,15 @@ export class ChatroomController {
         );
 
     const { text } = req.body;
-    console.log(`chatroom id ,file,body`, req.body, chatroomId, files,text);
+    console.log(`chatroom id ,file,body`, req.body, chatroomId, files, text);
 
-    const { message } = await this._sendMessageUsecase.execute(
-      {userId:user.userId,
-      textMessage:text,
-      attachements:files,     
+    const { message } = await this._sendMessageUsecase.execute({
+      userId: user.userId,
+      textMessage: text,
+      attachements: files,
       chatroomId,
-      role:user.role}
-    );
+      role: user.role,
+    });
 
     return res.status(statusCodes.OK).json({
       success: true,

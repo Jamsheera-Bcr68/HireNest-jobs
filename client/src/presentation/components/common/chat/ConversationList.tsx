@@ -15,8 +15,6 @@ function ConversationList({
   handlesearch,
   search,
 }: Props) {
- 
-
   return (
     <div
       className={`${selectedId ? 'hidden md:flex' : 'flex'} md:flex flex-col w-full md:w-[380px] border-r border-slate-200 h-full min-h-0 shrink-0 overflow-y-auto`}

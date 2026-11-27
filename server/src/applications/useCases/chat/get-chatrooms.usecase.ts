@@ -52,6 +52,7 @@ export class GetChatroomsUsecase implements IGetChatromsUsecase {
         ...ch,
         isOnline: this._presenceService.isOnline(ch.participantId),
         imageUrl: await fileUrlResolver(ch.imageUrl),
+
         context: ch.jobTitle,
         participantRole:
           role == UserRole.CANDIDATE ? UserRole.COMPANY : UserRole.CANDIDATE,

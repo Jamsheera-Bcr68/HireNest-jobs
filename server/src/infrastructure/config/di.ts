@@ -632,7 +632,8 @@ const getChatroomsUsecase = new GetChatroomsUsecase(
 const getChatroomMessagesUsecase = new GetChatroomMessagesUsecase(
   messageRepository,
   chatromRepository,
-  companyRepository,fileUrlResolverService
+  companyRepository,
+  fileUrlResolverService
 );
 const sendMessageUsecase = new SendMessageUsecase(
   messageRepository,

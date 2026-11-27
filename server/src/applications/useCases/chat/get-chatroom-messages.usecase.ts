@@ -71,14 +71,16 @@ export class GetChatroomMessagesUsecase implements IGetChatroomMessagesUsecase {
           }))
         );
 
-
         return { ...m, attachments };
       })
     );
-  
+
     await this._messageRepository.markAllAsread(chatroomId);
-    console.log('chat room messages ', updatedMsgs.map((m) => MessageMapper.toMessageDto(m, participantId)));
-    
+    console.log(
+      'chat room messages ',
+      updatedMsgs.map((m) => MessageMapper.toMessageDto(m, participantId))
+    );
+
     return updatedMsgs.map((m) => MessageMapper.toMessageDto(m, participantId));
   }
 }

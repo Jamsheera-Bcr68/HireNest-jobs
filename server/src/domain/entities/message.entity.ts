@@ -1,7 +1,7 @@
-import { FileType } from "../enums/file-type.enum";
+import { FileType } from '../enums/file-type.enum';
 export interface Message {
   id?: string;
-  attachments: IAttachment[]
+  attachments: IAttachment[];
   senderId: string;
   recieverId: string;
   isRead: boolean;
@@ -12,9 +12,9 @@ export interface Message {
 }
 
 export interface IAttachment {
-  key: string;       
-  name: string;      
-  mimeType: string;  
-  size: number;      
-  kind: FileType
+  key: string;
+  name: string;
+  mimeType: string;
+  size: number;
+  kind: FileType;
 }

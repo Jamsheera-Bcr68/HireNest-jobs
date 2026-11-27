@@ -18,6 +18,7 @@ export const chatroomSlice = createSlice({
   reducers: {
     addChatroom(state, action: PayloadAction<ChatroomType>) {
       const coming = action.payload;
+
       const exist = state.chatrooms.find((ch) => ch.id === coming.id);
 
       if (exist) {
@@ -27,28 +28,22 @@ export const chatroomSlice = createSlice({
       } else {
         state.chatrooms = [coming, ...state.chatrooms];
       }
-
-      console.log('after addng new one chatroom,', state.chatrooms);
     },
 
     setChatrooms(state, action: PayloadAction<ChatroomType[]>) {
       state.chatrooms = action.payload;
-   
     },
 
     setActiveChatroomId(state, action: PayloadAction<string | null>) {
       state.activeChatroomId = action.payload;
-
     },
 
     setMessages(state, action: PayloadAction<MessageType[]>) {
       state.messages = action.payload;
-     
     },
 
     addMessage(state, action: PayloadAction<MessageType>) {
       state.messages.push(action.payload);
-   
     },
   },
 });

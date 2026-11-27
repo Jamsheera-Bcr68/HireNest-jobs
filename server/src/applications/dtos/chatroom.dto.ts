@@ -3,6 +3,7 @@ import { User } from '../../domain/entities/user.entity';
 import { Job } from '../../domain/entities/job.entity';
 import { Chatroom } from '../../domain/entities/chatroom.entity';
 import { Company } from '../../domain/entities/company.entity';
+import { FileType } from '../../domain/enums/file-type.enum';
 
 export interface ChatroomFilterDto {
   companyId?: string;
@@ -17,15 +18,21 @@ export interface ChatroomDto {
   context: string;
   unreadCount: number;
   isOnline: boolean;
-  lastMessage?: string;
+  lastMessage?: LastMessage;
   participantRole: UserRole;
   lastMessagedAt?: string;
   time?: string;
 }
 
+type Attachment = {
+  type?: FileType;
+  mimeType?: string;
+};
+
+export type LastMessage = { text?: string; attachments?: Attachment[] };
 export interface AggregatedChatroomDto {
   id: string;
-  lastMessage?: string;
+  lastMessage?: LastMessage;
   lastMessagedAt?: Date;
   jobTitle: string;
   jobId: string;

@@ -31,11 +31,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-   
-
     const loadNotifications = async () => {
-   
-
       const nots = await getNotifications('all');
       dispatch(setNotifications(nots));
     };
@@ -49,7 +45,7 @@ const Header = () => {
   useEffect(() => {
     const getChatrooms = async () => {
       const data = await chatService.getConversations();
-      
+
       dispatch(setChatrooms(data.chatrooms));
     };
 
@@ -71,7 +67,6 @@ const Header = () => {
   }, [notifications, notificationOpen]);
 
   const tabChange = (tab: 'new' | 'all') => {
-    
     if (tab == 'all') setNots(notifications);
     else setNots(notifications.filter((n) => n.isRead === false));
   };
@@ -85,8 +80,6 @@ const Header = () => {
   };
 
   const deleteHandle = async (id: string) => {
-   
-
     await deleteNotification(id);
     const updated = notifications.filter((n) => n.id !== id);
     dispatch(setNotifications(updated));
@@ -95,7 +88,6 @@ const Header = () => {
   const navigate = useNavigate();
 
   const onMarkRead = async (id: string) => {
-   
     await markAsRead(id);
     const updated = notifications.map((n) =>
       n.id !== id ? n : { ...n, isRead: true }
@@ -104,7 +96,6 @@ const Header = () => {
   };
 
   const onMarkAll = async () => {
-    
     await markAllAsRead();
     dispatch(
       setNotifications(notifications.map((n) => ({ ...n, isRead: true })))

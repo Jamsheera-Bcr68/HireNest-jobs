@@ -1,4 +1,5 @@
 import type { ChatroomType } from '../../../../types/chat.types';
+import { getLastMessagePreview } from '../../../../utils/message-preview';
 
 type Props = {
   conversation: ChatroomType;
@@ -84,7 +85,7 @@ function ConversationItem({ conversation, isActive, onClick }: Props) {
         </div>
         <div className="flex items-center justify-between gap-2 mt-0.5">
           <span className="text-xs text-slate-500 truncate">
-            {conversation.lastMessage}
+            {getLastMessagePreview(conversation.lastMessage)}
           </span>
           {conversation.unreadCount > 0 && (
             <span className="shrink-0 bg-emerald-500 text-white text-[10px] font-semibold w-5 h-5 rounded-full flex items-center justify-center">

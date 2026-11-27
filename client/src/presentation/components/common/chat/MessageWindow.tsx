@@ -8,6 +8,11 @@ import { messageService } from '../../../../services/api-services/message.servic
 import { setMessages } from '../../../../redux/slices/chatroom.slice';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../../../redux/store';
+import { createPortal } from 'react-dom';
+import EmojiPicker, {
+  EmojiStyle,
+  type EmojiClickData,
+} from 'emoji-picker-react';
 
 type Props = {
   activeChatroom: ChatroomType | null;
@@ -22,6 +27,7 @@ function MessageWindow({
   updateChatroom,
 }: Props) {
   const [files, setFiles] = useState<File[]>([]);
+  const [showPicker, setShowPicker] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const [msg, setMsg] = useState<string>('');
@@ -40,12 +46,16 @@ function MessageWindow({
         });
 
       const data = await messageService.sendMessaage(formData, selectedId);
-      console.log('data .message', data.message);
+      console.log('data .message', data.msg);
 
       setFiles([]);
       setMsg('');
+      setShowPicker(false);
       dispatch(setMessages([...messages, data.msg]));
-      updateChatroom({ lastMessage: msg, time: data.msg.sendTime });
+      updateChatroom({
+        lastMessage: { text: data.msg.text, attachments: data.msg.attachments },
+        time: data.msg.sendTime,
+      });
     } catch (err) {}
   };
 
@@ -65,11 +75,11 @@ function MessageWindow({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleUpdate = (text: string) => {
-    if (!text.trim() || !selectedId) return;
-    console.log('from text messages', text);
-
-    setMsg(text);
+  const handleEmojiClick = (emojiData: EmojiClickData) => {
+    setMsg((prev) => {
+      if (!prev) return emojiData.emoji;
+      return prev + emojiData.emoji;
+    });
   };
 
   const handleFileChanges = (selectedFiles: File[]) => {
@@ -112,14 +122,37 @@ function MessageWindow({
             handleFileChanges={handleFileChanges}
             files={files}
             msg={msg}
-            handleUpdate={handleUpdate}
+            setMsg={setMsg}
             onSendMsg={handleSendMsg}
             handleRemoveFile={handleRemoveFile}
+            setShowPicker={setShowPicker}
           />
         </div>
       ) : (
         <EmptyState />
       )}
+      {showPicker &&
+        createPortal(
+          <div className="fixed inset-x-0 bottom-20 z-[9999] flex justify-end px-1 sm:inset-x-auto sm:right-4 sm:justify-end sm:px-0">
+            <EmojiPicker
+              onEmojiClick={handleEmojiClick}
+              width="100%"
+              height={350}
+              style={{ maxWidth: 350 }}
+              previewConfig={{ showPreview: false }}
+              skinTonesDisabled
+              emojiStyle={EmojiStyle.NATIVE}
+            />
+          </div>,
+          document.body
+        )}
+      {/* {showPicker &&
+        createPortal(
+          <div className="fixed bottom-20 right-6 z-[9999]">
+            <EmojiPicker onEmojiClick={handleEmojiClick} />
+          </div>,
+          document.body
+        )} */}
     </div>
   );
 }
