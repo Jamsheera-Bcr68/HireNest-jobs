@@ -42,12 +42,17 @@ export interface ChatroomInputDto {
   lastMessagedAt?: Date;
   jobId: string;
 }
-// // export type ChatroomDocType={
-//   chatroom:Chatroom,
-//   job:Job,
-//   company?:Company,
-//   candidate?:User
-// }
+export interface sendMessageInputDto {
+  userId: string;
+  textMessage: string;
+  attachements: Express.Multer.File[];
+  chatroomId: string;
+  role: UserRole;
+}
+export interface sendMessageOutputDto {
+  textMessage: string;
+  attachements: string[];
+}
 
 export type ChatroomDocType = {
   chatroom: Chatroom;

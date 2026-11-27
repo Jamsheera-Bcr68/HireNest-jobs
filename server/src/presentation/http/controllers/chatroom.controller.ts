@@ -45,7 +45,7 @@ export class ChatroomController {
       );
 
     const { chatroomId } = req.params;
-    //  console.log(`chatroom id `, chatroomId);
+   
     if (!chatroomId)
       if (!user)
         throw new AppError(
@@ -73,9 +73,9 @@ export class ChatroomController {
         authMessages.error.UNAUTHORIZED,
         statusCodes.UNAUTHERIZED
       );
+    const files = Array.isArray(req.files) ? req.files : [];
 
     const { chatroomId } = req.params;
-    //  console.log(`chatroom id `, chatroomId);
     if (!chatroomId)
       if (!user)
         throw new AppError(
@@ -84,12 +84,14 @@ export class ChatroomController {
         );
 
     const { text } = req.body;
+    console.log(`chatroom id ,file,body`, req.body, chatroomId, files,text);
 
     const { message } = await this._sendMessageUsecase.execute(
-      user.userId,
-      text,
+      {userId:user.userId,
+      textMessage:text,
+      attachements:files,     
       chatroomId,
-      user.role
+      role:user.role}
     );
 
     return res.status(statusCodes.OK).json({

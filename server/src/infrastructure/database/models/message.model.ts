@@ -1,8 +1,11 @@
 import mongoose from 'mongoose';
 import { model } from 'mongoose';
+import { IAttachment } from '../../../domain/entities/message.entity';
+import { FileType } from '../../../domain/enums/file-type.enum';
 
 export interface IMessageDocument {
-  message: string;
+  text: string;
+  attachments: IAttachment[];
   _id: mongoose.Types.ObjectId;
   senderId: mongoose.Types.ObjectId;
   recieverId: mongoose.Types.ObjectId;
@@ -14,7 +17,19 @@ export interface IMessageDocument {
 
 const messageSchema = new mongoose.Schema<IMessageDocument>(
   {
-    message: { type: String },
+    text: { type: String },
+    attachments: {
+      type: [
+        {
+          key: String,
+          name: String,
+          mimeType: String,
+          size: Number,
+          kind: { type: String, enum: Object.values(FileType) },
+        },
+      ],
+      default: [],
+    },
     senderId: { type: mongoose.Types.ObjectId },
     recieverId: { type: mongoose.Types.ObjectId },
     chatroomId: { type: mongoose.Types.ObjectId },

@@ -8,6 +8,7 @@ import { generalMessages } from '../../../shared/constants/messages/general.mess
 import { statusCodes } from '../../../shared/enums/statuscodes';
 import { MessageDto } from '../../dtos/messages.dto';
 import { MessageMapper } from '../../mappers/message.mapper';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface IGetChatroomMessagesUsecase {
   execute(
@@ -21,7 +22,8 @@ export class GetChatroomMessagesUsecase implements IGetChatroomMessagesUsecase {
   constructor(
     private _messageRepository: IMessageRepository,
     private _chatroomRepository: IChatroomRepository,
-    private _companyRepository: ICompanyRepository
+    private _companyRepository: ICompanyRepository,
+    private _fileResolverService: IFileResolverService
   ) {}
 
   async execute(
@@ -57,9 +59,26 @@ export class GetChatroomMessagesUsecase implements IGetChatroomMessagesUsecase {
         generalMessages.errors.FORBIDDEN,
         statusCodes.FORBIDDEN
       );
-
     const messages = await this._messageRepository.findByChatroomId(chatroomId);
+    const fileResolver = this._fileResolverService.createResolver();
+
+    const updatedMsgs = await Promise.all(
+      messages.map(async (m) => {
+        const attachments = await Promise.all(
+          (m.attachments ?? []).map(async (at) => ({
+            ...at,
+            key: (await fileResolver(at.key)) ?? '',
+          }))
+        );
+
+
+        return { ...m, attachments };
+      })
+    );
+  
     await this._messageRepository.markAllAsread(chatroomId);
-    return messages.map((m) => MessageMapper.toMessageDto(m, participantId));
+    console.log('chat room messages ', updatedMsgs.map((m) => MessageMapper.toMessageDto(m, participantId)));
+    
+    return updatedMsgs.map((m) => MessageMapper.toMessageDto(m, participantId));
   }
 }

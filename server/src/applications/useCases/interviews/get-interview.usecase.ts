@@ -20,7 +20,7 @@ export class GetInterviewDetailsUsecase implements IGetEntityDetailsUsecase<inte
     private _jobRepository: IJobRepository,
     private _companyRepository: ICompanyRepository,
     private _userRepository: IUserRepository,
-    private _fileStorageService: IFileStorageService,
+   
     private _fileResolverService: IFileResolverService
   ) {}
   async execute(

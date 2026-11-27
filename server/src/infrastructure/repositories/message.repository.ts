@@ -18,7 +18,8 @@ export class MessageRepository
   protected mapToEntity(doc: IMessageDocument): Message {
     return {
       id: doc._id.toString(),
-      message: doc.message,
+      text: doc.text,
+      attachments: doc.attachments,
       senderId: doc.senderId.toString(),
       recieverId: doc.recieverId.toString(),
       chatroomId: doc.chatroomId.toString(),
@@ -32,7 +33,8 @@ export class MessageRepository
     entity: Partial<Message>
   ): Partial<IMessageDocument> {
     const data: Partial<IMessageDocument> = {};
-    if (entity.message) data.message = entity.message;
+    if (entity.text) data.text = entity.text;
+    if (entity.attachments) data.attachments = entity.attachments;
     if (entity.isRead) data.isRead = entity.isRead;
     if (entity.senderId)
       data.senderId = new mongoose.Types.ObjectId(entity.senderId);
@@ -50,7 +52,7 @@ export class MessageRepository
   async findByChatroomId(chatroomId: string): Promise<Message[]> {
     const messages = await this._model.find({
       chatroomId: new mongoose.Types.ObjectId(chatroomId),
-    });
+    }).lean()
 
     return messages.map((msg) => this.mapToEntity(msg));
   }

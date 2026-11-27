@@ -6,7 +6,8 @@ export class MessageMapper {
   static toMessageDto(message: Message, currentUserId: string): MessageDto {
     return {
       id: message.id,
-      message: message.message,
+      attachments:message.attachments??[],
+      message: message.text,
       sender: message.senderId == currentUserId ? 'user' : 'participant',
       reciever: message.recieverId == currentUserId ? 'user' : 'participant',
       sendTime: getTime(message.createdAt),

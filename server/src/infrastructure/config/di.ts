@@ -568,7 +568,7 @@ const getInterviewDetailsUsecase = new GetInterviewDetailsUsecase(
   jobRepository,
   companyRepository,
   userRepository,
-  s3FileStorageService,
+
   fileUrlResolverService
 );
 const updateInterviewUsecase = new UpdateInterviewUsecase(
@@ -632,12 +632,14 @@ const getChatroomsUsecase = new GetChatroomsUsecase(
 const getChatroomMessagesUsecase = new GetChatroomMessagesUsecase(
   messageRepository,
   chatromRepository,
-  companyRepository
+  companyRepository,fileUrlResolverService
 );
 const sendMessageUsecase = new SendMessageUsecase(
   messageRepository,
   chatromRepository,
-  companyRepository
+  companyRepository,
+  s3FileStorageService,
+  fileUrlResolverService
 );
 const getUnreadMessageCountUsecase = new GetUnreadMessageCountUsecase(
   messageRepository,

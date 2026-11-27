@@ -12,29 +12,40 @@ import type { RootState } from '../../../../redux/store';
 type Props = {
   activeChatroom: ChatroomType | null;
   selectedId: string | null;
-  // setSelectId: (data: string | null) => void;
+
   updateChatroom: (data: Partial<ChatroomType>) => void;
 };
 function MessageWindow({
   activeChatroom,
   selectedId,
-  // setSelectId,
+
   updateChatroom,
 }: Props) {
-  // const [messages, setMessages] = useState<MessageType[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   const dispatch = useDispatch();
-  const [value, setValue] = useState<string>('');
-  console.log(`active chatroom`, activeChatroom);
+
+  const [msg, setMsg] = useState<string>('');
+
   const { messages } = useSelector((state: RootState) => state.chatroom);
+
   const handleSendMsg = async () => {
-    console.log('message befor send', value);
-    if (!value || !selectedId) return;
+    if ((!msg && !files.length) || !selectedId) return;
 
     try {
-      const data = await messageService.sendMessaage(value, selectedId);
-      console.log('afer msging', data);
+      const formData = new FormData();
+      formData.append('text', msg);
+      if (files.length)
+        files.forEach((file) => {
+          formData.append('attachments', file);
+        });
+
+      const data = await messageService.sendMessaage(formData, selectedId);
+      console.log('data .message', data.message);
+
+      setFiles([]);
+      setMsg('');
       dispatch(setMessages([...messages, data.msg]));
-      updateChatroom({ lastMessage: value, time: data.msg.sendTime });
+      updateChatroom({ lastMessage: msg, time: data.msg.sendTime });
     } catch (err) {}
   };
 
@@ -53,6 +64,25 @@ function MessageWindow({
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const handleUpdate = (text: string) => {
+    if (!text.trim() || !selectedId) return;
+    console.log('from text messages', text);
+
+    setMsg(text);
+  };
+
+  const handleFileChanges = (selectedFiles: File[]) => {
+    setFiles((prev) => {
+      const remainingSlots = 5 - prev.length;
+
+      return [...prev, ...selectedFiles.slice(0, remainingSlots)];
+    });
+  };
+
+  const handleRemoveFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
   return (
     <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-hidden">
       {activeChatroom ? (
@@ -79,9 +109,12 @@ function MessageWindow({
           </div>
 
           <MessageInput
-            value={value}
-            setValue={setValue}
+            handleFileChanges={handleFileChanges}
+            files={files}
+            msg={msg}
+            handleUpdate={handleUpdate}
             onSendMsg={handleSendMsg}
+            handleRemoveFile={handleRemoveFile}
           />
         </div>
       ) : (
@@ -89,46 +122,6 @@ function MessageWindow({
       )}
     </div>
   );
-
-  // return (
-  //   <div className="flex flex-col flex-1 h-full w-full min-h-0 overflow-hidden">
-  //     {activeChatroom ? (
-  //       <div
-  //         className={`${selectedId ? 'flex' : 'hidden'} md:flex flex-col flex-1 min-w-0 h-full min-h-0 overflow-hidden`}
-  //       >
-  //         <ChatHeader
-  //           conversation={activeChatroom}
-  //           // onBack={() => setSelectId(null)}
-  //         />
-
-  //         <div
-  //           // ref={scrollRef}
-  //           className="flex-1  min-h-0 o overflow-y-auto py-4 space-y-3 bg-slate-50"
-  //           style={{
-  //             backgroundImage:
-  //               'radial-gradient(circle, #e2e8f0 1px, transparent 1px)',
-  //             backgroundSize: '20px 20px',
-  //           }}
-  //         >
-  //           <div className="flex min-h-full flex-col justify-end gap-3">
-  //           <DateDivider label="Today" />
-  //           {messages?.map((m) => (
-  //             <MessageBubble key={m.id} message={m} />
-  //           ))}
-  //         </div>
-  //         </div>
-
-  //         <MessageInput
-  //           value={value}
-  //           setValue={setValue}
-  //           onSendMsg={handleSendMsg}
-  //         />
-  //       </div>
-  //     ) : (
-  //       <EmptyState />
-  //     )}
-  //   </div>
-  // );
 }
 
 export default MessageWindow;

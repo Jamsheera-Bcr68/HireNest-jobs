@@ -33,22 +33,22 @@ export const chatroomSlice = createSlice({
 
     setChatrooms(state, action: PayloadAction<ChatroomType[]>) {
       state.chatrooms = action.payload;
-      console.log('chatrooms set in redux', state);
+   
     },
 
     setActiveChatroomId(state, action: PayloadAction<string | null>) {
       state.activeChatroomId = action.payload;
-      console.log('active chatId', state.activeChatroomId);
+
     },
 
     setMessages(state, action: PayloadAction<MessageType[]>) {
       state.messages = action.payload;
-      console.log('messages in the redux', state.messages);
+     
     },
 
     addMessage(state, action: PayloadAction<MessageType>) {
       state.messages.push(action.payload);
-      console.log('after new message, messages in the redux', state.messages);
+   
     },
   },
 });

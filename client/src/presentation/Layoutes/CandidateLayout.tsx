@@ -23,7 +23,7 @@ export const CandidateLayout = () => {
     item ? item : { label: 'Dashboard', path: '/candidate/dashboard' }
   );
 
-  console.log('currentPath,active item', currentPath, activeItem);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,7 +40,7 @@ export const CandidateLayout = () => {
   }, [item]);
 
   const [title, seTitle] = useState(activeItem?.label ?? 'Dashboard');
-  console.log(title);
+ 
   return (
     <>
       {/* <div className="flex min-h-screen "> */}

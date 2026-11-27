@@ -17,7 +17,7 @@ function ChatContainer() {
   const dispatch = useDispatch();
   const chatroomId = location.state?.chatroomId;
 
-  console.log('chatid is from chat', chatroomId);
+  
 
   const { chatrooms, activeChatroomId } = useSelector(
     (state: RootState) => state.chatroom
@@ -26,9 +26,11 @@ function ChatContainer() {
   const [activeChatroom, setActiveChatroom] = useState<ChatroomType | null>(
     null
   );
+
   const [filteredConversations, setFilteredConversations] =
     useState<ChatroomType[]>(chatrooms);
   const [search, setSearch] = useState<string>('');
+ 
 
   const handlesearch = (s: string) => {
     setSearch(s);
@@ -81,9 +83,9 @@ function ChatContainer() {
   }, []);
 
   const onChatroomChange = (chatroomId: string) => {
-    console.log('form chatroom change,id', chatroomId);
+   
     dispatch(setActiveChatroomId(chatroomId));
-    console.log('activeChatroom', activeChatroom);
+  
 
     const chat = chatrooms.find((chat) => chat.id === chatroomId);
     setActiveChatroom(chat ? { ...chat, unreadCount: 0 } : null);
@@ -96,7 +98,7 @@ function ChatContainer() {
   };
 
   const updateChatroom = (data: Partial<ChatroomType>) => {
-    console.log('dataa from update chatroom', data);
+   
     if (!activeChatroom) return;
     const updated = { ...activeChatroom, ...data };
     setActiveChatroom(updated);
@@ -119,6 +121,7 @@ function ChatContainer() {
         selectedId={activeChatroomId}
         updateChatroom={updateChatroom}
         activeChatroom={activeChatroom}
+       
       />
     </div>
   );

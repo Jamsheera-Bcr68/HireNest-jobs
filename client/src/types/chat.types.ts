@@ -12,3 +12,16 @@ export type ChatroomType = {
   lastMessagedAt?: string;
   time?: string;
 };
+
+export type Attachment = {
+ 
+  name: string;
+  mimeType: string;
+  size: number;
+  kind: 'image' | 'video' | 'file';
+};
+
+export type ChatType = {
+  text: string
+  attachments: File|null
+};

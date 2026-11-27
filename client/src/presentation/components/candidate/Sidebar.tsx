@@ -46,7 +46,7 @@ type SidebarProps = {
   nav: string;
 };
 export const SideBar = ({ isOpen, setOpen, setTitle, nav }: SidebarProps) => {
-  console.log('nav', nav);
+
   const handleLogout = () => {
     HandleLogout();
   };

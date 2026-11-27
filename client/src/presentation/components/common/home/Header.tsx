@@ -31,10 +31,10 @@ const Header = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    //console.log(user?.role, 'from header');
+   
 
     const loadNotifications = async () => {
-      //  console.log('from useeffect');
+   
 
       const nots = await getNotifications('all');
       dispatch(setNotifications(nots));
@@ -49,7 +49,7 @@ const Header = () => {
   useEffect(() => {
     const getChatrooms = async () => {
       const data = await chatService.getConversations();
-      //  console.log('chatroms afrer getting chatroom', data);
+      
       dispatch(setChatrooms(data.chatrooms));
     };
 
@@ -71,7 +71,7 @@ const Header = () => {
   }, [notifications, notificationOpen]);
 
   const tabChange = (tab: 'new' | 'all') => {
-    //console.log('from tabChange', tab);
+    
     if (tab == 'all') setNots(notifications);
     else setNots(notifications.filter((n) => n.isRead === false));
   };
@@ -85,7 +85,7 @@ const Header = () => {
   };
 
   const deleteHandle = async (id: string) => {
-    //  console.log('from delete notifivation', id);
+   
 
     await deleteNotification(id);
     const updated = notifications.filter((n) => n.id !== id);
@@ -95,7 +95,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const onMarkRead = async (id: string) => {
-    // console.log('form mark as read', id);
+   
     await markAsRead(id);
     const updated = notifications.map((n) =>
       n.id !== id ? n : { ...n, isRead: true }
@@ -104,7 +104,7 @@ const Header = () => {
   };
 
   const onMarkAll = async () => {
-    //  console.log('form mark as read');
+    
     await markAllAsRead();
     dispatch(
       setNotifications(notifications.map((n) => ({ ...n, isRead: true })))

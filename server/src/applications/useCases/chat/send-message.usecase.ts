@@ -1,4 +1,4 @@
-import { Message } from '../../../domain/entities/message.entity';
+import { IAttachment, Message } from '../../../domain/entities/message.entity';
 import { UserRole } from '../../../domain/enums/user.enums';
 import { AppError } from '../../../domain/errors/app-error';
 import { IChatroomRepository } from '../../../domain/repository-interfaces/chatroom.repository.interface';
@@ -9,34 +9,41 @@ import { statusCodes } from '../../../shared/enums/statuscodes';
 import { MessageDto } from '../../dtos/messages.dto';
 import { MessageMapper } from '../../mappers/message.mapper';
 import { getIO } from '../../../infrastructure/socket';
-import { AggregatedChatroomDto, ChatroomDto } from '../../dtos/chatroom.dto';
+import path from 'path';
+import {
+  AggregatedChatroomDto,
+  ChatroomDto,
+  sendMessageInputDto,
+} from '../../dtos/chatroom.dto';
 
 import { presenceService } from '../../../infrastructure/config/di';
 import { getTime } from '../../../shared/utils';
+import { IFileStorageService } from '../../interfaces/services/file-storage.service';
+import { UploadFileDto } from '../../dtos/upload-file.dto';
+import { getFileKind } from '../../utils/get-filetype';
+import { IFileResolverService } from '../../services/file-url-resolver.service';
 
 export interface ISendMessageUsecase {
   execute(
-    userId: string,
-    message: string,
-    chatroomId: string,
-    role: UserRole
-  ): Promise<{ message: MessageDto; chatroom: ChatroomDto }>;
+    payload: sendMessageInputDto
+  ): Promise<{ message?: MessageDto; chatroom: ChatroomDto }>;
 }
 
 export class SendMessageUsecase implements ISendMessageUsecase {
   constructor(
     private _messageRepository: IMessageRepository,
     private _chatroomRepository: IChatroomRepository,
-    private _companyRepository: ICompanyRepository
+    private _companyRepository: ICompanyRepository,
+    private _fileUploadservice: IFileStorageService,
+    private _fileResolverService: IFileResolverService
   ) {}
 
   async execute(
-    userId: string,
-    message: string,
-    chatroomId: string,
-    role: UserRole
-  ): Promise<{ message: MessageDto; chatroom: ChatroomDto }> {
+    payload: sendMessageInputDto
+  ): Promise<{ message?: MessageDto; chatroom: ChatroomDto }> {
+    const { chatroomId, userId, role, textMessage, attachements } = payload;
     const chatroom = await this._chatroomRepository.findById(chatroomId);
+
     if (!chatroom)
       throw new AppError(
         generalMessages.errors.NOT_FOUND('Charoom'),
@@ -57,30 +64,73 @@ export class SendMessageUsecase implements ISendMessageUsecase {
         generalMessages.errors.FORBIDDEN,
         statusCodes.FORBIDDEN
       );
+    let files: UploadFileDto[] = [];
+    if (attachements.length) {
+      files = attachements.map((a) => {
+        return {
+          buffer: a.buffer,
+          mimetype: a.mimetype,
+          size: a.size,
+          originalName: a.originalname,
+        };
+      });
+    }
+    const attachmentDatas: IAttachment[] = await Promise.all(
+      files.map(async (f) => {
+        return {
+          key: await this._fileUploadservice.uploadFile(
+            f,
+            'chat/attachments',
+            path.extname(f.originalName)
+          ),
+          name: f.originalName,
+          mimeType: f.mimetype,
+          size: f.size,
 
+          kind: getFileKind(f.originalName),
+        };
+      })
+    );
     const messageData: Partial<Message> = {
       senderId: participantId,
       recieverId:
         role === UserRole.CANDIDATE ? chatroom.companyId : chatroom.candidateId,
       chatroomId,
-      message,
+      text: textMessage,
+      attachments: attachmentDatas,
+
       isRead: false,
     };
 
     const msg = await this._messageRepository.create(messageData);
-    const new_chatroom = await this._chatroomRepository.update(chatroomId, {
-      lastMessage: message,
+    await this._chatroomRepository.update(chatroomId, {
+      lastMessage: textMessage,
       lastMessagedAt: new Date(),
     });
+    const fileResolver = this._fileResolverService.createResolver();
+
+    msg.attachments = await Promise.all(
+      msg.attachments.map(async (at) => {
+           return  {
+          key: (await fileResolver(at.key)) ?? at.key,
+          name: at.name,
+          mimeType: at.mimeType,
+          size: at.size,
+          kind: at.kind,
+        };
+      
+
+    
+      })
+    );
     const updatedChatroom: AggregatedChatroomDto =
       await this._chatroomRepository.getChatroom(
         chatroomId,
         role === UserRole.COMPANY ? UserRole.CANDIDATE : UserRole.COMPANY,
         msg.recieverId
       );
-    console.log('from send msg usecaser', updatedChatroom);
 
-    if (!message)
+    if (!textMessage && !attachements.length)
       throw new AppError(
         generalMessages.errors.NOT_FOUND('Message'),
         statusCodes.NOTFOUND

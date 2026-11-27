@@ -1,4 +1,5 @@
 import { UploadFileDto } from '../../applications/dtos/upload-file.dto';
+
 import {
   GetObjectCommand,
   PutObjectCommand,
@@ -25,11 +26,13 @@ export class S3FileStorageService implements IFileStorageService {
   async uploadFile(
     file: UploadFileDto,
     folder: string,
-    fileExtension: string = 'jpg'
+    fileExtension: string = '.jpg'
   ): Promise<string> {
     console.log('from s3 stroage folder name is ', folder);
-
-    const fileName = `${randomUUID()}.${fileExtension}`;
+if(!fileExtension.includes('.')){
+  fileExtension=`.${fileExtension}`
+}
+    const fileName = `${randomUUID()}${fileExtension}`;
     const key = `${folder}/${fileName}`;
     const command = new PutObjectCommand({
       Bucket: env.AWS_S3_BUCKET_NAME,

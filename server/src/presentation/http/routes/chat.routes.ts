@@ -3,6 +3,8 @@ import { authValidator } from '../middleweres/auth-validator';
 import { chatroomController } from '../../../infrastructure/config/di';
 import { tokenService } from '../../../infrastructure/config/di';
 import { API_END_POINTS } from './api-end-points/api-end.points';
+import { chatAttachmentUpload } from '../middleweres/chat-attachment-upload';
+
 const router = express.Router();
 
 router.get(
@@ -17,7 +19,8 @@ router.get(
 );
 router.post(
   API_END_POINTS.CHATROOM_MESSAGES,
-  authValidator(tokenService),
+  
+  authValidator(tokenService),chatAttachmentUpload.array('attachments',5),
   chatroomController.sendMessage
 );
 
